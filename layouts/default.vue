@@ -42,12 +42,19 @@
     </header>
 
     <LoginForm />
+    <p>Hello {{store.getUser != null ? store.getUser.username : 'guest'}}</p>
 
     <div class="container mx-auto p-4">
       <slot />
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useAuthStore } from "../stores/auth";
+
+const store = useAuthStore();
+</script>
   
   <style scoped>
 .router-link-exact-active {

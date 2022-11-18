@@ -1,15 +1,16 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 interface ILoginResponse {
-    data: {
-        access_token: string,
-        refresh_token: string,
-        user: IUserResponse | undefined
-    }
+    access_token: string,
+    refresh_token: string,
+    user: IUserResponse | undefined
 }
 
 interface IUserResponse {
+    id: number,
     username: string,
+    email: string,
+    is_staff: boolean,
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -18,15 +19,6 @@ export const useAuthStore = defineStore('auth', {
         refreshToken: undefined as string | undefined,
         user: undefined as IUserResponse | undefined
     }),
-
-    // state: () => {
-    //     return {
-    //         // all these properties will have their type inferred automatically
-    //         accessToken: '',
-    //         refreshToken: '',
-    //         user: null
-    //     }
-    // },
 
     getters: {
         getUser: (state) => state.user,
@@ -43,9 +35,9 @@ export const useAuthStore = defineStore('auth', {
                     }
                 }
                 ).then((response: ILoginResponse) => {
-                    this.accessToken = response.data.access_token
-                    this.refreshToken = response.data.refresh_token
-                    this.user = response.data.user;
+                    this.accessToken = response.access_token
+                    this.refreshToken = response.refresh_token
+                    this.user = response.user;
                     resolve(response)
                 }).catch(err => {
                     // ! needs proper error handling
@@ -56,7 +48,8 @@ export const useAuthStore = defineStore('auth', {
         },
 
         logout() {
-            if (this.loggedIn) {
+            if (this.loggedIn)
+            {
                 this.accessToken = undefined
                 this.refreshToken = undefined
                 this.user = undefined;
@@ -65,6 +58,7 @@ export const useAuthStore = defineStore('auth', {
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
 }
