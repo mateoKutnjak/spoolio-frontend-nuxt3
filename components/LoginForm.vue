@@ -29,12 +29,15 @@
 </template>
 
 <script lang="ts" setup>
-const username = ref();
-const password = ref();
+import { useAuthStore } from "../stores/auth";
+
+const store = useAuthStore();
+
+const username = ref<string>();
+const password = ref<string>();
 
 function submitLoginForm() {
-  console.log(username);
-  console.log(password);
+  store.login({ username: username.value, password: password.value });
 }
 </script>
 
