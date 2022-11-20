@@ -26,7 +26,7 @@ export const useBlogStore = defineStore('blog', {
     },
 
     actions: {
-        async fetchBlogs(limit: number = 10, offset: number = 0) {
+        async fetchBlogs(limit: number = 10, offset: number = 0, append: boolean = false) {
             return new Promise((resolve, reject) => {
                 $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}`, {
                     method: 'GET'
@@ -35,7 +35,12 @@ export const useBlogStore = defineStore('blog', {
                     this.count = response.count;
                     this.next = response.next;
                     this.previous = response.previous;
-                    this.blogs = response.results;
+
+                    if (append) {
+                        this.blogs = [...this.blogs, ...response.results];
+                    } else {
+                        this.blogs = response.results;
+                    }
 
                     resolve(response)
                 }).catch(err => {
@@ -48,7 +53,6 @@ export const useBlogStore = defineStore('blog', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useBlogStore, import.meta.hot))
 }
