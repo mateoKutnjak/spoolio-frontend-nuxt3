@@ -1,48 +1,158 @@
 <template>
   <div>
     <header class="shadow-sm bg-white">
-      <nav class="container mx-auto p-4 flex justify-between">
-        <NuxtLink
-          to="/"
-          class="font-bold"
-        >Spoolio</NuxtLink>
-        <ul class="flex gap-4">
-          <li>
-            <NuxtLink
-              to="/"
-              class="btn"
-            >Home</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink
-              to="/blogs"
-              class="btn"
-            >Blogs</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink
-              to="/job-order"
-              class="btn"
-            >Print</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink
-              to="/store"
-              class="btn"
-            >Shop</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink
-              to="/about"
-              class="btn"
-            >About</NuxtLink>
-          </li>
-        </ul>
-      </nav>
+      <Disclosure
+        as="nav"
+        class="bg-gray-800"
+        v-slot="{ open }"
+      >
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <DisclosureButton class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <span class="sr-only">Open main menu</span>
+                <Bars3Icon
+                  v-if="!open"
+                  class="block h-6 w-6"
+                  aria-hidden="true"
+                />
+                <XMarkIcon
+                  v-else
+                  class="block h-6 w-6"
+                  aria-hidden="true"
+                />
+              </DisclosureButton>
+            </div>
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <NuxtLink to="/">
+                <div class="flex flex-shrink-0 items-center">
+                  <img
+                    class="block h-8 w-auto lg:hidden"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    alt="Your Company"
+                  />
+                  <img
+                    class="hidden h-8 w-auto lg:block"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    alt="Your Company"
+                  />
+                </div>
+              </NuxtLink>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-4">
+                  <NuxtLink
+                    v-for="item in navigation"
+                    :key="item.name"
+                    :to="`${item.to}`"
+                    :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
+                    :aria-current="item.current ? 'page' : undefined"
+                  >
+                    {{ item.name }}
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <button
+                type="button"
+                class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span class="sr-only">View notifications</span>
+                <BellIcon
+                  class="h-6 w-6"
+                  aria-hidden="true"
+                />
+              </button>
+
+              <button
+                type="button"
+                @click="isLoginDialogShown=true"
+                class="rounded-md bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                Login
+              </button>
+
+              <button
+                type="button"
+                @click="isLoginDialogShown=true"
+                class="rounded-md bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                Sign up
+              </button>
+
+              <!-- Profile dropdown -->
+              <!-- <Menu
+                as="div"
+                class="relative ml-3"
+              >
+                <div>
+                  <MenuButton class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <span class="sr-only">Open user menu</span>
+                    <img
+                      class="h-8 w-8 rounded-full"
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt=""
+                    />
+                  </MenuButton>
+                </div>
+                <transition
+                  enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95"
+                  enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75"
+                  leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95"
+                >
+                  <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItem v-slot="{ active }">
+                    <a
+                      href="#"
+                      :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Your Profile</a>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                    <a
+                      href="#"
+                      :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Settings</a>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                    <a
+                      href="#"
+                      :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                    >Sign out</a>
+                    </MenuItem>
+                  </MenuItems>
+                </transition>
+              </Menu> -->
+            </div>
+          </div>
+        </div>
+
+        <DisclosurePanel class="sm:hidden">
+          <div class="space-y-1 px-2 pt-2 pb-3">
+            <DisclosureButton
+              v-for="item in navigation"
+              :key="item.name"
+              as="a"
+              :href="item.to"
+              :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
+              :aria-current="item.current ? 'page' : undefined"
+            >{{ item.name }}</DisclosureButton>
+          </div>
+        </DisclosurePanel>
+      </Disclosure>
     </header>
 
-    <LoginForm />
     <p>Hello {{store.getUser != null ? store.getUser.username : 'guest'}}</p>
+
+    <GenericDialog
+      title="Login"
+      :show="isLoginDialogShown"
+      @on-close-clicked="isLoginDialogShown=false"
+    >
+      <LoginForm />
+    </GenericDialog>
 
     <div class="container mx-auto p-4">
       <slot />
@@ -52,12 +162,33 @@
 
 <script lang="ts" setup>
 import { useAuthStore } from "../stores/auth";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/vue";
+
+const navigation = [
+  { name: "Home", to: "/", current: true },
+  { name: "Blogs", to: "/blogs", current: false },
+  { name: "Print", to: "/job-order", current: false },
+  { name: "Shop", to: "/store", current: false },
+  { name: "About", to: "/about", current: false },
+];
 
 const store = useAuthStore();
+
+const isLoginDialogShown = ref(false);
+const isRegisterDialogShown = ref(false);
 </script>
   
   <style scoped>
 .router-link-exact-active {
-  color: #555555;
+  color: white;
+  background-color: grey;
 }
 </style>

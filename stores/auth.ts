@@ -26,12 +26,33 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
-        async login(userCredentials: { username: string | undefined; password: string | undefined }) {
+        async login(username: string | undefined, password: string | undefined) {
             return new Promise((resolve, reject) => {
                 $fetch<ILoginResponse>('http://localhost:8000/auth/login/', {
                     method: 'POST', body: {
-                        username: userCredentials.username,
-                        password: userCredentials.password,
+                        username: username,
+                        password: password,
+                    }
+                }
+                ).then((response: ILoginResponse) => {
+                    this.accessToken = response.access_token
+                    this.refreshToken = response.refresh_token
+                    this.user = response.user;
+                    resolve(response)
+                }).catch(err => {
+                    // ! needs proper error handling
+                    alert("TODO error handling")
+                    reject(err)
+                })
+            })
+        },
+
+        async register(username: string | undefined, email: string | undefined, password: string | undefined) {
+            return new Promise((resolve, reject) => {
+                $fetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
+                    method: 'POST', body: {
+                        username: username,
+                        password: password,
                     }
                 }
                 ).then((response: ILoginResponse) => {
