@@ -24,28 +24,25 @@
               </DisclosureButton>
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <NuxtLink to="/">
-                <div class="flex flex-shrink-0 items-center">
-                  <img
-                    class="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                  <img
-                    class="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
-              </NuxtLink>
+              <div class="flex flex-shrink-0 items-center">
+                <img
+                  class="block h-8 w-auto lg:hidden"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt="Your Company"
+                />
+                <img
+                  class="hidden h-8 w-auto lg:block"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt="Your Company"
+                />
+              </div>
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
                   <NuxtLink
                     v-for="item in navigation"
                     :key="item.name"
                     :to="`${item.to}`"
-                    :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
-                    :aria-current="item.current ? 'page' : undefined"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                   >
                     {{ item.name }}
                   </NuxtLink>
@@ -136,8 +133,7 @@
               :key="item.name"
               as="a"
               :href="item.to"
-              :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
-              :aria-current="item.current ? 'page' : undefined"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >{{ item.name }}</DisclosureButton>
           </div>
         </DisclosurePanel>
@@ -173,11 +169,11 @@ import {
 } from "@headlessui/vue";
 
 const navigation = [
-  { name: "Home", to: "/", current: true },
-  { name: "Blogs", to: "/blogs", current: false },
-  { name: "Print", to: "/job-order", current: false },
-  { name: "Shop", to: "/store", current: false },
-  { name: "About", to: "/about", current: false },
+  { name: "Home", to: "/" },
+  { name: "Blogs", to: "/blogs" },
+  { name: "Print", to: "/job-order" },
+  { name: "Shop", to: "/store" },
+  { name: "About", to: "/about" },
 ];
 
 const store = useAuthStore();
