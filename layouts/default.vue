@@ -71,7 +71,7 @@
 
               <button
                 type="button"
-                @click="isLoginDialogShown=true"
+                @click="isRegisterDialogShown=true"
                 class="rounded-md bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 Sign up
@@ -148,6 +148,14 @@
       @on-close-clicked="isLoginDialogShown=false"
     >
       <LoginForm />
+    </GenericDialog>
+
+    <GenericDialog
+      title="Sign up"
+      :show="isRegisterDialogShown"
+      @on-close-clicked="isRegisterDialogShown=false"
+    >
+      <RegisterForm />
     </GenericDialog>
 
     <div class="container mx-auto p-4">

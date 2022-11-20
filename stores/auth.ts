@@ -47,12 +47,15 @@ export const useAuthStore = defineStore('auth', {
             })
         },
 
-        async register(username: string | undefined, email: string | undefined, password: string | undefined) {
+        async register(username: string | undefined, email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
             return new Promise((resolve, reject) => {
                 $fetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
                     method: 'POST', body: {
                         username: username,
-                        password: password,
+                        email: email,
+                        password1: password,
+                        password2: confirmPassword,
+
                     }
                 }
                 ).then((response: ILoginResponse) => {
