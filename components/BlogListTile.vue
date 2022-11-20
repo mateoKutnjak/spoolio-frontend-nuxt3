@@ -1,12 +1,7 @@
 <template>
   <div class="card text-center">
-    <img
-      :src="blog.image"
-      alt="product thumb"
-      class="thumb"
-    >
     <p class="font-bold text-gray-500 m-4 truncate">{{blog.title}}</p>
-    <NuxtLink :to="`/products/${blog.id}`">
+    <NuxtLink :to="`/blogs/${blog.id}`">
       <p class="btn my-4">View Details</p>
     </NuxtLink>
   </div>
