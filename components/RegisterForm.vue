@@ -14,6 +14,7 @@
       label="Username"
       v-model="username"
       validation="required"
+      validation-visibility="blur"
     />
     <FormKit
       type="email"
@@ -21,7 +22,7 @@
       label="Email"
       v-model="email"
       validation="required|email"
-      validation-visibility="live"
+      validation-visibility="blur"
     />
     <FormKit
       type="password"
