@@ -2,7 +2,7 @@
 
   <FormKit
     type="form"
-    id="registration-example"
+    id="login-form"
     :form-class="submitted ? 'hide' : 'show'"
     submit-label="Sign In"
     @submit="submitHandler"
@@ -33,8 +33,8 @@ import { useAuthStore } from "../stores/auth";
 
 const store = useAuthStore();
 
-const username = ref<string>("");
-const password = ref<string>("");
+const username = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
 const submitted = ref(false);
 
@@ -43,9 +43,6 @@ const submitHandler = async () => {
   await new Promise((r) => setTimeout(r, 1000));
 
   submitted.value = true;
-
-  console.log(username);
-  console.log(password);
 
   store.login(username.value, password.value).then((loginRequestState) => {});
 };
