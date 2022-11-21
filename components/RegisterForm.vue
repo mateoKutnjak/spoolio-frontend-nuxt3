@@ -13,24 +13,32 @@
       name="username"
       label="Username"
       v-model="username"
+      validation="required"
     />
     <FormKit
       type="email"
       name="email"
       label="Email"
       v-model="email"
+      validation="required|email"
+      validation-visibility="live"
     />
     <FormKit
       type="password"
       name="password"
       label="Password"
       v-model="password"
+      validation="required|length:5,15|matches:/[0-9]/"
+      validation-visibility="blur"
     />
     <FormKit
       type="password"
-      name="confirmPassword"
+      name="password_confirm"
       label="Confirm password"
       v-model="confirmPassword"
+      validation="required|confirm"
+      validation-label="Password confirmation"
+      validation-visibility="blur"
     />
     <FormKit
       type="submit"
@@ -44,10 +52,10 @@ import { useAuthStore } from "../stores/auth";
 
 const store = useAuthStore();
 
-const username = ref<string>(''); // FormKit - cannot be wuthout args - undefined
-const email = ref<string>(''); // FormKit - cannot be wuthout args - undefined
-const password = ref<string>(''); // FormKit - cannot be wuthout args - undefined
-const confirmPassword = ref<string>(''); // FormKit - cannot be wuthout args - undefined
+const username = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
 const submitted = ref(false);
 

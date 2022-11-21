@@ -1,4 +1,5 @@
 import { generateClasses } from '@formkit/themes'
+import { createAutoAnimatePlugin } from '@formkit/addons'
 
 export default {
     config: {
@@ -40,5 +41,8 @@ export default {
                 message: 'text-red-500 mb-1 text-xs'
             }
         })
-    }
+    },
+    plugins: [
+        createAutoAnimatePlugin()
+    ]
 }

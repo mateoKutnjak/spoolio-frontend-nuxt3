@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@formkit/nuxt', 'nuxt-icon'],
+    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@formkit/nuxt', 'nuxt-icon', '@formkit/auto-animate'],
     formkit: {
         configFile: './formkit.config.js',
     },
