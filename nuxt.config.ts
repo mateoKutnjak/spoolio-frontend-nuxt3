@@ -1,10 +1,23 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@formkit/nuxt'],
+    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@formkit/nuxt', 'nuxt-icon'],
     formkit: {
-        configFile: './formkit.config.ts',
+        configFile: './formkit.config.js',
     },
-    theme: 'genesis',
+    css: ['~/assets/css/tailwind.css'],
+    tailwindcss: {
+        cssPath: '~/assets/css/tailwind.css',
+        configPath: '~/tailwind.config.ts',
+        exposeConfig: false,
+        injectPosition: 0,
+        viewer: true,
+    },
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        },
+    },
     app: {
         head: {
             title: "Spoolio",
