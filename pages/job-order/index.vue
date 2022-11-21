@@ -1,9 +1,9 @@
 <template>
-    <p>Job order</p>
-  </template>
+  <PrintingJobOrderForm />
+</template>
   
   <script setup>
-  </script>
+</script>
   
   <style>
-  </style>
+</style>

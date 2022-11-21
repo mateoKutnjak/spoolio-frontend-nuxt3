@@ -26,10 +26,10 @@
           class="block text-gray-700 text-sm font-bold mb-2"
           for="email"
         >
-          Username
+          Email
         </label>
         <input
-          type="text"
+          type="email"
           name="email"
           id="user"
           v-model="email"
@@ -59,7 +59,7 @@
           class="block text-gray-700 text-sm font-bold mb-2"
           for="confirmPassword"
         >
-          Password
+          Confirm password
         </label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -72,17 +72,11 @@
         >
       </div>
       <div class="flex items-center justify-between">
-        <a
-          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          href="#"
-        >
-          Forgot Password?
-        </a>
         <button
           class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           type="submit"
         >
-          Sign In
+          Sign Up
         </button>
       </div>
     </form>
