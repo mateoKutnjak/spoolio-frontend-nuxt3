@@ -1,6 +1,6 @@
 <template>
 
-  <div class="m-auto align-middle">
+  <div>
     <FormKit
       type="form"
       id="register-form"
@@ -9,7 +9,7 @@
       @submit="submitHandler"
       :actions="false"
     >
-      <div class="double">
+      <div class="grid grid-cols-2 gap-2">
         <FormKit
           type="text"
           name="first_name"
@@ -27,24 +27,26 @@
           validation-visibility="blur"
         />
       </div>
-      <FormKit
-        type="text"
-        name="address"
-        label="Address"
-        v-model="address"
-        validation="required"
-        validation-visibility="blur"
-      />
-      <FormKit
-        type="tel"
-        label="Phone number"
-        placeholder="xxx-xxx-xxxx"
-        validation="matches:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/"
-        :validation-messages="{
+      <div class="grid grid-cols-[80%_20%] gap-2">
+        <FormKit
+          type="text"
+          name="address"
+          label="Address"
+          v-model="address"
+          validation="required"
+          validation-visibility="blur"
+        />
+        <FormKit
+          type="tel"
+          label="Phone number"
+          placeholder="xxx-xxx-xxxx"
+          validation="matches:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/"
+          :validation-messages="{
     matches: 'Phone number must be in the format xxx-xxx-xxxx',
   }"
-        validation-visibility="dirty"
-      />
+          validation-visibility="dirty"
+        />
+      </div>
       <FormKit
         type="email"
         name="email"
@@ -53,20 +55,22 @@
         validation="required|email"
         validation-visibility="blur"
       />
-      <FormKit
-        type="textarea"
-        label="Additional information"
-        rows="5"
-        placeholder="Tell us more about your"
-        help="I'll know if you didn't read the book!"
-      />
-      <FormKit
-        type="file"
-        label="Files"
-        accept=".pdf,.doc,.docx,.xml,.md,.csv"
-        help="Upload files"
-        multiple
-      />
+      <div class="grid grid-cols-2 gap-2">
+        <FormKit
+          type="textarea"
+          label="Additional information"
+          rows="5"
+          placeholder="Tell us more about your"
+          help="I'll know if you didn't read the book!"
+        />
+        <FormKit
+          type="file"
+          label="Files"
+          accept=".pdf,.doc,.docx,.xml,.md,.csv"
+          help="Upload files"
+          multiple
+        />
+      </div>
       <FormKit
         type="submit"
         label="Request"
