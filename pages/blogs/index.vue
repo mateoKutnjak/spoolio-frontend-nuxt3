@@ -1,4 +1,10 @@
 <template>
+  <div class="pb-12">
+    <SearchBar
+      placeholder="Search projects"
+      @submit-search-phrase="onSearch"
+    />
+  </div>
   <div class="grid grid-cols-1 gap-5">
     <div
       :key="blog.id"
@@ -10,7 +16,7 @@
   <CircularLoadingIndicator :show="showPageLoading" />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBlogStore } from "~/stores/blog";
 
 const blogStore = useBlogStore();
@@ -19,15 +25,14 @@ const showPageLoading = ref(false);
 var limit = 10;
 var offset = 0;
 
-blogStore.fetchBlogs(limit, offset);
+blogStore.fetchPaginatedBlogs(limit, offset);
 
 const getPaginatedBlogs = computed(() => {
   return blogStore.getPaginatedBlogs;
 });
 
 onMounted(() => {
-
-  // Function listener which detects 
+  // Function listener which detects
   // when page is scrolled to the bottom
   window.onscroll = () => {
     let bottomOfWindow =
@@ -41,21 +46,33 @@ onMounted(() => {
 
     if (bottomOfWindow) {
       console.log("bottomOfWindow");
-      // this.page++;
       console.log(getPaginatedBlogs);
       if (
         getPaginatedBlogs.value.next &&
+        getPaginatedBlogs.value.count &&
         getPaginatedBlogs.value.count > offset
       ) {
         showPageLoading.value = true;
         offset = offset + limit;
         blogStore
-          .fetchBlogs(10, offset, true)
+          .fetchPaginatedBlogs(limit, offset, "", true)
           .then(() => (showPageLoading.value = false));
       }
     }
   };
 });
+
+function onSearch(searchPhrase: string) {
+  console.debug(`New search phrase: ${searchPhrase}`);
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogStore
+    .fetchPaginatedBlogs(limit, offset, searchPhrase, false)
+    .then(() => (showPageLoading.value = false));
+}
 </script>
 
 <style>

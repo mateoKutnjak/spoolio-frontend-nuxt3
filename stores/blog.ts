@@ -26,9 +26,9 @@ export const useBlogStore = defineStore('blog', {
     },
 
     actions: {
-        async fetchBlogs(limit: number = 10, offset: number = 0, append: boolean = false) {
+        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
             return new Promise((resolve, reject) => {
-                $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}`, {
+                $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET'
                 }
                 ).then((response: IBlogListResponse) => {
