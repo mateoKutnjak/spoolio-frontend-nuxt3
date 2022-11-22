@@ -9,10 +9,10 @@
     :actions="false"
   >
     <FormKit
-      type="text"
-      name="username"
-      label="Username"
-      v-model="username"
+      type="email"
+      name="email"
+      label="Email"
+      v-model="email"
     />
     <FormKit
       type="password"
@@ -33,7 +33,7 @@ import { useAuthStore } from "../stores/auth";
 
 const store = useAuthStore();
 
-const username = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
 const submitted = ref(false);
@@ -44,7 +44,7 @@ const submitHandler = async () => {
 
   submitted.value = true;
 
-  store.login(username.value, password.value).then((loginRequestState) => {});
+  store.login(email.value, password.value).then((loginRequestState) => {});
 };
 </script>
 

@@ -11,13 +11,15 @@
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
               <DisclosureButton class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                 <span class="sr-only">Open main menu</span>
-                <Bars3Icon
+                <Icon
                   v-if="!open"
+                  name="material-symbols:menu"
                   class="block h-6 w-6"
                   aria-hidden="true"
                 />
-                <XMarkIcon
+                <Icon
                   v-else
+                  name="material-symbols:close"
                   class="block h-6 w-6"
                   aria-hidden="true"
                 />
@@ -55,8 +57,9 @@
                 class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
                 <span class="sr-only">View notifications</span>
-                <BellIcon
-                  class="h-6 w-6"
+                <Icon
+                  name="material-symbols:notifications-outline"
+                  class="block h-6 w-6"
                   aria-hidden="true"
                 />
               </button>
@@ -140,7 +143,7 @@
       </Disclosure>
     </header>
 
-    <p>Hello {{store.getUser != null ? store.getUser.username : 'guest'}}</p>
+    <p>Hello {{store.getUser != null ? store.getUser.email : 'guest'}}</p>
 
     <GenericDialog
       title="Login"

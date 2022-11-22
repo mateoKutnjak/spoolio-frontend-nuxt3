@@ -8,9 +8,15 @@ interface ILoginResponse {
 
 interface IUserResponse {
     id: number,
-    username: string,
     email: string,
     is_staff: boolean,
+    profile: IProfileResponse | undefined
+}
+
+interface IProfileResponse {
+    first_name: string,
+    last_name: string,
+    phone_number: string,
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -26,11 +32,11 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
-        async login(username: string | undefined, password: string | undefined) {
+        async login(email: string | undefined, password: string | undefined) {
             return new Promise((resolve, reject) => {
                 $fetch<ILoginResponse>('http://localhost:8000/auth/login/', {
                     method: 'POST', body: {
-                        username: username,
+                        email: email,
                         password: password,
                     }
                 }
@@ -47,11 +53,10 @@ export const useAuthStore = defineStore('auth', {
             })
         },
 
-        async register(username: string | undefined, email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
+        async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
             return new Promise((resolve, reject) => {
                 $fetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
                     method: 'POST', body: {
-                        username: username,
                         email: email,
                         password1: password,
                         password2: confirmPassword,

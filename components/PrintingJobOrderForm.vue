@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <FormKit
       type="form"
@@ -15,7 +14,7 @@
           name="first_name"
           label="First name"
           v-model="firstName"
-          :validation="required"
+          validation="required"
           validation-visibility="blur"
         />
         <FormKit
@@ -51,6 +50,7 @@
         type="email"
         name="email"
         label="Email"
+        :disabled="! isEmptyOrNull(getUser?.email)"
         v-model="email"
         validation="required|email"
         validation-visibility="blur"
@@ -79,15 +79,39 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
+const firstName = ref("");
+const lastName = ref("");
+const address = ref("");
+const phoneNumber = ref("");
+const email = ref("");
+const submitted = ref(false);
+
 const getUser = computed(() => {
   return authStore.getUser;
 });
+
+watch(getUser, () => {
+  email.value = getUser?.value?.email ?? "";
+});
+
+const submitHandler = async () => {
+  // This delay is here only because of progress indicator button
+  // await new Promise((r) => setTimeout(r, 1000));
+  // submitted.value = true;
+  // store.login(username.value, password.value).then((loginRequestState) => {});
+};
+
+function isEmptyOrNull(str?: string) {
+  if (str === undefined) return true;
+  if (str === null) return true;
+  if (str === "") return true;
+  return false;
+}
 </script>
 
-<style>
-</style>
+<style></style>;

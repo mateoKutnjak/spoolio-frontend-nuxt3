@@ -9,14 +9,6 @@
     :actions="false"
   >
     <FormKit
-      type="text"
-      name="username"
-      label="Username"
-      v-model="username"
-      validation="required"
-      validation-visibility="blur"
-    />
-    <FormKit
       type="email"
       name="email"
       label="Email"
@@ -53,7 +45,6 @@ import { useAuthStore } from "../stores/auth";
 
 const store = useAuthStore();
 
-const username = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - undefined
@@ -67,12 +58,7 @@ const submitHandler = async () => {
   submitted.value = true;
 
   store
-    .register(
-      username.value,
-      email.value,
-      password.value,
-      confirmPassword.value
-    )
+    .register(email.value, password.value, confirmPassword.value)
     .then((loginRequestState) => {});
 };
 </script>
