@@ -16,6 +16,7 @@ interface IUserResponse {
 interface IProfileResponse {
     first_name: string,
     last_name: string,
+    address: string,
     phone_number: string,
 }
 
