@@ -2,7 +2,7 @@
   <div class="card text-center">
     <p class="font-bold text-gray-500 m-4 truncate">{{blog.title}}</p>
     <NuxtLink :to="`/blogs/${blog.id}`">
-      <p class="btn my-4">View Details</p>
+      <button class="btn btn-accent">Button</button>
     </NuxtLink>
   </div>
 
