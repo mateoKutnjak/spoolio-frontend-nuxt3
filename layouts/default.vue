@@ -3,6 +3,7 @@
   <div class="container mx-auto p-4">
     <slot />
   </div>
+  <Footer />
 </template>
 
 <script lang="ts" setup>
