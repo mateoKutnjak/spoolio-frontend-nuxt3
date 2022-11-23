@@ -2,15 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   @apply bg-gray-50;
-}
+} */
 
 @layer components {
-  .btn {
+  /* .btn {
     @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm inline-block;
-  }
-  .card {
+  } */
+  /* .card {
     @apply p-3 rounded-md bg-white shadow-md h-full;
+  } */
+  .btn{
+    text-transform: none;
   }
 }

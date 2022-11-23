@@ -41,15 +41,20 @@
       </NuxtLink>
     </div>
     <div class="navbar-end">
-      <div class="flex items-center gap-3">
-        <div class="btn btn-ghost indicator">
-          <Icon
-            name="material-symbols:shopping-cart-outline-rounded"
-            size="27"
-            aria-hidden="true"
-          />
-          <span class="indicator-item indicator-middle badge badge-primary">8</span>
+      <div class="flex items-center">
+
+        <div class="btn btn-ghost ">
+          <div class="flex items-center gap-1">
+            <span class="indicator-item indicator-middle badge badge-primary">8</span>
+
+            <Icon
+              name="material-symbols:shopping-cart-outline-rounded"
+              size="27"
+              aria-hidden="true"
+            />
+          </div>
         </div>
+
         <div
           v-if="getUser"
           class="dropdown dropdown-end"
