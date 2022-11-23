@@ -11,7 +11,7 @@
       :key="product.id"
       v-for="product in getPaginatedProducts.products"
     >
-      <BlogListTile :blog="product" />
+      <ProductListTile :product="product" />
     </div>
   </div>
   <CircularLoadingIndicator :show="showPageLoading" />

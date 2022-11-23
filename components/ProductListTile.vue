@@ -8,7 +8,9 @@
       <h2 class="card-title">{{product.title}}</h2>
       <p>Click the button to listen on Spotiwhy app.</p>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary">Read more</button>
+        <NuxtLink :to="`/store/${product.id}/`">
+          <button class="btn btn-primary">Read more</button>
+        </NuxtLink>
       </div>
     </div>
   </div>
