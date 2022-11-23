@@ -189,8 +189,9 @@ function logout() {
 </script>
 
 <style>
-/* .router-link-exact-active {
+.router-link-exact-active {
   color: white;
-  background-color: var(--bg-green-500);
-} */
+  background-color: gainsboro;
+  border-radius: 5rem;
+}
 </style>
