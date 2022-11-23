@@ -43,8 +43,11 @@
     <div class="navbar-end">
       <div class="flex items-center">
 
-        <div class="btn btn-ghost ">
-          <div class="flex items-center gap-1">
+        <button
+          class="btn btn-ghost"
+          @click="toggleDrawer"
+        >
+          <div class="flex items-center gap-1 ">
             <span class="indicator-item indicator-middle badge badge-primary">8</span>
 
             <Icon
@@ -53,7 +56,7 @@
               aria-hidden="true"
             />
           </div>
-        </div>
+        </button>
 
         <div
           v-if="getUser"
@@ -165,8 +168,10 @@
 
 <script lang="ts" setup>
 import { useAuthStore } from "../stores/auth";
+import { useDrawerStore } from "../stores/drawer";
 
 const authStore = useAuthStore();
+const drawerStore = useDrawerStore();
 
 const isLoginDialogShown = ref(false);
 const isRegisterDialogShown = ref(false);
@@ -185,6 +190,10 @@ const navigation = [
 
 function logout() {
   authStore.logout();
+}
+
+function toggleDrawer() {
+  drawerStore.toggle();
 }
 </script>
 
