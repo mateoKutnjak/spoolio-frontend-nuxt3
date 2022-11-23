@@ -1,11 +1,19 @@
 <template>
-  <FormKit
-    type="search"
-    placeholder="Search..."
-    label="Search"
-    value="Apple Cider"
-    v-model="input"
-  />
+  <div class="form-control">
+    <div class="input-group">
+      <input
+        type="text"
+        placeholder="Search…"
+        class="input input-bordered"
+      />
+      <button class="btn btn-primary">
+        <Icon
+          name="ion:ios-search"
+          size="25"
+        />
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>

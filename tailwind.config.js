@@ -1,4 +1,5 @@
 import formKitTailwind from '@formkit/themes/tailwindcss'
+import daisyui from 'daisyui'
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -17,6 +18,11 @@ module.exports = {
     },
     plugins: [
         formKitTailwind,
-        require("daisyui")
+        require("@tailwindcss/typography"),
+        daisyui
     ],
+    daisyui: {
+        base: false,
+        themes: ['cupcake']
+    },
 }
