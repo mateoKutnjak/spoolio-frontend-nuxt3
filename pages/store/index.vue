@@ -1,6 +1,6 @@
 <template>
   <div v-if="getPaginatedProducts.count || 0 > 0">
-    <div class="pb-12">
+    <div class="pb-12 pt-3 flex justify-center">
       <SearchBar
         placeholder="Search products"
         @submit-search-phrase="onSearch"

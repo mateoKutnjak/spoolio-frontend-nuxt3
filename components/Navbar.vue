@@ -211,6 +211,5 @@ function toggleDrawer() {
 .router-link-exact-active {
   color: black;
   background-color: gainsboro;
-  border-radius: 5rem;
 }
 </style>
