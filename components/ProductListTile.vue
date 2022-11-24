@@ -33,7 +33,7 @@
 </template>
   
   <script lang="ts" setup>
-import { IProductResponse } from "~~/stores/product";
+import IProductResponse from "../stores/product";
 import { useCartStore } from "../stores/cart";
 
 const cartStore = useCartStore();

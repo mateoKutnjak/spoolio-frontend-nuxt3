@@ -4,7 +4,7 @@
       <div class="dropdown">
         <label
           tabindex="0"
-          class="btn btn-ghost lg:hidden"
+          class="btn btn-ghost btn-square lg:hidden"
         >
           <Icon
             name="material-symbols:menu"
@@ -45,6 +45,7 @@
 
         <button
           class="btn btn-ghost"
+          :class="getItems.length > 0 ? '' : 'btn-square'"
           @click="toggleDrawer"
         >
           <div class="flex items-center gap-1 ">
@@ -68,7 +69,7 @@
 
           <label
             tabindex="0"
-            class="btn btn-ghost bg-transparent hover:bg-transparent"
+            class="btn btn-ghost btn-square bg-transparent hover:bg-transparent"
           >
             <div class="avatar">
               <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -111,7 +112,7 @@
         >
           <label tabindex="
           0">
-            <div class="btn btn-ghost">
+            <div class="btn btn-ghost btn-square">
               <Icon
                 name="material-symbols:person-outline"
                 size="30"
@@ -208,7 +209,7 @@ function toggleDrawer() {
 
 <style>
 .router-link-exact-active {
-  color: white;
+  color: black;
   background-color: gainsboro;
   border-radius: 5rem;
 }

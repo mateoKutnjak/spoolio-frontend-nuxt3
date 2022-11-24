@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-export interface IProductResponse {
+export default interface IProductResponse {
     id: number,
     title: string,
     description: string,

@@ -1,15 +1,15 @@
 <template>
   <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+    <h2 class="p-4">Your cart</h2>
     <li
-      v-for="item in getItems"
+      v-for="[item, quantity] in Array.from(getCartItems)"
       :key="item.id"
     >
-      <CartListTile :item="item" />
+      <CartListTile
+        :item="item"
+        :quantity="quantity"
+      />
     </li>
-
-    <!-- Sidebar content here -->
-    <li><a>Sidebar Item 1</a></li>
-    <li><a>Sidebar Item 2</a></li>
 
   </ul>
 </template>
@@ -19,8 +19,9 @@ import { useCartStore } from "../stores/cart";
 
 const cartStore = useCartStore();
 
-const getItems = computed(() => {
-  return cartStore.getItems;
+const getCartItems = computed(() => {
+  console.log(cartStore.getCartItems);
+  return cartStore.getCartItems;
 });
 </script>
 
