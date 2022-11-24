@@ -1,16 +1,29 @@
 <template>
   <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-    <h2 class="p-4">Your cart</h2>
-    <li
-      v-for="[item, quantity] in Array.from(getCartItems)"
-      :key="item.id"
-    >
-      <CartListTile
-        :item="item"
-        :quantity="quantity"
-      />
-    </li>
-
+    <div v-if="getCartItems.size > 0">
+      <h2 class="p-4">Items in your cart</h2>
+      <li
+        v-for="[item, quantity] in Array.from(getCartItems)"
+        :key="item.id"
+      >
+        <CartListTile
+          :item="item"
+          :quantity="quantity"
+        />
+      </li>
+    </div>
+    <div v-else>
+      <div class="flex h-screen justify-center items-center gap-2">
+        <div class="text-center ">
+          <Icon
+            name="material-symbols:remove-shopping-cart-outline-rounded"
+            size="30"
+            aria-hidden="true"
+          />
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+    </div>
   </ul>
 </template>
 
