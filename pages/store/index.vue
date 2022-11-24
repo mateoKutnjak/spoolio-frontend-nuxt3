@@ -1,20 +1,33 @@
 <template>
-  <div class="pb-12">
-    <SearchBar
-      placeholder="Search products"
-      @submit-search-phrase="onSearch"
-    />
-  </div>
+  <div v-if="getPaginatedProducts.count || 0 > 0">
+    <div class="pb-12">
+      <SearchBar
+        placeholder="Search products"
+        @submit-search-phrase="onSearch"
+      />
+    </div>
 
-  <div class="grid grid-cols-1 gap-5 ">
-    <div
-      :key="product.id"
-      v-for="product in getPaginatedProducts.products"
-    >
-      <ProductListTile :product="product" />
+    <div class="grid grid-cols-1 gap-5 ">
+      <div
+        :key="product.id"
+        v-for="product in getPaginatedProducts.products"
+      >
+        <ProductListTile :product="product" />
+      </div>
+    </div>
+    <CircularLoadingIndicator :show="showPageLoading" />
+  </div>
+  <div v-else-if="showInitLoading">
+    <div class="grid justify-center h-56">
+      <progress class="progress w-56"></progress>
     </div>
   </div>
-  <CircularLoadingIndicator :show="showPageLoading" />
+  <div v-else>
+    <div class="grid justify-center h-56 h-56">
+      Nothing to show
+
+    </div>
+  </div>
 </template>
   
   <script lang="ts" setup>
@@ -23,12 +36,18 @@ import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 const productStore = useProductStore();
+
+const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref(false);
 
 var limit = 10;
 var offset = 0;
 
-productStore.fetchPaginatedProducts(limit, offset);
+onMounted(() => {
+  productStore.fetchPaginatedProducts(limit, offset).then(() => {
+    showInitLoading.value = false;
+  });
+});
 
 const getPaginatedProducts = computed(() => {
   return productStore.getPaginatedProducts;

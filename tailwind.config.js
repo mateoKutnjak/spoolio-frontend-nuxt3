@@ -23,6 +23,6 @@ module.exports = {
     ],
     daisyui: {
         base: false,
-        themes: ['cupcake']
+        themes: ['bumblebee']
     },
 }
