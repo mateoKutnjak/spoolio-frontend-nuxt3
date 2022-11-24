@@ -48,7 +48,10 @@
           @click="toggleDrawer"
         >
           <div class="flex items-center gap-1 ">
-            <span class="indicator-item indicator-middle badge badge-primary">8</span>
+            <span
+              v-show="getItems.length > 0"
+              class="indicator-item indicator-middle badge badge-primary"
+            >{{getItems.length}}</span>
 
             <Icon
               name="material-symbols:shopping-cart-outline-rounded"
@@ -168,9 +171,11 @@
 
 <script lang="ts" setup>
 import { useAuthStore } from "../stores/auth";
+import { useCartStore } from "../stores/cart";
 import { useDrawerStore } from "../stores/drawer";
 
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 
 const isLoginDialogShown = ref(false);
@@ -178,6 +183,10 @@ const isRegisterDialogShown = ref(false);
 
 const getUser = computed(() => {
   return authStore.getUser;
+});
+
+const getItems = computed(() => {
+  return cartStore.getItems;
 });
 
 const navigation = [
