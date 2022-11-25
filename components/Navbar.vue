@@ -43,6 +43,30 @@
     <div class="navbar-end">
       <div class="flex items-center">
 
+        <div>
+          <button
+            class="btn btn-ghost btn-square hover:bg-transparent"
+            :class="getItems.length > 0 ? '' : 'btn-square'"
+          >
+            <label class="swap swap-rotate">
+              <input type="checkbox" />
+              <Icon
+                class="swap-on"
+                name="emojione:flag-for-united-states"
+                size="27"
+                aria-hidden="true"
+              />
+              <Icon
+                class="swap-off"
+                name="emojione:flag-for-croatia"
+                size="27"
+                aria-hidden="true"
+              />
+
+            </label>
+          </button>
+        </div>
+
         <button
           class="btn btn-ghost"
           :class="getItems.length > 0 ? '' : 'btn-square'"
