@@ -1,23 +1,26 @@
 <template>
-  <div class="grid gap-4">
-    <div class="">sdflgkjsdf sfjg klsdfjg sdjg sldgldsfhj gklsjdh gklsjdfhgghskfh dhsl hg</div>
-    <div>
-      <div class="flex justify-end gap-4">
-        <NuxtLink :to="`/store/${item.id}`">
-          <div class="btn btn-outline btn-sm">Details</div>
+  <div class="grid gap-6">
+    <div class="grid gap-1">
+      <div class="text-md font-bold">{{item.title}} <NuxtLink :to="`/store/${item.id}`">
+          <div class="btn btn-ghost btn-xs text-blue-500">Details</div>
         </NuxtLink>
-        <div class="btn-group">
-          <button
-            class="btn btn-primary btn-sm"
-            @click="decreaseQuantity"
-          >-</button>
-          <button class="btn btn-sm">{{quantity}}</button>
-          <button
-            class="btn btn-primary btn-sm "
-            @click="increaseQuantity"
-          >+</button>
-        </div>
       </div>
+      <div>{{item.description}}
+      </div>
+    </div>
+    <div class="flex justify-between items-end">
+      <div class="btn-group">
+        <button
+          class="btn btn-primary btn-sm"
+          @click="decreaseQuantity"
+        >-</button>
+        <button class="btn btn-sm">{{quantity}}x</button>
+        <button
+          class="btn btn-primary btn-sm "
+          @click="increaseQuantity"
+        >+</button>
+      </div>
+      <p class="text-xl font-bold">${{item.price * quantity}}</p>
     </div>
   </div>
 </template>
@@ -30,6 +33,8 @@ const cartStore = useCartStore();
 const { item, quantity } = defineProps(["item", "quantity"]); // props
 
 function increaseQuantity() {
+  console.log(item);
+
   cartStore.add(item);
 }
 
@@ -38,5 +43,8 @@ function decreaseQuantity() {
 }
 </script>
 
-<style>
+<style scoped>
+.router-link-exact-active {
+  background-color: transparent;
+}
 </style>

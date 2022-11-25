@@ -77,6 +77,11 @@ const phoneNumber = ref("");
 const submitted = ref(false);
 
 const getUser = computed(() => {
+firstName.value = authStore.getUser?.profile?.first_name ?? "";
+  lastName.value = authStore.getUser?.profile?.last_name ?? "";
+  phoneNumber.value = authStore.getUser?.profile?.phone_number ?? "";
+  address.value = authStore.getUser?.profile?.address ?? "";
+
   return authStore.getUser;
 });
 

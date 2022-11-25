@@ -10,6 +10,9 @@ export const useDrawerStore = defineStore('drawer', {
     },
 
     actions: {
+        close() {
+            this.isOpened = false;
+        },
         toggle() {
             if (this.isOpened == undefined)
             {
