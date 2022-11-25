@@ -106,18 +106,35 @@
             class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <div>
-              <li>
-                <a>
+              <li class="">
+                <a class="flex gap-3">
                   <Icon
-                    name="material-symbols:person-outline"
+                    name="material-symbols:mail"
                     size="20"
                     aria-hidden="true"
-                  />
-                  Profile
+                  /> {{getUser.email}}
                 </a>
               </li>
+            </div>
+            <div class="divider h-0 pl-4 pr-4"></div>
+            <div>
               <li>
-                <a @click="logout">
+                <NuxtLink to="/profile/">
+                  <a class="flex gap-3">
+                    <Icon
+                      name="material-symbols:person"
+                      size="20"
+                      aria-hidden="true"
+                    />
+                    Profile
+                  </a>
+                </NuxtLink>
+              </li>
+              <li>
+                <a
+                  class="flex gap-3"
+                  @click="logout"
+                >
                   <Icon
                     name="material-symbols:logout"
                     size="20"

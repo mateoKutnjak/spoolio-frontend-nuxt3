@@ -14,6 +14,7 @@ interface IUserResponse {
 }
 
 interface IProfileResponse {
+    id: number,
     first_name: string,
     last_name: string,
     address: string,
@@ -75,6 +76,52 @@ export const useAuthStore = defineStore('auth', {
                     reject(err)
                 })
             })
+        },
+
+        async patchProfile(firstName: string, lastName: string, address: string, phoneNumber: string) {
+
+            return new Promise((resolve, reject) => {
+
+                if (!this.user || !this.accessToken) {
+                    reject('Not logged in')
+                }
+
+                var body: { [name: string]: any } = {
+                    first_name: firstName,
+                    last_name: lastName,
+                    address: address,
+                    phone_number: phoneNumber,
+                };
+
+                // * Remove all key-value pairs where value is null
+                // * because these empty values can be patched if 
+                // * not removed
+
+                for (const key in body) {
+                    if (body[key] === null) {
+                        delete body[key];
+                    }
+                }
+
+                // todo check user? nullable
+                $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    },
+                    body: body,
+                })
+                    .then((response: IProfileResponse) => {
+                        // todo remove !
+                        this.user = { ...this.user! }
+                        this.user.profile = response;
+                        resolve(response)
+                    }).catch(err => {
+                        // ! needs proper error handling
+                        alert("TODO error handling")
+                        reject(err)
+                    })
+            });
         },
 
         logout() {
