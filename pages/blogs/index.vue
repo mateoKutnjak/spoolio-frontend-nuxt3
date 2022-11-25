@@ -6,11 +6,11 @@
         @submit-search-phrase="onSearch"
       />
       <div
-        v-if="getUser && getUser.is_staff"
+        v-if="isStaffUser"
         class="grid place-items-center"
       >
         <NuxtLink to="/blogs/create">
-          <button class="btn btn-block btn-accent gap-2">
+          <button class="btn btn-outline btn-accent gap-2">
             <Icon
               name="material-symbols:add"
               size="20"
@@ -51,6 +51,7 @@ import { useAuthStore } from "~~/stores/auth";
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
 
+const isStaffUser = ref<boolean>(false);
 const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref<boolean>(false);
 
@@ -68,7 +69,12 @@ const getPaginatedBlogs = computed(() => {
 });
 
 const getUser = computed(() => {
+  isStaffUser.value = authStore.getUser?.is_staff || false;
   return authStore.getUser;
+});
+
+watch(getUser, (value, old, invalidate) => {
+  isStaffUser.value = value?.is_staff || false;
 });
 
 onMounted(() => {

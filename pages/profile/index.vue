@@ -85,15 +85,11 @@ firstName.value = authStore.getUser?.profile?.first_name ?? "";
   return authStore.getUser;
 });
 
-watch(getUser, () => {
-  console.log("bere");
-
-  console.log(getUser);
-
-  firstName.value = getUser?.value?.profile?.first_name ?? "";
-  lastName.value = getUser?.value?.profile?.last_name ?? "";
-  phoneNumber.value = getUser?.value?.profile?.phone_number ?? "";
-  address.value = getUser?.value?.profile?.address ?? "";
+watch(getUser, (value, oldValue, onInvalidate) => {
+  firstName.value = value?.profile?.first_name ?? "";
+  lastName.value = value?.profile?.last_name ?? "";
+  phoneNumber.value = value?.profile?.phone_number ?? "";
+  address.value = value?.profile?.address ?? "";
 });
 
 const submitHandler = async () => {

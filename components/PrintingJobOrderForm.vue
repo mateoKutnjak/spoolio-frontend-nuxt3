@@ -113,12 +113,12 @@ const getUser = computed(() => {
   return authStore.getUser;
 });
 
-watch(getUser, () => {
-  firstName.value = getUser?.value?.profile?.first_name ?? "";
-  lastName.value = getUser?.value?.profile?.last_name ?? "";
-  phoneNumber.value = getUser?.value?.profile?.phone_number ?? "";
-  address.value = getUser?.value?.profile?.address ?? ""
-  email.value = getUser?.value?.email ?? "";
+watch(getUser, (value, oldValue, onInvalidate) => {
+  firstName.value = value?.profile?.first_name ?? "";
+  lastName.value = value?.profile?.last_name ?? "";
+  phoneNumber.value = value?.profile?.phone_number ?? "";
+  address.value = value?.profile?.address ?? ""
+  email.value = value?.email ?? "";
 });
 
 const submitHandler = async () => {

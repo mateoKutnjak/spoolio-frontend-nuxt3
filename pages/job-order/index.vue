@@ -32,7 +32,7 @@ const getUser = computed(() => {
   return authStore.getUser;
 });
 
-watch(getUser, () => {});
+watch(getUser, (value, oldValue, onInvalidate) => {});
 </script>
   
   <style>

@@ -39,9 +39,7 @@ onMounted(() => {
   drawerInput = document.getElementById("my-drawer");
 });
 
-watch([isDrawerOpened], () => {
-  console.log(isDrawerOpened);
-
+watch([isDrawerOpened], (value, oldValue, onInvalidate) => {
   drawerInput?.click();
 });
 </script>
