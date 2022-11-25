@@ -37,7 +37,6 @@
                 size="30"
                 aria-hidden="true"
               />
-              tabler:sum
               <p>Your cart is empty</p>
             </div>
           </div>
