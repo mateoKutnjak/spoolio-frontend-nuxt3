@@ -6,7 +6,7 @@ interface ILoginResponse {
     user: IUserResponse | undefined
 }
 
-interface IUserResponse {
+export default interface IUserResponse {
     id: number,
     email: string,
     is_staff: boolean,

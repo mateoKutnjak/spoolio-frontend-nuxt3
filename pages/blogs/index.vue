@@ -45,11 +45,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useBlogStore } from "~/stores/blog";
+import { useBlogListStore } from "~/stores/blogList";
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
-const blogStore = useBlogStore();
+const blogListStore = useBlogListStore();
 
 const isStaffUser = ref<boolean>(false);
 const showInitLoading = ref<boolean>(true);
@@ -59,13 +59,13 @@ var limit = 10;
 var offset = 0;
 
 onMounted(() => {
-  blogStore.fetchPaginatedBlogs(limit, offset).then(() => {
+  blogListStore.fetchPaginatedBlogs(limit, offset).then(() => {
     showInitLoading.value = false;
   });
 });
 
 const getPaginatedBlogs = computed(() => {
-  return blogStore.getPaginatedBlogs;
+  return blogListStore.getPaginatedBlogs;
 });
 
 const getUser = computed(() => {
@@ -100,7 +100,7 @@ onMounted(() => {
       ) {
         showPageLoading.value = true;
         offset = offset + limit;
-        blogStore
+        blogListStore
           .fetchPaginatedBlogs(limit, offset, "", true)
           .then(() => (showPageLoading.value = false));
       }
@@ -115,7 +115,7 @@ function onSearch(searchPhrase: string) {
   offset = 0;
   limit = 10;
 
-  blogStore
+  blogListStore
     .fetchPaginatedBlogs(limit, offset, searchPhrase, false)
     .then(() => (showPageLoading.value = false));
 }

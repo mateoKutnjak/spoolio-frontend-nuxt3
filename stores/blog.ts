@@ -1,47 +1,33 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import IUserResponse from './auth'
 
-interface IBlogResponse {
+export default interface IBlogResponse {
     id: number,
     title: string,
     subtitle: string,
-}
-
-interface IBlogListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: IBlogResponse[]
+    content: string,
+    author: IUserResponse,
+    created_at: string,
+    updated_at: string,
 }
 
 export const useBlogStore = defineStore('blog', {
     state: () => ({
-        count: undefined as number | undefined,
-        next: undefined as string | undefined,
-        previous: undefined as string | undefined,
-        blogs: [] as IBlogResponse[]
+        blog: undefined as IBlogResponse | undefined
     }),
 
     getters: {
-        getPaginatedBlogs: (state) => state,
+        getBlog: (state) => state.blog,
     },
 
     actions: {
-        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return new Promise((resolve, reject) => {
-                $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+        async fetchBlog(id: number) {
+            return new Promise<IBlogResponse>((resolve, reject) => {
+                $fetch<IBlogResponse>(`http://localhost:8000/api/blogs/${id}/`, {
                     method: 'GET'
                 }
-                ).then((response: IBlogListResponse) => {
-                    this.count = response.count;
-                    this.next = response.next;
-                    this.previous = response.previous;
-
-                    if (append) {
-                        this.blogs = [...this.blogs, ...response.results];
-                    } else {
-                        this.blogs = response.results;
-                    }
-
+                ).then((response: IBlogResponse) => {
+                    this.blog = response;
                     resolve(response)
                 }).catch(err => {
                     // ! needs proper error handling
