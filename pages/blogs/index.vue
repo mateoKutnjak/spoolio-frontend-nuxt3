@@ -6,7 +6,7 @@
         @submit-search-phrase="onSearch"
       />
       <div
-        v-if="isStaffUser"
+        v-if="user?.is_staff || false"
         class="grid place-items-center"
       >
         <NuxtLink to="/blogs/create">
@@ -46,12 +46,13 @@
 
 <script lang="ts" setup>
 import { useBlogListStore } from "~/stores/blogList";
-import { useAuthStore } from "~~/stores/auth";
+import IUserResponse, { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 const blogListStore = useBlogListStore();
 
-const isStaffUser = ref<boolean>(false);
+const user = ref<IUserResponse>();
+
 const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref<boolean>(false);
 
@@ -69,12 +70,12 @@ const getPaginatedBlogs = computed(() => {
 });
 
 const getUser = computed(() => {
-  isStaffUser.value = authStore.getUser?.is_staff || false;
+  user.value = authStore.getUser;
   return authStore.getUser;
 });
 
 watch(getUser, (value, old, invalidate) => {
-  isStaffUser.value = value?.is_staff || false;
+  user.value = value;
 });
 
 onMounted(() => {

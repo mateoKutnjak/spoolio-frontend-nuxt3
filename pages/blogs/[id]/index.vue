@@ -54,8 +54,6 @@
 import IBlogResponse, { useBlogStore } from "~/stores/blog";
 import IUserResponse, { useAuthStore } from "~~/stores/auth";
 
-const { $markdown } = useNuxtApp();
-
 const { id } = useRoute().params;
 
 const authStore = useAuthStore();
@@ -65,8 +63,6 @@ const blog = ref<IBlogResponse>();
 const user = ref<IUserResponse>();
 
 const showInitLoading = ref<boolean>(true);
-
-console.log(id);
 
 onMounted(() => {
   blogStore.fetchBlog(Number(id)).then((blog) => {
@@ -81,7 +77,6 @@ const getBlog = computed(() => {
 
 const getUser = computed(() => {
   user.value = authStore.getUser;
-  // isStaffUser.value = authStore.getUser?.is_staff || false;
   return authStore.getUser;
 });
 

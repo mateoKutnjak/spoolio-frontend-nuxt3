@@ -13,7 +13,7 @@
         type="text"
         name="title"
         label="Title"
-        v-model="title"
+        v-model="blogTitle"
         validation="required"
         validation-visibility="blur"
       />
@@ -21,7 +21,7 @@
         type="text"
         name="subtitle"
         label="Subtitle"
-        v-model="subtitle"
+        v-model="blogSubtitle"
         validation="required"
         validation-visibility="blur"
       />
@@ -39,14 +39,14 @@
         <div class="flex">
           <textarea
             class="flex-1 source bg-gray-100 overflow-y h-screen"
-            v-model="content"
+            v-model="blogContent"
           />
         </div>
 
         <div>
           <div
             class="prose overflow-y-auto h-screen"
-            v-html="$renderer.render(content)"
+            v-html="$renderer.render(blogContent)"
           ></div>
         </div>
       </div>
@@ -63,17 +63,17 @@
 
 <script lang="ts" setup>
 import { useBlogStore } from "~~/stores/blog";
-import { useAuthStore } from "~~/stores/auth";
-const { $markdown } = useNuxtApp();
+import IUserResponse, { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
 
 const { id } = useRoute().params;
 
-const title = ref<string>("");
-const subtitle = ref<string>("");
-const content = ref<string>("");
+const blogTitle = ref<string>("");
+const blogSubtitle = ref<string>("");
+const blogContent = ref<string>("");
+const user = ref<IUserResponse>();
 
 const submitted = ref(false);
 const showInitLoading = ref<boolean>(true);
@@ -81,12 +81,36 @@ const showInitLoading = ref<boolean>(true);
 onMounted(() => {
   blogStore.fetchBlog(Number(id)).then((blog) => {
     showInitLoading.value = false;
-    console.log(blog);
 
-    title.value = blog.title;
-    subtitle.value = blog.subtitle;
-    content.value = blog.content;
+    blogTitle.value = blog.title;
+    blogSubtitle.value = blog.subtitle;
+    blogContent.value = blog.content;
   });
+});
+
+const getBlog = computed(() => {
+  var blog = blogStore.getBlog;
+
+  blogTitle.value = blog?.title || "";
+  blogSubtitle.value = blog?.subtitle || "";
+  blogContent.value = blog?.content || "";
+
+  return blogStore.getBlog;
+});
+
+const getUser = computed(() => {
+  user.value = authStore.getUser;
+  return authStore.getUser;
+});
+
+watch(getBlog, (value, old, invalidate) => {
+  blogTitle.value = value?.title || "";
+  blogSubtitle.value = value?.subtitle || "";
+  blogContent.value = value?.content || "";
+});
+
+watch(getUser, (value, old, invalidate) => {
+  user.value = value;
 });
 
 const submitHandler = async () => {
@@ -100,12 +124,12 @@ const submitHandler = async () => {
   blogStore
     .patchBlog(
       authStore.accessToken,
-      title.value,
-      subtitle.value,
-      content.value
+      blogTitle.value,
+      blogSubtitle.value,
+      blogContent.value
     )
     .then(() => {
-      // todo check if navigateto dest the job
+      // TODO check if navigateto dest the job
       // navigateTo(`/blogs/${id}/`);
     })
     .catch((err) => {});
