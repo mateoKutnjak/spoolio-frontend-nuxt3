@@ -1,16 +1,14 @@
 import { defineNuxtPlugin } from "#app";
 
 import MarkdownIt from "markdown-it";
+import md from "markdown-it";
 
 export default defineNuxtPlugin(() => {
-    const markdown = new MarkdownIt({
-        html: true,
-        linkify: true,
-        typographer: true,
-    });
+    const renderer = md();
+
     return {
         provide: {
-            markdown,
+            renderer,
         },
     };
 });

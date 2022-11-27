@@ -93,15 +93,6 @@ export const useAuthStore = defineStore('auth', {
                     phone_number: phoneNumber,
                 };
 
-                // * Remove all key-value pairs where value is null
-                // * because these empty values can be patched if 
-                // * not removed
-
-                for (const key in body) {
-                    if (body[key] === null) {
-                        delete body[key];
-                    }
-                }
 
                 // todo check user? nullable
                 $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
