@@ -1,5 +1,5 @@
 <template>
-  <div class="card lg:card-side bg-base-100 shadow-xl">
+  <div class="card md:card-side bg-base-100 shadow-xl">
     <figure><img
         src="https://placeimg.com/400/400/arch"
         alt="Album"
