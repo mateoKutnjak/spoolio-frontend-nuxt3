@@ -2,7 +2,10 @@
   <div class="grid gap-6">
     <div class="grid gap-1">
       <div class="text-md font-bold">{{item.title}} <NuxtLink :to="`/store/${item.id}`">
-          <div class="btn btn-ghost btn-xs text-blue-500">Details</div>
+          <div
+            class="btn btn-ghost btn-xs text-blue-500"
+            @click="drawerStore.close()"
+          >Details</div>
         </NuxtLink>
       </div>
       <div>{{item.description}}
@@ -26,9 +29,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useDrawerStore } from "~~/stores/drawer";
 import { useCartStore } from "../stores/cart";
 
 const cartStore = useCartStore();
+const drawerStore = useDrawerStore();
 
 const { item, quantity } = defineProps(["item", "quantity"]); // props
 
