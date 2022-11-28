@@ -22,9 +22,7 @@
               :key="item.name"
               :to="`${item.to}`"
             >
-              <a class="justify-between">
-                {{ item.name }}
-              </a>
+              {{ item.name }}
             </NuxtLink>
           </li>
         </ul>
@@ -255,8 +253,4 @@ function toggleDrawer() {
 </script>
 
 <style>
-.router-link-exact-active {
-  color: black;
-  background-color: gainsboro;
-}
 </style>
