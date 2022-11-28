@@ -6,11 +6,14 @@
       class="drawer-toggle"
     />
     <div class="drawer-content">
-      <Navbar />
-      <div class="container mx-auto p-4">
-        <slot />
+      <div class="flex flex-col h-screen">
+        <Navbar />
+        <div class="flex-1 container mx-auto p-4">
+          <slot />
+        </div>
+        <Footer />
       </div>
-      <Footer />
+
     </div>
     <div class="drawer-side">
       <label
