@@ -37,12 +37,17 @@ export default {
             checkbox: boxClassification,
             email: textClassification,
             file: {
-                label: 'block mb-1 font-bold text-sm',
-                inner: 'max-w-md cursor-pointer',
-                input: 'text-gray-600 text-sm mb-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-500 file:text-white hover:file:bg-blue-600',
+                outer: 'bg-gray-500',
+                label: 'block mb-1 font-bold text-sm bg-red-500',
+                inner: 'max-w-md cursor-pointer bg-blue-500',
+                input: 'flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600',
                 noFiles: 'block text-gray-800 text-sm mb-1',
                 fileItem: 'block flex text-gray-800 text-sm mb-1',
-                removeFiles: 'ml-auto text-blue-500 text-sm'
+                fileList: 'p-4 pb-0 bg-green-100',
+                fileItemIcon: '',
+                fileRemove: 'm-4 mt-0 bg-orange-700 text-sm',
+                removeFiles: 'm-4 mt-0 bg-orange-100 text-sm',
+
             },
             month: textClassification,
             number: textClassification,

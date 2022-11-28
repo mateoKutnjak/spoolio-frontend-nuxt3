@@ -8,7 +8,7 @@
     <div class="drawer-content">
       <div class="flex flex-col h-screen">
         <Navbar />
-        <div class="flex-1 container mx-auto p-4">
+        <div class="flex-1 container mx-auto p-12">
           <slot />
         </div>
         <Footer />

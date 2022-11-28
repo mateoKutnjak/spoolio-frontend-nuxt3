@@ -1,26 +1,61 @@
 <template>
-  <div class="flex justify-center">
-    <ul class="steps steps-vertical sm:steps-horizontal">
-      <li class="step step-success">Import files (TODO)</li>
-      <li class="step">Choose plan</li>
-      <li class="step step-success">Confirm your info</li>
-      <li class="step">Order</li>
-    </ul>
-  </div>
-  <div>
-    <div class="alert alert-warning shadow-lg">
-      <div>
+  <FormKit
+    v-if="false"
+    type="file"
+    label="Your files"
+    help="This input starts with files already “attached”."
+    multiple
+    v-model="formkitFiles"
+  />
+
+  <div
+    class="flex w-full h-64"
+    @dragover.prevent
+    @drop.prevent
+  >
+    <label
+      for="dropzone-file"
+      class="flex-1 flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+      @drop="drop"
+    >
+      <div class="mb-2">
         <Icon
-          name="material-symbols:warning-outline-rounded"
-          size="27"
+          color="gray"
+          name="ic:outline-cloud-upload"
+          size="30"
           aria-hidden="true"
         />
-        <span>Your profile information is incomplete</span>
       </div>
-    </div>
-    <PrintingJobOrderForm />
-
+      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+      <input
+        id="dropzone-file"
+        type="file"
+        class="hidden"
+        @change="change"
+      />
+    </label>
   </div>
+
+  <ul class="m-4 space-y-1 max-w-md list-inside text-gray-500 dark:text-gray-400">
+    <li
+      class="flex items-center gap-4"
+      v-for="uploadedFile in uploadedFiles"
+      :key="uploadedFile.name"
+    >
+      <FileUploadListTile
+        :file="uploadedFile"
+        @on-remove-file="removeFile(uploadedFile)"
+      />
+      <!-- <Icon
+        :name="uploadedFilesIcons[index]"
+        size="27"
+      />
+      {{uploadedFile.name}} -->
+
+    </li>
+  </ul>
+
 </template>
   
   <script lang="ts" setup>
@@ -28,11 +63,58 @@ import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
+const uploadedFiles = ref<File[]>([]);
+
+const files = ref<any>([]);
+const formkitFiles = ref<any>([]);
+
 const getUser = computed(() => {
   return authStore.getUser;
 });
 
 watch(getUser, (value, oldValue, onInvalidate) => {});
+
+watch(formkitFiles, (value, oldValue, onInvalidate) => {
+  files.value.push(value);
+});
+
+function change(e: any) {
+  // * Gets triggered when user selects
+  // * files after CLICKING on container
+
+  uploadedFiles.value.push(...e.target.files);
+}
+
+function drop(e: any) {
+  // * Gets triggered when user selects
+  // * files after DRAG AND DROP on container
+
+  uploadedFiles.value.push(...e.dataTransfer.files);
+}
+
+function iconForFilename(filename: string) {
+  console.log("JHERE");
+
+  switch (filenameExtension(filename)) {
+    case "svg":
+      return "carbon:svg";
+    case "pdf":
+      return "vscode-icons:file-type-pdf2";
+    case "jpg":
+    case "png":
+    case "jpeg":
+      return "material-symbols:image";
+    default:
+      return "vscode-icons:default-file";
+  }
+}
+
+function removeFile(file: File) {
+  const index = uploadedFiles.value.indexOf(file, 0);
+  if (index > -1) {
+    uploadedFiles.value.splice(index, 1);
+  }
+}
 </script>
   
   <style>
