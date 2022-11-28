@@ -29,27 +29,21 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return new Promise((resolve, reject) => {
-                $fetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
-                    method: 'GET'
+            await $fetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+                method: 'GET'
+            }
+            ).then((response: IProductListResponse) => {
+                this.count = response.count;
+                this.next = response.next;
+                this.previous = response.previous;
+
+                if (append) {
+                    this.products = [...this.products, ...response.results];
+                } else {
+                    this.products = response.results;
                 }
-                ).then((response: IProductListResponse) => {
-                    this.count = response.count;
-                    this.next = response.next;
-                    this.previous = response.previous;
-
-                    if (append) {
-                        this.products = [...this.products, ...response.results];
-                    } else {
-                        this.products = response.results;
-                    }
-
-                    resolve(response)
-                }).catch(err => {
-                    // ! needs proper error handling
-                    alert("TODO error handling")
-                    reject(err)
-                })
+            }).catch(err => {
+                throw err
             })
         },
     },

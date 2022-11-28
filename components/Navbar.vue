@@ -29,7 +29,13 @@
           </li>
         </ul>
       </div>
-      <a class="btn btn-ghost normal-case text-xl">Spoolio</a>
+      <a class="btn btn-ghost">
+        <img
+          class="flex-1 w-28"
+          src="~/assets/img/logo-primary.svg"
+          alt="logo"
+        >
+      </a>
     </div>
     <div class="navbar-center hidden lg:flex">
       <NuxtLink

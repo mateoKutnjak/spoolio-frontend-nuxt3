@@ -60,9 +60,14 @@ var limit = 10;
 var offset = 0;
 
 onMounted(() => {
-  blogListStore.fetchPaginatedBlogs(limit, offset).then(() => {
-    showInitLoading.value = false;
-  });
+  showInitLoading.value = true;
+  blogListStore
+    .fetchPaginatedBlogs(limit, offset)
+    .then((_) => {})
+    .catch((err) => {})
+    .finally(() => {
+      showInitLoading.value = false;
+    });
 });
 
 const getPaginatedBlogs = computed(() => {

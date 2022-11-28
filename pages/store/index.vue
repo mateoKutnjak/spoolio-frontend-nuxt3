@@ -1,4 +1,10 @@
 <template>
+  <Transition name="fade">
+    <p
+      class="btn"
+      v-if="showInitLoading"
+    >hello</p>
+  </Transition>
   <div v-if="getPaginatedProducts.count || 0 > 0">
     <div class="pb-12 pt-3 flex justify-center">
       <SearchBar
@@ -28,6 +34,7 @@
 
     </div>
   </div>
+
 </template>
   
   <script lang="ts" setup>
@@ -43,10 +50,16 @@ const showPageLoading = ref(false);
 var limit = 10;
 var offset = 0;
 
-onMounted(() => {
-  productStore.fetchPaginatedProducts(limit, offset).then(() => {
-    showInitLoading.value = false;
-  });
+onMounted(async () => {
+  productStore
+    .fetchPaginatedProducts(limit, offset)
+    .then(() => {})
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      showInitLoading.value = false;
+    });
 });
 
 const getPaginatedProducts = computed(() => {
