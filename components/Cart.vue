@@ -64,12 +64,10 @@ const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 
 const getItems = computed(() => {
-  console.log(cartStore.getItems);
   return cartStore.getItems;
 });
 
 const getCartItems = computed(() => {
-  console.log(cartStore.getCartItems);
   return cartStore.getCartItems;
 });
 </script>

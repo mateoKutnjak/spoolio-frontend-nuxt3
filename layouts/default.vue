@@ -30,8 +30,6 @@ const drawerStore = useDrawerStore();
 var drawerInput: HTMLElement | null = null;
 
 const isDrawerOpened = computed(() => {
-  console.log("here");
-
   return drawerStore.isDrawerOpened;
 });
 

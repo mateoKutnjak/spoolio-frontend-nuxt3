@@ -38,8 +38,6 @@ const drawerStore = useDrawerStore();
 const { item, quantity } = defineProps(["item", "quantity"]); // props
 
 function increaseQuantity() {
-  console.log(item);
-
   cartStore.add(item);
 }
 
