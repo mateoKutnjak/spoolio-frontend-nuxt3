@@ -1,9 +1,12 @@
 <template>
   <div class="card md:card-side bg-base-100 shadow-md">
-    <figure><img
-        src="https://placeimg.com/300/300/arch"
-        alt="Album"
-      /></figure>
+    <nuxt-img
+      sizes="sm:100vw md:50vw lg:400px"
+      fit="fill"
+      src="https://placeimg.com/300/300/arch"
+      alt="Album"
+      placeholder
+    />
     <div class="card-body">
       <h2 class="card-title">{{blog.title}}</h2>
       <p>Click the button to listen on Spotiwhy app.</p>

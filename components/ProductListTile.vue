@@ -1,11 +1,17 @@
 <template>
-  <div class="card md:card-side bg-base-100 shadow-xl">
-    <figure><img
-        src="https://placeimg.com/400/400/arch"
-        alt="Album"
-      /></figure>
+  <div class="card sm:card-side bg-base-100 shadow-xl">
+    <nuxt-img
+      sizes="sm:100vw md:60vw lg:400px"
+      fit="fill"
+      :modifiers="{ roundCorner: '0:100' }"
+      src="https://placeimg.com/300/300/arch"
+      alt=""
+    />
     <div class="card-body">
-      <h2 class="card-title">{{product.title}}</h2>
+      <div class="card-title flex justify-between">
+        <h2 class="text-lg text-accent">{{product.title}}</h2>
+        <h2 class="text-lg text-primary">${{product.price}}</h2>
+      </div>
       <p>Click the button to listen on Spotiwhy app.</p>
       <div class="card-actions justify-end">
 

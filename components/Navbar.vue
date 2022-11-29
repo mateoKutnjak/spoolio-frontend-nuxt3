@@ -29,11 +29,11 @@
         </ul>
       </div>
       <a class="btn btn-ghost">
-        <img
-          class="flex-1 w-28"
-          src="~/assets/img/logo-primary.svg"
+        <nuxt-img
+          width="112px"
+          src="/img/logo-primary.svg"
           alt="logo"
-        >
+        />
       </a>
     </div>
     <div class="navbar-center hidden lg:flex">
@@ -102,7 +102,7 @@
           >
             <div class="avatar">
               <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src="https://placeimg.com/192/192/people" />
+                <nuxt-img src="https://placeimg.com/192/192/people" />
               </div>
             </div>
           </label>

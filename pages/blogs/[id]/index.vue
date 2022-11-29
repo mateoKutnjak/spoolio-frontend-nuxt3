@@ -3,7 +3,7 @@
     <div class="flex items-center gap-4 p-8">
       <div class="avatar">
         <div class="w-14 h-14 rounded-full">
-          <img src="https://placeimg.com/192/192/people" />
+          <nuxt-img src="https://placeimg.com/192/192/people" />
         </div>
       </div>
       <div class="grid">
