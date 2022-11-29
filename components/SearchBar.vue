@@ -5,6 +5,7 @@
         type="text"
         placeholder="Search…"
         class="input input-bordered"
+        v-model="input"
       />
       <button class="btn btn-primary">
         <Icon

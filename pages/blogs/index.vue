@@ -1,26 +1,27 @@
 <template>
-  <div v-if="getPaginatedBlogs.count || 0 > 0">
-    <div class="pb-12 pt-3 flex gap-3 justify-center">
-      <SearchBar
-        placeholder="Search projects"
-        @submit-search-phrase="onSearch"
-      />
-      <div
-        v-if="user?.is_staff || false"
-        class="grid place-items-center"
-      >
-        <NuxtLink to="/blogs/create">
-          <button class="btn btn-outline btn-accent gap-2">
-            <Icon
-              name="material-symbols:add"
-              size="20"
-              aria-hidden="true"
-            />New blog
-          </button>
-        </NuxtLink>
+  <div class="pb-12 pt-3 flex gap-3 justify-center">
 
-      </div>
+    <SearchBar
+      placeholder="Search projects"
+      @submit-search-phrase="onSearch"
+    />
+    <div
+      v-if="user?.is_staff || false"
+      class="grid place-items-center"
+    >
+      <NuxtLink to="/blogs/create">
+        <button class="btn btn-outline btn-accent gap-2">
+          <Icon
+            name="material-symbols:add"
+            size="20"
+            aria-hidden="true"
+          />New blog
+        </button>
+      </NuxtLink>
+
     </div>
+  </div>
+  <div v-if="getPaginatedBlogs.count || 0 > 0">
     <div class="grid grid-cols-1 gap-5 ">
       <div
         :key="blog.id"

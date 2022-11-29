@@ -1,17 +1,11 @@
 <template>
-  <Transition name="fade">
-    <p
-      class="btn"
-      v-if="showInitLoading"
-    >hello</p>
-  </Transition>
+  <div class="pb-12 pt-3 flex justify-center">
+    <SearchBar
+      placeholder="Search products"
+      @submit-search-phrase="onSearch"
+    />
+  </div>
   <div v-if="getPaginatedProducts.count || 0 > 0">
-    <div class="pb-12 pt-3 flex justify-center">
-      <SearchBar
-        placeholder="Search products"
-        @submit-search-phrase="onSearch"
-      />
-    </div>
 
     <div class="grid grid-cols-1 gap-5 ">
       <div
