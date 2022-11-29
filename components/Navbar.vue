@@ -1,10 +1,8 @@
 <template>
   <div class="navbar bg-base-100">
     <div class="navbar-start">
-      <div
-        class="dropdown"
-        @click="(e) => closeDropdown(e)"
-      >
+      <div class="dropdown">
+
         <label
           tabindex="0"
           class="btn btn-ghost btn-square lg:hidden"
@@ -19,7 +17,10 @@
           tabindex="0"
           class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
         >
-          <li tabindex="0">
+          <li
+            tabindex="0"
+            @click="(e) => closeDropdown(e)"
+          >
             <NuxtLink
               v-for="item in navigation"
               :key="item.name"
