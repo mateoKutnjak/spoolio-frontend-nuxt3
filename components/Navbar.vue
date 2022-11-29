@@ -1,7 +1,10 @@
 <template>
   <div class="navbar bg-base-100">
     <div class="navbar-start">
-      <div class="dropdown">
+      <div
+        class="dropdown"
+        @click="(e) => closeDropdown(e)"
+      >
         <label
           tabindex="0"
           class="btn btn-ghost btn-square lg:hidden"
@@ -249,6 +252,10 @@ function logout() {
 
 function toggleDrawer() {
   drawerStore.toggle();
+}
+
+function closeDropdown(e: any) {
+  e.target?.blur();
 }
 </script>
 
