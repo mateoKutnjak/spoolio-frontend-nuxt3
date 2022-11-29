@@ -9,8 +9,8 @@
     <div class="flex-1">
       {{file.name}}
     </div>
-    <div class="flex-1">
-      [{{file.size}}B]
+    <div>
+      {{fileSize}}
     </div>
     <div
       class="btn btn-ghost btn-square"
@@ -42,6 +42,10 @@ const icon = computed(() => {
     default:
       return "vscode-icons:default-file";
   }
+});
+
+const fileSize = computed(() => {
+  return fileSizeFormatted(file);
 });
 </script>
 
