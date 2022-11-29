@@ -17,10 +17,7 @@
           tabindex="0"
           class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
         >
-          <li
-            tabindex="0"
-            @click="(e) => closeDropdown(e)"
-          >
+          <li tabindex="0">
             <NuxtLink
               v-for="item in navigation"
               :key="item.name"
