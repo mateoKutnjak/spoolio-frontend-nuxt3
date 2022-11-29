@@ -1,32 +1,33 @@
 <template>
-  <FormKit
-    type="form"
-    id="blog-edit-form"
-    :form-class="submitted ? 'hide' : 'show'"
-    submit-label="Update"
-    @submit="submitHandler"
-    :actions="false"
-  >
-    <div class="card-body justify-center flex flex-col">
+  <div class="container p-12">
+    <FormKit
+      type="form"
+      id="blog-edit-form"
+      :form-class="submitted ? 'hide' : 'show'"
+      submit-label="Update"
+      @submit="submitHandler"
+      :actions="false"
+    >
+      <div class="card-body justify-center flex flex-col">
 
-      <FormKit
-        type="text"
-        name="title"
-        label="Title"
-        v-model="blogTitle"
-        validation="required"
-        validation-visibility="blur"
-      />
-      <FormKit
-        type="text"
-        name="subtitle"
-        label="Subtitle"
-        v-model="blogSubtitle"
-        validation="required"
-        validation-visibility="blur"
-      />
-      <div class="grid grid-rows-1 grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- <FormKit
+        <FormKit
+          type="text"
+          name="title"
+          label="Title"
+          v-model="blogTitle"
+          validation="required"
+          validation-visibility="blur"
+        />
+        <FormKit
+          type="text"
+          name="subtitle"
+          label="Subtitle"
+          v-model="blogSubtitle"
+          validation="required"
+          validation-visibility="blur"
+        />
+        <div class="grid grid-rows-1 grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- <FormKit
           class="flex-1 source bg-gray-100"
           v-show="false"
           type="textarea"
@@ -36,29 +37,30 @@
           validation="required"
           validation-visibility="blur"
         /> -->
-        <div class="flex">
-          <textarea
-            class="flex-1 source bg-gray-100 overflow-y h-screen"
-            v-model="blogContent"
+          <div class="flex">
+            <textarea
+              class="flex-1 source bg-gray-100 overflow-y h-screen"
+              v-model="blogContent"
+            />
+          </div>
+
+          <div>
+            <div
+              class="prose overflow-y-auto h-screen"
+              v-html="$renderer.render(blogContent)"
+            ></div>
+          </div>
+        </div>
+        <div class="card-actions justify-end">
+          <FormKit
+            type="submit"
+            label="Update post"
           />
         </div>
 
-        <div>
-          <div
-            class="prose overflow-y-auto h-screen"
-            v-html="$renderer.render(blogContent)"
-          ></div>
-        </div>
       </div>
-      <div class="card-actions justify-end">
-        <FormKit
-          type="submit"
-          label="Update post"
-        />
-      </div>
-
-    </div>
-  </FormKit>
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts" setup>

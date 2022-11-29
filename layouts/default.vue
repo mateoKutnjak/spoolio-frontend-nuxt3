@@ -8,7 +8,7 @@
     <div class="drawer-content">
       <div class="flex flex-col h-screen">
         <Navbar />
-        <div class="flex-1 container mx-auto p-12">
+        <div class="flex-1 container mx-auto">
           <slot />
         </div>
         <Footer />
@@ -45,5 +45,20 @@ watch([isDrawerOpened], (value, oldValue, onInvalidate) => {
 });
 </script>
   
-<style scoped>
+<style>
+.page-to-enter-active,
+.page-from-leave-active {
+  position: fixed;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.page-from-leave-from,
+.page-to-enter-to {
+  opacity: 1;
+}
+
+.page-to-enter-from,
+.page-from-leave-to {
+  opacity: 0;
+}
 </style>

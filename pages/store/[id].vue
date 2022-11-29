@@ -1,5 +1,5 @@
 <template>
-  <p>Store item</p>
+  <div class="container p-12">Store item</div>
 </template>
   
   <script setup>

@@ -1,5 +1,7 @@
 <template>
-  Hi
+  <div class="container p-12">
+    Hi
+  </div>
 </template>
 
 <script>

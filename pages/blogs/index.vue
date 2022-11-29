@@ -1,46 +1,48 @@
 <template>
-  <div class="pb-12 pt-3 flex gap-3 justify-center">
+  <div class="container p-12">
+    <div class="pb-12 pt-3 flex gap-3 justify-center">
 
-    <SearchBar
-      placeholder="Search projects"
-      @submit-search-phrase="onSearch"
-    />
-    <div
-      v-if="user?.is_staff || false"
-      class="grid place-items-center"
-    >
-      <NuxtLink to="/blogs/create">
-        <button class="btn btn-outline btn-accent gap-2">
-          <Icon
-            name="material-symbols:add"
-            size="20"
-            aria-hidden="true"
-          />New blog
-        </button>
-      </NuxtLink>
-
-    </div>
-  </div>
-  <div v-if="getPaginatedBlogs.count || 0 > 0">
-    <div class="grid grid-cols-1 gap-5 ">
+      <SearchBar
+        placeholder="Search projects"
+        @submit-search-phrase="onSearch"
+      />
       <div
-        :key="blog.id"
-        v-for="blog in getPaginatedBlogs.blogs"
+        v-if="user?.is_staff || false"
+        class="grid place-items-center"
       >
-        <BlogListTile :blog="blog" />
+        <NuxtLink to="/blogs/create">
+          <button class="btn btn-outline btn-accent gap-2">
+            <Icon
+              name="material-symbols:add"
+              size="20"
+              aria-hidden="true"
+            />New blog
+          </button>
+        </NuxtLink>
+
       </div>
     </div>
-    <CircularLoadingIndicator :show="showPageLoading" />
-  </div>
-  <div v-else-if="showInitLoading">
-    <div class="grid justify-center h-56">
-      <progress class="progress w-56"></progress>
+    <div v-if="getPaginatedBlogs.count || 0 > 0">
+      <div class="grid grid-cols-1 gap-5 ">
+        <div
+          :key="blog.id"
+          v-for="blog in getPaginatedBlogs.blogs"
+        >
+          <BlogListTile :blog="blog" />
+        </div>
+      </div>
+      <CircularLoadingIndicator :show="showPageLoading" />
     </div>
-  </div>
-  <div v-else>
-    <div class="grid justify-center h-56 h-56">
-      Nothing to show
+    <div v-else-if="showInitLoading">
+      <div class="grid justify-center h-56">
+        <progress class="progress w-56"></progress>
+      </div>
+    </div>
+    <div v-else>
+      <div class="grid justify-center h-56 h-56">
+        Nothing to show
 
+      </div>
     </div>
   </div>
 </template>

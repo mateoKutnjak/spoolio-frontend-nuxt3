@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container p-12">
     <div class="flex items-center gap-4 p-8">
       <div class="avatar">
         <div class="w-14 h-14 rounded-full">

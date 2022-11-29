@@ -1,31 +1,33 @@
 <template>
-  <div class="pb-12 pt-3 flex justify-center">
-    <SearchBar
-      placeholder="Search products"
-      @submit-search-phrase="onSearch"
-    />
-  </div>
-  <div v-if="getPaginatedProducts.count || 0 > 0">
+  <div class="container p-12">
+    <div class="pb-12 pt-3 flex justify-center">
+      <SearchBar
+        placeholder="Search products"
+        @submit-search-phrase="onSearch"
+      />
+    </div>
+    <div v-if="getPaginatedProducts.count || 0 > 0">
 
-    <div class="grid grid-cols-1 gap-5 ">
-      <div
-        :key="product.id"
-        v-for="product in getPaginatedProducts.products"
-      >
-        <ProductListTile :product="product" />
+      <div class="grid grid-cols-1 gap-5 ">
+        <div
+          :key="product.id"
+          v-for="product in getPaginatedProducts.products"
+        >
+          <ProductListTile :product="product" />
+        </div>
+      </div>
+      <CircularLoadingIndicator :show="showPageLoading" />
+    </div>
+    <div v-else-if="showInitLoading">
+      <div class="grid justify-center h-56">
+        <progress class="progress w-56"></progress>
       </div>
     </div>
-    <CircularLoadingIndicator :show="showPageLoading" />
-  </div>
-  <div v-else-if="showInitLoading">
-    <div class="grid justify-center h-56">
-      <progress class="progress w-56"></progress>
-    </div>
-  </div>
-  <div v-else>
-    <div class="grid justify-center h-56 h-56">
-      Nothing to show
+    <div v-else>
+      <div class="grid justify-center h-56 h-56">
+        Nothing to show
 
+      </div>
     </div>
   </div>
 

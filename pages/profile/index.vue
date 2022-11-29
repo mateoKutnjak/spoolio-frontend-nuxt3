@@ -1,66 +1,68 @@
 <template>
-  <div class="card card-bordered bg-base-100 shadow-md">
-    <!-- <figure><img
+  <div class="container p-12">
+    <div class="card card-bordered bg-base-100 shadow-md">
+      <!-- <figure><img
         src="https://placeimg.com/400/400/arch"
         alt="Album"
       /></figure> -->
-    <FormKit
-      type="form"
-      id="profile-form"
-      :form-class="submitted ? 'hide' : 'show'"
-      submit-label="Update"
-      @submit="submitHandler"
-      :actions="false"
-    >
-      <div class="card-body justify-center">
-        <h2 class="card-title justify-center">Profile information</h2>
-        <div>
+      <FormKit
+        type="form"
+        id="profile-form"
+        :form-class="submitted ? 'hide' : 'show'"
+        submit-label="Update"
+        @submit="submitHandler"
+        :actions="false"
+      >
+        <div class="card-body justify-center">
+          <h2 class="card-title justify-center">Profile information</h2>
+          <div>
 
-          <FormKit
-            type="text"
-            name="first_name"
-            label="First name"
-            v-model="firstName"
-            validation=""
-            validation-visibility="blur"
-          />
-          <FormKit
-            type="text"
-            name="last_name"
-            label="Last name"
-            v-model="lastName"
-            validation=""
-            validation-visibility="blur"
-          />
-          <FormKit
-            type="text"
-            name="address"
-            label="Address"
-            v-model="address"
-            validation=""
-            validation-visibility="blur"
-          />
-          <FormKit
-            type="tel"
-            label="Phone number"
-            v-model="phoneNumber"
-            placeholder="+123456789"
-            :validation="[['matches', /^\+\d{9,15}$/]]"
-            :validation-messages="{
+            <FormKit
+              type="text"
+              name="first_name"
+              label="First name"
+              v-model="firstName"
+              validation=""
+              validation-visibility="blur"
+            />
+            <FormKit
+              type="text"
+              name="last_name"
+              label="Last name"
+              v-model="lastName"
+              validation=""
+              validation-visibility="blur"
+            />
+            <FormKit
+              type="text"
+              name="address"
+              label="Address"
+              v-model="address"
+              validation=""
+              validation-visibility="blur"
+            />
+            <FormKit
+              type="tel"
+              label="Phone number"
+              v-model="phoneNumber"
+              placeholder="+123456789"
+              :validation="[['matches', /^\+\d{9,15}$/]]"
+              :validation-messages="{
     matches: 'Phone number must be in the format +xxx...x [max 15]',
   }"
-            validation-visibility="dirty"
-          />
-        </div>
-        <div class="card-actions justify-end">
-          <FormKit
-            type="submit"
-            label="Save"
-          />
-        </div>
+              validation-visibility="dirty"
+            />
+          </div>
+          <div class="card-actions justify-end">
+            <FormKit
+              type="submit"
+              label="Save"
+            />
+          </div>
 
-      </div>
-    </FormKit>
+        </div>
+      </FormKit>
+    </div>
   </div>
 </template>
 
@@ -77,7 +79,7 @@ const phoneNumber = ref("");
 const submitted = ref(false);
 
 const getUser = computed(() => {
-firstName.value = authStore.getUser?.profile?.first_name ?? "";
+  firstName.value = authStore.getUser?.profile?.first_name ?? "";
   lastName.value = authStore.getUser?.profile?.last_name ?? "";
   phoneNumber.value = authStore.getUser?.profile?.phone_number ?? "";
   address.value = authStore.getUser?.profile?.address ?? "";
