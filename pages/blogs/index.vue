@@ -1,6 +1,7 @@
 <template>
   <div class="container p-12">
-    <div class="pb-12 pt-3 flex gap-3 justify-center">
+    <div class="pb-12 pt-3 flex gap-3 justify-between">
+      <div class="text-4xl font-bold">Projects</div>
 
       <SearchBar
         placeholder="Search projects"
@@ -23,12 +24,15 @@
       </div>
     </div>
     <div v-if="getPaginatedBlogs.count || 0 > 0">
-      <div class="grid grid-cols-1 gap-5 ">
-        <div
-          :key="blog.id"
-          v-for="blog in getPaginatedBlogs.blogs"
-        >
-          <BlogListTile :blog="blog" />
+      <div class="flex flex-col gap-10">
+        <BlogListTileHeadCard :blog="getPaginatedBlogs.blogs[0]" />
+        <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-10">
+          <div
+            :key="blog.id"
+            v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
+          >
+            <BlogListTileGridCard :blog="blog" />
+          </div>
         </div>
       </div>
       <CircularLoadingIndicator :show="showPageLoading" />

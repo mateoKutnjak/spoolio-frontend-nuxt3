@@ -5,7 +5,7 @@
       type="checkbox"
       class="drawer-toggle"
     />
-    <div class="drawer-content">
+    <div class="drawer-content bg-base-100">
       <div class="flex flex-col h-screen">
         <Navbar />
         <div class="flex-1 container mx-auto">
