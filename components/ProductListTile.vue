@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card sm:card-side bg-base-100 border-2 rounded-2xl shadow-md">
+      <div class="card lg:card-side bg-base-100 border-2 rounded-2xl shadow-md">
         <nuxt-img
           class=" m-5 rounded-lg"
           sizes="sm:100vw md:60vw lg:600px"
