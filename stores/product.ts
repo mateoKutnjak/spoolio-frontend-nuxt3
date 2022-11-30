@@ -8,44 +8,28 @@ export default interface IProductResponse {
     price: number,
 }
 
-interface IProductListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: IProductResponse[]
-}
-
 export const useProductStore = defineStore('product', {
     state: () => ({
-        count: undefined as number | undefined,
-        next: undefined as string | undefined,
-        previous: undefined as string | undefined,
-        products: [] as IProductResponse[]
+        product: undefined as IProductResponse | undefined
     }),
 
     getters: {
-        getPaginatedProducts: (state) => state,
+        getProduct: (state) => state.product,
     },
 
     actions: {
-        async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            await $fetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
-                method: 'GET'
-            }
-            ).then((response: IProductListResponse) => {
-                this.count = response.count;
-                this.next = response.next;
-                this.previous = response.previous;
-
-                if (append) {
-                    this.products = [...this.products, ...response.results];
-                } else {
-                    this.products = response.results;
-                }
-            }).catch(err => {
-                throw err
+        async fetchProduct(id: number) {
+            return new Promise<IProductResponse>((resolve, reject) => {
+                $fetch<IProductResponse>(`http://localhost:8000/api/products/${id}/`, {
+                    method: 'GET'
+                }).then((response: IProductResponse) => {
+                    this.product = response;
+                    resolve(response);
+                }).catch(err => {
+                    reject(err);
+                })
             })
-        },
+        }
     },
 })
 

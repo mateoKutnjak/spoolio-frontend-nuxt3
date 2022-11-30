@@ -1,39 +1,42 @@
 <template>
-  <div class="card sm:card-side bg-base-100 shadow-xl">
-    <nuxt-img
-      sizes="sm:100vw md:60vw lg:400px"
-      fit="fill"
-      :modifiers="{ roundCorner: '0:100' }"
-      src="https://placeimg.com/300/300/arch"
-      alt=""
-    />
-    <div class="card-body">
-      <div class="card-title flex justify-between">
-        <h2 class="text-lg text-accent">{{product.title}}</h2>
-        <h2 class="text-lg text-primary">${{product.price}}</h2>
+  <div>
+    <NuxtLink :to="`/store/${product.id}/`">
+      <div class="card sm:card-side bg-base-100 border-2 rounded-2xl shadow-md">
+        <nuxt-img
+          class=" m-5 rounded-lg"
+          sizes="sm:100vw md:60vw lg:600px"
+          fit="fill"
+          src="https://placeimg.com/400/300/arch"
+          alt="Album"
+        />
+        <div class="card-body">
+          <div class="card-title flex justify-between">
+            <h2 class="text-3xl text-gray-800">{{product.title}}</h2>
+            <div class="flex gap-2">
+              <RatingStars />
+              <div class="text-sm font-normal">(45)</div>
+            </div>
+          </div>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo maxime eaque ratione cupiditate esse modi, illum expedita optio harum sint velit laboriosam reprehenderit mollitia dolores odit nostrum exercitationem qui voluptatum.</p>
+          <div class="card-actions justify-between items-end">
+            <div class="flex gap-2 items-end">
+              <div class="text-xl text-gray-800">From</div>
+              <div class="text-2xl font-bold text-gray-800">${{product.price}}</div>
+            </div>
+            <button
+              class="btn btn-primary gap-1"
+              @click.prevent="addToCart(product)"
+            >
+              <Icon
+                name="material-symbols:shopping-cart-outline-rounded"
+                size="27"
+                aria-hidden="true"
+              />Add to cart
+            </button>
+          </div>
+        </div>
       </div>
-      <p>Click the button to listen on Spotiwhy app.</p>
-      <div class="card-actions justify-end">
-
-        <NuxtLink :to="`/store/${product.id}/`">
-
-          <button class="btn btn-outline">
-            Details
-          </button>
-        </NuxtLink>
-
-        <button
-          class="btn btn-primary gap-1"
-          @click="addToCart(product)"
-        >
-          <Icon
-            name="material-symbols:shopping-cart-outline-rounded"
-            size="27"
-            aria-hidden="true"
-          />Add to cart
-        </button>
-      </div>
-    </div>
+    </NuxtLink>
   </div>
 
 </template>

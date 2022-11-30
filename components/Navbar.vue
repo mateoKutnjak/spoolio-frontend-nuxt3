@@ -29,12 +29,15 @@
         </ul>
       </div>
       <a class="btn btn-ghost">
-        <nuxt-img
-          width="112px"
-          src="/img/logo-primary.svg"
-          alt="logo"
-        />
+        <NuxtLink to="/">
+          <nuxt-img
+            width="112px"
+            src="/img/logo-primary.svg"
+            alt="logo"
+          />
+        </NuxtLink>
       </a>
+
     </div>
     <div class="navbar-center hidden lg:flex">
       <NuxtLink
@@ -237,11 +240,10 @@ const getItems = computed(() => {
 });
 
 const navigation = [
-  { name: "Home", to: "/" },
-  { name: "Blogs", to: "/blogs" },
-  { name: "Print", to: "/job-order" },
-  { name: "Shop", to: "/store" },
-  { name: "About", to: "/about" },
+  { name: "projects", to: "/blogs" },
+  { name: "order parts", to: "/job-order" },
+  { name: "store", to: "/store" },
+  { name: "about", to: "/about" },
 ];
 
 function logout() {

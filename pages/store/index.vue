@@ -34,11 +34,11 @@
 </template>
   
   <script lang="ts" setup>
-import { useProductStore } from "~/stores/product";
+import { useProductListStore } from "~/stores/productList";
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
-const productStore = useProductStore();
+const productListStore = useProductListStore();
 
 const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref(false);
@@ -47,7 +47,7 @@ var limit = 10;
 var offset = 0;
 
 onMounted(async () => {
-  productStore
+  productListStore
     .fetchPaginatedProducts(limit, offset)
     .then(() => {})
     .catch((err) => {
@@ -59,7 +59,7 @@ onMounted(async () => {
 });
 
 const getPaginatedProducts = computed(() => {
-  return productStore.getPaginatedProducts;
+  return productListStore.getPaginatedProducts;
 });
 
 const getUser = computed(() => {
@@ -89,7 +89,7 @@ onMounted(() => {
       ) {
         showPageLoading.value = true;
         offset = offset + limit;
-        productStore
+        productListStore
           .fetchPaginatedProducts(limit, offset, "", true)
           .then(() => (showPageLoading.value = false));
       }
@@ -104,7 +104,7 @@ function onSearch(searchPhrase: string) {
   offset = 0;
   limit = 10;
 
-  productStore
+  productListStore
     .fetchPaginatedProducts(limit, offset, searchPhrase, false)
     .then(() => (showPageLoading.value = false));
 }
