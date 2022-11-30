@@ -40,7 +40,7 @@ export default {
                 outer: 'h-0 bg-transparent text-transparent',
                 wrapper: 'h-0 bg-transparent text-transparent',
                 label: 'h-0 bg-transparent text-transparent',
-                inner: 'h-0 bg-transparent text-transparent',
+                inner: 'h-0 bg-transparent text-transparent hidden',
                 input: 'h-0 bg-transparent text-transparent',
                 noFiles: 'h-0 bg-transparent text-transparent',
                 fileItem: 'h-0 bg-transparent text-transparent',

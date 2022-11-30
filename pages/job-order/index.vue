@@ -40,13 +40,13 @@
 
       <FormKit
         type="file"
-        help="This input starts with files already “attached”."
+        help=""
         multiple
         v-model="uploadedFiles"
         validation="required"
         :validation-messages="{
-        required: 'Files are required',
-      }"
+          required: 'Files are required',
+        }"
       />
 
       <ul class="m-4 space-y-1 max-w-md list-inside text-gray-500 dark:text-gray-400">
