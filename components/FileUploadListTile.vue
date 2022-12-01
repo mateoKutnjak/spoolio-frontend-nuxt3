@@ -2,11 +2,14 @@
   <div class="card bg-base-100 shadow-md border p-8">
     <div class="flex flex-col gap-5">
       <div class="flex justify-between items-center text-gray-800">
-        <Icon
-          :name="icon"
-          size="27"
-        />
-        <h2 class="card-title text-base">{{file.name}}</h2>
+        <div class="flex gap-2">
+          <Icon
+            :name="icon"
+            size="27"
+          />
+          <h2 class="card-title text-base">{{file.name}}</h2>
+        </div>
+
         <div class="flex gap-2 items-center">
           <div
             class="tooltip tooltip-bottom"
