@@ -17,7 +17,7 @@
               aria-hidden="true"
             />
             <div>
-              {{createdAtFormatted}}
+              {{reformatDate(blog?.created_at)}}
             </div>
           </div>
           <div
@@ -93,14 +93,6 @@
   
   <script lang="ts" setup>
 const { blog } = defineProps(["blog"]); // props
-
-const createdAtFormatted = computed(() => {
-  return reformatDate(blog.created_at);
-});
-
-function reformatDate(rawDate: string): string {
-  return formatDate(parseDate(rawDate));
-}
 </script>
   
   <style>

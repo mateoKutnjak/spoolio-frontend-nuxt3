@@ -1,8 +1,8 @@
-export function parseDate(rawDate: string): Date {
+function parseDate(rawDate: string): Date {
     return new Date(rawDate)
 }
 
-export function formatDate(date: Date): string {
+function formatDate(date: Date): string {
     var dateNow = new Date();
     var rawFormatted = date.toDateString().split(' ');
 
@@ -13,4 +13,9 @@ export function formatDate(date: Date): string {
         return rawFormatted[1] + " " + rawFormatted[2]
     }
     return rawFormatted[1] + " " + rawFormatted[2] + ", " + rawFormatted[3]
+}
+
+export function reformatDate(rawDate: string | undefined): string {
+    if (!rawDate) return "NULL ERROR"
+    return formatDate(parseDate(rawDate));
 }

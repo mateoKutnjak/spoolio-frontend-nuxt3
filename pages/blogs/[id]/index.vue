@@ -1,51 +1,80 @@
 <template>
   <div class="container p-12">
-    <div class="flex items-center gap-4 p-8">
-      <div class="avatar">
-        <div class="w-14 h-14 rounded-full">
-          <nuxt-img src="https://placeimg.com/192/192/people" />
+    <div class="flex flex-col items-start justify-between gap-4 p-8 mx-auto">
+      <div class="flex flex-col gap-4 justify-between ">
+        <div class="flex gap-4 justify-between">
+          <div class="mx-autoflex gap-4">
+            <div class="avatar">
+              <div class="w-14 h-14 rounded-full">
+                <nuxt-img src="https://placeimg.com/192/192/people" />
+              </div>
+            </div>
+            <div class="grid text-gray-700">
+              <div>
+                {{blog?.author.profile?.first_name || "first_name"}} {{blog?.author.profile?.last_name || "last_name"}}
+              </div>
+              <div>
+                {{reformatDate(blog?.created_at) }}
+              </div>
+            </div>
+          </div>
+          <div>
+            <NuxtLink :to="`/blogs/${id}/edit`">
+              <div
+                v-if="user?.is_staff && user?.id === blog?.author?.id || false"
+                class="btn btn-outline gap-1"
+              >
+                <Icon
+                  name="material-symbols:edit-outline"
+                  size="20"
+                  aria-hidden="true"
+                />Edit
+              </div>
+            </NuxtLink>
+          </div>
         </div>
-      </div>
-      <div class="grid">
-        <div>
-          {{blog?.author.profile?.first_name || "first_name"}} {{blog?.author.profile?.last_name || "last_name"}}
+        <div class="mx-auto pt-8 pb-8">
+          <p class="prose text-3xl font-bold pb-2 pt-0">{{blog?.title}}</p>
+          <p class="prose text-xl pt-0 ">{{blog?.subtitle}}</p>
         </div>
-        <div>
-          {{blog?.created_at}}
+        <div class="mx-auto pt-0 pb-0">
+          <div class="alert alert-warning shadow-md">
+            <div>
+              <Icon
+                name="eos-icons:bubble-loading"
+                size="30"
+                aria-hidden="true"
+              />
+              <span>TODO: insert picture here</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flex-1" />
-      <NuxtLink :to="`/blogs/${id}/edit`">
         <div
-          v-if="user?.is_staff || false"
-          class="btn btn-outline gap-1"
-        >
-          <Icon
-            name="material-symbols:edit-outline"
-            size="20"
-            aria-hidden="true"
-          />Edit
+          class="mx-auto prose pt-0"
+          v-html="$renderer.render(blog?.content || '')"
+        ></div>
+      </div>
+
+      <div class="divider h-0"></div>
+      <div class="flex flex-col">
+        <CommentCreateForm
+          :blog-id="id"
+          class="justify-end"
+        />
+      </div>
+      <div class="mx-auto flex flex-col ">
+        <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
+        <div class="space-y-4">
+          <div
+            :key="comment.id"
+            v-for="comment in getComments.comments"
+          >
+            <CommentListTile :comment="comment" />
+          </div>
         </div>
-      </NuxtLink>
-    </div>
-    <p class="prose text-3xl font-bold p-8 pb-2 pt-0">{{blog?.title}}</p>
-    <p class="prose text-xl p-8 pt-0">{{blog?.subtitle}}</p>
-    <div class="p-8 pt-0 pb-0">
-      <div class="alert alert-warning shadow-lg">
-        <div>
-          <Icon
-            name="eos-icons:bubble-loading"
-            size="30"
-            aria-hidden="true"
-          />
-          <span>TODO: insert picture here</span>
-        </div>
+
       </div>
     </div>
-    <div
-      class="max-w-2xl mx-auto prose pt-8"
-      v-html="$renderer.render(blog?.content || '')"
-    ></div>
   </div>
 
 </template>
@@ -53,13 +82,17 @@
     <script lang="ts" setup>
 import IBlogResponse, { useBlogStore } from "~/stores/blog";
 import IUserResponse, { useAuthStore } from "~~/stores/auth";
+import ICommentResponse from "~~/stores/comment";
+import { useCommentListStore } from "~~/stores/commentList";
 
 const { id } = useRoute().params;
 
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
+const commentListStore = useCommentListStore();
 
 const blog = ref<IBlogResponse>();
+const comments = ref<ICommentResponse[]>([]);
 const user = ref<IUserResponse>();
 
 const showInitLoading = ref<boolean>(true);
@@ -68,11 +101,16 @@ onMounted(() => {
   blogStore.fetchBlog(Number(id)).then((blog) => {
     showInitLoading.value = false;
   });
+  commentListStore.fetchComments(Number(id));
 });
 
 const getBlog = computed(() => {
   blog.value = blogStore.getBlog;
   return blogStore.getBlog;
+});
+
+const getComments = computed(() => {
+  return commentListStore.getComments;
 });
 
 const getUser = computed(() => {
@@ -82,6 +120,10 @@ const getUser = computed(() => {
 
 watch(getBlog, (value, old, invalidate) => {
   blog.value = value;
+});
+
+watch(getComments, (value, old, invalidate) => {
+  comments.value = value.comments;
 });
 
 watch(getUser, (value, old, invalidate) => {
