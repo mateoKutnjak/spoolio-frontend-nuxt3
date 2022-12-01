@@ -49,18 +49,18 @@
         }"
       />
 
-      <ul class="m-4 space-y-1 max-w-md list-inside text-gray-500 dark:text-gray-400">
-        <li
-          class="flex items-center gap-4"
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div
           v-for="uploadedFile in uploadedFiles"
           :key="uploadedFile.name"
         >
           <FileUploadListTile
             :file="uploadedFile"
             @on-remove-file="removeFile(uploadedFile)"
+            @on-duplicate-file="duplicateFile(uploadedFile)"
           />
-        </li>
-      </ul>
+        </div>
+      </div>
 
       <FormKit
         type="submit"
@@ -121,6 +121,10 @@ function iconForFilename(filename: string) {
     default:
       return "vscode-icons:default-file";
   }
+}
+
+function duplicateFile(file: File) {
+  uploadedFiles.value.push(file);
 }
 
 function removeFile(file: File) {

@@ -11,7 +11,7 @@
         <div class="flex-1 container mx-auto">
           <slot />
         </div>
-        <Footer />
+        <!-- <Footer /> -->
       </div>
 
     </div>
