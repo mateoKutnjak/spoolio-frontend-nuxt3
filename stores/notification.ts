@@ -1,11 +1,10 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { ToastType } from '~~/utils/enums';
 
 export const useNotificationStore = defineStore('notification', {
     state: () => ({
         isOpened: false,
         message: "",
-        type: ToastType.debug,
+        type: ToastLevel.debug(),
     }),
 
     getters: {
@@ -14,7 +13,7 @@ export const useNotificationStore = defineStore('notification', {
     },
 
     actions: {
-        show(message: string, type = ToastType.debug) {
+        show(message: string, type = ToastLevel.debug()) {
             console.log("showing " + message);
 
             this.isOpened = true;

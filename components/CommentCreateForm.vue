@@ -37,12 +37,12 @@ const submitted = ref(false);
 
 const submitHandler = async () => {
   if (!authStore.accessToken) {
-    notificationStore.show("Log in to post comment", ToastType.info);
+    notificationStore.show("Log in to post comment", ToastLevel.info());
     return;
   }
 
   if (!authStore.getUser?.id) {
-    notificationStore.show("Log in to post comment", ToastType.info);
+    notificationStore.show("Log in to post comment", ToastLevel.info());
     return;
   }
 
@@ -59,10 +59,10 @@ const submitHandler = async () => {
       content.value
     )
     .then(() => {
-      notificationStore.show("Comment posted", ToastType.success);
+      notificationStore.show("Comment posted", ToastLevel.success());
     })
     .catch((err) => {
-      notificationStore.show(err, ToastType.error);
+      notificationStore.show(err, ToastLevel.error());
     })
     .finally(() => {
       commentPostingInProgress.value = false;

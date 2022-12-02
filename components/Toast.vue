@@ -10,7 +10,10 @@
           class="flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
           role="alert"
         >
-          <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+          <div
+            class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg"
+            :class="[notificationState?.type.styles]"
+          >
             <Icon
               :name="icon()"
               size="27"
@@ -75,14 +78,14 @@ watch(notificationStore.getState, (value, oldValue, onInvalidate) => {
 });
 
 function icon() {
-  switch (notificationState?.value?.type) {
-    case ToastType.debug:
+  switch (notificationState?.value?.type?.type || ToastLevelType.debug) {
+    case ToastLevelType.debug:
       return "carbon:debug";
-    case ToastType.info:
+    case ToastLevelType.info:
       return "mdi:information-variant";
-    case ToastType.error:
+    case ToastLevelType.error:
       return "material-symbols:error";
-    case ToastType.success:
+    case ToastLevelType.success:
       return "material-symbols:check-small-rounded";
     default:
       return "material-symbols:question-mark-rounded";
