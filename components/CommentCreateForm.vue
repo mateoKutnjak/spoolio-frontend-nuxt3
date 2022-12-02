@@ -20,6 +20,7 @@
 </template>
   
   <script lang="ts" setup>
+import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
 import { useCommentStore } from "../stores/comment";
 
@@ -27,6 +28,7 @@ const { blogId } = defineProps(["blogId"]);
 
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
+const notificationStore = useNotificationStore();
 
 const content = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
@@ -35,12 +37,12 @@ const submitted = ref(false);
 
 const submitHandler = async () => {
   if (!authStore.accessToken) {
-    console.error("No access token. Cannot post comment");
+    notificationStore.show("Log in to post comment", ToastType.info);
     return;
   }
 
   if (!authStore.getUser?.id) {
-    console.error("No current user id. Cannot post comment");
+    notificationStore.show("Log in to post comment", ToastType.info);
     return;
   }
 
@@ -56,8 +58,12 @@ const submitHandler = async () => {
       Number(blogId),
       content.value
     )
-    .then(() => {})
-    .catch((err) => {})
+    .then(() => {
+      notificationStore.show("Comment posted", ToastType.success);
+    })
+    .catch((err) => {
+      notificationStore.show(err, ToastType.error);
+    })
     .finally(() => {
       commentPostingInProgress.value = false;
     });

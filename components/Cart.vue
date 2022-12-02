@@ -1,5 +1,5 @@
 <template>
-  <div class="menu p-4 w-80 bg-base-100 text-base-content">
+  <div class="menu p-4 w-80 bg-base-100 text-base-content flex justify-between">
     <div class="flex flex-col">
       <ul>
         <div v-if="getCartItems.size > 0">
@@ -43,16 +43,18 @@
         </div>
       </ul>
     </div>
-    <div class="flex-1"></div>
-    <div class="flex justify-end items-end gap-2 text-2xl font-bold">
-      <div class="btn btn-ghost flex-1 text-lg justify-end">Total: ${{getItems.reduce((acc, item) => Number(acc) + Number(item.price), 0)}}</div>
-      <NuxtLink to="/checkout">
-        <div
-          class="btn btn-info btn-lg"
-          @click="drawerStore.close()"
-        >Checkout</div>
-      </NuxtLink>
+    <div class="flex flex-col">
+      <strong class="py-2 text-lg ">Total: ${{getItems.reduce((acc, item) => Number(acc) + Number(item.price), 0)}}</strong>
+      <div class="justify-center items-end gap-2 text-2xl font-bold">
+        <NuxtLink to="/checkout">
+          <div
+            class="btn btn-success btn-block"
+            @click="drawerStore.close()"
+          >Checkout</div>
+        </NuxtLink>
+      </div>
     </div>
+
   </div>
 </template>
 

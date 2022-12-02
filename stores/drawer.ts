@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useDrawerStore = defineStore('drawer', {
     state: () => ({
-        isOpened: undefined as boolean | undefined,
+        isOpened: false,
     }),
 
     getters: {

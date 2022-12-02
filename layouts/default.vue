@@ -8,10 +8,10 @@
     <div class="drawer-content bg-base-100">
       <div class="flex flex-col h-screen">
         <Navbar />
+        <Toast />
         <div class="flex-1 container mx-auto">
           <slot />
         </div>
-        <!-- <Footer /> -->
       </div>
 
     </div>
@@ -30,6 +30,7 @@
 import { useDrawerStore } from "../stores/drawer";
 
 const drawerStore = useDrawerStore();
+
 var drawerInput: HTMLElement | null = null;
 
 const isDrawerOpened = computed(() => {
