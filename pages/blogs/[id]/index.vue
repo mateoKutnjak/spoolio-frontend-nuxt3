@@ -3,7 +3,7 @@
     <div class="flex flex-col items-stretch justify-between gap-4 p-8">
       <div class="flex flex-col gap-4 justify-between ">
         <div class="flex gap-4 justify-between">
-          <div class="mx-autoflex gap-4">
+          <div class="flex gap-4">
             <div class="avatar">
               <div class="w-14 h-14 rounded-full">
                 <nuxt-img src="https://placeimg.com/192/192/people" />
@@ -11,7 +11,7 @@
             </div>
             <div class="grid text-gray-700">
               <div>
-                {{blog?.author.profile?.first_name || "first_name"}} {{blog?.author.profile?.last_name || "last_name"}}
+                {{blog?.author.profile?.first_name || "null"}} {{blog?.author.profile?.last_name || "null"}}
               </div>
               <div>
                 {{reformatDate(blog?.created_at) }}
@@ -33,11 +33,11 @@
             </NuxtLink>
           </div>
         </div>
-        <div class="pt-8 pb-8">
+        <div class="py-2">
           <p class="prose text-3xl font-bold pb-2 pt-0">{{blog?.title}}</p>
           <p class="prose text-xl pt-0 ">{{blog?.subtitle}}</p>
         </div>
-        <div class="pt-0 pb-0">
+        <div class="py-2">
           <div class="alert alert-warning shadow-md">
             <div>
               <Icon
@@ -51,7 +51,7 @@
         </div>
 
         <div
-          class="prose pt-0"
+          class="prose py-2"
           v-html="$renderer.render((blog?.content || '') + '\n#### Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam dicta ullam laboriosam, eaque consequuntur inventore, architecto earum vel nesciunt id ad. Totam dolore voluptate harum quos? Fugiat maiores earum quae.')"
         ></div>
       </div>
@@ -63,7 +63,7 @@
           class="justify-end"
         />
       </div>
-      <div class="mx-auto flex flex-col ">
+      <div class="flex flex-col ">
         <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
         <div class="space-y-4">
           <div
