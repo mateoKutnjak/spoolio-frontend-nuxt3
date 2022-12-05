@@ -24,6 +24,19 @@
           Parts [todo]
         </div>
 
+        <div
+          v-for="(unit, index) in units"
+          :key="index"
+          class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
+        >
+          <FileUploadModel
+            :data="unit"
+            @on-remove-file="removeImage(unit.file)"
+            @on-duplicate-file="duplicateUnit(unit)"
+            @on-preview-file="previewFile(unit.file)"
+          />
+        </div>
+
         <div class="divider h-0"></div>
 
         <div class="text-2xl py-6">
@@ -177,10 +190,7 @@ const printOrderStore = usePrintOrderStore();
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
-const units = ref<IPrintOrderUnitResponse[]>([])
-
-const uploadedFiles = ref<File[]>([]);
-const uploadedFileUrls = ref<string[]>([]);
+const units = ref<IPrintOrderUnitResponse[]>([]);
 
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
@@ -226,13 +236,8 @@ onMounted(() => {
     attachmentImages.value.push(element);
   }
 
-  for (
-    let index = 0;
-    index < printOrderStore.units.length;
-    index++
-  ) {
-    const element: IPrintOrderUnitResponse =
-      printOrderStore.getUnits[index];
+  for (let index = 0; index < printOrderStore.units.length; index++) {
+    const element: IPrintOrderUnitResponse = printOrderStore.getUnits[index];
     units.value.push(element);
   }
 });
@@ -251,6 +256,10 @@ watch(printOrderStore.getAttachmentImages, (value, oldValue, onInvalidate) => {
   attachmentImages.value = value;
 });
 
+watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
+  units.value = value;
+});
+
 watch(formkitFiles, (value, oldValue, onInvalidate) => {
   files.value.push(value);
 });
@@ -260,11 +269,18 @@ function change(e: any) {
   // * files after CLICKING on container
 
   var files = Array.from<File>(e.target.files);
-  var fileUrls = files.map<string>((el: File) => URL.createObjectURL(el));
+  onFilesAdded(files);
+}
 
-  uploadedFiles.value.push(...files);
-  uploadedFileUrls.value.push(...fileUrls);
+function drop(e: any) {
+  // * Gets triggered when user selects
+  // * files after DRAG AND DROP on container
 
+  var files = Array.from<File>(e.dataTransfer.files);
+  onFilesAdded(files);
+}
+
+function onFilesAdded(files: File[]) {
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
 
@@ -283,45 +299,34 @@ function change(e: any) {
     } else {
       printOrderStore.addUnit(<IPrintOrderUnitResponse>{
         quantity: 1,
-        color: "Choose color",
-        material: ""
-        image: element,
+        color: "TODO",
+        material: "TODO",
+        infill: 1,
+        estimatedPrice: 20,
+        file: element,
         comment: "TODO",
         localUrl: URL.createObjectURL(element),
+        attachmentFiles: [],
+        attachmentImages: [],
       });
     }
   }
 }
 
-function drop(e: any) {
-  // * Gets triggered when user selects
-  // * files after DRAG AND DROP on container
-
-  var files = Array.from<File>(e.dataTransfer.files);
-  var fileUrls = files.map<string>((el: File) => URL.createObjectURL(el));
-
-  uploadedFiles.value.push(...files);
-  uploadedFileUrls.value.push(...fileUrls);
-}
-
-function iconForFilename(filename: string) {
-  switch (filenameExtension(filename)) {
-    case "svg":
-      return "carbon:svg";
-    case "pdf":
-      return "vscode-icons:file-type-pdf2";
-    case "jpg":
-    case "png":
-    case "jpeg":
-      return "material-symbols:image";
-    default:
-      return "vscode-icons:default-file";
-  }
-}
-
-function duplicateFile(file: File) {
-  uploadedFiles.value.push(file);
-  uploadedFileUrls.value.push(URL.createObjectURL(file));
+function duplicateUnit(unit: IPrintOrderUnitResponse) {
+  // TODO copy all unit values here
+  printOrderStore.addUnit(<IPrintOrderUnitResponse>{
+    quantity: unit.quantity,
+    color: unit.color,
+    material: unit.material,
+    infill: unit.infill,
+    estimatedPrice: unit.estimatedPrice,
+    file: unit.file,
+    comment: unit.comment,
+    localUrl: URL.createObjectURL(unit.file),
+    attachmentFiles: [],
+    attachmentImages: [],
+  });
 }
 
 function removeFile(file: File) {

@@ -3,12 +3,12 @@
     <div class="flex flex-col gap-5">
       <div class="flex gap-5 justify-between text-gray-800">
         <div class="flex gap-3">
-          <Icon
+          <!-- <Icon
             class="min-w-min"
             :name="icon"
             size="27"
-          />
-          <p class="card-title text-base break-all">{{file.name}}</p>
+          /> -->
+          <p class="card-title text-base break-all">{{data.file.name}}</p>
         </div>
 
         <div class="flex gap-2">
@@ -69,12 +69,18 @@
               <span class="label-text">Material</span>
             </label>
             <select class="select select-bordered select-sm">
-              <option
+              <!-- <option
                 disabled
                 selected
               >Dummy 0 [TODO]</option>
               <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option>
+              <option>Dummy 2 [TODO]</option> -->
+              <option
+                v-for="(material, index) in materials"
+                :key="material.name"
+                :class="(index == 0) ? 'selected disabled' : ''"
+                :value="material.name"
+              >{{material.name}} (${{material.price}})</option>
             </select>
           </div>
           <div class="form-control w-full max-w-xs">
@@ -117,7 +123,7 @@
       </div>
       <div class="flex gap-1">
         Price for this item is estimated at
-        <strong>20$</strong>
+        <strong>${{data.estimatedPrice}}</strong>
         <div class="dropdown dropdown-end">
           <label
             tabindex="0"
@@ -177,7 +183,7 @@
 
         </div>
         <div class="flex gap-2 items-end">
-          <strong class="text-2xl"> $123</strong>
+          <strong class="text-2xl"> ${{(quantity * data.estimatedPrice)}}</strong>
         </div>
       </div>
     </div>
@@ -194,7 +200,7 @@ import {
   useFilamentMaterialStore,
 } from "~~/stores/filament_material";
 
-const { file, fileUrl } = defineProps(["file", "fileUrl"]);
+const { data } = defineProps(["data"]);
 
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
@@ -204,28 +210,13 @@ const materials = ref<IFilamentMaterial[]>([]);
 
 const quantity = ref<number>(1);
 
-const icon = computed(() => {
+onMounted(() => {
   colors.value = filamentColorStore.getFilamentColors;
   materials.value = filamentMaterialStore.getFilamentMaterials;
-  switch (filenameExtension(file.name)) {
-    case "svg":
-      return "carbon:svg";
-    case "pdf":
-      return "vscode-icons:file-type-pdf2";
-    case "jpg":
-    case "png":
-    case "jpeg":
-      return "material-symbols:image";
-      return "material-symbols:image-outline-rounded";
-      return "vscode-icons:file-type-image";
-    default:
-      return "vscode-icons:default-file";
-  }
 });
 
 const fileSize = computed(() => {
-  console.log(file);
-  return fileSizeFormatted(file);
+  return fileSizeFormatted(data.file);
 });
 
 function increaseQuantity() {
