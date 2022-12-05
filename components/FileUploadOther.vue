@@ -83,11 +83,16 @@
             </label>
             <select class="select select-bordered select-sm">
               <option
+                v-for="(color, index) in colors"
+                :key="color.name"
+                :class="(index == 0) ? 'selected' : ''"
+              >{{color.name}} ({{color.value}})</option>
+              <!-- <option
                 disabled
                 selected
-              >Dummy 0 [TODO]</option>
+              >{{colors.length > 0 ? colors[0] : 'Choose color'}}</option>
               <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option>
+              <option>Dummy 2 [TODO]</option> -->
             </select>
           </div>
           <div class="form-control w-full max-w-xs">
@@ -96,11 +101,16 @@
             </label>
             <select class="select select-bordered select-sm">
               <option
+                v-for="(material, index) in materials"
+                :key="material.name"
+                :class="(index == 0) ? 'selected' : ''"
+              >{{material.name}} (${{material.price}})</option>
+              <!-- <option
                 disabled
                 selected
               >Dummy 0 [TODO]</option>
               <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option>
+              <option>Dummy 2 [TODO]</option> -->
             </select>
           </div>
         </div>
@@ -175,11 +185,28 @@
 </template>
 
 <script lang="ts" setup>
+import {
+  IFilamentColor,
+  useFilamentColorStore,
+} from "~~/stores/filament_color";
+import {
+  IFilamentMaterial,
+  useFilamentMaterialStore,
+} from "~~/stores/filament_material";
+
 const { file, fileUrl } = defineProps(["file", "fileUrl"]);
+
+const filamentColorStore = useFilamentColorStore();
+const filamentMaterialStore = useFilamentMaterialStore();
+
+const colors = ref<IFilamentColor[]>([]);
+const materials = ref<IFilamentMaterial[]>([]);
 
 const quantity = ref<number>(1);
 
 const icon = computed(() => {
+  colors.value = filamentColorStore.getFilamentColors;
+  materials.value = filamentMaterialStore.getFilamentMaterials;
   switch (filenameExtension(file.name)) {
     case "svg":
       return "carbon:svg";
@@ -212,6 +239,17 @@ function decreaseQuantity() {
     quantity.value = 1;
   }
 }
+
+watch(filamentColorStore.getFilamentColors, (value, oldValue, onInvalidate) => {
+  colors.value = value;
+});
+
+watch(
+  filamentMaterialStore.getFilamentMaterials,
+  (value, oldValue, onInvalidate) => {
+    materials.value = value;
+  }
+);
 </script>
 
 <style>

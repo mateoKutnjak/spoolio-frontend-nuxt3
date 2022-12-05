@@ -2,8 +2,8 @@
   <div class="container p-12">
     <!-- because of bottom drag and drop -->
     <div class="pb-64">
-      <div class="relative flex flex-col justify-center">
-        <div class="columns-1 lg:columns-2 xl:columns-3 gap-5 [column-fill:_balance] box-border before:box-inherit after:box-inherit">
+      <div class="relative flex flex-col justify-center py-8">
+        <!-- <div class="columns-1 lg:columns-2 xl:columns-3 gap-5 [column-fill:_balance] box-border before:box-inherit after:box-inherit">
           <div
             v-for="(uploadedFile, index) in uploadedFiles"
             :key="uploadedFile.name"
@@ -18,7 +18,51 @@
               @on-preview-file="previewFile(uploadedFile)"
             />
           </div>
+        </div> -->
+
+        <div class="text-2xl pb-6">
+          Parts [todo]
         </div>
+
+        <div class="divider h-0"></div>
+
+        <div class="text-2xl py-6">
+          Images
+        </div>
+
+        <div
+          v-for="(attachmentImage, index) in attachmentImages"
+          :key="index"
+          class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
+        >
+          <FileUploadImage
+            :imageFile="attachmentImage.image"
+            :imageFileUrl="attachmentImage.localUrl"
+            @on-remove-file="removeImage(attachmentImage.image)"
+            @on-preview-file="previewFile(attachmentImage.image)"
+          />
+        </div>
+
+        <div class="divider h-0"></div>
+
+        <div class="text-2xl py-6">
+          Attachments
+        </div>
+
+        <div
+          v-for="(attachmentFile, index) in attachmentFiles"
+          :key="index"
+          class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
+        >
+          <FileUploadPDF
+            class="flex-1"
+            :pdf-filename="attachmentFile.file.name"
+            :uploadedFileUrl="attachmentFile.localUrl"
+            @on-remove-file="removeFile(attachmentFile.file)"
+            @on-preview-file="previewFile(attachmentFile.file)"
+          />
+        </div>
+
       </div>
     </div>
   </div>
@@ -79,6 +123,10 @@
       />
     </FormKit> -->
 
+  <div class="fixed bottom-64 left-0 right-0 btn btn-primary btn-block btn-lg rounded-none">
+    Order
+  </div>
+
   <div
     class="fixed bottom-0 left-0 right-0 flex w-full h-64 mx-auto"
     @dragover.prevent
@@ -113,8 +161,23 @@
   
   <script lang="ts" setup>
 import { useAuthStore } from "~~/stores/auth";
+import { useFilamentColorStore } from "~~/stores/filament_color";
+import { useFilamentMaterialStore } from "~~/stores/filament_material";
+import {
+  usePrintOrderStore,
+  IPrintOrderAttachmentFileResponse,
+  IPrintOrderAttachmentImageResponse,
+  IPrintOrderUnitResponse,
+} from "~~/stores/print_order";
 
 const authStore = useAuthStore();
+const filamentColorStore = useFilamentColorStore();
+const filamentMaterialStore = useFilamentMaterialStore();
+const printOrderStore = usePrintOrderStore();
+
+const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
+const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
+const units = ref<IPrintOrderUnitResponse[]>([])
 
 const uploadedFiles = ref<File[]>([]);
 const uploadedFileUrls = ref<string[]>([]);
@@ -128,7 +191,65 @@ const getUser = computed(() => {
   return authStore.getUser;
 });
 
+onMounted(() => {
+  filamentColorStore
+    .fetchFilamentColors()
+    .then(() => {
+      console.log("Colors fetched successfuly TODO");
+    })
+    .catch((err) => console.log("Colors fetch error TODO"));
+
+  filamentMaterialStore
+    .fetchFilamentMaterials()
+    .then(() => {
+      console.log("Materials fetched successfuly TODO");
+    })
+    .catch((err) => console.log("Materials fetch error TODO"));
+
+  for (
+    let index = 0;
+    index < printOrderStore.getAttachmentFiles.length;
+    index++
+  ) {
+    const element: IPrintOrderAttachmentFileResponse =
+      printOrderStore.getAttachmentFiles[index];
+    attachmentFiles.value.push(element);
+  }
+
+  for (
+    let index = 0;
+    index < printOrderStore.getAttachmentImages.length;
+    index++
+  ) {
+    const element: IPrintOrderAttachmentImageResponse =
+      printOrderStore.getAttachmentImages[index];
+    attachmentImages.value.push(element);
+  }
+
+  for (
+    let index = 0;
+    index < printOrderStore.units.length;
+    index++
+  ) {
+    const element: IPrintOrderUnitResponse =
+      printOrderStore.getUnits[index];
+    units.value.push(element);
+  }
+});
+
 watch(getUser, (value, oldValue, onInvalidate) => {});
+
+watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
+  units.value = value;
+});
+
+watch(printOrderStore.getAttachmentFiles, (value, oldValue, onInvalidate) => {
+  attachmentFiles.value = value;
+});
+
+watch(printOrderStore.getAttachmentImages, (value, oldValue, onInvalidate) => {
+  attachmentImages.value = value;
+});
 
 watch(formkitFiles, (value, oldValue, onInvalidate) => {
   files.value.push(value);
@@ -143,6 +264,33 @@ function change(e: any) {
 
   uploadedFiles.value.push(...files);
   uploadedFileUrls.value.push(...fileUrls);
+
+  for (let index = 0; index < files.length; index++) {
+    const element = files[index];
+
+    if (element.type === "application/pdf") {
+      printOrderStore.addAttachmentFile(<IPrintOrderAttachmentFileResponse>{
+        file: element,
+        comment: "TODO",
+        localUrl: URL.createObjectURL(element),
+      });
+    } else if (element.type === "image/jpeg") {
+      printOrderStore.addAttachmentImage(<IPrintOrderAttachmentImageResponse>{
+        image: element,
+        comment: "TODO",
+        localUrl: URL.createObjectURL(element),
+      });
+    } else {
+      printOrderStore.addUnit(<IPrintOrderUnitResponse>{
+        quantity: 1,
+        color: "Choose color",
+        material: ""
+        image: element,
+        comment: "TODO",
+        localUrl: URL.createObjectURL(element),
+      });
+    }
+  }
 }
 
 function drop(e: any) {
@@ -177,10 +325,17 @@ function duplicateFile(file: File) {
 }
 
 function removeFile(file: File) {
-  const index = uploadedFiles.value.indexOf(file, 0);
-  if (index > -1) {
-    uploadedFiles.value.splice(index, 1);
-  }
+  printOrderStore.removeAttachmentFile(<IPrintOrderAttachmentFileResponse>{
+    file: file,
+    comment: "TODO",
+  });
+}
+
+function removeImage(file: File) {
+  printOrderStore.removeAttachmentImage(<IPrintOrderAttachmentImageResponse>{
+    image: file,
+    comment: "TODO",
+  });
 }
 
 function previewFile(file: File) {

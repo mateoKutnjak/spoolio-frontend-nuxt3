@@ -1,0 +1,37 @@
+import { acceptHMRUpdate, defineStore } from "pinia";
+
+export interface IFilamentColor {
+    name: string,
+    value: string
+}
+
+export const useFilamentColorStore = defineStore('filament-color', {
+    state: () => ({
+        filamentColors: [] as IFilamentColor[]
+    }),
+
+    getters: {
+        getFilamentColors: (state) => state.filamentColors,
+    },
+
+    actions: {
+        async fetchFilamentColors() {
+            return promiseWithTimeout(new Promise((resolve, reject) => {
+                $fetch<IFilamentColor[]>('http://localhost:8000/api/filament/colors/', {
+                    method: 'GET',
+                }).then((response: IFilamentColor[]) => {
+                    this.filamentColors = response;
+                    resolve(response);
+                }).catch((err) => {
+                    alert(err);
+                    reject(err);
+                })
+            }), 5000);
+        }
+    },
+})
+
+if (import.meta.hot)
+{
+    import.meta.hot.accept(acceptHMRUpdate(useFilamentColorStore, import.meta.hot))
+}
