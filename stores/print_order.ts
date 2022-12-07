@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
 
 export interface IPrintOrderAttachmentFileResponse {
     file: File,
@@ -13,6 +14,7 @@ export interface IPrintOrderAttachmentImageResponse {
 }
 
 export interface IPrintOrderUnitResponse {
+    id: number | undefined,
     comment: string,
     quantity: number,
     color: number, // color id
@@ -33,6 +35,30 @@ export interface IPrintOrderResponse {
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     user_profile: number,
+}
+
+async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number) {
+
+    var formData = new FormData();
+
+    formData.append("file", item.file);
+    formData.append("comment", item.comment);
+
+    formData.append("content_type", contentType)
+    formData.append("object_id", objectId.toString());
+
+    return new Promise((resolve, reject) => {
+        $fetch<IPrintOrderAttachmentFileResponse>('http://localhost:8000/api/print-orders/attachment-files/', {
+            method: 'POST',
+            body: formData,
+        }).then((response: IPrintOrderAttachmentFileResponse) => {
+            // this.createdPrintOrder = response;
+            resolve(response)
+        }).catch(err => {
+            console.log(err);
+            reject(err)
+        });
+    });
 }
 
 export const usePrintOrderStore = defineStore('print-order', {
@@ -66,7 +92,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             });
         },
 
-        async postOrderUnit(unit: IPrintOrderUnitResponse) {
+        async postOrderUnit(unit: IPrintOrderUnitResponse): Promise<IPrintOrderUnitResponse> {
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
@@ -76,9 +102,6 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append("estimatedPrice", unit.estimatedPrice.toString());
-            // formData.append('attache')
-            // todo attached files
-            // todo attached images
 
             // todo what to do with this
             formData.append("order", unit.order?.toString() || '-1');
@@ -95,6 +118,14 @@ export const usePrintOrderStore = defineStore('print-order', {
                     reject(err)
                 });
             });
+        },
+
+        async postPrintOrderAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderId: number) {
+            return postAttachmentFile(item, CONTENT_TYPE_ORDER, orderId);
+        },
+
+        async postPrintOrderUnitAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderUnitId: number) {
+            return postAttachmentFile(item, CONTENT_TYPE_ORDER_UNIT, orderUnitId);
         },
 
         addUnit(unit: IPrintOrderUnitResponse) {

@@ -140,6 +140,20 @@
           ></textarea>
         </div>
       </div>
+      <input
+        type="file"
+        class="file-input file-input-bordered w-full max-w-xs"
+        multiple
+        @change="onAttachmentFilesChange"
+      />
+      <div class="flex flex-col">
+        <div
+          v-for="attachmentFile in attachmentFiles"
+          :key="attachmentFile.localUrl"
+        >
+          <div>{{attachmentFile.localUrl}}</div>
+        </div>
+      </div>
       <div class="card-actions justify-between items-end">
         <div class="flex justify-between items-center">
           <div class="btn-group gap-1 items-center">
@@ -182,6 +196,8 @@ import {
   useFilamentMaterialStore,
 } from "~~/stores/filament_material";
 import {
+  IPrintOrderAttachmentFileResponse,
+  IPrintOrderAttachmentImageResponse,
   IPrintOrderUnitResponse,
   usePrintOrderStore,
 } from "~~/stores/print_order";
@@ -202,17 +218,23 @@ const selectedColor = ref<number>();
 const selectedInfill = ref<number>();
 const quantity = ref<number>(1);
 const comment = ref<string>("");
+const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
+const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 
 onMounted(() => {
   colors.value = filamentColorStore.getFilamentColors;
   materials.value = filamentMaterialStore.getFilamentMaterials;
   infills.value = filamentInfillStore.getFilamentInfills;
 
+  console.log("data.attachedFiles" + data.attachedFiles);
+
   selectedColor.value = data.color;
   selectedMaterial.value = data.material;
   selectedInfill.value = data.infill;
   comment.value = data.comment;
   quantity.value = data.quantity;
+  attachmentFiles.value = data.attachmentFiles || [];
+  attachmentImages.value = data.attachmentImages || [];
 });
 
 const fileSize = computed(() => {
@@ -269,8 +291,17 @@ watch(comment, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(data.localUrl, { comment: value });
 });
 
+watch(attachmentFiles, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { attachmentFiles: value });
+});
+
+watch(attachmentImages, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { attachmentImages: value });
+});
+
 function duplicateUnit() {
   printOrderStore.addUnit(<IPrintOrderUnitResponse>{
+    id: undefined,
     quantity: quantity.value,
     color: selectedColor.value,
     material: selectedMaterial.value,
@@ -289,6 +320,24 @@ function removeUnit() {
   console.log("Deleting unit with URL " + data.localUrl);
 
   printOrderStore.removeUnitByFileLocalUrl(data.localUrl);
+}
+
+function onAttachmentFilesChange(e: any) {
+  console.log("HERE");
+  console.log(attachmentFiles.value);
+
+  var files = Array.from<File>(e.target.files);
+  for (let index = 0; index < files.length; index++) {
+    const element = files[index];
+
+    // todo if file is image put is in attachmentImages
+
+    attachmentFiles.value.push(<IPrintOrderAttachmentFileResponse>{
+      file: element,
+      localUrl: URL.createObjectURL(element),
+      comment: "EMPTY TODO",
+    });
+  }
 }
 </script>
 

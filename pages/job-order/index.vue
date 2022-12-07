@@ -264,6 +264,7 @@ function onFilesAdded(files: File[]) {
       });
     } else {
       printOrderStore.addUnit(<IPrintOrderUnitResponse>{
+        id: undefined,
         quantity: 1,
         color: filamentColorStore.getFilamentColors[0].id,
         material: filamentMaterialStore.getFilamentMaterials[0].id,
@@ -316,23 +317,41 @@ async function createOrder() {
 
   console.log(rootOrderResult);
 
+  for (let j = 0; j < attachmentFiles.value.length; j++) {
+      const globalAttachmentFile = attachmentFiles.value[j];
+      const globalAttachmentFileResult =
+        await printOrderStore.postPrintOrderAttachmentFile(
+          globalAttachmentFile,
+          rootOrderResult.id
+        );
+    }
+
   for (let index = 0; index < units.value.length; index++) {
     const element = units.value[index];
 
-    var unitResult = await printOrderStore.postOrderUnit(<
-      IPrintOrderUnitResponse
-    >{
-      color: element.color,
-      material: element.material,
-      infill: element.infill,
-      file: element.file,
-      quantity: element.quantity,
-      comment: element.comment,
-      estimatedPrice: element.estimatedPrice,
-      order: rootOrderResult.id,
-    });
+    const unitResult: IPrintOrderUnitResponse =
+      await printOrderStore.postOrderUnit(<IPrintOrderUnitResponse>{
+        color: element.color,
+        material: element.material,
+        infill: element.infill,
+        file: element.file,
+        quantity: element.quantity,
+        comment: element.comment,
+        estimatedPrice: element.estimatedPrice,
+        order: rootOrderResult.id,
+        attachmentFiles: element.attachmentFiles,
+        attachmentImages: element.attachmentImages,
+      });
 
-    // todo add attached files
+    for (let j = 0; j < element.attachmentFiles.length; j++) {
+      const attachmentFile = element.attachmentFiles[j];
+      const attacmentFileResult =
+        await printOrderStore.postPrintOrderUnitAttachmentFile(
+          attachmentFile,
+          unitResult.id!
+        ); // todo change
+    }
+
     // todo add attached images
   }
 }
