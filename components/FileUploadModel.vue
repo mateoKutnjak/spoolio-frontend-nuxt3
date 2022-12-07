@@ -18,7 +18,7 @@
           >
             <div
               class="btn btn-ghost btn-square btn-sm"
-              @click="$emit('on-duplicate-file')"
+              @click="duplicateUnit"
             >
               <Icon
                 name="material-symbols:content-copy-outline-rounded"
@@ -28,7 +28,7 @@
           </div>
           <div
             class="btn btn-ghost btn-square btn-sm"
-            @click="$emit('on-remove-file')"
+            @click="removeUnit"
           >
             <Icon
               name="material-symbols:close"
@@ -39,47 +39,30 @@
         </div>
       </div>
       <div class="grid grid-cols-2 gap-8">
-        <div>
-          <button>
-            <figure>
-              <img
-                src="https://placeimg.com/400/300/arch"
-                alt="file"
-                class="rounded"
-              />
-            </figure>
-          </button>
-          <div class="py-5 px-0">
-            <div class="">
-              <table class="table table-compact w-full">
-                <tbody>
-                  <tr>
-                    <th>File size</th>
-                    <td>{{fileSize}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <button>
+          <figure>
+            <img
+              src="https://placeimg.com/400/300/arch"
+              alt="file"
+              class="rounded"
+            />
+          </figure>
+        </button>
 
         <div>
           <div class="form-control w-full max-w-xs">
             <label class="label p-1">
               <span class="label-text">Material</span>
             </label>
-            <select class="select select-bordered select-sm">
-              <!-- <option
-                disabled
-                selected
-              >Dummy 0 [TODO]</option>
-              <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option> -->
+            <select
+              class="select select-bordered select-sm"
+              v-model="selectedMaterial"
+            >
               <option
                 v-for="(material, index) in materials"
                 :key="material.name"
                 :class="(index == 0) ? 'selected disabled' : ''"
-                :value="material.name"
+                :value="material.id"
               >{{material.name}} (${{material.price}})</option>
             </select>
           </div>
@@ -87,36 +70,30 @@
             <label class="label p-1">
               <span class="label-text">Color</span>
             </label>
-            <select class="select select-bordered select-sm">
+            <select
+              class="select select-bordered select-sm"
+              v-model="selectedColor"
+            >
               <option
-                v-for="(color, index) in colors"
+                v-for="color in colors"
                 :key="color.name"
-                :class="(index == 0) ? 'selected' : ''"
+                :value="color.id"
               >{{color.name}} ({{color.value}})</option>
-              <!-- <option
-                disabled
-                selected
-              >{{colors.length > 0 ? colors[0] : 'Choose color'}}</option>
-              <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option> -->
             </select>
           </div>
           <div class="form-control w-full max-w-xs">
             <label class="label p-1">
               <span class="label-text">Infill</span>
             </label>
-            <select class="select select-bordered select-sm">
+            <select
+              class="select select-bordered select-sm"
+              v-model="selectedInfill"
+            >
               <option
-                v-for="(material, index) in materials"
-                :key="material.name"
-                :class="(index == 0) ? 'selected' : ''"
-              >{{material.name}} (${{material.price}})</option>
-              <!-- <option
-                disabled
-                selected
-              >Dummy 0 [TODO]</option>
-              <option>Dummy 1 [TODO]</option>
-              <option>Dummy 2 [TODO]</option> -->
+                v-for="infill in infills"
+                :key="infill.percentage"
+                :value="infill.id"
+              >{{infill.name}} ({{(infill.percentage * 100)}}%)</option>
             </select>
           </div>
         </div>
@@ -159,6 +136,7 @@
           <textarea
             class="textarea textarea-bordered h-24"
             placeholder="Additional information"
+            v-model="comment"
           ></textarea>
         </div>
       </div>
@@ -196,23 +174,45 @@ import {
   useFilamentColorStore,
 } from "~~/stores/filament_color";
 import {
+  IFilamentInfill,
+  useFilamentInfillStore,
+} from "~~/stores/filament_infill";
+import {
   IFilamentMaterial,
   useFilamentMaterialStore,
 } from "~~/stores/filament_material";
+import {
+  IPrintOrderUnitResponse,
+  usePrintOrderStore,
+} from "~~/stores/print_order";
 
 const { data } = defineProps(["data"]);
 
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
+const filamentInfillStore = useFilamentInfillStore();
+const printOrderStore = usePrintOrderStore();
 
 const colors = ref<IFilamentColor[]>([]);
 const materials = ref<IFilamentMaterial[]>([]);
+const infills = ref<IFilamentInfill[]>([]);
 
+const selectedMaterial = ref<number>();
+const selectedColor = ref<number>();
+const selectedInfill = ref<number>();
 const quantity = ref<number>(1);
+const comment = ref<string>("");
 
 onMounted(() => {
   colors.value = filamentColorStore.getFilamentColors;
   materials.value = filamentMaterialStore.getFilamentMaterials;
+  infills.value = filamentInfillStore.getFilamentInfills;
+
+  selectedColor.value = data.color;
+  selectedMaterial.value = data.material;
+  selectedInfill.value = data.infill;
+  comment.value = data.comment;
+  quantity.value = data.quantity;
 });
 
 const fileSize = computed(() => {
@@ -241,6 +241,55 @@ watch(
     materials.value = value;
   }
 );
+
+watch(
+  filamentInfillStore.getFilamentInfills,
+  (value, oldValue, onInvalidate) => {
+    infills.value = value;
+  }
+);
+
+watch(selectedColor, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { color: value });
+});
+
+watch(selectedMaterial, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { material: value });
+});
+
+watch(selectedInfill, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { infill: value });
+});
+
+watch(quantity, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { quantity: value });
+});
+
+watch(comment, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(data.localUrl, { comment: value });
+});
+
+function duplicateUnit() {
+  printOrderStore.addUnit(<IPrintOrderUnitResponse>{
+    quantity: quantity.value,
+    color: selectedColor.value,
+    material: selectedMaterial.value,
+    infill: selectedInfill.value,
+    estimatedPrice: data.estimatedPrice,
+    file: data.file,
+    comment: comment.value,
+    localUrl: URL.createObjectURL(data.file),
+    attachmentFiles: [], // todo
+    attachmentImages: [], // todo
+    order: undefined,
+  });
+}
+
+function removeUnit() {
+  console.log("Deleting unit with URL " + data.localUrl);
+
+  printOrderStore.removeUnitByFileLocalUrl(data.localUrl);
+}
 </script>
 
 <style>

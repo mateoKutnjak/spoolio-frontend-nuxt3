@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 
 export interface IFilamentColor {
+    id: number,
     name: string,
     value: string
 }
@@ -17,7 +18,7 @@ export const useFilamentColorStore = defineStore('filament-color', {
     actions: {
         async fetchFilamentColors() {
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                $fetch<IFilamentColor[]>('http://localhost:8000/api/filament/colors/', {
+                $fetch<IFilamentColor[]>('http://localhost:8000/api/filament/colors/?available=true', {
                     method: 'GET',
                 }).then((response: IFilamentColor[]) => {
                     this.filamentColors = response;

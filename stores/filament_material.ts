@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 
 export interface IFilamentMaterial {
+    id: number,
     name: string,
     density: number,
     price: number,
@@ -18,7 +19,7 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
     actions: {
         async fetchFilamentMaterials() {
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                $fetch<IFilamentMaterial[]>('http://localhost:8000/api/filament/materials/', {
+                $fetch<IFilamentMaterial[]>('http://localhost:8000/api/filament/materials/?available=true', {
                     method: 'GET',
                 }).then((response: IFilamentMaterial[]) => {
                     this.filamentMaterials = response;
@@ -32,7 +33,6 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useFilamentMaterialStore, import.meta.hot))
 }

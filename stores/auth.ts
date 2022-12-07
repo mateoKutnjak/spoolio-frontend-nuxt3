@@ -13,7 +13,7 @@ export default interface IUserResponse {
     profile: IProfileResponse | undefined
 }
 
-interface IProfileResponse {
+export interface IProfileResponse {
     id: number,
     first_name: string,
     last_name: string,

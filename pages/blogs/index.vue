@@ -31,7 +31,7 @@
             :key="blog.id"
             v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
           >
-            <BlogListTileGridCard :blog="blog" />
+            <BlogListTileGridCard :item="blog" />
           </div>
         </div>
       </div>

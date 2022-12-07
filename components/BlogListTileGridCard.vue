@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/blogs/${blogItem.id}`">
+  <NuxtLink :to="`/blogs/${item.id}`">
     <div class="card rounded-sm shadow-md">
       <img
         src="https://api.lorem.space/image/album?w=500&h=400"
@@ -9,7 +9,7 @@
         <div class="flex justify-between text-gray-500">
           <div class="flex gap-1 items-center text-lg">
             <div>
-              {{blogItem?.author.profile?.first_name || "null"}} {{blogItem?.author.profile?.last_name || "null"}}
+              {{item?.author.profile?.first_name || "null"}} {{item?.author.profile?.last_name || "null"}}
             </div>
             <Icon
               name="ci:dot-02-s"
@@ -17,7 +17,7 @@
               aria-hidden="true"
             />
             <div>
-              {{reformatDate(blogItem?.created_at)}}
+              {{reformatDate(item?.created_at)}}
             </div>
           </div>
           <div
@@ -92,7 +92,7 @@
 </template>
   
   <script lang="ts" setup>
-const { blog: blogItem } = defineProps(["blog"]); // props
+const { item } = defineProps(["item"]); // props
 </script>
   
   <style>

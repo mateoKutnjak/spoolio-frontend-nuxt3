@@ -15,39 +15,31 @@ export interface IPrintOrderAttachmentImageResponse {
 export interface IPrintOrderUnitResponse {
     comment: string,
     quantity: number,
-    color: string,
-    material: string,
+    color: number, // color id
+    material: number, // material id
     infill: number,
     file: File,
+    localUrl: string,
     estimatedPrice: number,
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
+    order: number | undefined,
 }
 
-interface IPrintOrderResponse {
+export interface IPrintOrderResponse {
+    id: number,
     units: IPrintOrderUnitResponse[],
     comment: string,
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
+    user_profile: number,
 }
-
-// interface IPrintOrderListResponse {
-//     count: number,
-//     next: string,
-//     previous: string,
-//     results: IPrintOrderUnitResponse[]
-// }
 
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
         units: [] as IPrintOrderUnitResponse[],
         attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
         attachmentImages: [] as IPrintOrderAttachmentImageResponse[],
-
-        // count: undefined as number | undefined,
-        // next: undefined as string | undefined,
-        // previous: undefined as string | undefined,
-        // printOrders: [] as IPrintOrderResponse[]
     }),
 
     getters: {
@@ -57,57 +49,90 @@ export const usePrintOrderStore = defineStore('print-order', {
     },
 
     actions: {
-        // async fetchConstants() {
-        //     return promiseWithTimeout(new Promise((resolve, reject) => {
-        //         $fetch<IPrintOrderColor[]>('http://localhost:8000/api/print-orders/colors/', {
-        //             method: 'GET',
-        //         }).then((response: IPrintnOrderColor[]) {
-        //             this.colors = response;
-        //             resolve(response);
-        //         }).catch((err) => {
-        //             alert(err);
-        //             reject(err);
-        //         })
-        //     }), 5000);
-        // }
 
-        
-        // async createPrintOrder(email: string, firstName: string, lastName: string, address: string, phoneNumber: string, comment: string = '') {
-        //     return new Promise((resolve, reject) => {
-        //         $fetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/', {
-        //             method: 'POST',
-        //             body: {
-        //                 user_profile: {
-        //                     email: email,
-        //                     first_name: firstName,
-        //                     last_name: lastName,
-        //                     address: address,
-        //                     phone_number: phoneNumber,
-        //                 },
-        //                 comment: comment,
-        //             }
-        //         }).then((response: IPrintOrderUnitResponse) => {
-        //             this.createdPrintOrder = response;
-        //             resolve(response)
-        //         }).catch(err => {
-        //             console.log(err);
-        //             reject(err)
-        //         });
-        //     });
-        // },
+        async postOrder(order: IPrintOrderResponse): Promise<IPrintOrderResponse> {
+
+            return new Promise<IPrintOrderResponse>((resolve, reject) => {
+                $fetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
+                    method: 'POST',
+                    body: order,
+                }).then((response: IPrintOrderResponse) => {
+                    // this.createdPrintOrder = response;
+                    resolve(response)
+                }).catch(err => {
+                    console.log(err);
+                    reject(err)
+                });
+            });
+        },
+
+        async postOrderUnit(unit: IPrintOrderUnitResponse) {
+
+            var formData = new FormData();
+            formData.append("comment", unit.comment);
+            formData.append("color", unit.color.toString());
+            formData.append("material", unit.material.toString());
+            formData.append("infill", unit.infill.toString());
+            formData.append("file", unit.file);
+            formData.append('quantity', unit.quantity.toString());
+            formData.append("estimatedPrice", unit.estimatedPrice.toString());
+            // formData.append('attache')
+            // todo attached files
+            // todo attached images
+
+            // todo what to do with this
+            formData.append("order", unit.order?.toString() || '-1');
+
+            return new Promise((resolve, reject) => {
+                $fetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
+                    method: 'POST',
+                    body: formData,
+                }).then((response: IPrintOrderUnitResponse) => {
+                    // this.createdPrintOrder = response;
+                    resolve(response)
+                }).catch(err => {
+                    console.log(err);
+                    reject(err)
+                });
+            });
+        },
 
         addUnit(unit: IPrintOrderUnitResponse) {
             this.units.push(unit);
         },
 
-        removeUnit(unit: IPrintOrderUnitResponse) {
-            var index = this.units.reverse().indexOf(unit);
+        updateUnit(localUrl: string, fieldUpdate: any) {
 
-            if (index > -1)
-            {
+            //todo check if field exist in unit 
+            // todo check if value is of good type
+
+            const index = this.units.findIndex(el => el.localUrl === localUrl);
+
+            if (index != -1) {
+                const unit = this.units[index];
+
+                const updatedUnit = Object.assign(unit, fieldUpdate)
+
+                this.units[index] = updatedUnit;
+            }
+        },
+
+        removeUnit(unit: IPrintOrderUnitResponse) {
+            var index = this.units.findIndex(el => el.localUrl === unit.localUrl);
+
+            if (index > -1) {
+                this.units = this.units.splice(index, 1);
+            } else {
+                console.error("Item not found among order units");
+            }
+        },
+
+        removeUnitByFileLocalUrl(fileLocalUrl: string) {
+            var index = this.units.findIndex(el => el.localUrl === fileLocalUrl);
+
+            if (index > -1) {
                 this.units.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among order units");
             }
         },
@@ -119,11 +144,9 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentFile(attachmentFile: IPrintOrderAttachmentFileResponse) {
             var index = this.attachmentFiles.map((el) => el.file).indexOf(attachmentFile.file);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.attachmentFiles.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among attached files");
             }
         },
@@ -135,44 +158,15 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentImage(attachmentImage: IPrintOrderAttachmentImageResponse) {
             var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.attachmentImages.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among attached images");
             }
         },
-
-
-        // async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-        //     return new Promise((resolve, reject) => {
-        //         $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
-        //             method: 'GET'
-        //         }
-        //         ).then((response: IBlogListResponse) => {
-        //             this.count = response.count;
-        //             this.next = response.next;
-        //             this.previous = response.previous;
-
-        //             if (append) {
-        //                 this.blogs = [...this.blogs, ...response.results];
-        //             } else {
-        //                 this.blogs = response.results;
-        //             }
-
-        //             resolve(response)
-        //         }).catch(err => {
-        //             // ! needs proper error handling
-        //             alert("TODO error handling")
-        //             reject(err)
-        //         })
-        //     })
-        // },
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(usePrintOrderStore, import.meta.hot))
 }

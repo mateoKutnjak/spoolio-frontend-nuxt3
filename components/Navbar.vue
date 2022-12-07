@@ -28,15 +28,16 @@
           </li>
         </ul>
       </div>
-      <a class="btn btn-ghost">
-        <NuxtLink to="/">
-          <nuxt-img
-            width="112px"
-            src="/img/logo-primary.svg"
-            alt="logo"
-          />
-        </NuxtLink>
-      </a>
+      <NuxtLink
+        to="/"
+        class="btn btn-ghost"
+      >
+        <nuxt-img
+          width="112px"
+          src="/img/logo-primary.svg"
+          alt="logo"
+        />
+      </NuxtLink>
 
     </div>
     <div class="navbar-center hidden lg:flex">
