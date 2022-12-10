@@ -1,18 +1,17 @@
 <template>
   <div class="container p-12">
-    <div class="pb-12 pt-3 flex gap-3 justify-between">
+    <div class="pb-12 pt-3 flex flex-col md:flex-row gap-3 justify-between">
       <div class="text-4xl font-bold">Projects</div>
-
       <SearchBar
         placeholder="Search projects"
         @submit-search-phrase="onSearch"
       />
       <div
         v-if="user?.is_staff || false"
-        class="grid place-items-center"
+        class="grid place-items-stretch"
       >
         <NuxtLink to="/blogs/create">
-          <button class="btn btn-outline btn-accent gap-2">
+          <button class="btn btn-outline btn-accent btn-block gap-2">
             <Icon
               name="material-symbols:add"
               size="20"

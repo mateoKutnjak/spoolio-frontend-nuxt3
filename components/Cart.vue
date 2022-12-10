@@ -30,15 +30,13 @@
           </li>
         </div>
         <div v-else>
-          <div class="flex h-screen justify-center items-center gap-2">
-            <div class="text-center ">
-              <Icon
-                name="material-symbols:remove-shopping-cart-outline-rounded"
-                size="30"
-                aria-hidden="true"
-              />
-              <p>Your cart is empty</p>
-            </div>
+          <div class="flex flex-col h-screen justify-center items-center gap-1">
+            <Icon
+              name="ph:shopping-cart"
+              size="30"
+              aria-hidden="true"
+            />
+            <p>Your cart is empty</p>
           </div>
         </div>
       </ul>

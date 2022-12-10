@@ -4,7 +4,7 @@
       <input
         type="text"
         placeholder="Search…"
-        class="input input-bordered"
+        class="input input-bordered btn-block"
         v-model="input"
       />
       <button class="btn btn-primary">
