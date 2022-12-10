@@ -55,6 +55,7 @@ const submitHandler = async () => {
     .postComment(Number(authStore.getUser?.id), Number(blogId), content.value)
     .then(() => {
       notificationStore.show("Comment posted", ToastLevel.success());
+      content.value = "";
     })
     .catch((err) => {
       notificationStore.show(err, ToastLevel.error());
