@@ -5,7 +5,7 @@
       class="relative inline-block text-left"
     >
       <div>
-        <MenuButton class="btn btn-ghost">
+        <MenuButton class="btn btn-ghost btn-square">
           <Icon
             name="material-symbols:menu"
             class="block h-6 w-6"
