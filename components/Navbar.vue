@@ -1,33 +1,10 @@
 <template>
   <div class="navbar bg-base-100">
     <div class="navbar-start">
-      <div class="dropdown">
-
-        <label
-          tabindex="0"
-          class="btn btn-ghost btn-square lg:hidden"
-        >
-          <Icon
-            name="material-symbols:menu"
-            class="block h-6 w-6"
-            aria-hidden="true"
-          />
-        </label>
-        <ul
-          tabindex="0"
-          class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-        >
-          <li tabindex="0">
-            <NuxtLink
-              v-for="item in navigation"
-              :key="item.name"
-              :to="`${item.to}`"
-            >
-              {{ item.name }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
+      <NavbarNavigationDropdown
+        class="lg:hidden"
+        :navigation="navigation"
+      />
       <NuxtLink
         to="/"
         class="btn btn-ghost"
@@ -38,7 +15,6 @@
           alt="logo"
         />
       </NuxtLink>
-
     </div>
     <div class="navbar-center hidden lg:flex">
       <NuxtLink
@@ -88,130 +64,18 @@
             >{{getItems.length}}</span>
 
             <Icon
-              name="material-symbols:shopping-cart-outline-rounded"
+              name="ph:shopping-cart-duotone"
               size="27"
               aria-hidden="true"
             />
           </div>
         </button>
-
-        <div
-          v-if="getUser"
-          class="dropdown dropdown-end"
-        >
-
-          <label
-            tabindex="0"
-            class="btn btn-ghost btn-square bg-transparent hover:bg-transparent"
-          >
-            <div class="avatar">
-              <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <nuxt-img src="https://placeimg.com/192/192/people" />
-              </div>
-            </div>
-          </label>
-          <ul
-            tabindex="0"
-            class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <div>
-              <li class="">
-                <a class="flex gap-3">
-                  <Icon
-                    name="material-symbols:mail"
-                    size="20"
-                    aria-hidden="true"
-                  /> {{getUser.email}}
-                </a>
-              </li>
-            </div>
-            <div class="divider h-0 pl-4 pr-4"></div>
-            <div>
-              <li>
-                <NuxtLink to="/profile/order-history/">
-                  <a class="flex gap-3">
-                    <Icon
-                      name="material-symbols:receipt-long"
-                      size="20"
-                      aria-hidden="true"
-                    />
-                    Order history
-                  </a>
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink to="/profile/">
-                  <a class="flex gap-3">
-                    <Icon
-                      name="material-symbols:person"
-                      size="20"
-                      aria-hidden="true"
-                    />
-                    Profile
-                  </a>
-                </NuxtLink>
-              </li>
-              <li>
-                <a
-                  class="flex gap-3"
-                  @click="logout"
-                >
-                  <Icon
-                    name="material-symbols:logout"
-                    size="20"
-                    aria-hidden="true"
-                  />
-                  Logout
-                </a>
-              </li>
-            </div>
-          </ul>
-
-        </div>
-        <div
-          v-else
-          class="dropdown dropdown-end"
-        >
-          <label tabindex="
-          0">
-            <div class="btn btn-ghost btn-square">
-              <Icon
-                name="material-symbols:person-outline"
-                size="30"
-                aria-hidden="true"
-              />
-            </div>
-          </label>
-          <ul
-            tabindex="0"
-            class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <div>
-              <li>
-                <a @click="isLoginDialogShown=true">
-                  <Icon
-                    name="material-symbols:person-outline"
-                    size="20"
-                    aria-hidden="true"
-                  />
-                  Login
-                </a>
-              </li>
-              <li>
-                <a @click="isRegisterDialogShown=true">
-                  <Icon
-                    name="material-symbols:logout"
-                    size="20"
-                    aria-hidden="true"
-                  />
-                  Sign Up
-                </a>
-              </li>
-            </div>
-          </ul>
-        </div>
+        <NavbarProfileDropdown
+          @on-login-pressed="isLoginDialogShown=true"
+          @on-sign-up-pressed="isRegisterDialogShown=true"
+          @on-logout-pressed="authStore.logout()"
+        />
       </div>
-
     </div>
   </div>
 
