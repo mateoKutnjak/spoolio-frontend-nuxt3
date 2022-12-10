@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', {
 
                 // todo check user? nullable
                 $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
-                    method: 'PATCH',
+                    method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     },

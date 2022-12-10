@@ -128,6 +128,18 @@
             <div class="divider h-0 pl-4 pr-4"></div>
             <div>
               <li>
+                <NuxtLink to="/profile/order-history/">
+                  <a class="flex gap-3">
+                    <Icon
+                      name="material-symbols:receipt-long"
+                      size="20"
+                      aria-hidden="true"
+                    />
+                    Order history
+                  </a>
+                </NuxtLink>
+              </li>
+              <li>
                 <NuxtLink to="/profile/">
                   <a class="flex gap-3">
                     <Icon
