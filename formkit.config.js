@@ -2,9 +2,9 @@ import { generateClasses } from '@formkit/themes'
 import { createAutoAnimatePlugin } from '@formkit/addons'
 
 const textClassification = {
-    label: 'block mb-1 font-bold text-sm formkit-invalid:text-red-500',
-    inner: 'max-w-md border border-gray-400 formkit-invalid:border-red-500 rounded-lg mb-1 overflow-hidden focus-within:border-blue-500',
-    input: 'w-full h-10 px-3 border-none text-base text-gray-700 placeholder-gray-400',
+    label: 'block mb-2 text-sm font-medium text-gray-800',
+    inner: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none overflow-hidden',
+    input: 'bg-transparent focus:outline-none',
 }
 const boxClassification = {
     fieldset: 'max-w-md border border-gray-400 rounded-md px-2 pb-1',
