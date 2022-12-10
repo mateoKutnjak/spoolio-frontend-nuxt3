@@ -1,6 +1,6 @@
 <template>
   <div class="container p-12">
-    <div class="pb-12 pt-3 flex flex-col md:flex-row gap-3 justify-between">
+    <div class="pb-12 pt-3 flex flex-col md:flex-row gap-6 justify-between">
       <div class="text-4xl font-bold">Projects</div>
       <SearchBar
         placeholder="Search projects"
