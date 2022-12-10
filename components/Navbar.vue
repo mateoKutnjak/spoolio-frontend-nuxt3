@@ -65,7 +65,7 @@
 
             <Icon
               name="ph:shopping-cart-duotone"
-              size="27"
+              size="30"
               aria-hidden="true"
             />
           </div>
