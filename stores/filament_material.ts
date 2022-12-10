@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
+import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
 export interface IFilamentMaterial {
     id: number,
@@ -28,7 +29,7 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
                     alert(err);
                     reject(err);
                 })
-            }), 5000);
+            }), HTTP_REQUEST_TIMEOUT);
         }
     },
 })

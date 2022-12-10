@@ -40,7 +40,7 @@ const submitted = ref(false);
 
 const submitHandler = async () => {
   // This delay is here only because of progress indicator button
-  await new Promise((r) => setTimeout(r, 1000));
+  // await new Promise((r) => setTimeout(r, 1000));
 
   submitted.value = true;
 

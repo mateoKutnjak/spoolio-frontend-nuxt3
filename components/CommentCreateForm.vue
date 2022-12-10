@@ -20,14 +20,14 @@
 </template>
   
   <script lang="ts" setup>
+import { useCommentListStore } from "~~/stores/commentList";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
-import { useCommentStore } from "../stores/comment";
 
 const { blogId } = defineProps(["blogId"]);
 
 const authStore = useAuthStore();
-const commentStore = useCommentStore();
+const commentStore = useCommentListStore();
 const notificationStore = useNotificationStore();
 
 const content = ref<string>(""); // FormKit - cannot be wuthout args - undefined
@@ -48,16 +48,11 @@ const submitHandler = async () => {
 
   commentPostingInProgress.value = true;
 
-  await new Promise((r) => setTimeout(r, 1000));
+  // await new Promise((r) => setTimeout(r, 1000));
 
   submitted.value = true;
   commentStore
-    .postComment(
-      authStore.accessToken,
-      Number(authStore.getUser?.id),
-      Number(blogId),
-      content.value
-    )
+    .postComment(Number(authStore.getUser?.id), Number(blogId), content.value)
     .then(() => {
       notificationStore.show("Comment posted", ToastLevel.success());
     })

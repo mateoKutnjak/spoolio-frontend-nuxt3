@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
+import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
 export interface IFilamentInfill {
     id: number,
@@ -27,7 +28,7 @@ export const useFilamentInfillStore = defineStore('filament-infill', {
                     alert(err);
                     reject(err);
                 })
-            }), 5000);
+            }), HTTP_REQUEST_TIMEOUT);
         }
     },
 })
