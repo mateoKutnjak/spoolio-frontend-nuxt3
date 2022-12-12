@@ -118,7 +118,7 @@ const getItems = computed(() => {
 
 const navigation = [
   { name: "projects", to: "/blogs" },
-  { name: "order parts", to: "/job-order" },
+  { name: "services", to: "/services" },
   { name: "store", to: "/store" },
   { name: "about", to: "/about" },
 ];
