@@ -13,7 +13,7 @@
           :look-at="{x: 0, y: 0, z: 0}"
         />
         <Scene
-          :background="'#E8E6DE'"
+          :background="'#FFFFFF'"
           ref="scene"
         >
           <PointLight :position="{x: 50, y: 50, z: 50 }" />

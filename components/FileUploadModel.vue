@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-base-100 shadow-md border-4 border-gray-300 p-8">
+  <div class="card bg-base-100 shadow-lg border-2 border-gray-400 p-8">
     <div class="flex flex-col gap-5">
       <div class="flex gap-5 justify-between text-gray-800">
         <div class="flex gap-3">
@@ -41,9 +41,7 @@
       <div class="grid grid-cols-2 gap-8">
         <ClientOnly>
           <button>
-            <PreviewSTL
-              :stlFileUrl="data.localUrl"
-            />
+            <PreviewSTL :stlFileUrl="data.localUrl" />
           </button>
         </ClientOnly>
         <div>
