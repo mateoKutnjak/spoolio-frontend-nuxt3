@@ -25,6 +25,9 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
+    build: {
+        transpile: ['troisjs', 'three']
+    },
     app: {
         head: {
             title: "Spoolio",

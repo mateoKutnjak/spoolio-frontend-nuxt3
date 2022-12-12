@@ -39,16 +39,13 @@
         </div>
       </div>
       <div class="grid grid-cols-2 gap-8">
-        <button>
-          <figure>
-            <img
-              src="https://placeimg.com/400/300/arch"
-              alt="file"
-              class="rounded"
+        <ClientOnly>
+          <button>
+            <PreviewSTL
+              :stlFileUrl="data.localUrl"
             />
-          </figure>
-        </button>
-
+          </button>
+        </ClientOnly>
         <div>
           <div class="form-control w-full max-w-xs">
             <label class="label p-1">
@@ -225,8 +222,6 @@ onMounted(() => {
   colors.value = filamentColorStore.getFilamentColors;
   materials.value = filamentMaterialStore.getFilamentMaterials;
   infills.value = filamentInfillStore.getFilamentInfills;
-
-  console.log("data.attachedFiles" + data.attachedFiles);
 
   selectedColor.value = data.color;
   selectedMaterial.value = data.material;
