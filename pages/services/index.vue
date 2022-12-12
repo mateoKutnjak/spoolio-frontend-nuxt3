@@ -1,5 +1,6 @@
 <template>
-  <div class="container p-12">
+  <div class="container px-12 py-6">
+    <Breadcrumbs />
     <div class="flex flex-col gap-12">
       <div>
         <div class="text-4xl font-bold">3d services</div>

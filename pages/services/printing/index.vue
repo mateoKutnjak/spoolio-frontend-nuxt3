@@ -1,5 +1,6 @@
 <template>
-  <div class="container p-12">
+  <div class="container px-12 py-6">
+    <Breadcrumbs />
     <div class="pb-32">
 
       <div class="relative flex flex-col justify-center py-8">
