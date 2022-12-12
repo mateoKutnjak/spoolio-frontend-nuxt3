@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white z-10">
+  <div class="z-10">
     <Menu
       as="div"
       class="relative inline-block text-left"

@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-base-100">
+  <div class="navbar">
     <div class="navbar-start">
       <NavbarNavigationDropdown
         class="lg:hidden"

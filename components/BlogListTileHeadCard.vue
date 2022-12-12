@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="`/blogs/${blog.id}`">
-    <div class="card lg:card-side rounded-sm shadow-md">
+    <div class="card lg:card-side rounded-sm shadow-md bg-white">
       <img
         src="https://api.lorem.space/image/album?w=500&h=400"
         alt="Album"

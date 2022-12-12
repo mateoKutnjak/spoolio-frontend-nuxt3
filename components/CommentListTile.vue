@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex bg-white">
     <div class="flex-shrink-0 mr-3">
       <img
         class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10"
