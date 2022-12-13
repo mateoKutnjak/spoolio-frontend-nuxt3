@@ -29,7 +29,10 @@ if (currentRoute !== "/") {
   pathChunks.forEach((value: string, index: number) => {
     crumbs.value.push({
       name: value,
-      path: crumbs.value[crumbs.value.length - 1].path + value,
+      path:
+        crumbs.value[crumbs.value.length - 1].path +
+        value +
+        (value.charAt(value.length - 1) === "/" ? "" : "/"),
     });
   });
 }
@@ -43,7 +46,10 @@ watch(router.currentRoute, (value, oldValue, onInvalidated) => {
     pathChunks.forEach((value: string, index: number) => {
       crumbs_copy.push({
         name: value,
-        path: crumbs_copy[crumbs_copy.length - 1].path + value,
+        path:
+          crumbs_copy[crumbs_copy.length - 1].path +
+          value +
+          (value.charAt(value.length - 1) === "/" ? "" : "/"),
       });
     });
   }
