@@ -1,8 +1,10 @@
 <template>
   <div class="container px-12 py-6">
     <div class="pb-32">
-      <h1 class="text-4xl font-bold">3d printing</h1>
-      <h2>Upload files you want us to print</h2>
+      <div class="flex flex-col gap-1">
+        <h1 class="text-4xl font-bold">3d printing</h1>
+        <h2>Upload files you want us to print</h2>
+      </div>
       <div class="relative flex flex-col justify-center py-8">
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
           <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

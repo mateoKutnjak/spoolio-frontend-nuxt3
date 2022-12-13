@@ -1,7 +1,7 @@
 <template>
   <div class="container px-12 py-6">
     <div class="flex flex-col gap-12">
-      <div>
+      <div class="flex flex-col gap-1">
         <div class="text-4xl font-bold">3d services</div>
         <div class="text-md">Choose which 3d service you require</div>
       </div>
