@@ -1,14 +1,9 @@
 <template>
   <div class="container px-12 py-6">
-    <Breadcrumbs />
     <div class="pb-32">
-
+      <h1 class="text-4xl font-bold">3d printing</h1>
+      <h2>Upload files you want us to print</h2>
       <div class="relative flex flex-col justify-center py-8">
-
-        <div class="text-2xl py-6">
-          Parts
-        </div>
-
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
           <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           </table>
@@ -23,47 +18,51 @@
           </div>
         </div>
 
-        <div class="divider h-0"></div>
+        <div v-if="false">
 
-        <div class="text-2xl py-6">
-          Images
-        </div>
+          <div class="divider h-0"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <div
-            v-for="attachmentImage in attachmentImages"
-            :key="attachmentImage.localUrl"
-            class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
-          >
-            <FileUploadImage
-              :imageFile="attachmentImage.image"
-              :imageFileUrl="attachmentImage.localUrl"
-              @on-remove-file="removeImage(attachmentImage.image)"
-              @on-preview-file="previewFile(attachmentImage.image)"
-            />
+          <div class="text-2xl py-6">
+            Images
           </div>
-        </div>
 
-        <div class="divider h-0"></div>
-
-        <div class="text-2xl py-6">
-          Attachments
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-          <div
-            v-for="attachmentFile in attachmentFiles"
-            :key="attachmentFile.localUrl"
-            class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
-          >
-            <FileUploadPDF
-              class="flex-1"
-              :pdf-filename="attachmentFile.file.name"
-              :uploadedFileUrl="attachmentFile.localUrl"
-              @on-remove-file="removeFile(attachmentFile.file)"
-              @on-preview-file="previewFile(attachmentFile.file)"
-            />
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div
+              v-for="attachmentImage in attachmentImages"
+              :key="attachmentImage.localUrl"
+              class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
+            >
+              <FileUploadImage
+                :imageFile="attachmentImage.image"
+                :imageFileUrl="attachmentImage.localUrl"
+                @on-remove-file="removeImage(attachmentImage.image)"
+                @on-preview-file="previewFile(attachmentImage.image)"
+              />
+            </div>
           </div>
+
+          <div class="divider h-0"></div>
+
+          <div class="text-2xl py-6">
+            Attachments
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div
+              v-for="attachmentFile in attachmentFiles"
+              :key="attachmentFile.localUrl"
+              class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
+            >
+              <FileUploadPDF
+                class="flex-1"
+                :pdf-filename="attachmentFile.file.name"
+                :uploadedFileUrl="attachmentFile.localUrl"
+                @on-remove-file="removeFile(attachmentFile.file)"
+                @on-preview-file="previewFile(attachmentFile.file)"
+              />
+            </div>
+          </div>
+
         </div>
 
       </div>
