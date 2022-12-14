@@ -26,14 +26,16 @@ const crumbs = ref([{ name: "home", path: "/" }]);
 if (currentRoute !== "/") {
   const pathChunks = currentRoute.substring(1).split("/");
 
-  pathChunks.forEach((value: string, index: number) => {
-    crumbs.value.push({
-      name: value,
-      path:
-        crumbs.value[crumbs.value.length - 1].path +
-        value +
-        (value.charAt(value.length - 1) === "/" ? "" : "/"),
-    });
+  pathChunks.forEach((chunk: string, index: number) => {
+    if (chunk) {
+      crumbs.value.push({
+        name: chunk,
+        path:
+          crumbs.value[crumbs.value.length - 1].path +
+          chunk +
+          (chunk.endsWith("/") ? "" : "/"),
+      });
+    }
   });
 }
 
@@ -43,14 +45,16 @@ watch(router.currentRoute, (value, oldValue, onInvalidated) => {
   if (value.fullPath !== "/") {
     const pathChunks = value.fullPath.substring(1).split("/");
 
-    pathChunks.forEach((value: string, index: number) => {
-      crumbs_copy.push({
-        name: value,
-        path:
-          crumbs_copy[crumbs_copy.length - 1].path +
-          value +
-          (value.charAt(value.length - 1) === "/" ? "" : "/"),
-      });
+    pathChunks.forEach((chunk: string, index: number) => {
+      if (chunk) {
+        crumbs_copy.push({
+          name: chunk,
+          path:
+            crumbs_copy[crumbs_copy.length - 1].path +
+            chunk +
+            (chunk.endsWith("/") ? "" : "/"),
+        });
+      }
     });
   }
   crumbs.value = [...crumbs_copy];
