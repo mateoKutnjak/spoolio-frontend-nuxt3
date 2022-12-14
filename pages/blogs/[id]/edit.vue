@@ -8,7 +8,7 @@
       @submit="submitHandler"
       :actions="false"
     >
-      <div class="card-body justify-center flex flex-col">
+      <div class="flex flex-col">
 
         <FormKit
           type="text"
@@ -37,12 +37,10 @@
           validation="required"
           validation-visibility="blur"
         /> -->
-          <div class="flex">
-            <textarea
-              class="flex-1 source bg-gray-100 overflow-y h-screen"
-              v-model="blogContent"
-            />
-          </div>
+          <textarea
+            class="flex-1 source bg-gray-100 overflow-y h-screen p-4"
+            v-model="blogContent"
+          />
 
           <div>
             <div
@@ -51,7 +49,7 @@
             ></div>
           </div>
         </div>
-        <div class="card-actions justify-end">
+        <div class="card-actions justify-center py-12">
           <FormKit
             type="submit"
             label="Update post"

@@ -63,8 +63,14 @@
           class="justify-end"
         />
       </div>
-      <div class="flex flex-col ">
-        <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
+      <div
+        v-if="getComments.comments.length > 0"
+        class="flex flex-col "
+      >
+        <h3
+          v0if
+          class="mb-4 text-lg font-semibold text-gray-900"
+        >Comments</h3>
         <div class="space-y-4">
           <div
             :key="comment.id"
@@ -74,6 +80,12 @@
           </div>
         </div>
 
+      </div>
+      <div
+        v-else
+        class="flex justify-center italic"
+      >
+        No comments yet
       </div>
     </div>
   </div>
