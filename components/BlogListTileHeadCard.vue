@@ -50,8 +50,8 @@
         </div>
         <div>
           <div class="pt-4 pb-6">
-            <h2 class="card-title text-4xl pb-3">New album is released!</h2>
-            <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, quasi odio. Nostrum nemo beatae fuga nihil, pariatur atque saepe sapiente! Illo soluta accusantium unde ipsam doloribus. Quibusdam officia possimus nesciunt?</p>
+            <h2 class="card-title text-4xl pb-3">{{blog.title}}</h2>
+            <p class="text-gray-600">{{blog.subtitle}}</p>
           </div>
           <div class="card-actions justify-end ">
             <div class="card-actions gap-0 justify-end text-gray-700">
