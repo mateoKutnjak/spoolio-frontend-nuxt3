@@ -62,16 +62,7 @@
                     name="mdi:cards-heart-outline"
                     size="20"
                     aria-hidden="true"
-                  />1234
-                </div>
-              </button>
-              <button class="btn btn-ghost btn-sm">
-                <div class="flex gap-2 items-center">
-                  <Icon
-                    name="ic:baseline-remove-red-eye"
-                    size="20"
-                    aria-hidden="true"
-                  />98765
+                  />{{blog.like_count || ''}}
                 </div>
               </button>
               <button class="btn btn-ghost btn-sm">
@@ -80,7 +71,7 @@
                     name="material-symbols:comment"
                     size="20"
                     aria-hidden="true"
-                  />98765
+                  />{{blog.comment_count || ''}}
                 </div>
               </button>
             </div>

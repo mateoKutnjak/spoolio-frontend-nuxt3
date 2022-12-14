@@ -1,10 +1,10 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import IUserResponse from './auth'
 
-export default interface ICommentResponse {
+interface ICommentResponse {
     id: number,
     content: string,
-    author: IUserResponse,
+    user: IUserResponse,
     created_at: string,
     updated_at: string,
 }

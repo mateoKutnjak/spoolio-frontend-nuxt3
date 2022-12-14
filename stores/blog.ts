@@ -7,6 +7,8 @@ export default interface IBlogResponse {
     subtitle: string,
     content: string,
     author: IUserResponse,
+    likes_count: number,
+    comment_count: number,
     created_at: string,
     updated_at: string,
 }

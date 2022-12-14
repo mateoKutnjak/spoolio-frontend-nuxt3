@@ -8,7 +8,7 @@
       >
     </div>
     <div class="flex-1 border bg-white rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-      <strong>{{(comment.author.profile?.first_name || 'null')}} {{comment.author.profile?.first_name || 'null'}}</strong> <span class="text-xs text-gray-400">{{reformatDate(comment.created_at)}}</span>
+      <strong>{{(comment.user.profile?.first_name || 'null')}} {{comment.user.profile?.last_name || 'null'}}</strong> <span class="text-xs text-gray-400">{{reformatDate(comment.created_at)}}</span>
       <p class="text-sm">
         {{comment.content}}
       </p>

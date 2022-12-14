@@ -119,5 +119,4 @@ const authStore = useAuthStore();
 const getUser = computed(() => {
   return authStore.getUser;
 });
-console.log("asdasd");
 </script>

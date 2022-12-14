@@ -83,7 +83,7 @@
     <script lang="ts" setup>
 import IBlogResponse, { useBlogStore } from "~/stores/blog";
 import IUserResponse, { useAuthStore } from "~~/stores/auth";
-import ICommentResponse from "~~/stores/comment";
+import ICommentResponse from "~~/stores/commentList";
 import { useCommentListStore } from "~~/stores/commentList";
 
 const { id } = useRoute().params;

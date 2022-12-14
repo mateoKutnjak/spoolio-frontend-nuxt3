@@ -20,7 +20,7 @@
 </template>
   
   <script lang="ts" setup>
-import { useCommentListStore } from "~~/stores/commentList";
+import ICommentResponse, { useCommentListStore } from "~~/stores/commentList";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
 
@@ -48,11 +48,13 @@ const submitHandler = async () => {
 
   commentPostingInProgress.value = true;
 
-  // await new Promise((r) => setTimeout(r, 1000));
-
   submitted.value = true;
   commentStore
-    .postComment(Number(authStore.getUser?.id), Number(blogId), content.value)
+    .postBlogComment(
+      Number(authStore.getUser?.id),
+      content.value,
+      Number(blogId)
+    )
     .then(() => {
       notificationStore.show("Comment posted", ToastLevel.success());
       content.value = "";

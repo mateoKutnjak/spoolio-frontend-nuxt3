@@ -1,12 +1,14 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
+import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { promiseWithTimeout } from '~~/utils/promise'
 import IUserResponse, { useAuthStore } from './auth'
 
 export default interface ICommentResponse {
     id: number,
     content: string,
-    author: IUserResponse,
+    user: IUserResponse | number,
+    content_type: string,
+    object_id: number,
     created_at: string,
     updated_at: string,
 }
@@ -35,7 +37,7 @@ export const useCommentListStore = defineStore('comment-list', {
 
             return promiseWithTimeout<ICommentListResponse>(
                 new Promise<ICommentListResponse>((resolve, reject) => {
-                    $fetch<ICommentListResponse>(`http://localhost:8000/api/comments/?blog=${blog}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    $fetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=blog&object_id=${blog}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
                         method: 'GET',
                     }
                     ).then((response: ICommentListResponse) => {
@@ -62,13 +64,14 @@ export const useCommentListStore = defineStore('comment-list', {
             );
         },
 
-        async postComment(author: number, blog: number, content: string) {
+        async postBlogComment(user: number, content: string, blogId: number, ) {
             const authStore = useAuthStore();
 
             var body: { [name: string]: any } = {
-                author: author,
-                blog: blog,
+                user: user,
                 content: content,
+                content_type: CONTENT_TYPE_BLOG,
+                object_id: blogId,
             };
 
             return promiseWithTimeout(new Promise<ICommentResponse>((resolve, reject) => {
