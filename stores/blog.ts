@@ -7,10 +7,18 @@ export default interface IBlogResponse {
     subtitle: string,
     content: string,
     author: IUserResponse,
-    likes_count: number,
+    like_count: number,
+    liked_by_me: boolean,
     comment_count: number,
     created_at: string,
     updated_at: string,
+}
+
+export interface ILikeResponse {
+    id: number,
+    user: IUserResponse,
+    content_type: string,
+    object_id: number,
 }
 
 export const useBlogStore = defineStore('blog', {

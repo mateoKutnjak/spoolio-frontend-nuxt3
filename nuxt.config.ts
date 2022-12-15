@@ -3,6 +3,7 @@ export default defineNuxtConfig({
     modules: [
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt',
         '@formkit/nuxt',
         'nuxt-icon',
         '@formkit/auto-animate',
@@ -27,6 +28,12 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: ['troisjs', 'three']
+    },
+    piniaPersistedstate: {
+        cookieOptions: {
+            sameSite: 'strict',
+        },
+        storage: 'localStorage'
     },
     app: {
         head: {

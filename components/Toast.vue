@@ -3,7 +3,7 @@
     <Transition>
       <div
         v-show="(notificationState?.isOpened || false)"
-        class="toast toast-bottom toast-end px-12 py-8"
+        class="toast toast-bottom toast-end px-12 py-8 z-50"
       >
         <div
           id="toast-success"

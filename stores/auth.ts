@@ -22,6 +22,8 @@ export interface IProfileResponse {
 }
 
 export const useAuthStore = defineStore('auth', {
+    persist: true,
+
     state: () => ({
         accessToken: undefined as string | undefined,
         refreshToken: undefined as string | undefined,

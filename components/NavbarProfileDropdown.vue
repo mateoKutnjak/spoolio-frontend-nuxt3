@@ -4,22 +4,20 @@
       as="div"
       class="relative inline-block text-left"
     >
-      <div v-if="getUser">
-        <MenuButton class="btn btn-ghost btn-square avatar bg-transparent hover:bg-transparent">
-          <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+      <MenuButton class="btn btn-ghost btn-square avatar bg-transparent hover:bg-transparent">
+        <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+          <div v-if="user">
             <nuxt-img src="https://placeimg.com/192/192/people" />
           </div>
-        </MenuButton>
-      </div>
-      <div v-else>
-        <MenuButton class="btn btn-ghost btn-square">
-          <Icon
-            name="ph:user-duotone"
-            size="30"
-            aria-hidden="true"
-          />
-        </MenuButton>
-      </div>
+          <div v-else>
+            <Icon
+              name="ph:user-duotone"
+              size="30"
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </MenuButton>
 
       <transition
         enter-active-class="transition duration-100 ease-out"
@@ -32,7 +30,7 @@
         <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
 
           <div
-            v-if="!getUser"
+            v-if="!user"
             class="px-2 py-2"
           >
             <MenuItem
@@ -111,12 +109,13 @@
   
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { storeToRefs } from "pinia";
 
 import { useAuthStore } from "../stores/auth";
 
 const authStore = useAuthStore();
 
-const getUser = computed(() => {
-  return authStore.getUser;
-});
+const { user } = storeToRefs(authStore);
+
+watch(user, (value) => console.log(value));
 </script>

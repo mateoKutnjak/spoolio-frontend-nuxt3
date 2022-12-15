@@ -1,5 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import IBlogResponse from './blog'
+import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
+import { useAuthStore } from './auth'
+import IBlogResponse, { ILikeResponse } from './blog'
 
 interface IBlogListResponse {
     count: number,
@@ -23,8 +25,8 @@ export const useBlogListStore = defineStore('blog-list', {
     actions: {
         async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
             return new Promise((resolve, reject) => {
-                $fetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
-                    method: 'GET'
+                customFetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    method: 'GET',
                 }
                 ).then((response: IBlogListResponse) => {
                     this.count = response.count;
@@ -44,6 +46,39 @@ export const useBlogListStore = defineStore('blog-list', {
                     reject(err)
                 })
             })
+        },
+
+        async toggleLike(accessToken: string, blogId: number) {
+            const authStore = useAuthStore();
+
+            // todo check if user data exists
+
+            return promiseWithTimeout<ILikeResponse>(
+                new Promise<ILikeResponse>((resolve, reject) => {
+                    var body: { [name: string]: any } = {
+                        object_id: blogId,
+                        content_type: CONTENT_TYPE_BLOG,
+                        user: authStore.getUser?.id
+                    };
+
+                    customFetch<ILikeResponse>(`http://localhost:8000/api/likes/toggle/?content_type=blog&object_id=${blogId}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                        method: 'POST',
+                        body: body,
+                    }
+                    ).then((response) => {
+                        this.blogs.filter((el) => el.id === blogId).forEach(el => {
+                            el.liked_by_me = Boolean(response);
+                            el.like_count = Boolean(response) ? el.like_count + 1 : el.like_count - 1;
+                        });
+                        resolve(response)
+                    }).catch(err => {
+                        // ! needs proper error handling
+                        alert("TODO error handling")
+                        reject(err)
+                    })
+                }),
+                HTTP_REQUEST_TIMEOUT,
+            );
         },
     },
 })

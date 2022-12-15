@@ -67,9 +67,13 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
+
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
+
+const { user } = storeToRefs(authStore);
 
 const firstName = ref("");
 const lastName = ref("");
@@ -78,16 +82,16 @@ const phoneNumber = ref("");
 
 const submitted = ref(false);
 
-const getUser = computed(() => {
-  firstName.value = authStore.getUser?.profile?.first_name ?? "";
-  lastName.value = authStore.getUser?.profile?.last_name ?? "";
-  phoneNumber.value = authStore.getUser?.profile?.phone_number ?? "";
-  address.value = authStore.getUser?.profile?.address ?? "";
+onMounted(() => {
+  firstName.value = user.value?.profile?.first_name ?? "";
+  lastName.value = user.value?.profile?.last_name ?? "";
+  phoneNumber.value = user.value?.profile?.phone_number ?? "";
+  address.value = user.value?.profile?.address ?? "";
 
   return authStore.getUser;
 });
 
-watch(getUser, (value, oldValue, onInvalidate) => {
+watch(user, (value, oldValue, onInvalidate) => {
   firstName.value = value?.profile?.first_name ?? "";
   lastName.value = value?.profile?.last_name ?? "";
   phoneNumber.value = value?.profile?.phone_number ?? "";
