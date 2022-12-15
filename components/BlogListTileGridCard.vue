@@ -56,13 +56,18 @@
           <div class="card-actions justify-end">
             <div class="card-actions gap-0 justify-end text-gray-700">
 
-              <button class="btn btn-ghost btn-sm">
-                <div class="flex gap-2 items-center">
+              <button
+                class="btn btn-ghost btn-sm"
+                @click.prevent="toggleLike"
+              >
+                <div class="flex gap-2 items-center ">
                   <Icon
-                    name="mdi:cards-heart-outline"
+                    class="text-red-600"
+                    :name="item.liked_by_me ? 'mdi:cards-heart' : 'mdi:cards-heart-outline'"
                     size="20"
                     aria-hidden="true"
-                  />{{item.like_count || ''}}
+                  />
+                  {{item.like_count || ''}}
                 </div>
               </button>
               <button class="btn btn-ghost btn-sm">
@@ -83,7 +88,24 @@
 </template>
   
   <script lang="ts" setup>
-const { item } = defineProps(["item"]); // props
+import { useAuthStore } from "~~/stores/auth";
+import { useBlogListStore } from "~~/stores/blogList";
+import { useNotificationStore } from "~~/stores/notification";
+
+const authStore = useAuthStore();
+const blogStore = useBlogListStore();
+const notificationStore = useNotificationStore();
+
+const { item } = defineProps(["item"]);
+
+function toggleLike() {
+  if (!authStore.accessToken) {
+    notificationStore.show("Log in to like", ToastLevel.info());
+    return;
+  }
+
+  blogStore.toggleLike(authStore.accessToken!, item.id);
+}
 </script>
   
   <style>

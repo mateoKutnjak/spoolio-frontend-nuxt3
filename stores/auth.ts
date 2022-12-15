@@ -123,6 +123,10 @@ export const useAuthStore = defineStore('auth', {
                 this.refreshToken = undefined
                 this.user = undefined;
             }
+        },
+
+        updateAccessToken(accessToken: string) {
+            this.accessToken = accessToken;
         }
     },
 })
