@@ -1,8 +1,36 @@
 <template>
   <div class="card bg-white shadow-sm rounded-2xl border border-gray-300">
-    <div class="card-body flex flex-col gap-5">
+    <div class="card-body flex flex-col gap-5 py-6">
+      <div class="card-title justify-between">
+        <h1 class="text-lg font-bold ,">{{data.file.name}}</h1>
+        <div class="flex gap-2">
+          <div
+            class="tooltip tooltip-bottom"
+            data-tip="Duplicate"
+          >
+            <div
+              class="btn btn-ghost btn-square btn-sm"
+              @click="duplicateUnit"
+            >
+              <Icon
+                name="material-symbols:content-copy-outline-rounded"
+                size="24"
+              />
+            </div>
+          </div>
+          <div
+            class="btn btn-ghost btn-square btn-sm"
+            @click="removeUnit"
+          >
+            <Icon
+              name="material-symbols:close"
+              size="27"
+            />
+          </div>
+        </div>
+      </div>
       <div class="flex flex-col md:flex-row gap-6">
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 items-center">
           <ClientOnly>
             <button>
               <PreviewSTL2
@@ -11,59 +39,31 @@
               />
             </button>
           </ClientOnly>
+
+          <div>
+            <h1 class="text-xs">TODO 6.4cm x 3.2cm x 15cm</h1>
+          </div>
         </div>
         <div class="flex flex-col gap-2 justify-between">
-          <div class="pl-1">
-            <h1 class="text-lg font-bold">{{data.file.name}}</h1>
-            <h1 class="text-md">TODO model size</h1>
-          </div>
-          <table class="table table-compact ">
+          <table class="table">
             <tbody>
               <!-- row 1 -->
               <tr>
-                <th>Material</th>
-                <td>{{data.material}}</td>
+                <th class="border-transparent">Material</th>
+                <td class="border-transparent">{{data.material}}</td>
               </tr>
               <!-- row 2 -->
               <tr>
-                <th>Infill</th>
-                <td>{{data.infill}}</td>
+                <th class="border-transparent">Infill</th>
+                <td class="border-transparent">{{data.infill}}</td>
               </tr>
               <!-- row 3 -->
               <tr>
-                <th>Color</th>
-                <td>{{data.color}}</td>
+                <th class="border-transparent">Color</th>
+                <td class="border-transparent">{{data.color}}</td>
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="flex-1"></div>
-        <div class="flex flex-col justify-between">
-          <div class="flex gap-2">
-            <div
-              class="tooltip tooltip-bottom"
-              data-tip="Duplicate"
-            >
-              <div
-                class="btn btn-ghost btn-square btn-sm"
-                @click="duplicateUnit"
-              >
-                <Icon
-                  name="material-symbols:content-copy-outline-rounded"
-                  size="24"
-                />
-              </div>
-            </div>
-            <div
-              class="btn btn-ghost btn-square btn-sm"
-              @click="removeUnit"
-            >
-              <Icon
-                name="material-symbols:close"
-                size="27"
-              />
-            </div>
-          </div>
         </div>
       </div>
       <div class="divider h-0 m-0"></div>
