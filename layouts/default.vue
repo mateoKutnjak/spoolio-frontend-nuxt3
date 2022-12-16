@@ -10,7 +10,7 @@
         <Navbar />
         <Toast />
         <div class="flex-1 container mx-auto">
-          <Breadcrumbs class="py-6" />
+          <Breadcrumbs class="pt-6 pb-4 px-12" />
           <slot />
         </div>
       </div>
