@@ -27,8 +27,7 @@ export const useBlogListStore = defineStore('blog-list', {
             return new Promise((resolve, reject) => {
                 customFetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
-                }
-                ).then((response: IBlogListResponse) => {
+                }).then((response: IBlogListResponse) => {
                     this.count = response.count;
                     this.next = response.next;
                     this.previous = response.previous;
