@@ -1,7 +1,7 @@
 <template>
   <div class="container p-12">
     <div class="relative flex flex-col lg:flex-row gap-6">
-      <aside class="lg:flex-1 lg:sticky order-first lg:order-first top-8 h-full">
+      <aside class="lg:flex-none lg:sticky order-first lg:order-first top-8 h-full">
         <div class="flex flex-col gap-5">
           <div
             class="flex w-full h-32 mx-auto"
@@ -35,7 +35,10 @@
 
           <div class="card border border-gray-300 rounded-2xl shadow-sm bg-white">
             <div class="card-body flex gap-5">
-              <div class="text-2xl font-bold text-center">{{units.length}} items</div>
+              <div class="flex gap-1">
+                Estimated completion time:
+                <strong>10 days</strong>
+              </div>
               <button class="btn btn-primary btn-lg gap-1">Order for ${{units.reduce((acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity), 0)}}
               </button>
             </div>
@@ -43,6 +46,10 @@
         </div>
       </aside>
       <div class="lg:flex-1 flex flex-col gap-3 items-center">
+        <div
+          v-if="!units.length"
+          class="m-auto"
+        >Nothing added</div>
         <div
           class="w-full"
           v-for="unit in units"
