@@ -1,6 +1,6 @@
 <template>
   <div class="container p-12">
-    <div class="relative flex flex-col lg:flex-row gap-6">
+    <div class="relative flex flex-col lg:flex-row">
       <aside class="lg:flex-none lg:sticky order-first lg:order-first top-8 h-full">
         <div class="flex flex-col gap-5">
           <div
@@ -45,6 +45,7 @@
           </div>
         </div>
       </aside>
+      <div class="divider divider-horizontal"></div>
       <div class="lg:flex-1 flex flex-col gap-3 items-center">
         <div
           v-if="!units.length"

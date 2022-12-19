@@ -45,22 +45,27 @@
           </div>
         </div>
         <div class="flex flex-col gap-2 justify-between">
-          <table class="table">
+          <table class="table ">
             <tbody>
               <!-- row 1 -->
               <tr>
                 <th class="border-transparent">Material</th>
-                <td class="border-transparent">{{data.material}}</td>
+                <td class="border-transparent text-center">{{data.material}}</td>
               </tr>
               <!-- row 2 -->
               <tr>
                 <th class="border-transparent">Infill</th>
-                <td class="border-transparent">{{data.infill}}</td>
+                <td class="border-transparent text-center">{{data.infill}}</td>
               </tr>
               <!-- row 3 -->
               <tr>
                 <th class="border-transparent">Color</th>
-                <td class="border-transparent">{{data.color}}</td>
+                <td class="border-transparent text-center">
+                  <ColorPickerDropdown
+                    :colors="colors"
+                    @on-color-selected="onColorSelected"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -93,8 +98,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  IFilamentColor,
+import IFilamentColor, {
   useFilamentColorStore,
 } from "~~/stores/filament_color";
 import {
@@ -119,9 +123,11 @@ const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
 
-const colors = ref<IFilamentColor[]>([]);
-const materials = ref<IFilamentMaterial[]>([]);
-const infills = ref<IFilamentInfill[]>([]);
+const colors = ref<IFilamentColor[]>(filamentColorStore.getFilamentColors);
+const materials = ref<IFilamentMaterial[]>(
+  filamentMaterialStore.getFilamentMaterials
+);
+const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
 const selectedMaterial = ref<number>();
 const selectedColor = ref<number>();
@@ -132,10 +138,6 @@ const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 
 onMounted(() => {
-  colors.value = filamentColorStore.getFilamentColors;
-  materials.value = filamentMaterialStore.getFilamentMaterials;
-  infills.value = filamentInfillStore.getFilamentInfills;
-
   selectedColor.value = data.color;
   selectedMaterial.value = data.material;
   selectedInfill.value = data.infill;
@@ -206,6 +208,10 @@ watch(attachmentFiles, (value, oldValue, onInvalidate) => {
 watch(attachmentImages, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(data.localUrl, { attachmentImages: value });
 });
+
+function onColorSelected(color: IFilamentColor) {
+  selectedColor.value = color.id;
+}
 
 function duplicateUnit() {
   printOrderStore.addUnit(<IPrintOrderUnitResponse>{

@@ -1,4 +1,5 @@
 import { useAuthStore } from "~~/stores/auth";
+import { useNotificationStore } from "~~/stores/notification";
 
 interface IRefreshTokenResponse {
     access: string,
@@ -8,7 +9,7 @@ interface IRefreshTokenResponse {
 export const customFetch = $fetch.create({
 
     async onRequest({ request, options }) {
-        
+
         // * Request interception
         // * 
         // * Before every fetch access token verification request is performed
@@ -16,7 +17,9 @@ export const customFetch = $fetch.create({
         // * After successfull token refreshing, original request should be performed
 
         const controller = new AbortController();
+
         const authStore = useAuthStore();
+        const notificationStore = useNotificationStore();
 
         if (!authStore.accessToken) {
             console.log("onRequest interceptor - access token not present");
@@ -40,16 +43,25 @@ export const customFetch = $fetch.create({
                         refresh: authStore.refreshToken
                     }
                 }).then(async (response: IRefreshTokenResponse) => {
-                    
+
                     // * Update new access token to auth store.
-                    
+
                     authStore.updateAccessToken(response.access);
                     console.log("Success. Saving to authStore");
                 }).catch(err => {
+                    if (err.statusCode === 401) {
+
+                        // * Token has expired. Logout
+
+                        authStore.logout();
+                        notificationStore.show('Session expired. Please log in again', ToastLevel.info());
+                    }
 
                     // * Abort request if refreshing token has failed
-                    controller.abort();
-                    console.log(`Error happened. Aborting original request ${request}`);
+
+                    // todo if we abort here nothing will get fetched
+                    // controller.abort();
+                    // console.log(`Error happened. Aborting original request ${request}`);
                 })
             }
         });

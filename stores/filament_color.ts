@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
-export interface IFilamentColor {
+export default interface IFilamentColor {
     id: number,
     name: string,
     value: string
@@ -33,7 +33,6 @@ export const useFilamentColorStore = defineStore('filament-color', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useFilamentColorStore, import.meta.hot))
 }
