@@ -178,8 +178,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  IFilamentColor,
+import IFilamentColor, {
   useFilamentColorStore,
 } from "~~/stores/filament_color";
 import {

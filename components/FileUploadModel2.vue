@@ -5,7 +5,7 @@
         <h1 class="text-lg font-bold ,">{{data.file.name}}</h1>
         <div class="flex gap-2">
           <div
-            class="tooltip tooltip-bottom"
+            class="tooltip tooltip-bottom z-10"
             data-tip="Duplicate"
           >
             <div
@@ -44,31 +44,19 @@
             <h1 class="text-xs">TODO 6.4cm x 3.2cm x 15cm</h1>
           </div>
         </div>
-        <div class="flex flex-col gap-2 justify-between">
-          <table class="table ">
-            <tbody>
-              <!-- row 1 -->
-              <tr>
-                <th class="border-transparent">Material</th>
-                <td class="border-transparent text-center">{{data.material}}</td>
-              </tr>
-              <!-- row 2 -->
-              <tr>
-                <th class="border-transparent">Infill</th>
-                <td class="border-transparent text-center">{{data.infill}}</td>
-              </tr>
-              <!-- row 3 -->
-              <tr>
-                <th class="border-transparent">Color</th>
-                <td class="border-transparent text-center">
-                  <ColorPickerDropdown
-                    :colors="colors"
-                    @on-color-selected="onColorSelected"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="flex-1 flex flex-col gap-2 justify-start items-stretch">
+          <ListboxMaterial
+            :filament-material-id="data.infill"
+            @on-selected="onMaterialSelected"
+          />
+          <ListboxInfill
+            :filament-infill-id="data.infill"
+            @on-infill-selected="onInfillSelected"
+          />
+          <ListboxColor
+            :filament-color-id="data.infill"
+            @on-selected="onColorSelected"
+          />
         </div>
       </div>
       <div class="divider h-0 m-0"></div>
@@ -211,6 +199,14 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
 
 function onColorSelected(color: IFilamentColor) {
   selectedColor.value = color.id;
+}
+
+function onInfillSelected(infill: IFilamentInfill) {
+  selectedInfill.value = infill.id;
+}
+
+function onMaterialSelected(material: IFilamentMaterial) {
+  selectedMaterial.value = material.id;
 }
 
 function duplicateUnit() {

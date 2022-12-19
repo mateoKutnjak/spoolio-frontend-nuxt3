@@ -46,7 +46,7 @@
         </div>
       </aside>
       <div class="divider divider-horizontal"></div>
-      <div class="lg:flex-1 flex flex-col gap-3 items-center">
+      <div class="lg:flex-1 grid grid-cols-1 xl:grid-cols-2 gap-3 items-center">
         <div
           v-if="!units.length"
           class="m-auto"
