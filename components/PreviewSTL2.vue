@@ -1,10 +1,13 @@
 <template>
-  <div ref="root_container">
+  <div
+    ref="root_container"
+    class="cursor-move"
+  >
     <Renderer
       ref="renderer"
       :alpha="true"
       :resize="true"
-      :orbitCtrl="{active: false, enableZoom: false}"
+      :orbitCtrl="{active: false, enableZoom: true}"
     >
       <Camera
         ref="camera"
@@ -12,7 +15,7 @@
         :look-at="{x: 0, y: 0, z: 0}"
       />
       <Scene
-        :background="'#EEEEEE'"
+        :background="'#FAFAFA'"
         ref="scene"
       >
 
@@ -117,40 +120,40 @@ onMounted(() => {
     });
   });
 
-  const origin = new Three.Vector3(0, 0, 0);
-  const xAxis = new Three.Vector3(100, 0, 0);
-  const yAxis = new Three.Vector3(0, 100, 0);
-  const zAxis = new Three.Vector3(0, 0, 100);
+  // const origin = new Three.Vector3(0, 0, 0);
+  // const xAxis = new Three.Vector3(100, 0, 0);
+  // const yAxis = new Three.Vector3(0, 100, 0);
+  // const zAxis = new Three.Vector3(0, 0, 100);
 
-  const points = [];
-  points.push(new Three.Vector3(0, 0, 0));
-  points.push(new Three.Vector3(0, 10, 0));
-  points.push(new Three.Vector3(10, 0, 0));
+  // const points = [];
+  // points.push(new Three.Vector3(0, 0, 0));
+  // points.push(new Three.Vector3(0, 10, 0));
+  // points.push(new Three.Vector3(10, 0, 0));
 
-  const xAxisGeometry = new Three.BufferGeometry().setFromPoints([
-    origin,
-    xAxis,
-  ]);
-  const yAxisGeometry = new Three.BufferGeometry().setFromPoints([
-    origin,
-    yAxis,
-  ]);
-  const zAxisGeometry = new Three.BufferGeometry().setFromPoints([
-    origin,
-    zAxis,
-  ]);
+  // const xAxisGeometry = new Three.BufferGeometry().setFromPoints([
+  //   origin,
+  //   xAxis,
+  // ]);
+  // const yAxisGeometry = new Three.BufferGeometry().setFromPoints([
+  //   origin,
+  //   yAxis,
+  // ]);
+  // const zAxisGeometry = new Three.BufferGeometry().setFromPoints([
+  //   origin,
+  //   zAxis,
+  // ]);
 
-  const xAxisMaterial = new Three.LineBasicMaterial({ color: 0xff0000 });
-  const yAxisMaterial = new Three.LineBasicMaterial({ color: 0x00ff00 });
-  const zAxisMaterial = new Three.LineBasicMaterial({ color: 0x0000ff });
+  // const xAxisMaterial = new Three.LineBasicMaterial({ color: 0xff0000 });
+  // const yAxisMaterial = new Three.LineBasicMaterial({ color: 0x00ff00 });
+  // const zAxisMaterial = new Three.LineBasicMaterial({ color: 0x0000ff });
 
-  const xAxisLine = new Three.Line(xAxisGeometry, xAxisMaterial);
-  const yAxisLine = new Three.Line(yAxisGeometry, yAxisMaterial);
-  const zAxisLine = new Three.Line(zAxisGeometry, zAxisMaterial);
+  // const xAxisLine = new Three.Line(xAxisGeometry, xAxisMaterial);
+  // const yAxisLine = new Three.Line(yAxisGeometry, yAxisMaterial);
+  // const zAxisLine = new Three.Line(zAxisGeometry, zAxisMaterial);
 
-  scene.value.add(xAxisLine);
-  scene.value.add(yAxisLine);
-  scene.value.add(zAxisLine);
+  // scene.value.add(xAxisLine);
+  // scene.value.add(yAxisLine);
+  // scene.value.add(zAxisLine);
 
   const hemiLight = new Three.HemisphereLight(0xffeeb1, 0x080820, 1);
   scene.value.add(hemiLight);

@@ -4,12 +4,10 @@
       <div class="flex gap-12">
         <div class="flex flex-col gap-5">
           <ClientOnly class="flex-1">
-            <button>
-              <PreviewSTL2
-                class="w-92 h-96 p-0 m-0"
-                :stlFileUrl="unit.localUrl"
-              />
-            </button>
+            <PreviewSTL2
+              class="w-92 h-96 p-0 m-0"
+              :stlFileUrl="unit.localUrl"
+            />
           </ClientOnly>
           <div class="flex-none">
             <div class="text-lg font-semibold"> {{ unit.file.name }}</div>
