@@ -33,7 +33,7 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+            <DialogPanel class="transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
               <DialogTitle
                 as="h3"
                 class="text-xl font-bold leading-6 text-gray-900 text-center"
@@ -61,9 +61,7 @@ import {
 const { show, title } = defineProps(["show", "title"]);
 const isOpened = ref(false);
 
-computed(() => {
-
-})
+computed(() => {});
 </script>
 
 <style>

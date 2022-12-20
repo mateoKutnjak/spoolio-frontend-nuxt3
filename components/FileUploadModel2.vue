@@ -46,7 +46,7 @@
         </div>
         <div class="flex-1 flex flex-col gap-2 justify-start items-stretch">
           <ListboxMaterial
-            :filament-material-id="data.infill"
+            :filament-material-id="data.material"
             @on-selected="onMaterialSelected"
           />
           <ListboxInfill
@@ -54,7 +54,7 @@
             @on-infill-selected="onInfillSelected"
           />
           <ListboxColor
-            :filament-color-id="data.infill"
+            :filament-color-id="data.color"
             @on-selected="onColorSelected"
           />
         </div>

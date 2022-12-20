@@ -88,6 +88,12 @@
         </div>
       </div>
     </div>
+    <GenericDialogFullWidth
+      :show="isDetailsDialogShown"
+      @on-close-clicked="isDetailsDialogShown=false"
+    >
+      <PrintingItemDetailsDialog :unit="unit" />
+    </GenericDialogFullWidth>
   </div>
 </template>
 
@@ -114,10 +120,13 @@ const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 const units = ref<IPrintOrderUnitResponse[]>([]);
 
+const unit = ref<IPrintOrderUnitResponse>();
+
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
 
 const submitted = ref(false);
+const isDetailsDialogShown = ref(false);
 
 const getUser = computed(() => {
   return authStore.getUser;
@@ -253,7 +262,8 @@ function onFilesAdded(files: File[]) {
 }
 
 function onItemClicked(localUrl: string) {
-  console.log(localUrl);
+  unit.value = units.value.find((el) => el.localUrl === localUrl);
+  isDetailsDialogShown.value = true;
 }
 
 function removeUnit(unit: IPrintOrderUnitResponse) {

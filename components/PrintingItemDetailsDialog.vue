@@ -1,105 +1,109 @@
 <template>
-  <tr
-    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-    @click="$emit('on-item-clicked', unit.localUrl)"
-  >
-    <td class="p-6">
-      <div class="btn btn-square rounded-md"></div>
-    </td>
-    <td class="py-4 font-semibold text-gray-900 dark:text-white">
-      <div class="flex flex-col">
-        {{ unit.file.name }}
-        <h1 class="text-xs font-normal">6.4cm x 3.2cm x 15cm</h1>
-      </div>
-    </td>
-    <td class="py-4 font-semibold text-gray-900 dark:text-white">
-      <div class="flex items-center">
+  <div class="card">
+    <div class="card-body gap-10">
+      <div class="flex gap-12">
+        <div class="flex flex-col gap-5">
+          <ClientOnly class="flex-1">
+            <button>
+              <PreviewSTL2
+                class="w-92 h-96 p-0 m-0"
+                :stlFileUrl="unit.localUrl"
+              />
+            </button>
+          </ClientOnly>
+          <div class="flex-none">
+            <div class="text-lg font-semibold"> {{ unit.file.name }}</div>
+            <div class="text-sm"> 11cm x 12cm x 13cm </div>
+          </div>
+          <div class="flex-1"></div>
+          <div class="flex-none">
+            <table class="table table-compact w-full rounded-md border border-1 rounded-md shadow-md">
+              <tbody class="">
+                <tr>
+                  <td class="text-md">ETA</td>
+                  <td class="text-md">111 days</td>
+                </tr>
+                <tr>
+                  <td class="text-md">Price per part</td>
+                  <td class="text-md">${{ unit.estimatedPrice }}</td>
+                </tr>
+                <tr>
+                  <th class=" text-lg">Total price</th>
+                  <th class=" text-lg"> ${{ unit.estimatedPrice * unit.quantity }}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <ul>
+          <li class="my-3">
+            <PrintingItemDetailsMaterialRadioGroup />
+          </li>
+          <li class="my-3">
+            <PrintingItemDetailsInfillRadioGroup />
+          </li>
+          <li class="my-3">
+            <PrintingItemDetailsColorRadioGroup />
+          </li>
+          <li class="my-1">
+            <div class="
+            flex
+            flex-col
+            gap-4">
+              <div class="text-sm">4. Quantity</div>
+              <div class="flex gap-2 justify-start items-center">
+                <button
+                  class="btn btn-md btn-circle btn-ghost"
+                  @click="decreaseQuantity"
+                >
+                  <Icon
+                    class="text-gray-500"
+                    name="ic:round-minus"
+                    size="24"
+                  />
+                </button>
+                <div>
+                  <input
+                    type="number"
+                    v-model="quantity"
+                    class="bg-gray-50 w-14 h-12 text-xl text-center border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1"
+                    :max="999"
+                    :min="1"
+                    required
+                  >
+                </div>
+                <button
+                  class="btn btn-md btn-circle btn-ghost"
+                  @click="increaseQuantity"
+                >
+                  <Icon
+                    class="text-gray-500"
+                    name="ic:round-plus"
+                    size="24"
+                  />
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
         <div
-          class="tooltip tooltip-bottom"
-          data-tip="Filament material"
-        >{{ getMaterialName() }}</div>
-        <Icon
-          name="bi:dot"
-          size="20"
-        />
-        <div
-          class="tooltip tooltip-bottom"
-          data-tip="Infill percentage"
-        >{{ getInfillPercentage() * 100 }}%</div>
-        <Icon
-          name="bi:dot"
-          size="20"
-        />
-        <div
-          class="tooltip tooltip-bottom"
-          data-tip="Filament color"
+          class="flex flex-col gap-5"
+          v-show="false"
         >
-          <div
-            class="btn btn-xs btn-circle btn-ghost"
-            :style="`background-color: ${getColorValue()}`"
-          />
+
+          <PrintingItemDetailsMaterialRadioGroup />
+          <PrintingItemDetailsInfillRadioGroup />
+          <PrintingItemDetailsColorRadioGroup />
+
         </div>
       </div>
-    </td>
-    <td class="py-4">
-      <div class="flex items-center space-x-3">
-        <button
-          class="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click="decreaseQuantity"
-        >
-          <Icon
-            class="text-gray-500"
-            name="ic:round-minus"
-            size="16"
-          />
-        </button>
-        <div>
-          <input
-            type="number"
-            v-model="quantity"
-            class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="1"
-            :max="999"
-            :min="1"
-            required
-          >
-        </div>
-        <button
-          class="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click="increaseQuantity"
-        >
-          <Icon
-            class="text-gray-500"
-            name="ic:round-plus"
-            size="16"
-          />
-        </button>
+      <div class="card-actions justify-between">
+
+        <button class="btn btn-primary btn-lg btn-block ">Apply</button>
       </div>
-    </td>
-    <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white">
-      ${{ unit.estimatedPrice * quantity }}
-    </td>
-    <td class="py-4">
-      <button
-        class="btn btn-md btn-circle btn-ghost text-gray-400"
-        @click="duplicateUnit"
-      >
-        <Icon
-          name="majesticons:duplicate"
-          size="24"
-        />
-      </button>
-      <button
-        class="btn btn-md btn-circle btn-ghost text-red-600"
-        @click="removeUnit"
-      >
-        <Icon
-          name="material-symbols:delete"
-          size="24"
-        />
-      </button>
-    </td>
-  </tr>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>

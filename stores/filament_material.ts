@@ -4,6 +4,7 @@ import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 export interface IFilamentMaterial {
     id: number,
     name: string,
+    description: string,
     density: number,
     price: number,
 }
