@@ -1,7 +1,10 @@
 <template>
   <div class="">
     <div class="">
-      <RadioGroup v-model="selected">
+      <RadioGroup
+        v-model="selected"
+        @update:modelValue="value => $emit('on-color-selected', value)"
+      >
         <RadioGroupLabel class="text-sm">3. Choose filament color</RadioGroupLabel>
         <div class="flex gap-2 py-2">
           <RadioGroupOption

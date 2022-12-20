@@ -35,13 +35,13 @@
         </div>
         <ul>
           <li class="my-3">
-            <PrintingItemDetailsMaterialRadioGroup />
+            <PrintingItemDetailsMaterialRadioGroup @on-material-selected="onMaterialSelected" />
           </li>
           <li class="my-3">
-            <PrintingItemDetailsInfillRadioGroup />
+            <PrintingItemDetailsInfillRadioGroup @on-infill-selected="onInfillSelected" />
           </li>
           <li class="my-3">
-            <PrintingItemDetailsColorRadioGroup />
+            <PrintingItemDetailsColorRadioGroup @on-color-selected="onColorSelected" />
           </li>
           <li class="my-1">
             <div class="
@@ -85,16 +85,6 @@
             </div>
           </li>
         </ul>
-        <div
-          class="flex flex-col gap-5"
-          v-show="false"
-        >
-
-          <PrintingItemDetailsMaterialRadioGroup />
-          <PrintingItemDetailsInfillRadioGroup />
-          <PrintingItemDetailsColorRadioGroup />
-
-        </div>
       </div>
       <div class="card-actions justify-between">
 

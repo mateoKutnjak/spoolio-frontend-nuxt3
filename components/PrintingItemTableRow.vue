@@ -56,7 +56,7 @@
         <div>
           <input
             type="number"
-            v-model="quantity"
+            v-model="unit.quantity"
             class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="1"
             :max="999"
@@ -77,7 +77,7 @@
       </div>
     </td>
     <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white">
-      ${{ unit.estimatedPrice * quantity }}
+      ${{ unit.estimatedPrice * unit.quantity }}
     </td>
     <td class="py-4">
       <button
@@ -137,7 +137,6 @@ const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 const selectedMaterial = ref<number>();
 const selectedColor = ref<number>();
 const selectedInfill = ref<number>();
-const quantity = ref<number>(1);
 const comment = ref<string>("");
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
@@ -147,7 +146,6 @@ onMounted(() => {
   selectedMaterial.value = unit.material;
   selectedInfill.value = unit.infill;
   comment.value = unit.comment;
-  quantity.value = unit.quantity;
   attachmentFiles.value = unit.attachmentFiles || [];
   attachmentImages.value = unit.attachmentImages || [];
 });
@@ -169,14 +167,14 @@ function getColorValue(): string {
 }
 
 function increaseQuantity() {
-  quantity.value = Number(quantity.value) + 1;
+  printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity + 1 });
 }
 
 function decreaseQuantity() {
-  if (quantity.value > 1) {
-    quantity.value = Number(quantity.value) - 1;
+  if (unit.quantity > 1) {
+    printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity - 1 });
   } else {
-    quantity.value = 1;
+    printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
   }
 }
 
@@ -210,10 +208,6 @@ watch(selectedInfill, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { infill: value });
 });
 
-watch(quantity, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { quantity: value });
-});
-
 watch(comment, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { comment: value });
 });
@@ -241,7 +235,7 @@ function onMaterialSelected(material: IFilamentMaterial) {
 function duplicateUnit() {
   printOrderStore.addUnit(<IPrintOrderUnitResponse>{
     id: undefined,
-    quantity: quantity.value,
+    quantity: unit.quantity,
     color: selectedColor.value,
     material: selectedMaterial.value,
     infill: selectedInfill.value,

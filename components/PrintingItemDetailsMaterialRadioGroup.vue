@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="mx-auto w-full max-w-md">
-      <RadioGroup v-model="selected">
+      <RadioGroup v-model="selected" @update:modelValue="value => $emit('on-material-selected', value)">
         <RadioGroupLabel class="text-sm">1. Choose material</RadioGroupLabel>
         <div class="space-y-2">
           <RadioGroupOption

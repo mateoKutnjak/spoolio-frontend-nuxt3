@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="">
-      <RadioGroup v-model="selected">
+      <RadioGroup v-model="selected" @update:modelValue="value => $emit('on-infill-selected', value)">
         <RadioGroupLabel class="text-sm">2. Choose infill percentage</RadioGroupLabel>
         <div class="flex gap-2 space-y-2">
           <RadioGroupOption
