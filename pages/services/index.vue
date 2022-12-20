@@ -5,7 +5,7 @@
         <div class="text-4xl font-bold">3d services</div>
         <div class="text-md">Choose which 3d service you require</div>
       </div>
-      <div class="flex flex-col md:flex-row gap-10 justify-between items-center">
+      <div class="flex flex-col md:flex-row gap-10 justify-between items-stretch md:items-center">
         <div class="flex-1 flex flex-col gap-3 text-center">
           <NuxtLink to="/services/printing">
             <div class="btn btn-outline hover:btn-info w-full h-[32vh]">
@@ -20,7 +20,7 @@
           </NuxtLink>
           <h1 class="text-md">I have some files I want to 3d print</h1>
         </div>
-        <h1 class="text-2xl font-bold">OR</h1>
+        <h1 class="text-2xl font-bold text-center">OR</h1>
         <div class="flex-1 flex flex-col gap-3 text-center">
           <NuxtLink to="/services/modeling">
             <div class="btn btn-outline hover:btn-info w-full h-[32vh]">
