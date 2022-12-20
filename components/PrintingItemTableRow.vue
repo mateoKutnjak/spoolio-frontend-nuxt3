@@ -44,8 +44,8 @@
     <td class="py-4">
       <div class="flex items-center space-x-3">
         <button
-          class="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click="decreaseQuantity"
+          class="btn btn-sm btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
+          @click.stop="decreaseQuantity"
         >
           <Icon
             class="text-gray-500"
@@ -57,7 +57,7 @@
           <input
             type="number"
             v-model="quantity"
-            class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="1"
             :max="999"
             :min="1"
@@ -65,8 +65,8 @@
           >
         </div>
         <button
-          class="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click="increaseQuantity"
+          class="btn btn-sm btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
+          @click.stop="increaseQuantity"
         >
           <Icon
             class="text-gray-500"
@@ -82,7 +82,7 @@
     <td class="py-4">
       <button
         class="btn btn-md btn-circle btn-ghost text-gray-400"
-        @click="duplicateUnit"
+        @click.stop="duplicateUnit"
       >
         <Icon
           name="majesticons:duplicate"
@@ -91,7 +91,7 @@
       </button>
       <button
         class="btn btn-md btn-circle btn-ghost text-red-600"
-        @click="removeUnit"
+        @click.stop="removeUnit"
       >
         <Icon
           name="material-symbols:delete"
