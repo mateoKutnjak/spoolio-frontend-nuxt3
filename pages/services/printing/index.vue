@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12 h-full ">
+  <div class="container p-12">
     <div class="flex flex-col flex-grow gap-5 justify-between">
 
       <table
@@ -87,12 +87,25 @@
         </div>
         <div class="flex-none card rounded-lg shadow-md bg-white">
           <div class="card-body flex gap-5">
-            <div class="flex gap-1">
-              Estimated completion time:
-              <strong>10 days</strong>
-            </div>
-            <button class="btn btn-primary btn-lg gap-1">Order for ${{units.reduce((acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity), 0)}}
-            </button>
+            <table class="table table-compact w-full">
+              <tbody class="">
+                <tr>
+                  <td class="text-md border-transparent text-start">Estimated completion time</td>
+                  <td class="text-md border-transparent text-end">111 days</td>
+                </tr>
+                <tr>
+                  <th class="text-lg text-start">Total price</th>
+                  <th class="text-lg text-end"> ${{totalPrice}}</th>
+                </tr>
+              </tbody>
+            </table>
+            <NuxtLink
+              class="btn btn-primary btn-lg gap-1"
+              :class="totalPrice > 0 ? '' : 'btn-disabled'"
+              to="/services/printing/checkout/"
+            >
+              Checkout
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -126,6 +139,8 @@ const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 const units = ref<IPrintOrderUnitResponse[]>([]);
 
 const unit = ref<IPrintOrderUnitResponse>();
+
+const totalPrice = ref<number>(0);
 
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
@@ -189,6 +204,11 @@ onMounted(async () => {
     const element: IPrintOrderUnitResponse = printOrderStore.getUnits[index];
     units.value.push(element);
   }
+
+  totalPrice.value = units.value.reduce(
+    (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),
+    0
+  );
 });
 
 watch(getUser, (value, oldValue, onInvalidate) => {});
@@ -197,6 +217,10 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   console.log("Current units " + value.map((el) => el.localUrl));
 
   units.value = value;
+  totalPrice.value = units.value.reduce(
+    (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),
+    0
+  );
 });
 
 watch(printOrderStore.getAttachmentFiles, (value, oldValue, onInvalidate) => {
