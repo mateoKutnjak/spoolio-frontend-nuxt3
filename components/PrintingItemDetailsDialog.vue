@@ -88,13 +88,14 @@
       </div>
       <div class="card-actions justify-between">
 
-        <button class="btn btn-primary btn-lg btn-block ">Apply</button>
+        <button class="btn btn-primary btn-lg btn-block " @click="dialogStore.close()">Apply</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useDialogStore } from "~~/stores/dialog";
 import IFilamentColor, {
   useFilamentColorStore,
 } from "~~/stores/filament_color";
@@ -113,8 +114,11 @@ import {
   usePrintOrderStore,
 } from "~~/stores/print_order";
 
-const { unit } = defineProps(["unit"]);
+const { props } = defineProps(["props"]);
 
+const unit = props[0] // todo error check
+
+const dialogStore = useDialogStore();
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();

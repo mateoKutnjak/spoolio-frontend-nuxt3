@@ -97,17 +97,12 @@
         </div>
       </div>
     </div>
-    <GenericDialogFullWidth
-      :show="isDetailsDialogShown"
-      @on-close-clicked="isDetailsDialogShown=false"
-    >
-      <PrintingItemDetailsDialog :unit="unit" />
-    </GenericDialogFullWidth>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useAuthStore } from "~~/stores/auth";
+import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentColorStore } from "~~/stores/filament_color";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useFilamentMaterialStore } from "~~/stores/filament_material";
@@ -118,8 +113,11 @@ import {
   IPrintOrderUnitResponse,
   IPrintOrderResponse,
 } from "~~/stores/print_order";
+// import PrintingItemDetailsDialog from "@/components/PrintingItemDetailsDialog.vue";
+import PrintingItemDetailsDialog from "~~/components/PrintingItemDetailsDialog.vue";
 
 const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
@@ -273,6 +271,8 @@ function onFilesAdded(files: File[]) {
 function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
+
+  dialogStore.open(PrintingItemDetailsDialog.__name, [unit.value], true);
 }
 
 function removeUnit(unit: IPrintOrderUnitResponse) {

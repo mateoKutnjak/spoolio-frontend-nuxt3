@@ -24,13 +24,25 @@
       <Cart />
     </div>
 
+    <GenericDialog
+      title="Login"
+      :component-name="componentName"
+      :show="isDialogOpened"
+      @on-close-clicked="dialogStore.close()"
+    >
+    </GenericDialog>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useDialogStore } from "~~/stores/dialog";
 import { useDrawerStore } from "../stores/drawer";
 
+const dialogStore = useDialogStore();
 const drawerStore = useDrawerStore();
+
+const { isDialogOpened, componentName } = storeToRefs(dialogStore);
 
 var drawerInput: HTMLElement | null = null;
 

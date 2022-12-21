@@ -29,9 +29,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useDialogStore } from "~~/stores/dialog";
 import { useAuthStore } from "../stores/auth";
 
-const store = useAuthStore();
+const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 
 const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
@@ -44,7 +46,9 @@ const submitHandler = async () => {
 
   submitted.value = true;
 
-  store.login(email.value, password.value).then((loginRequestState) => {});
+  authStore.login(email.value, password.value).then((loginRequestState) => {
+    dialogStore.close();
+  });
 };
 </script>
 

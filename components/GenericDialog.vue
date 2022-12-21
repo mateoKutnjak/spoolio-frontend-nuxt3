@@ -1,13 +1,12 @@
 <template>
   <TransitionRoot
     appear
-    :show="show"
+    :show="isDialogOpened"
     as="template"
   >
     <Dialog
       as="div"
-      :open="show"
-      @close="$emit('on-close-clicked')"
+      @close="closeDialog"
       class="relative z-10"
     >
       <TransitionChild
@@ -33,14 +32,22 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+            <DialogPanel
+              :class="useFullWidth ? '' : 'w-full max-w-md'"
+              class="transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
               <DialogTitle
                 as="h3"
                 class="text-xl font-bold leading-6 text-gray-900 text-center"
               >
-                {{title}}
+                Title
               </DialogTitle>
-              <slot></slot>
+
+              <component
+                :is="component"
+                :props="componentProps"
+              ></component>
+              <!-- <slot></slot> -->
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -57,9 +64,23 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
+import { storeToRefs } from "pinia";
+import { useDialogStore } from "~~/stores/dialog";
 
-const { show, title } = defineProps(["show", "title"]);
-const isOpened = ref(false);
+const dialogStore = useDialogStore();
+
+const { isDialogOpened, useFullWidth, componentName, componentProps } =
+  storeToRefs(dialogStore);
+
+const component = ref();
+
+watch(componentName, (value) => {
+  component.value = resolveComponent(value);
+});
+
+function closeDialog() {
+  dialogStore.close();
+}
 </script>
 
 <style>

@@ -35,6 +35,10 @@ export default defineNuxtConfig({
         },
         storage: 'localStorage'
     },
+    components: {
+        global: true,
+        dirs: ['~/components']
+    }, // * this configuration resolvers warning and error: "resolveComponent can only be used in render() or setup()""
     app: {
         head: {
             title: "Spoolio",

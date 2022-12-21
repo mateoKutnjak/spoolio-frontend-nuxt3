@@ -70,11 +70,7 @@
             />
           </div>
         </button>
-        <NavbarProfileDropdown
-          @on-login-pressed="isLoginDialogShown=true"
-          @on-sign-up-pressed="isRegisterDialogShown=true"
-          @on-logout-pressed="authStore.logout()"
-        />
+        <NavbarProfileDropdown/>
       </div>
     </div>
   </div>

@@ -35,7 +35,7 @@
           >
             <MenuItem
               as="div"
-              @click="$emit('on-login-pressed')"
+              @click="dialogStore.open(LoginForm.__name)"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -47,7 +47,7 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="$emit('on-sign-up-pressed')"
+              @click="dialogStore.open(RegisterForm.__name)"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -90,7 +90,7 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="$emit('on-logout-pressed')"
+              @click="authStore.logout()"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -109,11 +109,17 @@
   
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+
+import LoginForm from "@/components/LoginForm.vue";
+import RegisterForm from "@/components/RegisterForm.vue";
+
 import { storeToRefs } from "pinia";
 
 import { useAuthStore } from "../stores/auth";
+import { useDialogStore } from "~~/stores/dialog";
 
 const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 
 const { user } = storeToRefs(authStore);
 

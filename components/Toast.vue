@@ -7,7 +7,7 @@
       >
         <div
           id="toast-success"
-          class="flex gap-2 items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+          class="flex gap-2 items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800"
           role="alert"
         >
           <div
