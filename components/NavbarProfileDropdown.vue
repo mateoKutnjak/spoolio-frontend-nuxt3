@@ -5,7 +5,10 @@
       class="relative inline-block text-left"
     >
       <MenuButton class="btn btn-ghost btn-square avatar bg-transparent hover:bg-transparent">
-        <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+        <div
+          :class="user ? 'ring ring-primary ring-offset-base-100 ring-offset-2' : ''"
+          class="w-8 rounded-full "
+        >
           <div v-if="user">
             <nuxt-img src="https://placeimg.com/192/192/people" />
           </div>
