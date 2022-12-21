@@ -1,115 +1,112 @@
 <template>
-  <div class="container px-12 py-6">
-    <div class="pb-32">
-      <div class="flex flex-col gap-1">
-        <h1 class="text-4xl font-bold">3d printing</h1>
-        <h2>Upload files you want us to print</h2>
-      </div>
-      <div class="relative flex flex-col justify-center py-8">
-        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          </table>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-          <div
-            v-for="unit in units"
-            :key="unit.localUrl"
-            class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
-          >
-            <FileUploadModel :data="unit" />
-          </div>
-        </div>
+  <div class="container p-12 h-full ">
+    <div class="flex flex-col flex-grow gap-5 justify-between">
 
-        <div v-if="false">
-
-          <div class="divider h-0"></div>
-
-          <div class="text-2xl py-6">
-            Images
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <div
-              v-for="attachmentImage in attachmentImages"
-              :key="attachmentImage.localUrl"
-              class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
-            >
-              <FileUploadImage
-                :imageFile="attachmentImage.image"
-                :imageFileUrl="attachmentImage.localUrl"
-                @on-remove-file="removeImage(attachmentImage.image)"
-                @on-preview-file="previewFile(attachmentImage.image)"
-              />
-            </div>
-          </div>
-
-          <div class="divider h-0"></div>
-
-          <div class="text-2xl py-6">
-            Attachments
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-            <div
-              v-for="attachmentFile in attachmentFiles"
-              :key="attachmentFile.localUrl"
-              class="break-inside-avoid p-0 mb-5 bg-gray-100 rounded-lg"
-            >
-              <FileUploadPDF
-                class="flex-1"
-                :pdf-filename="attachmentFile.file.name"
-                :uploadedFileUrl="attachmentFile.localUrl"
-                @on-remove-file="removeFile(attachmentFile.file)"
-                @on-preview-file="previewFile(attachmentFile.file)"
-              />
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-    <div
-      class="fixed bottom-40 right-12 btn btn-primary btn-lg"
-      @click="createOrder()"
-    >
-      Order
-    </div>
-
-    <div
-      class="fixed bottom-0 left-0 right-0 flex w-full h-32 mx-auto"
-      @dragover.prevent
-      @drop.prevent
-    >
-      <label
-        for="dropzone-file"
-        class="flex-1 flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-        @drop="drop"
+      <table
+        v-if="units.length"
+        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 "
       >
-        <div class="mb-2">
-          <Icon
-            color="gray"
-            name="ic:outline-cloud-upload"
-            size="30"
-            aria-hidden="true"
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th
+              scope="col"
+              class="py-4"
+            >
+              <span class="sr-only">Image</span>
+            </th>
+            <th
+              scope="col"
+              class="py-4"
+            >
+              Product
+            </th>
+            <th
+              scope="col"
+              class="py-4"
+            >
+              Attributes
+            </th>
+            <th
+              scope="col"
+              class="py-4 px-8"
+            >
+              Quantity
+            </th>
+            <th
+              scope="col"
+              class="py-4"
+            >
+              Price
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <printing-item-table-row
+            v-for="item in units"
+            :key="item.localUrl"
+            :unit="item"
+            @on-item-clicked="onItemClicked"
           />
+        </tbody>
+      </table>
+      <div
+        v-else
+        class="flex-1 text-center"
+      >
+        <div>Nothing added yet</div>
+      </div>
+      <div class="flex gap-5">
+        <div
+          class="flex-1 flex w-full mx-auto"
+          @dragover.prevent
+          @drop.prevent
+        >
+          <label
+            for="dropzone-file"
+            class="flex-1 flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            @drop="drop"
+          >
+            <div class="mb-2">
+              <Icon
+                color="gray"
+                name="ic:outline-cloud-upload"
+                size="30"
+                aria-hidden="true"
+              />
+            </div>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px) [TODO change]</p>
+            <input
+              id="dropzone-file"
+              type="file"
+              name="fff"
+              class="hidden"
+              @change="change"
+            />
+          </label>
         </div>
-        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px) [TODO change]</p>
-        <input
-          id="dropzone-file"
-          type="file"
-          name="fff"
-          class="hidden"
-          @change="change"
-        />
-      </label>
+        <div class="flex-none card rounded-lg shadow-md bg-white">
+          <div class="card-body flex gap-5">
+            <div class="flex gap-1">
+              Estimated completion time:
+              <strong>10 days</strong>
+            </div>
+            <button class="btn btn-primary btn-lg gap-1">Order for ${{units.reduce((acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity), 0)}}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+    <GenericDialogFullWidth
+      :show="isDetailsDialogShown"
+      @on-close-clicked="isDetailsDialogShown=false"
+    >
+      <PrintingItemDetailsDialog :unit="unit" />
+    </GenericDialogFullWidth>
   </div>
-
 </template>
-  
-  <script lang="ts" setup>
+
+<script lang="ts" setup>
 import { useAuthStore } from "~~/stores/auth";
 import { useFilamentColorStore } from "~~/stores/filament_color";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
@@ -132,10 +129,13 @@ const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 const units = ref<IPrintOrderUnitResponse[]>([]);
 
+const unit = ref<IPrintOrderUnitResponse>();
+
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
 
 const submitted = ref(false);
+const isDetailsDialogShown = ref(false);
 
 const getUser = computed(() => {
   return authStore.getUser;
@@ -270,6 +270,11 @@ function onFilesAdded(files: File[]) {
   }
 }
 
+function onItemClicked(localUrl: string) {
+  unit.value = units.value.find((el) => el.localUrl === localUrl);
+  isDetailsDialogShown.value = true;
+}
+
 function removeUnit(unit: IPrintOrderUnitResponse) {
   printOrderStore.removeUnit(unit);
 }
@@ -348,6 +353,6 @@ const submitHandler = async () => {
   submitted.value = true;
 };
 </script>
-  
-  <style>
+
+<style>
 </style>
