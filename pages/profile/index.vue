@@ -13,8 +13,8 @@
         @submit="submitHandler"
         :actions="false"
       >
-        <div class="card-body justify-center">
-          <h2 class="card-title justify-center">Profile information</h2>
+        <div class="card-body justify-center gap-6">
+          <h2 class="card-title justify-start">Profile information</h2>
           <div>
             <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
               <FormKit
@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          <div class="card-actions justify-end">
+          <div class="card-actions justify-center">
             <FormKit
               type="submit"
               label="Save"
