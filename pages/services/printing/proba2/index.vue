@@ -2,7 +2,10 @@
   <div class="container p-12 h-full ">
     <div class="flex flex-col flex-grow gap-5 justify-between">
 
-      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+      <table
+        v-if="units.length"
+        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 "
+      >
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th
@@ -46,6 +49,12 @@
           />
         </tbody>
       </table>
+      <div
+        v-else
+        class="flex-1 text-center"
+      >
+        <div>Nothing added yet</div>
+      </div>
       <div class="flex gap-5">
         <div
           class="flex-1 flex w-full mx-auto"
