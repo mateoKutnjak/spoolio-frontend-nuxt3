@@ -90,12 +90,12 @@
             <table class="table table-compact w-full">
               <tbody class="">
                 <tr>
-                  <td class="text-md border-transparent text-start">Estimated completion time</td>
-                  <td class="text-md border-transparent text-end">111 days</td>
+                  <td class="pl-0 py-1 text-md border-transparent text-start">Estimated completion time</td>
+                  <td class="pl-0 py-1 text-md border-transparent text-end">111 days</td>
                 </tr>
                 <tr>
-                  <th class="text-lg text-start">Total price</th>
-                  <th class="text-lg text-end"> ${{totalPrice}}</th>
+                  <th class="pl-0 py-1 text-lg text-start">Total price</th>
+                  <th class="pl-0 py-1 text-lg text-end"> ${{totalPrice}}</th>
                 </tr>
               </tbody>
             </table>
