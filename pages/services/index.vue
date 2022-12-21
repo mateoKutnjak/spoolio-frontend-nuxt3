@@ -1,10 +1,6 @@
 <template>
   <div class="container px-12 py-6">
-    <div class="flex flex-col gap-12">
-      <div class="flex flex-col gap-1">
-        <div class="text-4xl font-bold">3d services</div>
-        <div class="text-md">Choose which 3d service you require</div>
-      </div>
+    <div class="px-12 py-8 flex flex-col gap-12">
       <div class="flex flex-col md:flex-row gap-10 justify-between items-stretch md:items-center">
         <div class="flex-1 flex flex-col gap-3 text-center">
           <NuxtLink to="/services/printing">

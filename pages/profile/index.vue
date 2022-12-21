@@ -1,6 +1,6 @@
 <template>
   <div class="container p-12">
-    <div class="card card-bordered bg-base-100 shadow-md">
+    <div class="card card-bordered bg-base-100 shadow-md max-w-2xl mx-auto">
       <!-- <figure><img
         src="https://placeimg.com/400/400/arch"
         alt="Album"
@@ -16,42 +16,51 @@
         <div class="card-body justify-center">
           <h2 class="card-title justify-center">Profile information</h2>
           <div>
-
-            <FormKit
-              type="text"
-              name="first_name"
-              label="First name"
-              v-model="firstName"
-              validation=""
-              validation-visibility="blur"
-            />
-            <FormKit
-              type="text"
-              name="last_name"
-              label="Last name"
-              v-model="lastName"
-              validation=""
-              validation-visibility="blur"
-            />
-            <FormKit
-              type="text"
-              name="address"
-              label="Address"
-              v-model="address"
-              validation=""
-              validation-visibility="blur"
-            />
-            <FormKit
-              type="tel"
-              label="Phone number"
-              v-model="phoneNumber"
-              placeholder="+123456789"
-              :validation="[['matches', /^\+\d{9,15}$/]]"
-              :validation-messages="{
+            <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
+              <FormKit
+                type="text"
+                name="first_name"
+                label="First name"
+                v-model="firstName"
+                validation=""
+                validation-visibility="blur"
+              />
+              <FormKit
+                type="text"
+                name="last_name"
+                label="Last name"
+                v-model="lastName"
+                validation=""
+                validation-visibility="blur"
+              />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 md:gap-5">
+              <div class="md:col-span-8">
+                <FormKit
+                  class=""
+                  type="text"
+                  name="address"
+                  label="Address"
+                  v-model="address"
+                  validation=""
+                  validation-visibility="blur"
+                />
+              </div>
+              <div class="md:col-span-4">
+                <FormKit
+                  class="md:col-span-2"
+                  type="tel"
+                  label="Phone number"
+                  v-model="phoneNumber"
+                  placeholder="+123456789"
+                  :validation="[['matches', /^\+\d{9,15}$/]]"
+                  :validation-messages="{
     matches: 'Phone number must be in the format +xxx...x [max 15]',
   }"
-              validation-visibility="dirty"
-            />
+                  validation-visibility="dirty"
+                />
+              </div>
+            </div>
           </div>
           <div class="card-actions justify-end">
             <FormKit
