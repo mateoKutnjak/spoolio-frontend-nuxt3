@@ -35,7 +35,7 @@
           >
             <MenuItem
               as="div"
-              @click="dialogStore.open(LoginForm.__name)"
+              @click="dialogStore.open('LoginForm')"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -47,7 +47,7 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="dialogStore.open(RegisterForm.__name)"
+              @click="dialogStore.open('RegisterForm')"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon

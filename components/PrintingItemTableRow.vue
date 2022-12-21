@@ -103,6 +103,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useDialogStore } from "~~/stores/dialog";
 import IFilamentColor, {
   useFilamentColorStore,
 } from "~~/stores/filament_color";
@@ -123,6 +124,7 @@ import {
 
 const { unit } = defineProps(["unit"]);
 
+const dialogStore = useDialogStore();
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
@@ -250,9 +252,7 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  console.log("Deleting unit with URL " + unit.localUrl);
-
-  printOrderStore.removeUnitByFileLocalUrl(unit.localUrl);
+  dialogStore.open("DialogConfirmDeletePrintOrderUnit", [unit.localUrl]);
 }
 
 function onAttachmentFilesChange(e: any) {

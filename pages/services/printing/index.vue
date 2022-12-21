@@ -113,8 +113,6 @@ import {
   IPrintOrderUnitResponse,
   IPrintOrderResponse,
 } from "~~/stores/print_order";
-// import PrintingItemDetailsDialog from "@/components/PrintingItemDetailsDialog.vue";
-import PrintingItemDetailsDialog from "~~/components/PrintingItemDetailsDialog.vue";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -272,7 +270,7 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  dialogStore.open(PrintingItemDetailsDialog.__name, [unit.value], true);
+  dialogStore.open("PrintingItemDetailsDialog", [unit.value], true);
 }
 
 function removeUnit(unit: IPrintOrderUnitResponse) {
