@@ -6,7 +6,7 @@ interface ILoginResponse {
     user: IUserResponse | undefined
 }
 
-export default interface IUserResponse {
+export interface IUserResponse {
     id: number,
     email: string,
     is_staff: boolean,
@@ -17,7 +17,19 @@ export interface IProfileResponse {
     id: number,
     first_name: string,
     last_name: string,
+    shipping_address: IAddressResponse,
+    billing_address: IAddressResponse,
+    phone_number: string,
+}
+
+export interface IAddressResponse {
+    first_name: string,
+    last_name: string,
     address: string,
+    country: string,
+    state: string | undefined,
+    locality: string,
+    postal_code: string,
     phone_number: string,
 }
 
@@ -103,6 +115,42 @@ export const useAuthStore = defineStore('auth', {
                         Authorization: `Bearer ${this.accessToken}`
                     },
                     body: body,
+                })
+                    .then((response: IProfileResponse) => {
+                        // todo remove !
+                        this.user = { ...this.user! }
+                        this.user.profile = response;
+                        resolve(response)
+                    }).catch(err => {
+                        // ! needs proper error handling
+                        alert("TODO error handling")
+                        reject(err)
+                    })
+            });
+        },
+
+        async patchUserProfile(data: IProfileResponse) {
+
+            return new Promise((resolve, reject) => {
+
+                if (!this.user || !this.accessToken) {
+                    reject('Not logged in')
+                }
+
+                // var body: { [name: string]: any } = {
+                //     first_name: firstName,
+                //     last_name: lastName,
+                //     address: address,
+                //     phone_number: phoneNumber,
+                // };
+
+                // todo check user? nullable
+                $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    },
+                    body: data,
                 })
                     .then((response: IProfileResponse) => {
                         // todo remove !

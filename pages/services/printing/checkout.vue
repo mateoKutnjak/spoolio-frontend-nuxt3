@@ -1,26 +1,26 @@
 <template>
   <div class="container p-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <div class="flex flex-col gap-4">
-        <div class="card shadow-md border">
+        <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="card-title">1. Email</div>
-            TODO email form for guest, autofill for logged in user
+            <CheckoutFormEmail />
           </div>
         </div>
-        <div class="card shadow-md border">
+        <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="card-title">2. Address</div>
             TODO address form for guest, autofill for logged in user
           </div>
         </div>
-        <div class="card shadow-md border">
+        <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="card-title">3. Shipping method</div>
             TODO Headless UI radio group
           </div>
         </div>
-        <div class="card shadow-md border">
+        <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="card-title">4. Payment method</div>
             TODO Credit card (single radio group choice)
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div>
-        <div class="card shadow-md border">
+        <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="flex flex-col gap-10">
               <div class="flex flex-col gap-4">

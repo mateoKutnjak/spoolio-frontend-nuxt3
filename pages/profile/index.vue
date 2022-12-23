@@ -1,124 +1,312 @@
 <template>
   <div class="container p-12">
-    <div class="card card-bordered bg-base-100 shadow-md max-w-2xl mx-auto">
-      <!-- <figure><img
-        src="https://placeimg.com/400/400/arch"
-        alt="Album"
-      /></figure> -->
-      <FormKit
-        type="form"
-        id="profile-form"
-        :form-class="submitted ? 'hide' : 'show'"
-        submit-label="Update"
-        @submit="submitHandler"
-        :actions="false"
-      >
-        <div class="card-body justify-center gap-6">
-          <h2 class="card-title justify-start">Profile information</h2>
-          <div>
-            <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
+    <div class="flex flex-col lg:flex-row gap-5">
+      <div class="card card-bordered bg-base-100 shadow-md max-w-2xl mx-auto">
+        <FormKit
+          type="form"
+          id="shipping-address-form"
+          :form-class="submitted ? 'hide' : 'show'"
+          submit-label="Update"
+          @submit="submitShippingAddressHandler"
+          :actions="false"
+        >
+          <div class="card-body justify-center gap-6">
+            <h2 class="card-title justify-start">Shipping address</h2>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
+                <FormKit
+                  type="select"
+                  name="shipping_address_country"
+                  label="Country"
+                  v-model="shippingAddressCountry"
+                  :options="COUNTRIES"
+                  validation="required"
+                  validation-visibility="blur"
+                />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
+                <FormKit
+                  type="text"
+                  name="shipping_address_first_name"
+                  label="First name"
+                  v-model="shippingAddressFirstName"
+                  validation="required"
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="text"
+                  name="shipping_address_last_name"
+                  label="Last name"
+                  v-model="shippingAddressLastName"
+                  validation="required"
+                  validation-visibility="blur"
+                />
+              </div>
               <FormKit
                 type="text"
-                name="first_name"
-                label="First name"
-                v-model="firstName"
-                validation=""
+                name="shipping_address_address"
+                label="Street address"
+                v-model="shippingAddressStreetAddress"
+                validation="required"
                 validation-visibility="blur"
               />
+              <div class="grid grid-cols-1 md:grid-cols-3 md:gap-5">
+                <FormKit
+                  type="text"
+                  name="shipping_address_city"
+                  label="City/Locality"
+                  v-model="shippingAddressCity"
+                  validation="required"
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="text"
+                  name="shipping_address_state"
+                  label="State/Province"
+                  v-model="shippingAddressState"
+                  validation=""
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="number"
+                  name="shipping_address_postal_code"
+                  label="ZIP code"
+                  v-model="shippingAddressPostalCode"
+                  validation="required"
+                  validation-visibility="blur"
+                />
+              </div>
               <FormKit
-                type="text"
-                name="last_name"
-                label="Last name"
-                v-model="lastName"
-                validation=""
-                validation-visibility="blur"
+                type="tel"
+                label="Phone number"
+                v-model="shippingAddressPhoneNumber"
+                placeholder="+123456789"
+                :validation="[['matches', /^\+\d{9,15}$/]]"
+                :validation-messages="{
+                  matches: 'Phone number must be in the format +xxx...x [max 15]',
+                }"
+                validation-visibility="dirty"
               />
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 md:gap-5">
-              <div class="md:col-span-8">
+
+            <div>
+              <FormKit
+                type="submit"
+                label="Save"
+                :classes="{
+                input: 'btn btn-primary btn-block text-lg'
+              }"
+              />
+            </div>
+
+          </div>
+        </FormKit>
+
+      </div>
+
+      <div class="card card-bordered bg-base-100 shadow-md max-w-2xl mx-auto">
+        <FormKit
+          type="form"
+          id="billing-address-form"
+          :form-class="submitted ? 'hide' : 'show'"
+          submit-label="Update"
+          @submit="submitBillingAddressHandler"
+          :actions="false"
+        >
+          <div class="card-body justify-center gap-6">
+            <h2 class="card-title justify-start">Billing address</h2>
+            <div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <FormKit
-                  class=""
-                  type="text"
-                  name="address"
-                  label="Address"
-                  v-model="address"
+                  type="select"
+                  name="shipping_address_country"
+                  label="Country"
+                  v-model="shippingAddressCountry"
+                  :options="COUNTRIES"
                   validation=""
                   validation-visibility="blur"
                 />
               </div>
-              <div class="md:col-span-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <FormKit
-                  class="md:col-span-2"
-                  type="tel"
-                  label="Phone number"
-                  v-model="phoneNumber"
-                  placeholder="+123456789"
-                  :validation="[['matches', /^\+\d{9,15}$/]]"
-                  :validation-messages="{
-    matches: 'Phone number must be in the format +xxx...x [max 15]',
-  }"
-                  validation-visibility="dirty"
+                  type="text"
+                  name="shipping_address_first_name"
+                  label="First name"
+                  v-model="shippingAddressFirstName"
+                  validation=""
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="text"
+                  name="shipping_address_last_name"
+                  label="Last name"
+                  v-model="shippingAddressLastName"
+                  validation=""
+                  validation-visibility="blur"
                 />
               </div>
+              <FormKit
+                type="text"
+                name="shipping_address_address"
+                label="Street address"
+                v-model="shippingAddressStreetAddress"
+                validation=""
+                validation-visibility="blur"
+              />
+              <div class="grid grid-cols-1 md:grid-cols-3 md:gap-5">
+                <FormKit
+                  type="text"
+                  name="shipping_address_city"
+                  label="City/Locality"
+                  v-model="shippingAddressCity"
+                  validation=""
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="text"
+                  name="shipping_address_state"
+                  label="State/Province"
+                  v-model="shippingAddressState"
+                  validation=""
+                  validation-visibility="blur"
+                />
+                <FormKit
+                  type="number"
+                  name="shipping_address_postal_code"
+                  label="ZIP code"
+                  v-model="shippingAddressPostalCode"
+                  validation=""
+                  validation-visibility="blur"
+                />
+              </div>
+              <FormKit
+                type="tel"
+                label="Phone number"
+                v-model="shippingAddressPhoneNumber"
+                placeholder="+123456789"
+                :validation="[['matches', /^\+\d{9,15}$/]]"
+                :validation-messages="{
+                  matches: 'Phone number must be in the format +xxx...x [max 15]',
+                }"
+                validation-visibility="dirty"
+              />
+            </div>
+
+            <div>
+              <FormKit
+                type="submit"
+                label="Save"
+                :classes="{
+                input: 'btn btn-primary btn-block text-lg'
+              }"
+              />
             </div>
           </div>
-          <div class="card-actions justify-center">
-            <FormKit
-              type="submit"
-              label="Save"
-            />
-          </div>
-
-        </div>
-      </FormKit>
+        </FormKit>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts" setup>
+import { COUNTRIES } from "~~/constants/countries";
+
 import { storeToRefs } from "pinia";
 
-import { useAuthStore } from "~~/stores/auth";
+import {
+  IAddressResponse,
+  IProfileResponse,
+  useAuthStore,
+} from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
 const { user } = storeToRefs(authStore);
 
-const firstName = ref("");
-const lastName = ref("");
-const address = ref("");
-const phoneNumber = ref("");
+const shippingAddressCountry = ref("");
+const shippingAddressFirstName = ref("");
+const shippingAddressLastName = ref("");
+const shippingAddressStreetAddress = ref("");
+const shippingAddressCity = ref("");
+const shippingAddressState = ref("");
+const shippingAddressPostalCode = ref("");
+const shippingAddressPhoneNumber = ref("");
 
 const submitted = ref(false);
 
 onMounted(() => {
-  firstName.value = user.value?.profile?.first_name ?? "";
-  lastName.value = user.value?.profile?.last_name ?? "";
-  phoneNumber.value = user.value?.profile?.phone_number ?? "";
-  address.value = user.value?.profile?.address ?? "";
-
-  return authStore.getUser;
+  shippingAddressCountry.value =
+    user.value?.profile?.shipping_address?.country ?? "";
+  shippingAddressFirstName.value =
+    user.value?.profile?.shipping_address?.first_name ?? "";
+  shippingAddressLastName.value =
+    user.value?.profile?.shipping_address?.last_name ?? "";
+  shippingAddressStreetAddress.value =
+    user.value?.profile?.shipping_address?.address ?? "";
+  shippingAddressCity.value =
+    user.value?.profile?.shipping_address?.locality ?? "";
+  shippingAddressState.value =
+    user.value?.profile?.shipping_address?.state ?? "";
+  shippingAddressPostalCode.value =
+    user.value?.profile?.shipping_address?.postal_code ?? "";
+  shippingAddressPhoneNumber.value =
+    user.value?.profile?.shipping_address?.phone_number ?? "";
 });
 
 watch(user, (value, oldValue, onInvalidate) => {
-  firstName.value = value?.profile?.first_name ?? "";
-  lastName.value = value?.profile?.last_name ?? "";
-  phoneNumber.value = value?.profile?.phone_number ?? "";
-  address.value = value?.profile?.address ?? "";
+  shippingAddressCountry.value =
+    value?.profile?.shipping_address?.country ?? "";
+  shippingAddressFirstName.value =
+    value?.profile?.shipping_address?.first_name ?? "";
+  shippingAddressLastName.value =
+    value?.profile?.shipping_address?.last_name ?? "";
+  shippingAddressStreetAddress.value =
+    value?.profile?.shipping_address?.address ?? "";
+  shippingAddressCity.value = value?.profile?.shipping_address?.locality ?? "";
+  shippingAddressState.value = value?.profile?.shipping_address?.state ?? "";
+  shippingAddressPostalCode.value =
+    value?.profile?.shipping_address?.postal_code ?? "";
+  shippingAddressPhoneNumber.value =
+    value?.profile?.shipping_address?.phone_number ?? "";
 });
 
-const submitHandler = async () => {
+const submitShippingAddressHandler = async () => {
   // This delay is here only because of progress indicator button
   //   await new Promise((r) => setTimeout(r, 1000));
+  debugger;
 
-  submitted.value = true;
+  authStore
+    .patchUserProfile(<IProfileResponse>{
+      shipping_address: <IAddressResponse>{
+        address: shippingAddressStreetAddress.value,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {});
 
   authStore
     .patchProfile(
-      firstName.value,
-      lastName.value,
-      address.value,
-      phoneNumber.value
+      shippingAddressFirstName.value,
+      shippingAddressLastName.value,
+      shippingAddressStreetAddress.value,
+      shippingAddressPhoneNumber.value
+    )
+    .then(() => {})
+    .catch((err) => {});
+};
+
+const submitBillingAddressHandler = async () => {
+  // This delay is here only because of progress indicator button
+  //   await new Promise((r) => setTimeout(r, 1000));
+
+  authStore
+    .patchProfile(
+      shippingAddressFirstName.value,
+      shippingAddressLastName.value,
+      shippingAddressStreetAddress.value,
+      shippingAddressPhoneNumber.value
     )
     .then(() => {})
     .catch((err) => {});
