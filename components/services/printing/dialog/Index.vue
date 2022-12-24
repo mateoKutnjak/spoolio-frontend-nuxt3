@@ -35,13 +35,13 @@
           </div>
           <ul>
             <li class="my-3">
-              <ServicesPrintingMaterialRadioGroup @on-material-selected="onMaterialSelected" />
+              <ServicesPrintingDialogMaterialRadioGroup @on-material-selected="onMaterialSelected" />
             </li>
             <li class="my-3">
-              <ServicesPrintingInfillRadioGroup @on-infill-selected="onInfillSelected" />
+              <ServicesPrintingDialogInfillRadioGroup @on-infill-selected="onInfillSelected" />
             </li>
             <li class="my-3">
-              <ServicesPrintingColorRadioGroup @on-color-selected="onColorSelected" />
+              <ServicesPrintingDialogColorRadioGroup @on-color-selected="onColorSelected" />
             </li>
             <li class="my-1">
               <div class="

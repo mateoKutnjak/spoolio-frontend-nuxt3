@@ -64,5 +64,5 @@
   
   const { filamentInfills } = storeToRefs(filamentInfillStore);
   
-  const selected = ref(filamentInfills[0]); // todo index error check
+  const selected = ref(filamentInfills.value[0]); // todo index error check
   </script>

@@ -50,5 +50,5 @@
   
   const { filamentColors } = storeToRefs(filamentColorStore);
   
-  const selected = ref(filamentColors[0]); // todo index error check
+  const selected = ref(filamentColors.value[0]); // todo index error check
   </script>
