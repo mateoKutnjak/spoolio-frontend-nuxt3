@@ -62,7 +62,7 @@
               >
                 <div class="flex gap-2 items-center ">
                   <Icon
-                    class="text-red-600"
+                    :class="item.liked_by_me ? 'text-red-600' : ''"
                     :name="item.liked_by_me ? 'mdi:cards-heart' : 'mdi:cards-heart-outline'"
                     size="20"
                     aria-hidden="true"
