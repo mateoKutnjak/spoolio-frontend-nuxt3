@@ -24,13 +24,13 @@
     </div>
     <div v-if="getPaginatedBlogs.count || 0 > 0">
       <div class="flex flex-col gap-10">
-        <BlogListTileHeadCard :blog="getPaginatedBlogs.blogs[0]" />
+        <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
         <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-10">
           <div
             :key="blog.id"
             v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
           >
-            <BlogListTileGridCard :item="blog" />
+            <BlogCard :item="blog" />
           </div>
         </div>
       </div>
@@ -51,13 +51,14 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useBlogListStore } from "~/stores/blogList";
-import IUserResponse, { useAuthStore } from "~~/stores/auth";
+import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 const blogListStore = useBlogListStore();
 
-const user = ref<IUserResponse>();
+const { user } = storeToRefs(authStore);
 
 const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref<boolean>(false);

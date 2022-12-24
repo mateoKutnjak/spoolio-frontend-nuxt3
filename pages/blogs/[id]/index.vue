@@ -58,7 +58,7 @@
 
       <div class="divider h-0"></div>
       <div class="flex flex-col">
-        <CommentCreateForm
+        <CommentForm
           :blog-id="id"
           class="justify-end"
         />
@@ -76,7 +76,7 @@
             :key="comment.id"
             v-for="comment in getComments.comments"
           >
-            <CommentListTile :comment="comment" />
+            <CommentItem :comment="comment" />
           </div>
         </div>
 
@@ -94,7 +94,7 @@
     
     <script lang="ts" setup>
 import IBlogResponse, { useBlogStore } from "~/stores/blog";
-import IUserResponse, { useAuthStore } from "~~/stores/auth";
+import {IUserResponse, useAuthStore } from "~~/stores/auth";
 import ICommentResponse from "~~/stores/commentList";
 import { useCommentListStore } from "~~/stores/commentList";
 

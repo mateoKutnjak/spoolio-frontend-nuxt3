@@ -3,7 +3,7 @@
     <div class="flex flex-col flex-grow gap-5 justify-between">
       <DimensionUnitDropdown class="self-end" />
       <div class="block lg:hidden">
-        <printing-item-card
+        <ServicesPrintingUnitCard
           v-for="item in units"
           :key="item.localUrl"
           :unit="item"
@@ -50,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <printing-item-table-row
+          <ServicesPrintingUnitTableRow
             v-for="item in units"
             :key="item.localUrl"
             :unit="item"
@@ -318,7 +318,7 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  dialogStore.open("PrintingItemDetailsDialog", [unit.value], true);
+  dialogStore.open("ServicesPrintingDialog", [unit.value], true);
 }
 
 function removeUnit(unit: IPrintOrderUnitResponse) {

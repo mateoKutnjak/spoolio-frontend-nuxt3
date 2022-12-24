@@ -17,7 +17,7 @@
             v-for="(item, index) in Array.from(getCartItems)"
             :key="item[0].id"
           >
-            <CartListTile
+            <CartItem
               :item="item[0]"
               :quantity="item[1]"
             />
@@ -46,7 +46,7 @@
       <div class="justify-center items-end gap-2 text-2xl font-bold">
         <NuxtLink to="/checkout">
           <div
-            class="btn btn-success btn-block"
+            class="btn btn-success btn-block text-lg"
             @click="drawerStore.close()"
           >Checkout</div>
         </NuxtLink>
@@ -55,10 +55,10 @@
 
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useCartStore } from "../stores/cart";
-import { useDrawerStore } from "../stores/drawer";
+  
+  <script lang="ts" setup>
+import { useCartStore } from "~~/stores/cart";
+import { useDrawerStore } from "~~/stores/drawer";
 
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
@@ -71,8 +71,8 @@ const getCartItems = computed(() => {
   return cartStore.getCartItems;
 });
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .router-link-exact-active {
   background-color: transparent;
 }
