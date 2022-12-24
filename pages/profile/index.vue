@@ -120,9 +120,9 @@
               <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <FormKit
                   type="select"
-                  name="shipping_address_country"
+                  name="billing_address_country"
                   label="Country"
-                  v-model="shippingAddressCountry"
+                  v-model="billingAddressCountry"
                   :options="COUNTRIES"
                   validation=""
                   validation-visibility="blur"
@@ -131,51 +131,51 @@
               <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <FormKit
                   type="text"
-                  name="shipping_address_first_name"
+                  name="billing_address_first_name"
                   label="First name"
-                  v-model="shippingAddressFirstName"
+                  v-model="billingAddressFirstName"
                   validation=""
                   validation-visibility="blur"
                 />
                 <FormKit
                   type="text"
-                  name="shipping_address_last_name"
+                  name="billing_address_last_name"
                   label="Last name"
-                  v-model="shippingAddressLastName"
+                  v-model="billingAddressLastName"
                   validation=""
                   validation-visibility="blur"
                 />
               </div>
               <FormKit
                 type="text"
-                name="shipping_address_address"
+                name="billing_address_address"
                 label="Street address"
-                v-model="shippingAddressStreetAddress"
+                v-model="billingAddressStreetAddress"
                 validation=""
                 validation-visibility="blur"
               />
               <div class="grid grid-cols-1 md:grid-cols-3 md:gap-5">
                 <FormKit
                   type="text"
-                  name="shipping_address_city"
+                  name="billing_address_city"
                   label="City/Locality"
-                  v-model="shippingAddressCity"
+                  v-model="billingAddressCity"
                   validation=""
                   validation-visibility="blur"
                 />
                 <FormKit
                   type="text"
-                  name="shipping_address_state"
+                  name="billing_address_state"
                   label="State/Province"
-                  v-model="shippingAddressState"
+                  v-model="billingAddressState"
                   validation=""
                   validation-visibility="blur"
                 />
                 <FormKit
                   type="number"
-                  name="shipping_address_postal_code"
+                  name="billing_address_postal_code"
                   label="ZIP code"
-                  v-model="shippingAddressPostalCode"
+                  v-model="billingAddressPostalCode"
                   validation=""
                   validation-visibility="blur"
                 />
@@ -183,7 +183,7 @@
               <FormKit
                 type="tel"
                 label="Phone number"
-                v-model="shippingAddressPhoneNumber"
+                v-model="billingAddressPhoneNumber"
                 placeholder="+123456789"
                 :validation="[['matches', /^\+\d{9,15}$/]]"
                 :validation-messages="{
@@ -234,6 +234,15 @@ const shippingAddressState = ref("");
 const shippingAddressPostalCode = ref("");
 const shippingAddressPhoneNumber = ref("");
 
+const billingAddressCountry = ref("");
+const billingAddressFirstName = ref("");
+const billingAddressLastName = ref("");
+const billingAddressStreetAddress = ref("");
+const billingAddressCity = ref("");
+const billingAddressState = ref("");
+const billingAddressPostalCode = ref("");
+const billingAddressPhoneNumber = ref("");
+
 const submitted = ref(false);
 
 onMounted(() => {
@@ -253,6 +262,23 @@ onMounted(() => {
     user.value?.profile?.shipping_address?.postal_code ?? "";
   shippingAddressPhoneNumber.value =
     user.value?.profile?.shipping_address?.phone_number ?? "";
+
+  billingAddressCountry.value =
+    user.value?.profile?.billing_address?.country ?? "";
+  billingAddressFirstName.value =
+    user.value?.profile?.billing_address?.first_name ?? "";
+  billingAddressLastName.value =
+    user.value?.profile?.billing_address?.last_name ?? "";
+  billingAddressStreetAddress.value =
+    user.value?.profile?.billing_address?.address ?? "";
+  billingAddressCity.value =
+    user.value?.profile?.billing_address?.locality ?? "";
+  billingAddressState.value =
+    user.value?.profile?.billing_address?.state ?? "";
+  billingAddressPostalCode.value =
+    user.value?.profile?.billing_address?.postal_code ?? "";
+  billingAddressPhoneNumber.value =
+    user.value?.profile?.billing_address?.phone_number ?? "";
 });
 
 watch(user, (value, oldValue, onInvalidate) => {
@@ -270,6 +296,21 @@ watch(user, (value, oldValue, onInvalidate) => {
     value?.profile?.shipping_address?.postal_code ?? "";
   shippingAddressPhoneNumber.value =
     value?.profile?.shipping_address?.phone_number ?? "";
+
+    billingAddressCountry.value =
+    value?.profile?.billing_address?.country ?? "";
+  billingAddressFirstName.value =
+    value?.profile?.billing_address?.first_name ?? "";
+  billingAddressLastName.value =
+    value?.profile?.billing_address?.last_name ?? "";
+  billingAddressStreetAddress.value =
+    value?.profile?.billing_address?.address ?? "";
+  billingAddressCity.value = value?.profile?.billing_address?.locality ?? "";
+  billingAddressState.value = value?.profile?.billing_address?.state ?? "";
+  billingAddressPostalCode.value =
+    value?.profile?.billing_address?.postal_code ?? "";
+  billingAddressPhoneNumber.value =
+    value?.profile?.billing_address?.phone_number ?? "";
 });
 
 const submitShippingAddressHandler = async () => {
@@ -280,19 +321,16 @@ const submitShippingAddressHandler = async () => {
   authStore
     .patchUserProfile(<IProfileResponse>{
       shipping_address: <IAddressResponse>{
+        country: shippingAddressCountry.value,
+        first_name: shippingAddressFirstName.value,
+        last_name: shippingAddressLastName.value,
         address: shippingAddressStreetAddress.value,
+        locality: shippingAddressCity.value,
+        state: shippingAddressState.value,
+        postal_code: shippingAddressPostalCode.value,
+        phone_number: shippingAddressPhoneNumber.value,
       },
     })
-    .then(() => {})
-    .catch((err) => {});
-
-  authStore
-    .patchProfile(
-      shippingAddressFirstName.value,
-      shippingAddressLastName.value,
-      shippingAddressStreetAddress.value,
-      shippingAddressPhoneNumber.value
-    )
     .then(() => {})
     .catch((err) => {});
 };
@@ -302,12 +340,18 @@ const submitBillingAddressHandler = async () => {
   //   await new Promise((r) => setTimeout(r, 1000));
 
   authStore
-    .patchProfile(
-      shippingAddressFirstName.value,
-      shippingAddressLastName.value,
-      shippingAddressStreetAddress.value,
-      shippingAddressPhoneNumber.value
-    )
+    .patchUserProfile(<IProfileResponse>{
+      billing_address: <IAddressResponse>{
+        country: billingAddressCountry.value,
+        first_name: billingAddressFirstName.value,
+        last_name: billingAddressLastName.value,
+        address: billingAddressStreetAddress.value,
+        locality: billingAddressCity.value,
+        state: billingAddressState.value,
+        postal_code: billingAddressPostalCode.value,
+        phone_number: billingAddressPhoneNumber.value,
+      },
+    })
     .then(() => {})
     .catch((err) => {});
 };

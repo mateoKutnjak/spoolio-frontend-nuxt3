@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         accessToken: undefined as string | undefined,
         refreshToken: undefined as string | undefined,
-        user: undefined as IUserResponse | undefined
+        user: undefined as IUserResponse | undefined,
     }),
 
     getters: {
@@ -96,7 +96,8 @@ export const useAuthStore = defineStore('auth', {
 
             return new Promise((resolve, reject) => {
 
-                if (!this.user || !this.accessToken) {
+                if (!this.user || !this.accessToken)
+                {
                     reject('Not logged in')
                 }
 
@@ -129,20 +130,14 @@ export const useAuthStore = defineStore('auth', {
             });
         },
 
-        async patchUserProfile(data: IProfileResponse) {
+        async patchUserProfile(body: IProfileResponse) {
 
             return new Promise((resolve, reject) => {
 
-                if (!this.user || !this.accessToken) {
+                if (!this.user || !this.accessToken)
+                {
                     reject('Not logged in')
                 }
-
-                // var body: { [name: string]: any } = {
-                //     first_name: firstName,
-                //     last_name: lastName,
-                //     address: address,
-                //     phone_number: phoneNumber,
-                // };
 
                 // todo check user? nullable
                 $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
@@ -150,7 +145,7 @@ export const useAuthStore = defineStore('auth', {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     },
-                    body: data,
+                    body: body,
                 })
                     .then((response: IProfileResponse) => {
                         // todo remove !
@@ -166,7 +161,8 @@ export const useAuthStore = defineStore('auth', {
         },
 
         logout() {
-            if (this.loggedIn) {
+            if (this.loggedIn)
+            {
                 this.accessToken = undefined
                 this.refreshToken = undefined
                 this.user = undefined;
@@ -179,6 +175,7 @@ export const useAuthStore = defineStore('auth', {
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
 }
