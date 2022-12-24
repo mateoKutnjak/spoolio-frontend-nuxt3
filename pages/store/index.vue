@@ -13,7 +13,7 @@
           :key="product.id"
           v-for="product in getPaginatedProducts.products"
         >
-          <ProductListTile :product="product" />
+          <ProductListItem :product="product" />
         </div>
       </div>
       <CircularLoadingIndicator :show="showPageLoading" />

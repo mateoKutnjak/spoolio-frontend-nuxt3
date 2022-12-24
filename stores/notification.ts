@@ -4,7 +4,8 @@ export const useNotificationStore = defineStore('notification', {
     state: () => ({
         isOpened: false,
         message: "",
-        type: ToastLevel.debug(),
+        iconName: "",
+        styles: "",
     }),
 
     getters: {
@@ -18,7 +19,8 @@ export const useNotificationStore = defineStore('notification', {
 
             this.isOpened = true;
             this.message = message;
-            this.type = type;
+            this.iconName = type.getIconName;
+            this.styles = type.getStyles;
         },
         close() {
             this.isOpened = false;

@@ -2,25 +2,27 @@
   <div>
     <Transition>
       <div
-        v-show="(notificationState?.isOpened || false)"
+        v-show="isOpened || false"
         class="toast toast-bottom toast-end px-12 py-8 z-50"
+        :class="styles"
       >
         <div
           id="toast-success"
-          class="flex gap-2 items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800"
+          class="flex gap-2 items-center p-4 w-full max-w-xs text-gray-500 rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800"
           role="alert"
+          :class="styles"
         >
           <div
+            :class="styles"
             class="justify-center items-center w-8 h-8 rounded-lg"
-            :class="[notificationState?.type.styles]"
           >
             <Icon
-              :name="icon()"
+              :name="iconName"
               size="27"
             />
             <span class="sr-only">Check icon</span>
           </div>
-          <div class="text-sm font-normal">{{notificationState?.message || ''}}</div>
+          <div class="text-sm font-normal">{{message || ''}}</div>
           <button
             type="button"
             class="btn btn-ghost btn-sm btn-square"
@@ -40,24 +42,15 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { TOAST_DURATION_MEDIUM } from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
 
 const notificationStore = useNotificationStore();
 
-const notificationState = ref();
+const { isOpened, message, iconName, styles } = storeToRefs(notificationStore);
 
-onMounted(() => {
-  notificationState.value = notificationStore.getState;
-});
-
-watch(notificationStore.getState, (value, oldValue, onInvalidate) => {
-  console.log("new notification state");
-  console.log(notificationStore.getState.isOpened);
-  console.log(notificationState.value);
-
-  notificationState.value = notificationStore.getState;
-
+watch(isOpened, (value) => {
   if (value) {
     // * Turn off toast visibility after some time
     new Promise((resolve, reject) => {
@@ -68,21 +61,6 @@ watch(notificationStore.getState, (value, oldValue, onInvalidate) => {
     });
   }
 });
-
-function icon() {
-  switch (notificationState?.value?.type?.type || ToastLevelType.debug) {
-    case ToastLevelType.debug:
-      return "carbon:debug";
-    case ToastLevelType.info:
-      return "mdi:information-variant";
-    case ToastLevelType.error:
-      return "material-symbols:error";
-    case ToastLevelType.success:
-      return "material-symbols:check-small-rounded";
-    default:
-      return "material-symbols:question-mark-rounded";
-  }
-}
 </script>
 
 <style>

@@ -1,9 +1,9 @@
 <template>
   <div>
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card lg:card-side bg-base-100 border-1 rounded-2xl shadow-md">
+      <div class="card lg:card-side bg-base-100 border-1 rounded-xl shadow-md">
         <nuxt-img
-          class=" m-5 rounded-lg"
+          class="m-8 rounded-lg"
           sizes="sm:100vw md:60vw lg:600px"
           fit="fill"
           src="https://placeimg.com/400/300/arch"
@@ -40,10 +40,10 @@
   </div>
 
 </template>
-  
-  <script lang="ts" setup>
-import IProductResponse from "../stores/product";
-import { useCartStore } from "../stores/cart";
+    
+    <script lang="ts" setup>
+import IProductResponse from "~~/stores/product";
+import { useCartStore } from "~~/stores/cart";
 
 const cartStore = useCartStore();
 
@@ -53,6 +53,6 @@ function addToCart(product: IProductResponse) {
   cartStore.add(product);
 }
 </script>
-  
-  <style>
+    
+    <style>
 </style>
