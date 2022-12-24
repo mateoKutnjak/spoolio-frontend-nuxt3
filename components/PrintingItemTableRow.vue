@@ -4,12 +4,31 @@
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
     <td class="p-6">
-      <div class="btn btn-square rounded-md"></div>
+      <ClientOnly class="flex-1">
+        <PreviewSTL2
+          class="w-16 h-16 p-0 m-0"
+          :stlFileUrl="unit.localUrl"
+        />
+      </ClientOnly>
     </td>
-    <td class="py-4 font-semibold text-gray-900 dark:text-white">
+    <td class="py-4">
       <div class="flex flex-col">
-        {{ unit.file.name }}
-        <h1 class="text-xs font-normal">6.4cm x 3.2cm x 15cm</h1>
+        <div class="font-semibold text-gray-900 dark:text-white">
+          {{ unit.file.name }}
+        </div>
+        <div
+          class="flex gap-1"
+          v-if="unit.modelDimensions"
+        >
+          {{ unit.modelDimensions.x.toFixed(0)}}
+          {{ DimensionUnit[dimensionUnit] }}
+          x
+          {{ unit.modelDimensions.y.toFixed(0)}}
+          {{ DimensionUnit[dimensionUnit] }}
+          x
+          {{ unit.modelDimensions.z.toFixed(0)}}
+          {{ DimensionUnit[dimensionUnit] }}
+        </div>
       </div>
     </td>
     <td class="py-4 font-semibold text-gray-900 dark:text-white">
@@ -103,6 +122,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useDialogStore } from "~~/stores/dialog";
 import IFilamentColor, {
   useFilamentColorStore,
@@ -115,6 +135,7 @@ import {
   IFilamentMaterial,
   useFilamentMaterialStore,
 } from "~~/stores/filament_material";
+import { useGlobalsStore } from "~~/stores/globals";
 import {
   IPrintOrderAttachmentFileResponse,
   IPrintOrderAttachmentImageResponse,
@@ -125,10 +146,13 @@ import {
 const { unit } = defineProps(["unit"]);
 
 const dialogStore = useDialogStore();
+const globalsStore = useGlobalsStore();
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
+
+const { dimensionUnit } = storeToRefs(globalsStore);
 
 const colors = ref<IFilamentColor[]>(filamentColorStore.getFilamentColors);
 const materials = ref<IFilamentMaterial[]>(
@@ -248,6 +272,7 @@ function duplicateUnit() {
     attachmentFiles: [], // todo
     attachmentImages: [], // todo
     order: undefined,
+    modelDimensions: undefined,
   });
 }
 

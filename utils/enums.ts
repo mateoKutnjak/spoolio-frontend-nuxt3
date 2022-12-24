@@ -25,3 +25,7 @@ export class ToastLevel {
         return new ToastLevel(ToastLevelType.debug, 'bg-yellow-100 text-yellow-500 dark:bg-yellow-800 dark:text-yellow-200')
     }
 }
+
+export enum DimensionUnit {
+    mms, inches
+}

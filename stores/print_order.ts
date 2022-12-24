@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
 
 export interface IPrintOrderAttachmentFileResponse {
@@ -26,6 +27,7 @@ export interface IPrintOrderUnitResponse {
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     order: number | undefined,
+    modelDimensions: Vector3 | undefined
 }
 
 export interface IPrintOrderResponse {
@@ -139,7 +141,8 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             const index = this.units.findIndex(el => el.localUrl === localUrl);
 
-            if (index != -1) {
+            if (index != -1)
+            {
                 const unit = this.units[index];
 
                 const updatedUnit = Object.assign(unit, fieldUpdate)
@@ -151,9 +154,11 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeUnit(unit: IPrintOrderUnitResponse) {
             var index = this.units.findIndex(el => el.localUrl === unit.localUrl);
 
-            if (index > -1) {
+            if (index > -1)
+            {
                 this.units = this.units.splice(index, 1);
-            } else {
+            } else
+            {
                 console.error("Item not found among order units");
             }
         },
@@ -161,9 +166,11 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeUnitByFileLocalUrl(fileLocalUrl: string) {
             var index = this.units.findIndex(el => el.localUrl === fileLocalUrl);
 
-            if (index > -1) {
+            if (index > -1)
+            {
                 this.units.splice(index, 1);
-            } else {
+            } else
+            {
                 console.error("Item not found among order units");
             }
         },
@@ -175,9 +182,11 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentFile(attachmentFile: IPrintOrderAttachmentFileResponse) {
             var index = this.attachmentFiles.map((el) => el.file).indexOf(attachmentFile.file);
 
-            if (index > -1) {
+            if (index > -1)
+            {
                 this.attachmentFiles.splice(index, 1);
-            } else {
+            } else
+            {
                 console.error("Item not found among attached files");
             }
         },
@@ -189,15 +198,18 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentImage(attachmentImage: IPrintOrderAttachmentImageResponse) {
             var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
 
-            if (index > -1) {
+            if (index > -1)
+            {
                 this.attachmentImages.splice(index, 1);
-            } else {
+            } else
+            {
                 console.error("Item not found among attached images");
             }
         },
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(usePrintOrderStore, import.meta.hot))
 }

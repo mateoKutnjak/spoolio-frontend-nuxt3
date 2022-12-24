@@ -316,8 +316,6 @@ watch(user, (value, oldValue, onInvalidate) => {
 const submitShippingAddressHandler = async () => {
   // This delay is here only because of progress indicator button
   //   await new Promise((r) => setTimeout(r, 1000));
-  debugger;
-
   authStore
     .patchUserProfile(<IProfileResponse>{
       shipping_address: <IAddressResponse>{

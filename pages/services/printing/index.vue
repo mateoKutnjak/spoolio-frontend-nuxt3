@@ -1,7 +1,7 @@
 <template>
   <div class="container p-12">
     <div class="flex flex-col flex-grow gap-5 justify-between">
-
+      <DimensionUnitDropdown class="self-end" />
       <table
         v-if="units.length"
         class="w-full text-sm text-left text-gray-500 dark:text-gray-400 "
@@ -53,7 +53,7 @@
         v-else
         class="flex-1 text-center"
       >
-        <div>Nothing added yet</div>
+        <div class="h-24 w-full bg-base-200 flex justify-center items-center">Nothing added yet</div>
       </div>
       <div class="flex gap-5">
         <div
@@ -281,6 +281,7 @@ function onFilesAdded(files: File[]) {
         attachmentFiles: [],
         attachmentImages: [],
         order: undefined,
+        modelDimensions: undefined,
       });
 
       console.log(

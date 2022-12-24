@@ -100,6 +100,16 @@ onMounted(() => {
     const mesh = new Three.Mesh(geometry, material);
     box.value.add(mesh);
 
+    var size = new Three.Vector3();
+    var box2 = new Three.Box3().setFromObject(mesh);
+    box2.getSize(size);
+
+    if (size) {
+      printOrderStore.updateUnit(stlFileUrl, {
+        modelDimensions: size,
+      });
+    }
+
     var middle = new Three.Vector3();
     geometry.computeBoundingBox();
     geometry.boundingBox?.getCenter(middle);
