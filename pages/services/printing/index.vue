@@ -63,7 +63,7 @@
         >
           <label
             for="dropzone-file"
-            class="flex-1 flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            class="flex-1 flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-200 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             @drop="drop"
           >
             <div class="mb-2">
@@ -114,11 +114,13 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentColorStore } from "~~/stores/filament_color";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useFilamentMaterialStore } from "~~/stores/filament_material";
+import { useGlobalsStore } from "~~/stores/globals";
 import {
   usePrintOrderStore,
   IPrintOrderAttachmentFileResponse,
@@ -132,7 +134,10 @@ const dialogStore = useDialogStore();
 const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
+const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
+
+const { dimensionUnit } = storeToRefs(globalsStore);
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
@@ -235,6 +240,14 @@ watch(formkitFiles, (value, oldValue, onInvalidate) => {
   files.value.push(value);
 });
 
+watch(dimensionUnit, (value) => {
+  printOrderStore.units.forEach((el) => {
+    printOrderStore.updateUnit(el.localUrl, {
+      lengthUnit: DimensionUnit[value],
+    });
+  });
+});
+
 function change(e: any) {
   // * Gets triggered when user selects
   // * files after CLICKING on container
@@ -282,6 +295,7 @@ function onFilesAdded(files: File[]) {
         attachmentImages: [],
         order: undefined,
         modelDimensions: undefined,
+        lengthUnit: DimensionUnit[dimensionUnit.value],
       });
 
       console.log(

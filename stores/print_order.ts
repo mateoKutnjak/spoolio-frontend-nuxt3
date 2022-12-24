@@ -27,7 +27,8 @@ export interface IPrintOrderUnitResponse {
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     order: number | undefined,
-    modelDimensions: Vector3 | undefined
+    modelDimensions: Vector3 | undefined,
+    lengthUnit: string
 }
 
 export interface IPrintOrderResponse {
