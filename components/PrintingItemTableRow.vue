@@ -273,6 +273,7 @@ function duplicateUnit() {
     attachmentImages: [], // todo
     order: undefined,
     modelDimensions: undefined,
+    lengthUnit: DimensionUnit[dimensionUnit.value],
   });
 }
 
