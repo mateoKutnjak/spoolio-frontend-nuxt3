@@ -15,6 +15,7 @@ export interface IUserResponse {
 
 export interface IProfileResponse {
     id: number,
+    email: string,
     first_name: string,
     last_name: string,
     shipping_address: IAddressResponse,
@@ -110,7 +111,7 @@ export const useAuthStore = defineStore('auth', {
 
 
                 // todo check user? nullable
-                $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                customFetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
@@ -140,7 +141,7 @@ export const useAuthStore = defineStore('auth', {
                 }
 
                 // todo check user? nullable
-                $fetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                customFetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`

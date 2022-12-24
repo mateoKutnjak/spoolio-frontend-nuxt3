@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import IUserResponse from './auth'
+import { IUserResponse } from './auth';
 
 export default interface IBlogResponse {
     id: number,
@@ -33,7 +33,7 @@ export const useBlogStore = defineStore('blog', {
     actions: {
         async fetchBlog(id: number) {
             return new Promise<IBlogResponse>((resolve, reject) => {
-                $fetch<IBlogResponse>(`http://localhost:8000/api/blogs/${id}/`, {
+                customFetch<IBlogResponse>(`http://localhost:8000/api/blogs/${id}/`, {
                     method: 'GET'
                 }
                 ).then((response: IBlogResponse) => {
@@ -57,7 +57,7 @@ export const useBlogStore = defineStore('blog', {
                 };
 
                 // todo check user? nullable
-                $fetch<IBlogResponse>(`http://localhost:8000/api/blogs/${this.blog?.id}/`, {
+                customFetch<IBlogResponse>(`http://localhost:8000/api/blogs/${this.blog?.id}/`, {
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${accessToken}`
@@ -79,6 +79,7 @@ export const useBlogStore = defineStore('blog', {
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(useBlogStore, import.meta.hot))
 }
