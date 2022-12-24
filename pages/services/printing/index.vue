@@ -2,12 +2,20 @@
   <div class="container p-12">
     <div class="flex flex-col flex-grow gap-5 justify-between">
       <DimensionUnitDropdown class="self-end" />
+      <div class="block lg:hidden">
+        <printing-item-card
+          v-for="item in units"
+          :key="item.localUrl"
+          :unit="item"
+          @on-item-clicked="onItemClicked"
+        />
+      </div>
       <table
         v-if="units.length"
-        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 "
+        class="hidden lg:table w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
       >
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
+        <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+          <tr class="border-2">
             <th
               scope="col"
               class="py-4"
@@ -38,6 +46,7 @@
             >
               Price
             </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +72,7 @@
         >
           <label
             for="dropzone-file"
-            class="flex-1 flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-200 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             @drop="drop"
           >
             <div class="mb-2">

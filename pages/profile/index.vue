@@ -19,7 +19,7 @@
                   name="general_email"
                   label="Contact email"
                   v-model="generalInfoEmail"
-                  validation=""
+                  validation="email"
                   validation-visibility="blur"
                 />
               </div>

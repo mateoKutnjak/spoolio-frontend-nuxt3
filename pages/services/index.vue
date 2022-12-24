@@ -4,7 +4,7 @@
       <div class="flex flex-col md:flex-row gap-10 justify-between items-stretch md:items-center">
         <div class="flex-1 flex flex-col gap-3 text-center">
           <NuxtLink to="/services/printing">
-            <div class="btn btn-outline hover:btn-info w-full h-[32vh]">
+            <div class="btn btn-outline bg-white hover:btn-info w-full h-[32vh]">
               <div class="flex flex-col gap-3 items-center">
                 <Icon
                   name="file-icons:3d-model"
@@ -19,7 +19,7 @@
         <h1 class="text-2xl font-bold text-center">OR</h1>
         <div class="flex-1 flex flex-col gap-3 text-center">
           <NuxtLink to="/services/modeling">
-            <div class="btn btn-outline hover:btn-info w-full h-[32vh]">
+            <div class="btn btn-outline bg-white hover:btn-info w-full h-[32vh]">
               <div class="flex flex-col gap-3 items-center">
                 <Icon
                   name="material-symbols:design-services"

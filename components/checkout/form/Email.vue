@@ -1,10 +1,12 @@
 <template>
   <div class="flex gap-3">
-    <input
-      v-model="email"
-      type="text"
-      placeholder="Type here"
-      class="input input-bordered w-full"
+    <FormKit
+      type="email"
+      name="general_email"
+      label="Contact email"
+      v-model="contactEmail"
+      validation="email"
+      validation-visibility="live"
     />
   </div>
 </template>
@@ -17,7 +19,7 @@ const authStore = useAuthStore();
 
 const { user } = storeToRefs(authStore);
 
-const email = ref(user.value?.email || "");
+const contactEmail = ref(user.value?.profile?.email || "");
 </script>
 
 <style>
