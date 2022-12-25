@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="card shadow-md border bg-white">
-          <div class="card-body">
+          <div class="card-body gap-4">
             <div class="card-title">4. Payment method</div>
             <ServicesPrintingCheckoutPaymentMethodOverview />
           </div>
@@ -54,27 +54,27 @@
                   <tbody class="">
                     <tr>
                       <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">Items total price</td>
-                      <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">${{totalPrice}}</td>
+                      <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">${{(totalPrice).toFixed(2)}}</td>
                     </tr>
                     <tr>
                       <td class="pl-0 py-1 py-0 text-base text-start border-b-2 border-gray-500 bg-transparent">
                         <div class="flex gap-1"><strong>Subtotal</strong>(VAT excluded)</div>
                       </td>
-                      <td class="py-1 pt-0 text-lg text-end border-b-2 border-gray-500 bg-transparent"> <strong>$1234</strong></td>
+                      <td class="py-1 pt-0 text-lg text-end border-b-2 border-gray-500 bg-transparent"> <strong>${{(totalPrice).toFixed(2)}}</strong></td>
                     </tr>
                     <tr>
-                      <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">Tax</td>
-                      <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">$123</td>
+                      <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`Tax (${taxPercentage * 100}%)`}}</td>
+                      <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">${{(totalPrice * taxPercentage).toFixed(2)}}</td>
                     </tr>
                     <tr>
                       <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">Shipping fees</td>
-                      <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">$12</td>
+                      <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">${{shippingMethod.price}}</td>
                     </tr>
                     <tr>
                       <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
                         <div class="flex gap-1"><strong>TOTAL PRICE</strong>(VAT included)</div>
                       </td>
-                      <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>$1234</strong></td>
+                      <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>${{(totalPrice * (1+taxPercentage) + Number(shippingMethod.price)).toFixed(2)}}</strong></td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,12 +106,15 @@ import { IAddressResponse, useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 
+const taxPercentage = 0.25;
+
 const authStore = useAuthStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { contactEmail, units, shippingAddress } = storeToRefs(printOrderStore);
+const { contactEmail, units, shippingAddress, shippingMethod } =
+  storeToRefs(printOrderStore);
 
 onMounted(async () => {
   await shippingMethodStore

@@ -18,7 +18,7 @@
               :class="[
                 checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
               ]"
-              class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none"
+              class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md border-2 border-gray-300 focus:outline-none"
             >
               <div class="flex w-full items-center justify-between">
                 <div class="flex items-center">

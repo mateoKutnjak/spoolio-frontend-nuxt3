@@ -5,12 +5,15 @@
       type="checkbox"
       class="drawer-toggle"
     />
-    <div class="drawer-content bg-slate-100">
+    <div
+      class="drawer-content"
+      style="background-color: #ECECEC"
+    >
       <div class="flex flex-col h-screen">
         <Navbar />
         <Toast />
         <div class="flex-1 container mx-auto">
-          <Breadcrumbs class="pt-6 pb-4 px-12" />
+          <Breadcrumbs class="py-12 px-12 mx-4 pb-0" />
           <slot />
         </div>
       </div>

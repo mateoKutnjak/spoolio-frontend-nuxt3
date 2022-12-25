@@ -5,7 +5,8 @@ export const useNotificationStore = defineStore('notification', {
         isOpened: false,
         message: "",
         iconName: "",
-        styles: "",
+        iconColor: "",
+        backgroundColor: ''
     }),
 
     getters: {
@@ -19,8 +20,9 @@ export const useNotificationStore = defineStore('notification', {
 
             this.isOpened = true;
             this.message = message;
-            this.iconName = type.getIconName;
-            this.styles = type.getStyles;
+            this.iconName = type.iconName;
+            this.backgroundColor = type.backgroundColor;
+            this.iconColor = type.iconColor;
         },
         close() {
             this.isOpened = false;
@@ -28,6 +30,7 @@ export const useNotificationStore = defineStore('notification', {
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(useNotificationStore, import.meta.hot))
 }

@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { promiseWithTimeout } from '~~/utils/promise'
-import IUserResponse, { useAuthStore } from './auth'
+import { IUserResponse, useAuthStore } from './auth'
 
 export default interface ICommentResponse {
     id: number,
@@ -45,9 +45,11 @@ export const useCommentListStore = defineStore('comment-list', {
                         this.next = response.next;
                         this.previous = response.previous;
 
-                        if (append) {
+                        if (append)
+                        {
                             this.comments = [...this.comments, ...response.results];
-                        } else {
+                        } else
+                        {
                             this.comments = response.results;
                         }
 
@@ -64,7 +66,7 @@ export const useCommentListStore = defineStore('comment-list', {
             );
         },
 
-        async postBlogComment(user: number, content: string, blogId: number, ) {
+        async postBlogComment(user: number, content: string, blogId: number,) {
             const authStore = useAuthStore();
 
             var body: { [name: string]: any } = {
@@ -75,7 +77,7 @@ export const useCommentListStore = defineStore('comment-list', {
             };
 
             return promiseWithTimeout(new Promise<ICommentResponse>((resolve, reject) => {
-                $fetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
+                customFetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`
@@ -98,6 +100,7 @@ export const useCommentListStore = defineStore('comment-list', {
     },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
+{
     import.meta.hot.accept(acceptHMRUpdate(useCommentListStore, import.meta.hot))
 }
