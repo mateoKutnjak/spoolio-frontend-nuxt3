@@ -13,7 +13,7 @@
       </div>
     </div>
     <div
-      class="btn btn-outline border-gray-500 text-start text-base justify-start h-40 px-7 shadow-lg rounded-xl"
+      class="btn btn-outline border-gray-500 text-start text-base justify-start h-40 px-7 shadow-lg rounded-xl text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
       <div v-if="shippingAddress">

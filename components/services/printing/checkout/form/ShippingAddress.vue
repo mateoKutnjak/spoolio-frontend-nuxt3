@@ -142,7 +142,7 @@ onMounted(() => {
 
 function onUseDefaultClicked() {
   if (!user.value?.profile?.shipping_address) {
-    notificationStore.show("Cannot do that", ToastLevel.success());
+    notificationStore.show("Cannot do that", ToastLevel.error());
     return;
   }
 

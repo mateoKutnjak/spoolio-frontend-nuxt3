@@ -4,20 +4,10 @@
       <div class="flex flex-col gap-4">
         <div class="card shadow-md border bg-white">
           <div class="card-body gap-5">
-            <div class="card-title flex justify-between">1. Email<div class="pt-1">
-                <div
-                  class="btn btn-sm btn-ghost text-info"
-                  @click="contactEmail=user?.profile?.email || ''"
-                >Fill default</div>
+            <div class="card-title">1. Email<div class="pt-1">
               </div>
             </div>
-            <FormKit
-              type="email"
-              name="general_email"
-              v-model="contactEmail"
-              validation="email"
-              validation-visibility="live"
-            />
+            <ServicesPrintingCheckoutEmailOverview />
           </div>
         </div>
         <div class="card shadow-md border bg-white">

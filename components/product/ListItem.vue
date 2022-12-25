@@ -44,13 +44,16 @@
     <script lang="ts" setup>
 import IProductResponse from "~~/stores/product";
 import { useCartStore } from "~~/stores/cart";
+import { useNotificationStore } from "~~/stores/notification";
 
 const cartStore = useCartStore();
+const notificationStore = useNotificationStore();
 
 const { product } = defineProps(["product"]); // props
 
 function addToCart(product: IProductResponse) {
   cartStore.add(product);
+  notificationStore.show("Added to cart", ToastLevel.success());
 }
 </script>
     
