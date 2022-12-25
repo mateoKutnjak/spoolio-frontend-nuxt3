@@ -373,7 +373,7 @@ const submitGeneralInfoHandler = async () => {
       email: generalInfoEmail.value,
     })
     .then(() => {
-      notificationStore.show("Updates saved", ToastLevel.success());
+      notificationStore.show("Information saved", ToastLevel.success());
     })
     .catch((err) => {})
     .finally(() => (submittingGeneralInfo.value = false));
@@ -395,7 +395,9 @@ const submitShippingAddressHandler = async () => {
         phone_number: shippingAddressPhoneNumber.value,
       },
     })
-    .then(() => {})
+    .then(() => {
+      notificationStore.show("Information saved", ToastLevel.success());
+    })
     .catch((err) => {});
 };
 
@@ -416,7 +418,9 @@ const submitBillingAddressHandler = async () => {
         phone_number: billingAddressPhoneNumber.value,
       },
     })
-    .then(() => {})
+    .then(() => {
+      notificationStore.show("Information saved", ToastLevel.success());
+    })
     .catch((err) => {});
 };
 </script>

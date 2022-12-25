@@ -3,15 +3,32 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <div class="flex flex-col gap-4">
         <div class="card shadow-md border bg-white">
-          <div class="card-body">
-            <div class="card-title">1. Email</div>
-            <CheckoutFormEmail />
+          <div class="card-body gap-5">
+            <div class="card-title flex justify-between">1. Email<div class="pt-1">
+                <div
+                  class="btn btn-sm btn-ghost text-info"
+                  @click="contactEmail=user?.profile?.email || ''"
+                >Fill default</div>
+              </div>
+            </div>
+            <FormKit
+              type="email"
+              name="general_email"
+              v-model="contactEmail"
+              validation="email"
+              validation-visibility="live"
+            />
           </div>
         </div>
         <div class="card shadow-md border bg-white">
-          <div class="card-body">
-            <div class="card-title">2. Address</div>
-            TODO address form for guest, autofill for logged in user
+          <div class="card-body gap-5">
+            <div class="card-title">
+              2. Addresses
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+              <ServicesPrintingCheckoutShippingAddressOverview />
+              <ServicesPrintingCheckoutBillingAddressOverview />
+            </div>
           </div>
         </div>
         <div class="card shadow-md border bg-white">
@@ -77,7 +94,6 @@
                   <label class="label cursor-pointer gap-4 justify-start">
                     <input
                       type="checkbox"
-                      checked="checked"
                       class="checkbox"
                     />
                     <span class="label-text">TODO (with formkit this checkbox and button bellow) I agree to Terms & Condition and the Privacy Policy</span>
@@ -95,11 +111,15 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { COUNTRIES } from "~~/constants/countries";
+import { IAddressResponse, useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
+const authStore = useAuthStore();
 const printOrderStore = usePrintOrderStore();
 
-const { units } = storeToRefs(printOrderStore);
+const { user } = storeToRefs(authStore);
+const { contactEmail, units, shippingAddress } = storeToRefs(printOrderStore);
 
 const totalPrice = ref<number>(
   units.value.reduce(

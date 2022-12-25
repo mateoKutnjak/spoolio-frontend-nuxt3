@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
+import { IAddressResponse } from './auth';
 
 export interface IPrintOrderAttachmentFileResponse {
     file: File,
@@ -38,6 +39,8 @@ export interface IPrintOrderResponse {
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     user_profile: number,
+    shipping_address: IAddressResponse,
+    billing_address: IAddressResponse,
 }
 
 async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number) {
@@ -66,6 +69,27 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
 
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
+        contactEmail: "",
+        shippingAddress: <IAddressResponse>{
+            country: '',
+            address: '',
+            first_name: '',
+            last_name: '',
+            state: '',
+            locality: '',
+            phone_number: '',
+            postal_code: ''
+        },
+        billingAddress: <IAddressResponse>{
+            country: '',
+            address: '',
+            first_name: '',
+            last_name: '',
+            state: '',
+            locality: '',
+            phone_number: '',
+            postal_code: ''
+        },
         units: [] as IPrintOrderUnitResponse[],
         attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
         attachmentImages: [] as IPrintOrderAttachmentImageResponse[],
@@ -75,6 +99,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         getAttachmentFiles: (state) => state.attachmentFiles,
         getAttachmentImages: (state) => state.attachmentImages,
         getUnits: (state) => state.units,
+        getContactEmail: (state) => state.contactEmail,
     },
 
     actions: {
