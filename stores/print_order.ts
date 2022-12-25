@@ -43,6 +43,12 @@ export interface IPrintOrderResponse {
     billing_address: IAddressResponse,
 }
 
+export interface IShippingMethod {
+    provider: string,
+    description: string,
+    price: number,
+}
+
 async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number) {
 
     var formData = new FormData();
@@ -69,9 +75,11 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
 
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
+        paymentMethod: "",
         contactEmail: "",
         shippingAddress: <IAddressResponse>{},
         billingAddress: <IAddressResponse>{},
+        shippingMethod: <IShippingMethod>{},
         units: [] as IPrintOrderUnitResponse[],
         attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
         attachmentImages: [] as IPrintOrderAttachmentImageResponse[],

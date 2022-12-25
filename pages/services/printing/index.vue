@@ -137,6 +137,7 @@ import {
   IPrintOrderUnitResponse,
   IPrintOrderResponse,
 } from "~~/stores/print_order";
+import { useShippingMethodStore } from "~~/stores/shipping_method";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -145,6 +146,7 @@ const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
 const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
+const shippingMethodStore = useShippingMethodStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
 

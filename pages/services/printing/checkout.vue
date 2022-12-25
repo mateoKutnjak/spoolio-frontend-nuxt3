@@ -22,15 +22,15 @@
           </div>
         </div>
         <div class="card shadow-md border bg-white">
-          <div class="card-body">
+          <div class="card-body gap-4">
             <div class="card-title">3. Shipping method</div>
-            TODO Headless UI radio group
+            <ServicesPrintingCheckoutShippingMethodOverview />
           </div>
         </div>
         <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="card-title">4. Payment method</div>
-            TODO Credit card (single radio group choice)
+            <ServicesPrintingCheckoutPaymentMethodOverview />
           </div>
         </div>
       </div>
@@ -104,13 +104,25 @@ import { storeToRefs } from "pinia";
 import { COUNTRIES } from "~~/constants/countries";
 import { IAddressResponse, useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
+import { useShippingMethodStore } from "~~/stores/shipping_method";
 
 const authStore = useAuthStore();
+const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
 const { contactEmail, units, shippingAddress } = storeToRefs(printOrderStore);
 
+onMounted(async () => {
+  await shippingMethodStore
+    .fetchShippingMethods()
+    .then(() => {
+      console.log("Shipping methods fetched successfuly TODO");
+    })
+    .catch((err) => console.log("Shipping method fetch error TODO"));
+
+  console.log("Shipping method fetched successfuly TODO");
+});
 const totalPrice = ref<number>(
   units.value.reduce(
     (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),

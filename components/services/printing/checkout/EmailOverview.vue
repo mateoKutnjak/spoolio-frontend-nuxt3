@@ -4,10 +4,10 @@
     @click="openDialog"
   >
     <div v-if="contactEmail">
-      {{contactEmail}}
+      <h1 class="font-normal">{{contactEmail}}</h1>
     </div>
     <div v-else-if="user?.profile?.email">
-      {{user?.profile?.email}}
+      <h1 class="font-normal">{{user?.profile?.email}}</h1>
     </div>
     <div v-else>
       <div class="flex gap-2 items-center italic font-normal text-gray-500">

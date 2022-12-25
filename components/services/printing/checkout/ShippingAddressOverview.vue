@@ -13,11 +13,11 @@
       </div>
     </div>
     <div
-      class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 shadow-lg rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+      class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
       <div v-if="Object.keys(shippingAddress).length">
-        <div class="text-start text-base text-gray-800">
+        <div class="flex flex-col text-start text-base text-gray-800">
           <strong>{{shippingAddress.first_name}} {{shippingAddress.last_name}}</strong>
           <p>{{shippingAddress.address}} </p>
           <p>{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
@@ -26,22 +26,22 @@
         </div>
       </div>
       <div v-else-if="user?.profile?.shipping_address">
-        <div class="text-start text-base text-gray-800">
+        <h2 class="flex flex-col text-start text-base text-gray-800">
           <strong>{{user.profile.shipping_address.first_name}} {{user.profile.shipping_address.last_name}}</strong>
           <p>{{user.profile.shipping_address.address}}</p>
           <p>{{user.profile.shipping_address.locality}} {{user.profile.shipping_address.postal_code}}</p>
           <p>{{user.profile.shipping_address.country}}</p>
           <p>{{user.profile.shipping_address.phone_number}}</p>
-        </div>
+        </h2>
       </div>
       <div v-else>
-        <div class="flex gap-2 items-center italic font-normal text-gray-500">
+        <h1 class="flex gap-2 items-center italic font-normal text-gray-500">
           <Icon
             name="material-symbols:add"
             size="20"
           />
           Add shipping address
-        </div>
+        </h1>
       </div>
     </div>
   </div>
