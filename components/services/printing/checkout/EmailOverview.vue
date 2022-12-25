@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn btn-outline border-gray-500 text-start text-base justify-start px-7 shadow rounded-xl text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+    class="btn btn-ghost border-gray-300 text-start text-base justify-start px-7 shadow rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="openDialog"
   >
     <div v-if="contactEmail">

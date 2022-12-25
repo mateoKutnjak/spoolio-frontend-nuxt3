@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col">
     <div class="card-title flex justify-start text-base text-gray-400 font-semibold px-2">
       BILLING
       <div
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div
-      class="btn btn-outline border-gray-500 text-start text-base justify-start h-40 px-7 shadow-lg rounded-xl text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+      class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 shadow-lg rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
       <div v-if="Object.keys(billingAddress).length">
