@@ -3,6 +3,7 @@
     <div class="card-title flex justify-between">
       Shipping address
       <div
+        v-if="user"
         class="btn btn-ghost link link-info text-base"
         @click="onUseDefaultClicked"
       >Use default</div>
@@ -146,14 +147,22 @@ function onUseDefaultClicked() {
     return;
   }
 
-  shippingAddressCountry.value = user.value?.profile?.shipping_address.country ?? "";
-  shippingAddressFirstName.value = user.value?.profile?.shipping_address.first_name ?? "";
-  shippingAddressLastName.value = user.value?.profile?.shipping_address.last_name ?? "";
-  shippingAddressStreetAddress.value = user.value?.profile?.shipping_address.address ?? "";
-  shippingAddressCity.value = user.value?.profile?.shipping_address.locality ?? "";
-  shippingAddressState.value = user.value?.profile?.shipping_address.state ?? "";
-  shippingAddressPostalCode.value = user.value?.profile?.shipping_address.postal_code ?? "";
-  shippingAddressPhoneNumber.value = user.value?.profile?.shipping_address.phone_number ?? "";
+  shippingAddressCountry.value =
+    user.value?.profile?.shipping_address.country ?? "";
+  shippingAddressFirstName.value =
+    user.value?.profile?.shipping_address.first_name ?? "";
+  shippingAddressLastName.value =
+    user.value?.profile?.shipping_address.last_name ?? "";
+  shippingAddressStreetAddress.value =
+    user.value?.profile?.shipping_address.address ?? "";
+  shippingAddressCity.value =
+    user.value?.profile?.shipping_address.locality ?? "";
+  shippingAddressState.value =
+    user.value?.profile?.shipping_address.state ?? "";
+  shippingAddressPostalCode.value =
+    user.value?.profile?.shipping_address.postal_code ?? "";
+  shippingAddressPhoneNumber.value =
+    user.value?.profile?.shipping_address.phone_number ?? "";
 }
 
 function submitHandler() {

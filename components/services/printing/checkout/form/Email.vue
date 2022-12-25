@@ -3,6 +3,7 @@
     <div class="card-title flex justify-between">
       Email
       <div
+        v-if="user"
         class="btn btn-ghost link link-info text-base"
         @click="onUseDefaultClicked"
       >Use default</div>
