@@ -1,6 +1,6 @@
 <template>
-  <div class="card-body gap-8 p-2 py-0">
-    <div class="card-title flex justify-between">
+  <div class="card-body gap-2 p-2 py-0">
+    <div class="card-title text-base flex justify-between">
       Email
       <div
         v-if="user"
@@ -17,7 +17,6 @@
     >
       <FormKit
         type="email"
-        label="E-mail"
         v-model="email"
         validation="required|email"
         validation-visibility="blur"
@@ -27,7 +26,7 @@
           type="submit"
           label="Save"
           :classes="{
-                  input: 'btn btn-primary btn-block btn-lg'
+                  input: 'btn btn-primary btn-block'
               }"
         />
       </div>
@@ -54,7 +53,7 @@ const { contactEmail } = storeToRefs(printOrderStore);
 const email = ref("");
 
 onMounted(() => {
-  email.value = contactEmail.value ?? "";
+  email.value = contactEmail.value || user.value?.profile?.email || "";
 });
 
 function onUseDefaultClicked() {
