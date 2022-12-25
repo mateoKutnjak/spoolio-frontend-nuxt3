@@ -1,7 +1,7 @@
 <template>
   <div class="container p-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div class="flex flex-col gap-4">
+    <div class="relative flex flex-col lg:flex-row gap-6">
+      <div class="flex-1 flex flex-col gap-4">
         <div class="card shadow-md border bg-white">
           <div class="card-body gap-5">
             <div class="card-title">1. Email<div class="pt-1">
@@ -34,7 +34,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
         <div class="card shadow-md border bg-white">
           <div class="card-body">
             <div class="flex flex-col gap-10">
@@ -94,7 +94,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </aside>
     </div>
   </div>
 </template>
