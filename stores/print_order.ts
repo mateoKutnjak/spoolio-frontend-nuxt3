@@ -70,26 +70,8 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
         contactEmail: "",
-        shippingAddress: <IAddressResponse>{
-            country: '',
-            address: '',
-            first_name: '',
-            last_name: '',
-            state: '',
-            locality: '',
-            phone_number: '',
-            postal_code: ''
-        },
-        billingAddress: <IAddressResponse>{
-            country: '',
-            address: '',
-            first_name: '',
-            last_name: '',
-            state: '',
-            locality: '',
-            phone_number: '',
-            postal_code: ''
-        },
+        shippingAddress: <IAddressResponse>{},
+        billingAddress: <IAddressResponse>{},
         units: [] as IPrintOrderUnitResponse[],
         attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
         attachmentImages: [] as IPrintOrderAttachmentImageResponse[],

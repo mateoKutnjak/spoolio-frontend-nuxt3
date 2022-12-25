@@ -131,14 +131,33 @@ const shippingAddressPhoneNumber = ref("");
 const submittingGeneralInfo = ref(false);
 
 onMounted(() => {
-  shippingAddressCountry.value = shippingAddress.value.country ?? "";
-  shippingAddressFirstName.value = shippingAddress.value.first_name ?? "";
-  shippingAddressLastName.value = shippingAddress.value.last_name ?? "";
-  shippingAddressStreetAddress.value = shippingAddress.value.address ?? "";
-  shippingAddressCity.value = shippingAddress.value.locality ?? "";
-  shippingAddressState.value = shippingAddress.value.state ?? "";
-  shippingAddressPostalCode.value = shippingAddress.value.postal_code ?? "";
-  shippingAddressPhoneNumber.value = shippingAddress.value.phone_number ?? "";
+  if (Object.keys(shippingAddress.value).length) {
+    shippingAddressCountry.value = shippingAddress.value.country || "";
+    shippingAddressFirstName.value = shippingAddress.value.first_name || "";
+    shippingAddressLastName.value = shippingAddress.value.last_name || "";
+    shippingAddressStreetAddress.value = shippingAddress.value.address || "";
+    shippingAddressCity.value = shippingAddress.value.locality || "";
+    shippingAddressState.value = shippingAddress.value.state || "";
+    shippingAddressPostalCode.value = shippingAddress.value.postal_code || "";
+    shippingAddressPhoneNumber.value = shippingAddress.value.phone_number || "";
+  } else if (user.value?.profile?.shipping_address) {
+    shippingAddressCountry.value =
+      user?.value?.profile?.shipping_address.country || "";
+    shippingAddressFirstName.value =
+      user?.value?.profile?.shipping_address.first_name || "";
+    shippingAddressLastName.value =
+      user?.value?.profile?.shipping_address.last_name || "";
+    shippingAddressStreetAddress.value =
+      user?.value?.profile?.shipping_address.address || "";
+    shippingAddressCity.value =
+      user?.value?.profile?.shipping_address.locality || "";
+    shippingAddressState.value =
+      user?.value?.profile?.shipping_address.state || "";
+    shippingAddressPostalCode.value =
+      user?.value?.profile?.shipping_address.postal_code || "";
+    shippingAddressPhoneNumber.value =
+      user?.value?.profile?.shipping_address.phone_number || "";
+  }
 });
 
 function onUseDefaultClicked() {
@@ -148,21 +167,21 @@ function onUseDefaultClicked() {
   }
 
   shippingAddressCountry.value =
-    user.value?.profile?.shipping_address.country ?? "";
+    user.value?.profile?.shipping_address.country || "";
   shippingAddressFirstName.value =
-    user.value?.profile?.shipping_address.first_name ?? "";
+    user.value?.profile?.shipping_address.first_name || "";
   shippingAddressLastName.value =
-    user.value?.profile?.shipping_address.last_name ?? "";
+    user.value?.profile?.shipping_address.last_name || "";
   shippingAddressStreetAddress.value =
-    user.value?.profile?.shipping_address.address ?? "";
+    user.value?.profile?.shipping_address.address || "";
   shippingAddressCity.value =
-    user.value?.profile?.shipping_address.locality ?? "";
+    user.value?.profile?.shipping_address.locality || "";
   shippingAddressState.value =
-    user.value?.profile?.shipping_address.state ?? "";
+    user.value?.profile?.shipping_address.state || "";
   shippingAddressPostalCode.value =
-    user.value?.profile?.shipping_address.postal_code ?? "";
+    user.value?.profile?.shipping_address.postal_code || "";
   shippingAddressPhoneNumber.value =
-    user.value?.profile?.shipping_address.phone_number ?? "";
+    user.value?.profile?.shipping_address.phone_number || "";
 }
 
 function submitHandler() {

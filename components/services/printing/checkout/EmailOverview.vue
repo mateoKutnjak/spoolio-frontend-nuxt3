@@ -2,7 +2,22 @@
   <div
     class="btn btn-outline border-gray-500 text-start text-base justify-start px-7 shadow rounded-xl text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="openDialog"
-  >{{contactEmail}}
+  >
+    <div v-if="contactEmail">
+      {{contactEmail}}
+    </div>
+    <div v-else-if="user?.profile?.email">
+      {{user?.profile?.email}}
+    </div>
+    <div v-else>
+      <div class="flex gap-2 items-center italic font-normal text-gray-500">
+        <Icon
+          name="material-symbols:add"
+          size="20"
+        />
+        Add email
+      </div>
+    </div>
   </div>
 </template>
 

@@ -7,7 +7,7 @@
         @click="openDialog"
       >
         <Icon
-          name="material-symbols:edit"
+          name="material-symbols:edit-outline"
           size="22"
         />
       </div>
@@ -16,19 +16,32 @@
       class="btn btn-outline border-gray-500 text-start text-base justify-start h-40 px-7 shadow-lg rounded-xl text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
-      <div v-if="billingAddress">
-        <strong>{{billingAddress.first_name}} {{billingAddress.last_name}}</strong>
-        <p>{{billingAddress.address}}</p>
-        <p>{{billingAddress.locality}} {{billingAddress.postal_code}}</p>
-        <p>{{billingAddress.country}}</p>
-        <p>{{billingAddress.phone_number}}</p>
+      <div v-if="Object.keys(billingAddress).length">
+        <div class="text-start text-base text-gray-800">
+          <strong>{{billingAddress.first_name}} {{billingAddress.last_name}}</strong>
+          <p>{{billingAddress.address}}</p>
+          <p>{{billingAddress.locality}} {{billingAddress.postal_code}}</p>
+          <p>{{billingAddress.country}}</p>
+          <p>{{billingAddress.phone_number}}</p>
+        </div>
       </div>
       <div v-else-if="user?.profile?.billing_address">
-        <strong>{{user.profile.billing_address.first_name}} {{user.profile.billing_address.last_name}}</strong>
-        <p>{{user.profile.billing_address.address}}</p>
-        <p>{{user.profile.billing_address.locality}} {{user.profile.billing_address.postal_code}}</p>
-        <p>{{user.profile.billing_address.country}}</p>
-        <p>{{user.profile.billing_address.phone_number}}</p>
+        <div class="text-start text-base text-gray-800">
+          <strong>{{user.profile.billing_address.first_name}} {{user.profile.billing_address.last_name}}</strong>
+          <p>{{user.profile.billing_address.address}}</p>
+          <p>{{user.profile.billing_address.locality}} {{user.profile.billing_address.postal_code}}</p>
+          <p>{{user.profile.billing_address.country}}</p>
+          <p>{{user.profile.billing_address.phone_number}}</p>
+        </div>
+      </div>
+      <div v-else>
+        <div class="flex gap-2 items-center italic font-normal text-gray-500">
+          <Icon
+            name="material-symbols:add"
+            size="20"
+          />
+          Add billing address
+        </div>
       </div>
     </div>
   </div>

@@ -124,14 +124,26 @@ const phoneNumber = ref("");
 const submittingGeneralInfo = ref(false);
 
 onMounted(() => {
-  county.value = billingAddress.value.country ?? "";
-  firstName.value = billingAddress.value.first_name ?? "";
-  lastName.value = billingAddress.value.last_name ?? "";
-  address.value = billingAddress.value.address ?? "";
-  city.value = billingAddress.value.locality ?? "";
-  state.value = billingAddress.value.state ?? "";
-  postalCode.value = billingAddress.value.postal_code ?? "";
-  phoneNumber.value = billingAddress.value.phone_number ?? "";
+  if (Object.keys(billingAddress.value).length) {
+    county.value = billingAddress.value.country || "";
+    firstName.value = billingAddress.value.first_name || "";
+    lastName.value = billingAddress.value.last_name || "";
+    address.value = billingAddress.value.address || "";
+    city.value = billingAddress.value.locality || "";
+    state.value = billingAddress.value.state || "";
+    postalCode.value = billingAddress.value.postal_code || "";
+    phoneNumber.value = billingAddress.value.phone_number || "";
+  } else if (user?.value?.profile?.billing_address) {
+    county.value = user?.value?.profile?.billing_address.country || "";
+    firstName.value = user?.value?.profile?.billing_address.first_name || "";
+    lastName.value = user?.value?.profile?.billing_address.last_name || "";
+    address.value = user?.value?.profile?.billing_address.address || "";
+    city.value = user?.value?.profile?.billing_address.locality || "";
+    state.value = user?.value?.profile?.billing_address.state || "";
+    postalCode.value = user?.value?.profile?.billing_address.postal_code || "";
+    phoneNumber.value =
+      user?.value?.profile?.billing_address.phone_number || "";
+  }
 });
 
 function onUseDefaultClicked() {
@@ -140,14 +152,14 @@ function onUseDefaultClicked() {
     return;
   }
 
-  county.value = user.value?.profile?.billing_address.country ?? "";
-  firstName.value = user.value?.profile?.billing_address.first_name ?? "";
-  lastName.value = user.value?.profile?.billing_address.last_name ?? "";
-  address.value = user.value?.profile?.billing_address.address ?? "";
-  city.value = user.value?.profile?.billing_address.locality ?? "";
-  state.value = user.value?.profile?.billing_address.state ?? "";
-  postalCode.value = user.value?.profile?.billing_address.postal_code ?? "";
-  phoneNumber.value = user.value?.profile?.billing_address.phone_number ?? "";
+  county.value = user.value?.profile?.billing_address.country || "";
+  firstName.value = user.value?.profile?.billing_address.first_name || "";
+  lastName.value = user.value?.profile?.billing_address.last_name || "";
+  address.value = user.value?.profile?.billing_address.address || "";
+  city.value = user.value?.profile?.billing_address.locality || "";
+  state.value = user.value?.profile?.billing_address.state || "";
+  postalCode.value = user.value?.profile?.billing_address.postal_code || "";
+  phoneNumber.value = user.value?.profile?.billing_address.phone_number || "";
 }
 
 function submitHandler() {
