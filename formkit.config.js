@@ -74,7 +74,6 @@ export default {
             text: textClassification,
             textarea: {
                 ...textClassification,
-                input: 'block w-full h-32 px-3 border-none text-base text-gray-700 placeholder-gray-400 focus:shadow-outline',
             },
             time: textClassification,
             url: textClassification,

@@ -19,6 +19,7 @@ module.exports = {
     plugins: [
         formKitTailwind,
         require("@tailwindcss/typography"),
+        require('@tailwindcss/line-clamp'),
         daisyui
     ],
     daisyui: {
