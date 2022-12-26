@@ -20,9 +20,10 @@
               }"
               :classes="{
                 input: 'rounded-xl px-2',
-                wrapper: 'shadow-sm rounded-xl',
+                wrapper: 'shadow-xs rounded-xl',
                 inner: 'rounded-xl',
-                outer: 'rounded-xl'
+                outer: 'rounded-xl mb-3',
+                message: 'px-5 pt-1 mb-0'
               }"
             />
             <FormKit
@@ -37,7 +38,8 @@
                 input: 'h-64 rounded-xl p-3',
                 wrapper: 'shadow-sm rounded-xl',
                 inner: 'rounded-xl',
-                outer: 'rounded-xl mb-0'
+                outer: 'rounded-xl mb-0',
+                message: 'px-5 pt-1'
               }"
             />
           </div>
