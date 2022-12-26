@@ -21,7 +21,7 @@ export class ToastLevel {
     }
 
     static info() {
-        return new ToastLevel(ToastLevelType.info, 'bg-blue-500', 'text-blue-500', "mdi:information-variant")
+        return new ToastLevel(ToastLevelType.info, 'bg-blue-500', 'text-blue-500', "material-symbols:info-rounded")
     }
 
     static debug() {

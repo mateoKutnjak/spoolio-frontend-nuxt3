@@ -62,7 +62,7 @@
         v-else
         class="flex-1 text-center"
       >
-        <div class="h-24 w-full bg-base-200 flex justify-center items-center">Nothing added yet</div>
+        <div class="h-44 w-full flex justify-center items-center italic text-gray-600">Nothing added yet</div>
       </div>
       <div class="flex gap-5">
         <div
