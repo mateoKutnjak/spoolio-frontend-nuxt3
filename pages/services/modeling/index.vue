@@ -35,7 +35,7 @@
                 required: 'Please describe your problem'
               }"
               :classes="{
-                input: 'h-64 rounded-xl p-3',
+                input: 'h-64 rounded-xl p-3 resize-none',
                 wrapper: 'shadow-sm rounded-xl',
                 inner: 'rounded-xl',
                 outer: 'rounded-xl mb-0',
