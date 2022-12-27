@@ -19,19 +19,19 @@
       <div v-if="Object.keys(shippingAddress).length">
         <div class="flex flex-col text-start text-base text-gray-800">
           <strong>{{shippingAddress.first_name}} {{shippingAddress.last_name}}</strong>
-          <p>{{shippingAddress.address}} </p>
-          <p>{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
-          <p>{{shippingAddress.country}}</p>
-          <p>{{shippingAddress.phone_number}}</p>
+          <p class="font-normal">{{shippingAddress.address}} </p>
+          <p class="font-normal">{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
+          <p class="font-normal">{{shippingAddress.country}}</p>
+          <p class="font-normal">{{shippingAddress.phone_number}}</p>
         </div>
       </div>
       <div v-else-if="user?.profile?.shipping_address">
         <h2 class="flex flex-col text-start text-base text-gray-800">
           <strong>{{user.profile.shipping_address.first_name}} {{user.profile.shipping_address.last_name}}</strong>
-          <p>{{user.profile.shipping_address.address}}</p>
-          <p>{{user.profile.shipping_address.locality}} {{user.profile.shipping_address.postal_code}}</p>
-          <p>{{user.profile.shipping_address.country}}</p>
-          <p>{{user.profile.shipping_address.phone_number}}</p>
+          <p class="font-normal">{{user.profile.shipping_address.address}}</p>
+          <p class="font-normal">{{user.profile.shipping_address.locality}} {{user.profile.shipping_address.postal_code}}</p>
+          <p class="font-normal">{{user.profile.shipping_address.country}}</p>
+          <p class="font-normal">{{user.profile.shipping_address.phone_number}}</p>
         </h2>
       </div>
       <div v-else>
