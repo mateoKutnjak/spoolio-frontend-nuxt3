@@ -13,7 +13,7 @@
       </div>
     </div>
     <div
-      class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 shadow-lg rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+      class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
       <div v-if="Object.keys(billingAddress).length">

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn btn-ghost border-gray-300 text-start text-base justify-start px-7 pl-4 shadow rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+    class="btn btn-ghost border-gray-300 text-start text-base justify-start px-7 pl-4 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="onClicked"
   >
     <div
