@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="crumbs.length > 1"
-    class="breadcrumbs"
+    class="breadcrumbs text-gray-800"
   >
     <ul>
       <li

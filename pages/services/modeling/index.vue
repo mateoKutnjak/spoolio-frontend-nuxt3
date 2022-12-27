@@ -12,9 +12,9 @@
           <div class="flex-1 flex flex-col">
             <FormKit
               type="text"
-              placeholder="What can we do for you?"
+              placeholder="Contact e-mail"
               validation="email|required"
-              validation-visibility="live"
+              validation-visibility="blur"
               :validation-messages="{
                 required: 'Leave your contact email'
               }"
@@ -31,6 +31,7 @@
               rows="1"
               placeholder="What can we do for you?"
               validation="required"
+              validation-visibility="blur"
               :validation-messages="{
                 required: 'Please describe your problem'
               }"
