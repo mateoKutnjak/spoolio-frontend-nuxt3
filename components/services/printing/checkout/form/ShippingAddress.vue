@@ -4,7 +4,7 @@
       Shipping address
       <div
         v-if="user"
-        class="btn btn-ghost link link-info text-base"
+        class="btn btn-ghost link link-info text-sm"
         @click="onUseDefaultClicked"
       >Use default</div>
     </div>

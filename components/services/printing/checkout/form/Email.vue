@@ -6,7 +6,7 @@
         class="text-info"
         size="30"
       />
-      <div class="italic text-md">Enter contact e-mail where you will receive order updates</div>
+      <div class="italic text-sm text-gray-600">Enter contact e-mail where you will receive order updates</div>
     </div>
     <FormKit
       type="form"
@@ -14,10 +14,12 @@
       submit-label="Update"
       @submit="submitHandler"
       :actions="false"
+      :incomplete-message="false"
     >
       <div class="flex gap-3 justify-between items-start">
         <FormKit
-          type="email"
+          type="text"
+          name="Contact email"
           v-model="email"
           validation="required|email"
           validation-visibility="blur"
@@ -29,7 +31,7 @@
         />
         <div
           v-if="user"
-          class="btn btn-ghost link link-info text-base"
+          class="btn btn-ghost link link-info text-sm"
           @click="onUseDefaultClicked"
         >Use default</div>
       </div>
@@ -38,7 +40,7 @@
           type="submit"
           label="Save"
           :classes="{
-                  input: 'btn btn-primary btn-block'
+                  input: 'btn btn-primary btn-block text-base'
               }"
         />
       </div>

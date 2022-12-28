@@ -9,6 +9,9 @@ const textClassification = {
     outer: 'rounded-xl mb-3',
     message: 'px-5 pt-1 mb-0'
 }
+const selectClassification = {
+    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+}
 const boxClassification = {
     fieldset: 'max-w-md border border-gray-400 rounded-md px-2 pb-1',
     legend: 'font-bold text-sm',
@@ -71,7 +74,7 @@ export default {
                 input: 'form-range appearance-none w-full h-2 p-0 bg-gray-200 rounded-full focus:outline-none focus:ring-0 focus:shadow-none'
             },
             search: textClassification,
-            select: textClassification,
+            select: selectClassification,
             submit: buttonClassification,
             tel: textClassification,
             text: textClassification,
