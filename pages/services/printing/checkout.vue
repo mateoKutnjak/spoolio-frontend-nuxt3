@@ -16,8 +16,16 @@
               2. Addresses
             </div>
             <div class="grid grid-cols-2 gap-5">
-              <ServicesPrintingCheckoutShippingAddressOverview />
-              <ServicesPrintingCheckoutBillingAddressOverview />
+              <FormKit
+                :type="shippingAddressInput"
+                validation="required"
+                validation-visibility="dirty"
+              />
+              <FormKit
+                :type="billingAddressInput"
+                validation="required"
+                validation-visibility="dirty"
+              />
             </div>
           </div>
         </div>
@@ -101,10 +109,17 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { createInput } from "@formkit/vue";
 import { COUNTRIES } from "~~/constants/countries";
 import { IAddressResponse, useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
+import FormkitShippingAddress from "~~/components/formkit/ShippingAddress.vue";
+import FormkitBillingAddress from "~~/components/formkit/BillingAddress.vue";
+import { FormKitNode } from "@formkit/core";
+
+const shippingAddressInput = createInput(FormkitShippingAddress);
+const billingAddressInput = createInput(FormkitBillingAddress);
 
 const taxPercentage = 0.25;
 
@@ -132,6 +147,47 @@ const totalPrice = ref<number>(
     0
   )
 );
+
+const username_exists = function (
+  node: FormKitNode
+): boolean | Promise<boolean> {
+  debugger;
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(node.value === "formkit-4-life"), 200);
+  });
+};
+
+function day(node: FormKitNode): boolean | Promise<boolean> {
+  const dayNames = [
+    "monday",
+    "mon",
+    "tuesday",
+    "tue",
+    "wednesday",
+    "wed",
+    "thursday",
+    "thu",
+    "friday",
+    "fri",
+    "saturday",
+    "sat",
+    "sunday",
+    "sun",
+  ];
+  debugger;
+  return true;
+  // const value = node.value.toLowerCase();
+  // switch (group) {
+  //   case "weekdays":
+  //     return dayNames.slice(0, 10).includes(value);
+  //   case "weekend":
+  //     return dayNames.slice(10).includes(value);
+  //   default:
+  //     return dayNames.includes(value).includes(value);
+  // }
+}
 </script>
 
 <style>

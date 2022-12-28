@@ -97,8 +97,7 @@ export const useAuthStore = defineStore('auth', {
 
             return new Promise((resolve, reject) => {
 
-                if (!this.user || !this.accessToken)
-                {
+                if (!this.user || !this.accessToken) {
                     reject('Not logged in')
                 }
 
@@ -135,8 +134,7 @@ export const useAuthStore = defineStore('auth', {
 
             return new Promise((resolve, reject) => {
 
-                if (!this.user || !this.accessToken)
-                {
+                if (!this.user || !this.accessToken) {
                     reject('Not logged in')
                 }
 
@@ -162,8 +160,7 @@ export const useAuthStore = defineStore('auth', {
         },
 
         logout() {
-            if (this.loggedIn)
-            {
+            if (this.loggedIn) {
                 this.accessToken = undefined
                 this.refreshToken = undefined
                 this.user = undefined;
@@ -176,7 +173,6 @@ export const useAuthStore = defineStore('auth', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
 }
