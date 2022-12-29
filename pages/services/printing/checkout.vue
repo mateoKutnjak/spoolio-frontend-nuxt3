@@ -46,7 +46,12 @@
           <div class="card shadow-md border bg-white">
             <div class="card-body gap-4">
               <div class="card-title">3. Shipping method</div>
-              <ServicesPrintingCheckoutShippingMethodOverview />
+              <FormKit
+                :type="shippingMethodInput"
+                name="Shipping method"
+                validation="required"
+                validation-visibility="dirty"
+              />
             </div>
           </div>
           <div class="card shadow-md border bg-white">
@@ -131,18 +136,18 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { createInput } from "@formkit/vue";
-import { COUNTRIES } from "~~/constants/countries";
-import { IAddressResponse, useAuthStore } from "~~/stores/auth";
+import { useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 import FormkitShippingAddress from "~~/components/formkit/ShippingAddress.vue";
 import FormkitBillingAddress from "~~/components/formkit/BillingAddress.vue";
-import { FormKitNode } from "@formkit/core";
 import FormkitContactEmail from "~~/components/formkit/ContactEmail.vue";
+import FormkitShippingMethod from "~~/components/formkit/ShippingMethod.vue";
 
 const shippingAddressInput = createInput(FormkitShippingAddress);
 const billingAddressInput = createInput(FormkitBillingAddress);
 const contactEmailInput = createInput(FormkitContactEmail);
+const shippingMethodInput = createInput(FormkitShippingMethod);
 
 const taxPercentage = 0.25;
 

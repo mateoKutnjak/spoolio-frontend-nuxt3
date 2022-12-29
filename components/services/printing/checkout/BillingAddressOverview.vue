@@ -35,11 +35,7 @@
         </h2>
       </div>
       <div v-else>
-        <h1 class="flex gap-2 items-center italic font-normal text-gray-500">
-          <Icon
-            name="material-symbols:add"
-            size="20"
-          />
+        <h1 class="flex gap-2 items-center italic font-normal text-gray-500 text-center">
           Add billing address
         </h1>
       </div>
