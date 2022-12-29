@@ -18,7 +18,7 @@
                 :type="contactEmailInput"
                 name="Contact email"
                 validation="required"
-                validation-visibility="dirty"
+                validation-visibility="submit"
               />
             </div>
           </div>
@@ -32,13 +32,13 @@
                   :type="shippingAddressInput"
                   name="Shipping address"
                   validation="required"
-                  validation-visibility="dirty"
+                  validation-visibility="submit"
                 />
                 <FormKit
                   :type="billingAddressInput"
                   name="Billing address"
                   validation="required"
-                  validation-visibility="dirty"
+                  validation-visibility="submit"
                 />
               </div>
             </div>
@@ -50,7 +50,7 @@
                 :type="shippingMethodInput"
                 name="Shipping method"
                 validation="required"
-                validation-visibility="dirty"
+                validation-visibility="submit"
               />
             </div>
           </div>
@@ -107,15 +107,16 @@
                   </table>
                 </div>
                 <div class="flex flex-col gap-4">
-                  <div class="form-control ">
-                    <label class="label cursor-pointer gap-4 justify-start">
-                      <input
-                        type="checkbox"
-                        class="checkbox"
-                      />
-                      <span class="label-text">TODO (with formkit this checkbox and button bellow) I agree to Terms & Condition and the Privacy Policy</span>
-                    </label>
-                  </div>
+                  <FormKit
+                    type="checkbox"
+                    label="I agree to Terms & Condition and the Privacy Policy"
+                    name="Terms and Conditions"
+                    validation="accepted"
+                    validation-visibility="submit"
+                    :validation-messages="{
+                      accepted: 'Please accept Terms and Conditions'
+                    }"
+                  />
                   <FormKit
                     type="submit"
                     label="PAY NOW"
@@ -177,7 +178,9 @@ const totalPrice = ref<number>(
   )
 );
 
-function submitHandler() {}
+function submitHandler() {
+  console.log("Proceed with checkout TODO");
+}
 </script>
 
 <style>

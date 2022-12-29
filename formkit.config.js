@@ -15,10 +15,10 @@ const selectClassification = {
 const boxClassification = {
     fieldset: 'max-w-md border border-gray-400 rounded-md px-2 pb-1',
     legend: 'font-bold text-sm',
-    wrapper: 'flex items-center mb-1 cursor-pointer',
-    help: 'mb-2',
-    input: 'form-check-input appearance-none h-5 w-5 mr-2 border border-gray-500 rounded-sm bg-white checked:bg-blue-500 focus:outline-none focus:ring-0 transition duration-200',
-    label: 'text-sm text-gray-700 mt-1'
+    wrapper: 'flex gap-3 items-center cursor-pointer',
+    input: 'checkbox',
+    label: 'label-text',
+    inner: 'p-0 m-0'
 }
 const buttonClassification = {
     input: 'btn btn-primary'
