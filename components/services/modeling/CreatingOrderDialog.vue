@@ -97,7 +97,7 @@ const attachmentsUploadedCount = ref(0);
 onMounted(async () => {
   orderStatus.value = OrderStatus.progress;
 
-  await new Promise((r) => setTimeout(r, 2000));
+  //   await new Promise((r) => setTimeout(r, 2000));
 
   const rootOrderResult = await modelingOrderStore.postOrder();
 
@@ -118,7 +118,7 @@ onMounted(async () => {
         modelingOrderStore.getAttachmentFiles[index].file.name
     );
 
-    await new Promise((r) => setTimeout(r, 2000));
+    // await new Promise((r) => setTimeout(r, 2000));
 
     const attachmentFile = modelingOrderStore.getAttachmentFiles[index];
     const attachmentFileResult = await modelingOrderStore.postAttachmentFile(
