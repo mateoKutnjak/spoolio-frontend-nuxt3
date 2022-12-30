@@ -50,7 +50,7 @@
         </div>
         <div>
           <div class="pt-4 pb-6">
-            <h2 class="card-title text-4xl pb-3">{{blog.title}}</h2>
+            <h2 class="card-title text-4xl text-gray-700 pb-3">{{blog.title}}</h2>
             <p class="text-gray-600">{{blog.subtitle}}</p>
           </div>
           <div class="card-actions justify-end ">
