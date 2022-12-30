@@ -10,7 +10,7 @@
           />
           <TransitionRoot
             appear
-            :show="orderStatus === OrderStatus.success"
+            :show="orderStatus === OrderStatus.success || orderStatus === OrderStatus.error"
             as="template"
             enter="transform transition duration-[400ms]"
             enter-from="opacity-0 rotate-[-120deg] scale-50"
@@ -20,10 +20,13 @@
             leave-to="opacity-0 scale-95 "
           >
 
-            <div class="h-14 w-14 text-green-700">
+            <div
+              class="h-14 w-14 text-green-700"
+              :class="orderStatus === OrderStatus.success ? `text-green-700` : `text-red-700`"
+            >
               <Icon
                 class="h-14 w-14"
-                name="ph:check-circle-duotone"
+                :name="orderStatus === OrderStatus.success ? `ph:check-circle-duotone` : `ph:x-circle-duotone`"
               />
             </div>
           </TransitionRoot>
@@ -33,13 +36,13 @@
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
           <Icon
-            v-show="attachmentsUploadedCount < attachmentFiles.length"
+            v-show="attachmentsStatus === OrderStatus.progress"
             class="absolute h-14 w-14 text-gray-500"
             name="eos-icons:three-dots-loading"
           />
           <TransitionRoot
             appear
-            :show="orderStatus === OrderStatus.success && attachmentsUploadedCount === attachmentFiles.length"
+            :show="attachmentsStatus === OrderStatus.success || attachmentsStatus === OrderStatus.error"
             as="template"
             enter="transform transition duration-[400ms]"
             enter-from="opacity-0 rotate-[-120deg] scale-50"
@@ -49,10 +52,13 @@
             leave-to="opacity-0 scale-95 "
           >
 
-            <div class="h-14 w-14 text-green-700">
+            <div
+              class="h-14 w-14 text-green-700"
+              :class="orderStatus === OrderStatus.success ? `text-green-700` : `text-red-700`"
+            >
               <Icon
                 class="h-14 w-14"
-                name="ph:check-circle-duotone"
+                :name="orderStatus === OrderStatus.success ? `ph:check-circle-duotone` : `ph:x-circle-duotone`"
               />
             </div>
           </TransitionRoot>
@@ -61,15 +67,31 @@
       </div>
     </div>
     <div
-      v-show="orderStatus === OrderStatus.success && attachmentsUploadedCount === attachmentFiles.length"
+      v-show="orderStatus === OrderStatus.error || attachmentsStatus === OrderStatus.error"
       class="
       text-lg text-center text-gray-600"
+    >{{ errorMessage }}</div>
+    <div
+      v-show="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success"
+      class="text-lg text-center text-gray-600"
     >Your modeling request has been sent. We will contact you as soon as possible.</div>
     <div
-      class="btn btn-lg text-xl"
-      :class="orderStatus === OrderStatus.success && attachmentsUploadedCount === attachmentFiles.length ? '': 'btn-disabled'"
+      v-show="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success"
+      class="
+      btn
+      btn-lg
+      text-xl"
+      :class="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success ? '': 'btn-disabled'"
       @click="onOkPressed"
     >Ok</div>
+    <div
+      v-show="orderStatus === OrderStatus.error || attachmentsStatus === OrderStatus.error"
+      class="
+      btn
+      btn-lg
+      text-xl"
+      @click="onReturnPressed"
+    >Return</div>
   </div>
 </template>
   
@@ -77,7 +99,11 @@
 import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 import { useDialogStore } from "~~/stores/dialog";
-import { useModelingOrderStore } from "~~/stores/modeling_order";
+import {
+  IModelingOrderAttachmentFileResponse,
+  IModelingOrderResponse,
+  useModelingOrderStore,
+} from "~~/stores/modeling_order";
 
 const dialogStore = useDialogStore();
 const modelingOrderStore = useModelingOrderStore();
@@ -92,22 +118,35 @@ enum OrderStatus {
 }
 
 const orderStatus = ref(OrderStatus.initial);
+const attachmentsStatus = ref(OrderStatus.initial);
+
 const attachmentsUploadedCount = ref(0);
+const errorMessage = ref("");
 
 onMounted(async () => {
   orderStatus.value = OrderStatus.progress;
 
-  //   await new Promise((r) => setTimeout(r, 2000));
+  await new Promise((r) => setTimeout(r, 1000));
 
-  const rootOrderResult = await modelingOrderStore.postOrder();
-
-  // * TODO handle error
-
-  orderStatus.value = OrderStatus.success;
+  var rootOrderResult: IModelingOrderResponse;
+  try {
+    rootOrderResult = await modelingOrderStore.postOrder();
+    orderStatus.value = OrderStatus.success;
+  } catch (error: any) {
+    orderStatus.value = OrderStatus.error;
+    errorMessage.value =
+      "Error (" +
+      error.statusCode +
+      "). Data = " +
+      JSON.stringify(error.data) +
+      ".";
+    return;
+  }
 
   console.log("Empty modeling order created");
   console.log(rootOrderResult);
 
+  attachmentsStatus.value = OrderStatus.progress;
   for (
     let index = 0;
     index < modelingOrderStore.getAttachmentFiles.length;
@@ -118,25 +157,39 @@ onMounted(async () => {
         modelingOrderStore.getAttachmentFiles[index].file.name
     );
 
-    // await new Promise((r) => setTimeout(r, 2000));
-
     const attachmentFile = modelingOrderStore.getAttachmentFiles[index];
-    const attachmentFileResult = await modelingOrderStore.postAttachmentFile(
-      attachmentFile,
-      rootOrderResult.id
-    );
+    var attachmentFileResult: IModelingOrderAttachmentFileResponse;
 
-    // TODO handle error
+    try {
+      attachmentFileResult = await modelingOrderStore.postAttachmentFile(
+        attachmentFile,
+        rootOrderResult.id
+      );
+    } catch (error: any) {
+      attachmentsStatus.value = OrderStatus.error;
+      errorMessage.value =
+        "Error (" +
+        error.statusCode +
+        "). Data = " +
+        JSON.stringify(error.data) +
+        ".";
+      return;
+    }
 
     attachmentsUploadedCount.value++;
 
     console.log("DONE result_id = " + attachmentFileResult.id);
   }
+  attachmentsStatus.value = OrderStatus.success;
 });
 
 function onOkPressed() {
   dialogStore.close();
   navigateTo("/");
+}
+
+function onReturnPressed() {
+  dialogStore.close();
 }
 </script>
   
