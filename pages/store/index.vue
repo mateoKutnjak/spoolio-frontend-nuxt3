@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12">
+  <div class="container px-0 md:p-12">
     <div class="pb-12 pt-3 flex justify-center">
       <SearchBar
         placeholder="Search products"
@@ -8,7 +8,7 @@
     </div>
     <div v-if="getPaginatedProducts.count || 0 > 0">
 
-      <div class="grid grid-cols-1 gap-5 ">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 ">
         <div
           :key="product.id"
           v-for="product in getPaginatedProducts.products"

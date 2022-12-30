@@ -1,7 +1,7 @@
 <template>
-  <div class="container p-12">
+  <div class="container px-0 p-12">
     <div class="pb-12 pt-3 flex flex-col md:flex-row gap-6 justify-between">
-      <div class="text-4xl text-gray-700 font-bold">Projects</div>
+      <div class="text-4xl text-gray-700">Projects</div>
       <SearchBar
         placeholder="Search projects"
         @submit-search-phrase="onSearch"

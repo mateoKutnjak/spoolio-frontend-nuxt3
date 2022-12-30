@@ -1,12 +1,12 @@
 <template>
   <div>
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card lg:card-side bg-base-100 border-1 rounded-xl shadow-md">
+      <div class="card md:card-side bg-base-100 border-1 rounded-md shadow-md">
         <nuxt-img
-          class="m-8 rounded-lg"
-          sizes="sm:100vw md:60vw lg:600px"
-          fit="fill"
-          src="https://placeimg.com/400/300/arch"
+          class=""
+          sizes="sm:100vw md:40vw lg:20vw xl:30vw"
+          fit="contain"
+          src="https://placeimg.com/300/300/arch"
           alt="Album"
         />
         <div class="card-body">
