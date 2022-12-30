@@ -3,9 +3,10 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 export const useDialogStore = defineStore('dialog', {
     state: () => ({
         isOpened: false,
-        useFullWidth: false,
         componentName: "",
-        componentProps: undefined
+        componentProps: undefined,
+        widthClass: "",
+        closeOnClickOutside: true,
     }),
 
     getters: {
@@ -17,24 +18,22 @@ export const useDialogStore = defineStore('dialog', {
             this.isOpened = false;
         },
         toggle() {
-            if (this.isOpened == undefined)
-            {
+            if (this.isOpened == undefined) {
                 this.isOpened = true;
-            } else
-            {
+            } else {
                 this.isOpened = !this.isOpened;
             }
         },
-        open(componentName: string, componentProps: any, useFullWidth: boolean = false) {
-            this.componentName = componentName;
+        open(componentName: string, componentProps: any, widthClass: string = "md", closeOnClickOutside = true) {
             this.isOpened = true;
-            this.useFullWidth = useFullWidth
+            this.componentName = componentName;
             this.componentProps = componentProps;
+            this.widthClass = widthClass
+            this.closeOnClickOutside = closeOnClickOutside;
         }
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useDialogStore, import.meta.hot))
 }

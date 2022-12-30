@@ -50,6 +50,7 @@
           </tr>
         </thead>
         <tbody>
+
           <ServicesPrintingUnitTableRow
             v-for="item in units"
             :key="item.localUrl"
@@ -320,7 +321,7 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  dialogStore.open("ServicesPrintingDialog", [unit.value], true);
+  dialogStore.open("ServicesPrintingDialog", [unit.value], "2xl");
 }
 
 function removeUnit(unit: IPrintOrderUnitResponse) {

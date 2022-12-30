@@ -1,10 +1,10 @@
 <template>
   <div
     v-if="attachmentFiles.length"
-    class="flex flex-col gap-1 text-gray-600"
+    class="flex flex-col gap-1 text-gray-600 text-lg"
   >
-    <!-- Attachments: {{ attachmentFiles.length }} {{ attachmentFiles.length === 1 ? "item" : "items" }} -->
-    <div class="flex border-2 border-gray-300 rounded-md p-3">
+    Attachments: {{ attachmentFiles.length }} {{ attachmentFiles.length === 1 ? "item" : "items" }}
+    <div class="flex gap-3 border-2 border-gray-300 rounded-md p-3">
       <ServicesModelingFileIcon
         v-for="file in attachmentFiles"
         :key="file.localUrl"

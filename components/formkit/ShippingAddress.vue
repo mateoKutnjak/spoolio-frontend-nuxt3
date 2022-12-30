@@ -12,6 +12,14 @@ const printOrderStore = usePrintOrderStore();
 
 const { shippingAddress } = storeToRefs(printOrderStore);
 
+onMounted(() => {
+  if (isValidShippingAddress(shippingAddress.value)) {
+      context.node.input("1");
+    } else {
+      context.node.input("");
+    }
+});
+
 watch(
   shippingAddress,
   (value) => {

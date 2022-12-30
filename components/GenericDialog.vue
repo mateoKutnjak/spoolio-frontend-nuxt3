@@ -6,7 +6,7 @@
   >
     <Dialog
       as="div"
-      @close="closeDialog"
+      @close="closeOnClickOutside ? closeDialog() : () => null"
       class="relative z-10"
     >
       <TransitionChild
@@ -33,7 +33,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              :class="useFullWidth ? '' : 'w-full max-w-md'"
+              :class="`w-full max-w-${widthClass}`"
               class="transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
               <component
@@ -62,8 +62,13 @@ import { useDialogStore } from "~~/stores/dialog";
 
 const dialogStore = useDialogStore();
 
-const { isDialogOpened, useFullWidth, componentName, componentProps } =
-  storeToRefs(dialogStore);
+const {
+  isDialogOpened,
+  componentName,
+  componentProps,
+  widthClass,
+  closeOnClickOutside,
+} = storeToRefs(dialogStore);
 
 const component = ref();
 

@@ -12,6 +12,10 @@ const printOrderStore = usePrintOrderStore();
 
 const { contactEmail } = storeToRefs(printOrderStore);
 
+onMounted(() => {
+  context.node.input(contactEmail.value || "");
+});
+
 watch(contactEmail, (value) => {
   context.node.input(value);
 });

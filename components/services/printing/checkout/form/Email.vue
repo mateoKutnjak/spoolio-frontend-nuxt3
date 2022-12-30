@@ -1,13 +1,6 @@
 <template>
   <div class="card-body gap-8 p-2 py-0">
-    <div class="text-base flex gap-3 justify-between">
-      <Icon
-        name="material-symbols:info-rounded"
-        class="text-info"
-        size="30"
-      />
-      <div class="italic text-sm text-gray-600">Enter contact e-mail where you will receive order updates</div>
-    </div>
+    <InfoLabel message="Enter contact e-mail where you will receive order updates" />
     <FormKit
       type="form"
       id="profile-form"

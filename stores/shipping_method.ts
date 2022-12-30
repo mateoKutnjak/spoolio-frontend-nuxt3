@@ -20,7 +20,7 @@ export const useShippingMethodStore = defineStore('shipping-method', {
     actions: {
         async fetchShippingMethods() {
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                $fetch<IShippingMethod[]>('http://localhost:8000/api/print-orders/shipping-methods/?available=true', {
+                $fetch<IShippingMethod[]>('http://localhost:8000/api/shipping-methods/?available=true', {
                     method: 'GET',
                 }).then((response: IShippingMethod[]) => {
                     this.shippingMethods = response;

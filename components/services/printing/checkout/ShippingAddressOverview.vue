@@ -25,15 +25,6 @@
           <p class="font-normal">{{shippingAddress.phone_number}}</p>
         </div>
       </div>
-      <div v-else-if="user?.profile?.shipping_address">
-        <h2 class="flex flex-col text-start text-base text-gray-800">
-          <strong>{{user.profile.shipping_address.first_name}} {{user.profile.shipping_address.last_name}}</strong>
-          <p class="font-normal">{{user.profile.shipping_address.address}}</p>
-          <p class="font-normal">{{user.profile.shipping_address.locality}} {{user.profile.shipping_address.postal_code}}</p>
-          <p class="font-normal">{{user.profile.shipping_address.country}}</p>
-          <p class="font-normal">{{user.profile.shipping_address.phone_number}}</p>
-        </h2>
-      </div>
       <div v-else>
         <h1 class="flex gap-2 items-center italic font-normal text-gray-500 text-center">
           Add shipping address
@@ -55,6 +46,14 @@ const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
 const { shippingAddress } = storeToRefs(printOrderStore);
+
+onMounted(() => {
+  if (!Object.keys(shippingAddress.value).length) {
+    if (user.value?.profile?.shipping_address) {
+      shippingAddress.value = user.value.profile.shipping_address;
+    }
+  }
+});
 
 function openDialog() {
   dialogStore.open("ServicesPrintingCheckoutFormShippingAddress", []);

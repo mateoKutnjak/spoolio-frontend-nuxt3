@@ -6,9 +6,6 @@
     <div v-if="contactEmail">
       <h1 class="font-normal">{{contactEmail}}</h1>
     </div>
-    <div v-else-if="user?.profile?.email">
-      <h1 class="font-normal">{{user?.profile?.email}}</h1>
-    </div>
     <div v-else>
       <div class="flex gap-2 items-center italic font-normal text-gray-500">
         <Icon
@@ -33,6 +30,14 @@ const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
 const { contactEmail } = storeToRefs(printOrderStore);
+
+onMounted(() => {
+  if (!contactEmail.value || !Object.keys(contactEmail.value)) {
+    if (user.value?.profile?.email) {
+      contactEmail.value = user.value.profile.email;
+    }
+  }
+});
 
 function openDialog() {
   dialogStore.open("ServicesPrintingCheckoutFormEmail", []);
