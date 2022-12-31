@@ -14,6 +14,10 @@ const printOrderStore = usePrintOrderStore();
 
 const { shippingMethod } = storeToRefs(printOrderStore);
 
+onMounted(() => {
+  context.node.input(shippingMethod.value || "");
+});
+
 watch(
   shippingMethod,
   (value) => {

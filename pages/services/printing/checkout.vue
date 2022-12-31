@@ -144,6 +144,7 @@ import FormkitShippingAddress from "~~/components/formkit/ShippingAddress.vue";
 import FormkitBillingAddress from "~~/components/formkit/BillingAddress.vue";
 import FormkitContactEmail from "~~/components/formkit/ContactEmail.vue";
 import FormkitShippingMethod from "~~/components/formkit/ShippingMethod.vue";
+import { useDialogStore } from "~~/stores/dialog";
 
 const shippingAddressInput = createInput(FormkitShippingAddress);
 const billingAddressInput = createInput(FormkitBillingAddress);
@@ -153,6 +154,7 @@ const shippingMethodInput = createInput(FormkitShippingMethod);
 const taxPercentage = 0.25;
 
 const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
@@ -179,7 +181,7 @@ const totalPrice = ref<number>(
 );
 
 function submitHandler() {
-  console.log("Proceed with checkout TODO");
+  dialogStore.open("ServicesPrintingCreatingOrderDialog", [], "2xl", false);
 }
 </script>
 

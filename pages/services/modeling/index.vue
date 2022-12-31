@@ -31,7 +31,6 @@
       <FormKit
         type="form"
         id="modeling-order-form"
-        submit-label="Sign In"
         @submit="submitHandler"
         :actions="false"
         :incomplete-message="false"
@@ -39,23 +38,30 @@
         <div class="flex flex-col gap-12 pt-10">
           <div class="flex flex-col lg:flex-row gap-5">
             <div class="flex-1 flex flex-col">
-              <FormKit
-                type="text"
-                v-model="contactEmail"
-                placeholder="Contact e-mail"
-                validation="email|required"
-                validation-visibility="submit"
-                :validation-messages="{
+              <div class="flex gap-5 justify-start">
+                <FormKit
+                  type="text"
+                  v-model="contactEmail"
+                  placeholder="Contact e-mail"
+                  validation="email|required"
+                  validation-visibility="submit"
+                  :validation-messages="{
                 required: 'Leave your contact email'
               }"
-                :classes="{
+                  :classes="{
                 input: 'rounded-xl px-2',
                 wrapper: 'shadow-xs rounded-xl',
                 inner: 'rounded-xl',
                 outer: 'rounded-xl mb-3',
                 message: 'px-5 pt-1 mb-0'
               }"
-              />
+                />
+                <div
+                  v-show="user"
+                  class="link link-info font-semibold pt-3"
+                  @click="onUseDefaultContactEmail"
+                >Use default</div>
+              </div>
               <FormKit
                 type="textarea"
                 v-model="comment"
@@ -126,6 +132,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MODELING_ORDER_ATTACHMENT_FILE_TYPES } from "~~/constants/constants";
+import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import {
   IModelingOrderAttachmentFileResponse,
@@ -136,10 +143,12 @@ import {
 import { useNotificationStore } from "~~/stores/notification";
 import { IPrintOrderAttachmentFileResponse } from "~~/stores/print_order";
 
+const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const modelingOrderStore = useModelingOrderStore();
 
+const { user } = storeToRefs(authStore);
 const { contactEmail, comment } = storeToRefs(modelingOrderStore);
 
 function change(e: any) {
@@ -192,6 +201,12 @@ function onFilesAdded(files: File[]) {
 
 async function submitHandler() {
   dialogStore.open("ServicesModelingCreatingOrderDialog", [], "2xl", false);
+}
+
+function onUseDefaultContactEmail() {
+  if (user.value?.profile?.email) {
+    contactEmail.value = user.value?.profile?.email;
+  }
 }
 </script>
 

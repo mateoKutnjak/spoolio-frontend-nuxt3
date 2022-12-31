@@ -1,15 +1,18 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
-import { IAddressResponse } from './auth';
+import { IAddressResponse, useAuthStore } from './auth';
+import { useGlobalsStore } from './globals';
 
 export interface IPrintOrderAttachmentFileResponse {
+    id: number,
     file: File,
     comment: string,
     localUrl: string,
 }
 
 export interface IPrintOrderAttachmentImageResponse {
+    id: number,
     image: File,
     comment: string,
     localUrl: string,
@@ -49,7 +52,7 @@ export interface IShippingMethod {
     price: number,
 }
 
-async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number) {
+async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number): Promise<IPrintOrderAttachmentFileResponse> {
 
     var formData = new FormData();
 
@@ -94,12 +97,25 @@ export const usePrintOrderStore = defineStore('print-order', {
 
     actions: {
 
-        async postOrder(order: IPrintOrderResponse): Promise<IPrintOrderResponse> {
+        async postOrder(): Promise<IPrintOrderResponse> {
+
+            const authStore = useAuthStore();
+
+            const body = {
+                contact_email: this.contactEmail,
+                shipping_address: this.shippingAddress,
+                billing_address: this.billingAddress,
+                shipping_method: this.shippingMethod,
+                payment_method: this.paymentMethod,
+                user_profile: authStore.getUser?.profile?.id
+            }
+
+            debugger
 
             return new Promise<IPrintOrderResponse>((resolve, reject) => {
                 $fetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
                     method: 'POST',
-                    body: order,
+                    body: body,
                 }).then((response: IPrintOrderResponse) => {
                     // this.createdPrintOrder = response;
                     resolve(response)
@@ -110,7 +126,9 @@ export const usePrintOrderStore = defineStore('print-order', {
             });
         },
 
-        async postOrderUnit(unit: IPrintOrderUnitResponse): Promise<IPrintOrderUnitResponse> {
+        async postOrderUnit(unit: IPrintOrderUnitResponse, orderId: number): Promise<IPrintOrderUnitResponse> {
+
+            const globalsStore = useGlobalsStore();
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
@@ -119,10 +137,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("infill", unit.infill.toString());
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
+            formData.append('length_unit', DimensionUnit[globalsStore.getDimensionUnit])
             formData.append("estimatedPrice", unit.estimatedPrice.toString());
 
             // todo what to do with this
-            formData.append("order", unit.order?.toString() || '-1');
+            formData.append("order", orderId.toString());
 
             return new Promise((resolve, reject) => {
                 $fetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
@@ -138,7 +157,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             });
         },
 
-        async postPrintOrderAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderId: number) {
+        async postPrintOrderAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderId: number): Promise<IPrintOrderAttachmentFileResponse> {
             return postAttachmentFile(item, CONTENT_TYPE_ORDER, orderId);
         },
 
@@ -157,8 +176,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             const index = this.units.findIndex(el => el.localUrl === localUrl);
 
-            if (index != -1)
-            {
+            if (index != -1) {
                 const unit = this.units[index];
 
                 const updatedUnit = Object.assign(unit, fieldUpdate)
@@ -170,11 +188,9 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeUnit(unit: IPrintOrderUnitResponse) {
             var index = this.units.findIndex(el => el.localUrl === unit.localUrl);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.units = this.units.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among order units");
             }
         },
@@ -182,11 +198,9 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeUnitByFileLocalUrl(fileLocalUrl: string) {
             var index = this.units.findIndex(el => el.localUrl === fileLocalUrl);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.units.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among order units");
             }
         },
@@ -198,11 +212,9 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentFile(attachmentFile: IPrintOrderAttachmentFileResponse) {
             var index = this.attachmentFiles.map((el) => el.file).indexOf(attachmentFile.file);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.attachmentFiles.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among attached files");
             }
         },
@@ -214,18 +226,15 @@ export const usePrintOrderStore = defineStore('print-order', {
         removeAttachmentImage(attachmentImage: IPrintOrderAttachmentImageResponse) {
             var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 this.attachmentImages.splice(index, 1);
-            } else
-            {
+            } else {
                 console.error("Item not found among attached images");
             }
         },
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(usePrintOrderStore, import.meta.hot))
 }
