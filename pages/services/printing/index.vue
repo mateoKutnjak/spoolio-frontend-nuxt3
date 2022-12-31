@@ -346,55 +346,6 @@ function previewFile(file: File) {
   console.log("TODO");
 }
 
-async function createOrder() {
-  console.log("Creating root order");
-
-  var rootOrderResult = await printOrderStore.postOrder(<IPrintOrderResponse>{
-    user_profile: authStore.getUser?.profile?.id,
-    // TODO add comments and other stuff
-  });
-
-  console.log(rootOrderResult);
-
-  for (let j = 0; j < attachmentFiles.value.length; j++) {
-    const globalAttachmentFile = attachmentFiles.value[j];
-    const globalAttachmentFileResult =
-      await printOrderStore.postPrintOrderAttachmentFile(
-        globalAttachmentFile,
-        rootOrderResult.id
-      );
-  }
-
-  for (let index = 0; index < units.value.length; index++) {
-    const element = units.value[index];
-
-    const unitResult: IPrintOrderUnitResponse =
-      await printOrderStore.postOrderUnit(<IPrintOrderUnitResponse>{
-        color: element.color,
-        material: element.material,
-        infill: element.infill,
-        file: element.file,
-        quantity: element.quantity,
-        comment: element.comment,
-        estimatedPrice: element.estimatedPrice,
-        order: rootOrderResult.id,
-        attachmentFiles: element.attachmentFiles,
-        attachmentImages: element.attachmentImages,
-      });
-
-    for (let j = 0; j < element.attachmentFiles.length; j++) {
-      const attachmentFile = element.attachmentFiles[j];
-      const attacmentFileResult =
-        await printOrderStore.postPrintOrderUnitAttachmentFile(
-          attachmentFile,
-          unitResult.id!
-        ); // todo change
-    }
-
-    // todo add attached images
-  }
-}
-
 const submitHandler = async () => {
   // This delay is here only because of progress indicator button
   // await new Promise((r) => setTimeout(r, 1000));
