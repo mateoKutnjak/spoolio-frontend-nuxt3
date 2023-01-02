@@ -37,7 +37,10 @@ export interface IPrintOrderUnitResponse {
 
 export interface IPrintOrderResponse {
     id: number,
+    created_at: string,
+    updated_at: string,
     units: IPrintOrderUnitResponse[],
+    unit_count: number,
     comment: string,
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
@@ -47,6 +50,7 @@ export interface IPrintOrderResponse {
 }
 
 export interface IShippingMethod {
+    id: number,
     provider: string,
     description: string,
     price: number,
@@ -105,7 +109,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 contact_email: this.contactEmail,
                 shipping_address: this.shippingAddress,
                 billing_address: this.billingAddress,
-                shipping_method: this.shippingMethod,
+                shipping_method: this.shippingMethod.id,
                 payment_method: this.paymentMethod,
                 user_profile: authStore.getUser?.profile?.id
             }

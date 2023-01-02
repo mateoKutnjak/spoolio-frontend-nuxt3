@@ -18,6 +18,8 @@ export interface IModelingOrderAttachmentImageResponse {
 
 export interface IModelingOrderResponse {
     id: number,
+    created_at: string,
+    updated_at: string,
     comment: string,
     attachmentFiles: IModelingOrderAttachmentFileResponse[],
     attachmentImages: IModelingOrderAttachmentImageResponse[],
