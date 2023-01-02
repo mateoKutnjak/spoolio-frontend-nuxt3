@@ -70,15 +70,15 @@
                 validation="required"
                 validation-visibility="submit"
                 :validation-messages="{
-                required: 'Please describe your problem'
-              }"
+                  required: 'Please describe your problem'
+                }"
                 :classes="{
-                input: 'h-64 rounded-xl p-3 resize-none',
-                wrapper: 'shadow-sm rounded-xl',
-                inner: 'rounded-xl',
-                outer: 'rounded-xl mb-0',
-                message: 'px-5 pt-1'
-              }"
+                  input: 'h-64 rounded-xl p-3 resize-none',
+                  wrapper: 'shadow-sm rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-0',
+                  message: 'px-5 pt-1'
+                }"
               />
             </div>
             <div class="card shadow-sm border border-gray-300 bg-white rounded-xl">

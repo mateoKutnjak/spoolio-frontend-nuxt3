@@ -12,7 +12,7 @@
       </div>
       <table
         v-if="units.length"
-        class="hidden lg:table w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
+        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
       >
         <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
           <tr class="border-2">
@@ -36,7 +36,7 @@
             </th>
             <th
               scope="col"
-              class="py-4 px-8"
+              class="py-4 px-11"
             >
               Quantity
             </th>
@@ -46,7 +46,10 @@
             >
               Price
             </th>
-            <th></th>
+            <th
+              scope="col"
+              class="px-5"
+            >Actions</th>
           </tr>
         </thead>
         <tbody>
