@@ -35,7 +35,7 @@
         :actions="false"
         :incomplete-message="false"
       >
-        <div class="flex flex-col gap-12 pt-10">
+        <div class="flex flex-col gap-2 pt-10">
           <div class="flex flex-col lg:flex-row gap-5">
             <div class="flex-1 flex flex-col">
               <div class="flex gap-5 justify-start">
@@ -81,7 +81,7 @@
                 }"
               />
             </div>
-            <div class="card shadow-sm border border-gray-300 bg-white rounded-xl">
+            <div class="card shadow-sm border border-gray-300 bg-white rounded-xl mb-5">
               <div
                 class="flex h-full p-4"
                 @dragover.prevent
@@ -113,8 +113,9 @@
               </div>
             </div>
           </div>
+          <div class="divider p-0 m-0"></div>
           <ServicesModelingAttachments />
-          <div class="flex justify-center">
+          <div class="flex justify-center mt-12">
             <FormKit
               type="submit"
               label="Send request"

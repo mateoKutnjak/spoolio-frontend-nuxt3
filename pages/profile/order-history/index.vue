@@ -25,23 +25,11 @@
         </TabList>
 
         <TabPanels class="mt-4">
-          <TabPanel class="rounded-xl bg-white p-3">
-            <div class="grid grid-cols-1 gap-1">
-              <div
-                class="w-full"
-                v-for="printOrder, index in print_orders"
-                :key="printOrder.id"
-              >
-                <OrderHistoryPrintOrderItem :id="printOrder.id" />
-                <div
-                  v-if="index < print_orders.length-1"
-                  class="divider my-0 mx-8"
-                />
-              </div>
-            </div>
+          <TabPanel>
+            <OrderHistoryPrinting />
           </TabPanel>
           <TabPanel>
-            <OrderHistoryModelingTabPanel />
+            <OrderHistoryModeling />
           </TabPanel>
         </TabPanels>
       </TabGroup>
@@ -57,9 +45,6 @@ import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
-
-const { print_orders } = storeToRefs(printOrderHistoryStore);
-const { modeling_orders } = storeToRefs(modelingOrderHistoryStore);
 
 printOrderHistoryStore.fetchPrintOrderHistoryPaginated();
 modelingOrderHistoryStore.fetchPaginated();

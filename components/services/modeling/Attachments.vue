@@ -3,8 +3,9 @@
     v-if="attachmentFiles.length"
     class="flex flex-col gap-1 text-gray-600 text-lg"
   >
-    Attachments: {{ attachmentFiles.length }} {{ attachmentFiles.length === 1 ? "item" : "items" }}
-    <div class="flex gap-3 border-2 border-gray-300 rounded-md p-3">
+    <div class="text-gray-500 text-sm font-medium pl-2">
+      Attachments: {{ attachmentFiles.length }} {{ attachmentFiles.length === 1 ? "item" : "items" }}</div>
+    <div class="flex gap-3 border border-gray-300 rounded-xl p-3 bg-white shadow-sm">
       <ServicesModelingFileIcon
         v-for="file in attachmentFiles"
         :key="file.localUrl"

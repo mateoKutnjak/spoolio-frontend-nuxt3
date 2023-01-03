@@ -45,8 +45,11 @@ export interface IPrintOrderResponse {
     attachmentFiles: IPrintOrderAttachmentFileResponse[],
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     user_profile: number,
+    contact_email: string,
     shipping_address: IAddressResponse,
     billing_address: IAddressResponse,
+    estimated_price: number,
+    status: string,
 }
 
 export interface IShippingMethod {
@@ -54,6 +57,32 @@ export interface IShippingMethod {
     provider: string,
     description: string,
     price: number,
+}
+
+export function printOrderStatusReformat(status: string): string {
+    var result = status.replace("_", " ");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
+export function printOrderStatusBackgroundColor(status: string): string {
+    switch (status) {
+        case "reviewing":
+            return "#cbd5e1";
+        case "estimating_price":
+            return '#d1d5db'
+        case "rejected":
+            return "#fca5a5";
+        case "awaiting_payment":
+            return "#fcd34d";
+        case "in_progress":
+            return "#38bdf8";
+        case "shipped":
+            return "#14b8a6";
+        case "delivered":
+            return "#84cc16";
+        default:
+            return "green";
+    }
 }
 
 async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number): Promise<IPrintOrderAttachmentFileResponse> {

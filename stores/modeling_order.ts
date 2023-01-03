@@ -24,6 +24,34 @@ export interface IModelingOrderResponse {
     attachmentFiles: IModelingOrderAttachmentFileResponse[],
     attachmentImages: IModelingOrderAttachmentImageResponse[],
     contact_email: string,
+    estimated_price: number,
+    status: string,
+}
+
+export function modelingStatusReformat(status: string): string {
+    var result = status.replace("_", " ");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
+export function modelingStatusBackgroundColor(status: string): string {
+    switch (status) {
+        case "reviewing":
+            return "#cbd5e1";
+        case "estimating_price":
+            return '#d1d5db'
+        case "rejected":
+            return "#fca5a5";
+        case "awaiting_payment":
+            return "#fcd34d";
+        case "in_progress":
+            return "#38bdf8";
+        case "shipped":
+            return "#14b8a6";
+        case "delivered":
+            return "#84cc16";
+        default:
+            return "green";
+    }
 }
 
 export const useModelingOrderStore = defineStore('modeling-order', {
