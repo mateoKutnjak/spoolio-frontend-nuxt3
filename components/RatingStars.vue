@@ -1,10 +1,10 @@
 <template>
   <div class="rating rating-sm rating-half">
-    <input
+    <!-- <input
       type="radio"
       name="rating-10"
       class="rating-hidden"
-    />
+    /> -->
     <input
       type="radio"
       name="rating-10"

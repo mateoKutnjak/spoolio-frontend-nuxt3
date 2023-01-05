@@ -1,38 +1,53 @@
 <template>
   <div>
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card md:card-side bg-base-100 border-1 rounded-md shadow-md">
-        <nuxt-img
-          class=""
-          sizes="sm:100vw md:40vw lg:20vw xl:30vw"
-          fit="contain"
-          src="https://placeimg.com/300/300/arch"
-          alt="Album"
-        />
-        <div class="card-body">
-          <div class="card-title flex justify-between">
-            <h2 class="text-3xl text-gray-800">{{product.title}}</h2>
-            <div class="flex gap-2">
-              <RatingStars />
-              <div class="text-sm font-normal">(45)</div>
-            </div>
+      <div class="card bg-base-100 border-1 rounded-md shadow-md">
+        <div class="relative">
+          <nuxt-img
+            class=""
+            fit="cover"
+            src="https://placeimg.com/500/300/arch"
+            alt="Album"
+          >
+
+          </nuxt-img>
+          <div class="absolute top-4 right-4 btn btn-circle border-none bg-white">
+            <Icon
+              class="text-gray-500"
+              name="mdi:cards-heart-outline"
+              size="25"
+            />
           </div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo maxime eaque ratione cupiditate esse modi, illum expedita optio harum sint velit laboriosam reprehenderit mollitia dolores odit nostrum exercitationem qui voluptatum.</p>
-          <div class="card-actions justify-between items-end">
-            <div class="flex gap-2 items-end">
-              <div class="text-xl text-gray-800">From</div>
-              <div class="text-2xl font-bold text-gray-800">${{product.price}}</div>
+
+        </div>
+        <div class="card-body gap-4">
+          <div class="flex justify-between">
+            <div class="flex flex-col gap-1">
+              <h2 class="card-title text-base text-gray-700">{{product.title}}</h2>
+              <p class="text-gray-700 line-clamp-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo maxime eaque ratione cupiditate esse modi, illum expedita optio harum sint velit laboriosam reprehenderit mollitia dolores odit nostrum exercitationem qui voluptatum.</p>
             </div>
-            <button
-              class="btn btn-primary gap-1"
-              @click.prevent="addToCart(product)"
+            <div
+              v-if="product.starting_price"
+              class="flex gap-1 items-start"
             >
-              <Icon
-                name="material-symbols:shopping-cart-outline-rounded"
-                size="27"
-                aria-hidden="true"
-              />Add to cart
-            </button>
+              <div class="text-2xl font-bold text-gray-700">${{product.starting_price}}</div>
+              <div class="font-bold text-gray-700">00</div>
+            </div>
+            <div v-else></div>
+          </div>
+          <div class="flex gap-2 items-center">
+            <RatingStars />
+            <div class="text-sm font-normal">(45)</div>
+          </div>
+          <div
+            class="btn btn-accent btn-outline gap-1 rounded-3xl"
+            @click.prevent="addToCart(product)"
+          >
+            <Icon
+              name="material-symbols:shopping-cart-outline-rounded"
+              size="27"
+              aria-hidden="true"
+            />Add to cart
           </div>
         </div>
       </div>
@@ -42,7 +57,7 @@
 </template>
     
     <script lang="ts" setup>
-import IProductResponse from "~~/stores/product";
+import { IProductResponse } from "~~/stores/product";
 import { useCartStore } from "~~/stores/cart";
 import { useNotificationStore } from "~~/stores/notification";
 

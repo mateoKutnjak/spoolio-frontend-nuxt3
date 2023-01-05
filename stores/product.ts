@@ -8,6 +8,8 @@ export interface IProductResponse {
     like_count: number,
     productvariationoption_set: IProductVariationOptionResponse[],
     productimage_set: IProductImageResponse[],
+    starting_price: number,
+    ending_price: number,
 }
 
 export interface IProductImageResponse {
