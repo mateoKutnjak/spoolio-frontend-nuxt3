@@ -59,6 +59,8 @@ export const useProductStore = defineStore('product', {
                     console.log(response);
                     if (response.length > 0) {
                         this.activeOptionsCombination = response[0]; // TODO is this ok?
+                    } else {
+                        this.activeOptionsCombination = undefined;
                     }
                     resolve(response);
                 }).catch(err => {
