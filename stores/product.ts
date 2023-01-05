@@ -6,7 +6,13 @@ export interface IProductResponse {
     description: string,
     comment_count: number,
     like_count: number,
-    productvariationoption_set: IProductVariationOptionResponse[]
+    productvariationoption_set: IProductVariationOptionResponse[],
+    productimage_set: IProductImageResponse[],
+}
+
+export interface IProductImageResponse {
+    image: string,
+    comment: string,
 }
 
 export interface IProductVariationResponse {
@@ -56,7 +62,6 @@ export const useProductStore = defineStore('product', {
                 customFetch<IProductVariationOptionCombinationResponse[]>(`http://localhost:8000/api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
                     method: 'GET'
                 }).then((response: IProductVariationOptionCombinationResponse[]) => {
-                    console.log(response);
                     if (response.length > 0) {
                         this.activeOptionsCombination = response[0]; // TODO is this ok?
                     } else {
@@ -67,6 +72,11 @@ export const useProductStore = defineStore('product', {
                     reject(err);
                 })
             })
+        },
+
+        clear() {
+            this.product = undefined;
+            this.activeOptionsCombination = undefined;
         }
     },
 })

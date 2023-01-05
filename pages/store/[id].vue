@@ -1,30 +1,44 @@
 <template>
   <div class="container p-12">
     <div class="relative flex flex-col md:flex-row gap-6">
-      <div class="flex-1 flex flex-col gap-3 items-center">
-        <nuxt-img
-          class="rounded-2xl shadow-md"
-          src="https://placeimg.com/900/400/people"
-          fit="fill"
-        />
-        <div class="flex gap-3 items-center">
-          <div class="btn btn-ghost btn-square">
-            <Icon
-              name="material-symbols:arrow-back-ios-new-rounded"
-              size="30"
-              aria-hidden="true"
-            />
-          </div>
-          <div class="text-lg">2/5</div>
-          <div class="btn btn-ghost btn-square">
-            <Icon
-              name="material-symbols:arrow-forward-ios-rounded"
-              size="30"
-              aria-hidden="true"
-            />
+      <div class="flex-1 flex flex-col gap-8 items-start">
+        <div
+          v-if="product?.productimage_set?.length"
+          class="flex flex-col gap-3 items-center mx-auto"
+        >
+          <nuxt-img
+            class="rounded-2xl h-96"
+            :src="product?.productimage_set[currentImageIndex].image"
+            fit="cover"
+          />
+          <div class="text-gray-700 italic">{{product?.productimage_set[currentImageIndex].comment}}</div>
+          <div class="flex gap-3 items-center">
+            <div
+              class="btn btn-ghost btn-square"
+              @click="onPreviousImage"
+            >
+              <Icon
+                class="text-gray-700"
+                name="material-symbols:arrow-back-ios-new-rounded"
+                size="25"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="text-lg font-medium text-gray-700">{{currentImageIndex+1}} / {{product?.productimage_set.length}}</div>
+            <div
+              class="btn btn-ghost btn-square"
+              @click="onNextImage"
+            >
+              <Icon
+                class="text-gray-700"
+                name="material-symbols:arrow-forward-ios-rounded"
+                size="25"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
-        <div>{{product?.description}}</div>
+        <div class="text-gray-700">{{product?.description}}</div>
       </div>
       <aside class="md:sticky order-first md:order-last top-8 col-span-3 h-full">
         <div class="card border border-gray-300 rounded-2xl shadow-md bg-white">
@@ -123,6 +137,7 @@ const productVariationOptions = ref(
   new Map<string, IProductVariationOptionResponse[]>()
 );
 const productVariationOptionSelections = ref(new Map<string, number>());
+const currentImageIndex = ref(0);
 
 onMounted(() => {
   productStore.fetchProduct(Number(id)).then((res) => {
@@ -136,9 +151,34 @@ onMounted(() => {
   });
 });
 
+onBeforeRouteLeave((to, from, next) => {
+  productStore.clear();
+  next();
+});
+
 watch(productVariationOptionSelections, (value) => {
   console.log(value);
 });
+
+function onPreviousImage() {
+  if (product.value?.productimage_set) {
+    let tmp = currentImageIndex.value;
+    tmp -= 1;
+    if (tmp < 0) {
+      tmp = product.value?.productimage_set.length - 1;
+    }
+    currentImageIndex.value = tmp;
+  }
+}
+
+function onNextImage() {
+  if (product.value?.productimage_set) {
+    let tmp = currentImageIndex.value;
+    tmp += 1;
+    tmp = tmp % product.value?.productimage_set.length;
+    currentImageIndex.value = tmp;
+  }
+}
 
 function setDefaultCombination(
   opts: Map<string, IProductVariationOptionResponse[]>
