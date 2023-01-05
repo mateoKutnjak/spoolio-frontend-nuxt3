@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import IProductResponse from './product';
+import { IProductResponse } from './product';
 
 interface IProductListResponse {
     count: number,
