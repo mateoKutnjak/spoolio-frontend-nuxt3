@@ -3,14 +3,18 @@
     <NuxtLink :to="`/store/${product.id}/`">
       <div class="card bg-base-100 border-1 rounded-md shadow-md">
         <div class="relative">
-          <nuxt-img
-            class=""
-            fit="cover"
-            src="https://placeimg.com/500/300/arch"
-            alt="Album"
-          >
 
-          </nuxt-img>
+          <div
+            v-if="product?.productimage_set?.length"
+            class="flex flex-col gap-3 items-center mx-auto"
+          >
+            <nuxt-img
+              class="rounded-2xl h-44"
+              :src="product?.productimage_set[0].image"
+              fit="contain"
+            />
+          </div>
+
           <div class="absolute top-4 right-4 btn btn-circle border-none bg-white">
             <Icon
               class="text-gray-500"

@@ -7,7 +7,7 @@
           class="flex flex-col gap-3 items-center mx-auto"
         >
           <nuxt-img
-            class="rounded-2xl h-96"
+            class="rounded-2xl h-96 "
             :src="product?.productimage_set[currentImageIndex].image"
             fit="cover"
           />
