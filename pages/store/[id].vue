@@ -101,7 +101,7 @@
               <button
                 class="btn btn-info gap-1"
                 :class="activeOptionsCombination?.price ? '' : 'btn-disabled' "
-                @click="addToCart(product)"
+                @click="addToCart"
               >
                 <Icon
                   name="material-symbols:shopping-cart-outline-rounded"
@@ -125,10 +125,12 @@ import {
 } from "~~/stores/product";
 import { useCartStore } from "~~/stores/cart";
 import { storeToRefs } from "pinia";
+import { useNotificationStore } from "~~/stores/notification";
 
 const { id } = useRoute().params;
 
 const cartStore = useCartStore();
+const notificationStore = useNotificationStore();
 const productStore = useProductStore();
 
 const { product, activeOptionsCombination } = storeToRefs(productStore);
@@ -231,13 +233,15 @@ function getCurrentOptionIds(): number[] {
   return optionIds;
 }
 
-function addToCart(product: IProductResponse | undefined) {
-  if (!product) {
-    console.debug("Product is null. Cannot add to cart");
+function addToCart() {
+  if (!product.value || !activeOptionsCombination.value) {
+    console.debug("Productor combination is null. Cannot add to cart");
     return;
   }
 
-  cartStore.add(product);
+  cartStore.add(activeOptionsCombination.value);
+
+  notificationStore.show("Added to cart", ToastLevel.success());
 }
 
 function extractProductVariations(): Map<

@@ -33,6 +33,8 @@ export interface IProductVariationOptionCombinationResponse {
     id: number,
     price: number,
     sku: number,
+    product: IProductResponse,
+    options: IProductVariationOptionResponse[],
 }
 
 export const useProductStore = defineStore('product', {

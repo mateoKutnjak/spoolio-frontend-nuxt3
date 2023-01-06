@@ -1,53 +1,79 @@
 <template>
-    <div class="grid gap-6">
-      <div class="grid gap-1">
-        <div class="text-md font-bold">{{item.title}} <NuxtLink :to="`/store/${item.id}`">
-            <div
-              class="btn btn-ghost btn-xs text-blue-500"
-              @click="drawerStore.close()"
-            >Details</div>
-          </NuxtLink>
-        </div>
-        <div>{{item.description}}
-        </div>
+  <div class="flex flex-col gap-6 items-start">
+    <div class="flex flex-col gap-1">
+      <div class="text-md font-bold">{{combination.product?.title || 'null'}} <NuxtLink :to="`/store/${combination.product?.id}`">
+          <div
+            class="btn btn-ghost btn-xs text-blue-500"
+            @click="drawerStore.close()"
+          >Details</div>
+        </NuxtLink>
       </div>
-      <div class="flex justify-between items-end">
-        <div class="btn-group">
-          <button
-            class="btn btn-primary btn-sm"
-            @click="decreaseQuantity"
-          >-</button>
-          <button class="btn btn-sm">{{quantity}}x</button>
-          <button
-            class="btn btn-primary btn-sm "
-            @click="increaseQuantity"
-          >+</button>
-        </div>
-        <p class="text-xl font-bold">${{item.price * quantity}}</p>
+      <div>{{combination.product?.description}}
       </div>
+
     </div>
-  </template>
+    <div class="flex gap-2 justify-start">
+      <div
+        class="btn btn-primary btn-sm no-animation"
+        v-for="option in combination.options"
+        :key="option.id"
+      > {{ option.title }}</div>
+    </div>
+    <div class="w-full flex justify-between items-start">
+      <IncreaseDecreaseQuantityButtons
+        :max="MAX_CART_ITEMS"
+        :min="0"
+        :initialValue="quantity"
+        :key="quantity"
+        @on-decrease-value="decreaseQuantity"
+        @on-increase-value="increaseQuantity"
+        @on-value-set="(q) => setQuantity(q) "
+      />
+      <div class="text-2xl font-bold mt-2">${{combination.price * quantity}}</div>
+    </div>
+  </div>
+</template>
   
   <script lang="ts" setup>
-  import { useDrawerStore } from "~~/stores/drawer";
-  import { useCartStore } from "~~/stores/cart";
-  
-  const cartStore = useCartStore();
-  const drawerStore = useDrawerStore();
-  
-  const { item, quantity } = defineProps(["item", "quantity"]); // props
-  
-  function increaseQuantity() {
-    cartStore.add(item);
-  }
-  
-  function decreaseQuantity() {
-    cartStore.remove(item);
-  }
-  </script>
+import { useDrawerStore } from "~~/stores/drawer";
+import { useCartStore } from "~~/stores/cart";
+
+import {
+  IProductResponse,
+  IProductVariationOptionCombinationResponse,
+} from "~~/stores/product";
+import { storeToRefs } from "pinia";
+import { useNotificationStore } from "~~/stores/notification";
+import { MAX_CART_ITEMS } from "~~/constants/constants";
+
+const cartStore = useCartStore();
+const drawerStore = useDrawerStore();
+
+const { combination } = defineProps<{
+  combination: IProductVariationOptionCombinationResponse;
+}>();
+
+const quantity = computed(() => {
+  return cartStore.getCartQuantityForItem(combination);
+});
+
+console.log(quantity);
+
+function increaseQuantity() {
+  cartStore.add(combination);
+}
+
+function decreaseQuantity() {
+  cartStore.remove(combination);
+}
+
+function setQuantity(quantity: number) {
+  cartStore.setQuantity(combination, quantity);
+}
+</script>
   
   <style scoped>
-  .router-link-exact-active {
-    background-color: transparent;
-  }
-  </style>
+.router-link-exact-active {
+  background-color: transparent;
+}
+</style>

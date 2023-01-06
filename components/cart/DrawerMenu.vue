@@ -2,7 +2,7 @@
   <div class="menu p-4 w-80 bg-base-100 text-base-content flex justify-between">
     <div class="flex flex-col">
       <ul>
-        <div v-if="getCartItems.size > 0">
+        <div v-if="cartItems.size > 0">
           <div class="p-4 pb-12 flex gap-2 items-center">
             <Icon
               name="material-symbols:shopping-cart-rounded"
@@ -14,16 +14,16 @@
             </h2>
           </div>
           <li
-            v-for="(item, index) in Array.from(getCartItems)"
-            :key="item[0].id"
+            v-for="item, index in cartItems.keys()"
+            :key="item.id"
           >
             <CartItem
-              :item="item[0]"
-              :quantity="item[1]"
+              :combination="item"
+              :quantity="cartItems.get(item) || 0"
             />
             <div
               class="divider"
-              v-if="index < getCartItems.size - 1"
+              v-if="index < cartItems.size - 1"
               :key="`${index}-divider`"
             >
             </div>
@@ -41,8 +41,8 @@
         </div>
       </ul>
     </div>
-    <div class="flex flex-col">
-      <strong class="py-2 text-lg ">Total: ${{getItems.reduce((acc, item) => Number(acc) + Number(item.price), 0)}}</strong>
+    <div class="flex flex-col p-4">
+      <strong class="py-2 text-lg ">Total: ${{totalSum}}</strong>
       <div class="justify-center items-end gap-2 text-2xl font-bold">
         <NuxtLink to="/checkout">
           <div
@@ -57,18 +57,28 @@
 </template>
   
   <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useCartStore } from "~~/stores/cart";
 import { useDrawerStore } from "~~/stores/drawer";
+import { IProductVariationOptionCombinationResponse } from "~~/stores/product";
 
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 
-const getItems = computed(() => {
-  return cartStore.getItems;
-});
+const { cartItems } = storeToRefs(cartStore);
 
-const getCartItems = computed(() => {
-  return cartStore.getCartItems;
+const totalSum = ref(0);
+
+watch(cartItems, (value) => {
+  let tmpTotalValue = 0;
+
+  cartItems.value.forEach(
+    (value: number, key: IProductVariationOptionCombinationResponse) => {
+      tmpTotalValue += value * key.price;
+    }
+  );
+
+  totalSum.value = tmpTotalValue;
 });
 </script>
   

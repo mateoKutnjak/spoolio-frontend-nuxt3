@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import IUserResponse from './auth'
+import { IUserResponse}  from './auth'
 
 interface ICommentResponse {
     id: number,

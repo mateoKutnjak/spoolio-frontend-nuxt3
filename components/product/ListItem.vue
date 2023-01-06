@@ -43,10 +43,7 @@
             <RatingStars />
             <div class="text-sm font-normal">(45)</div>
           </div>
-          <div
-            class="btn btn-accent btn-outline gap-1 rounded-3xl"
-            @click.prevent="addToCart(product)"
-          >
+          <div class="btn btn-accent btn-outline gap-1 rounded-3xl">
             <Icon
               name="material-symbols:shopping-cart-outline-rounded"
               size="27"
@@ -69,11 +66,6 @@ const cartStore = useCartStore();
 const notificationStore = useNotificationStore();
 
 const { product } = defineProps(["product"]); // props
-
-function addToCart(product: IProductResponse) {
-  cartStore.add(product);
-  notificationStore.show("Added to cart", ToastLevel.success());
-}
 </script>
     
     <style>

@@ -31,7 +31,7 @@
         <div>
           <button
             class="btn btn-ghost btn-square hover:bg-transparent"
-            :class="getItems.length > 0 ? '' : 'btn-square'"
+            :class="getCartItems.size > 0 ? '' : 'btn-square'"
           >
             <label class="swap swap-rotate">
               <input type="checkbox" />
@@ -51,17 +51,16 @@
             </label>
           </button>
         </div>
-
         <button
           class="btn btn-ghost"
-          :class="getItems.length > 0 ? '' : 'btn-square'"
+          :class="getCartItems.size > 0 ? '' : 'btn-square'"
           @click="toggleDrawer"
         >
           <div class="flex items-center gap-1 ">
             <span
-              v-show="getItems.length > 0"
+              v-show="getCartItems.size > 0"
               class="indicator-item indicator-middle badge badge-primary"
-            >{{getItems.length}}</span>
+            >{{cartStore.getCartTotalQuantity}}</span>
 
             <Icon
               name="ph:shopping-cart-duotone"
@@ -108,8 +107,8 @@ const getUser = computed(() => {
   return authStore.getUser;
 });
 
-const getItems = computed(() => {
-  return cartStore.getItems;
+const getCartItems = computed(() => {
+  return cartStore.getCartItems;
 });
 
 const navigation = [

@@ -143,8 +143,6 @@ export const usePrintOrderStore = defineStore('print-order', {
                 user_profile: authStore.getUser?.profile?.id
             }
 
-            debugger
-
             return new Promise<IPrintOrderResponse>((resolve, reject) => {
                 $fetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
                     method: 'POST',

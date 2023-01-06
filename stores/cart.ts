@@ -1,55 +1,76 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import IProductResponse from './product';
+import { IProductVariationOptionCombinationResponse } from './product';
 
 export const useCartStore = defineStore('cart', {
-    // * State contains map and list objects
-    // *
-    // * as map object is not serializable, pinia won't recognize
-    // * change inside the map, so every time list changes, state
-    // * changes and we cean get new map with updated quantities
     state: () => ({
-        items: [] as IProductResponse[],
-        cartItems: new Map<IProductResponse, number>,
+        cartItems: new Map<IProductVariationOptionCombinationResponse, number>,
     }),
 
     getters: {
-        getItems: (state) => state.items,
-        getCartItems: (state) => state.cartItems
+        // * Used as a trigger because map changes are not triggered
+        getCartItems: (state) => state.cartItems,
+        getCartTotalPrice: (state) => {
+            let totalPrice = 0;
+
+            state.cartItems.forEach(
+                (value: number, key: IProductVariationOptionCombinationResponse) => {
+                    totalPrice += value * key.price;
+                }
+            );
+
+            return totalPrice;
+        },
+        getCartTotalQuantity: (state) => {
+            let totalQuantity = 0;
+
+            state.cartItems.forEach(
+                (value: number, key: IProductVariationOptionCombinationResponse) => {
+                    totalQuantity += value;
+                }
+            );
+
+            return totalQuantity;
+        },
+        getCartQuantityForItem: (state) => {
+            return (item: IProductVariationOptionCombinationResponse): number => state.cartItems.get(item) || 0
+        },
     },
 
     actions: {
-        add(item: IProductResponse) {
-            // * list update part
-            this.items.push(item);
+        add(combination: IProductVariationOptionCombinationResponse) {
+            const cartItemsCopy = new Map<IProductVariationOptionCombinationResponse, number>(this.cartItems);
 
-            // * map update part
-            var currentQuantity = this.cartItems.get(item) || 0
-            this.cartItems.set(item, currentQuantity + 1)
+            var currentQuantity = cartItemsCopy.get(combination) || 0
+            cartItemsCopy.set(combination, currentQuantity + 1)
+
+            this.cartItems = cartItemsCopy;
         },
-        remove(item: IProductResponse) {
-            // * list update part
-            var index = this.items.reverse().indexOf(item);
-            if (index > -1) {
-                this.items.splice(index, 1);
+        remove(combination: IProductVariationOptionCombinationResponse) {
+            const cartItemsCopy = new Map<IProductVariationOptionCombinationResponse, number>(this.cartItems);
+
+            var currentQuantity = cartItemsCopy.get(combination) || 0
+            if (currentQuantity > 1) {
+                cartItemsCopy.set(combination, currentQuantity - 1)
             } else {
-                console.error("Item not found in cart");
+                cartItemsCopy.delete(combination)
             }
 
-            // * map update part
-            var currentQuantity = this.cartItems.get(item) || 0
-            if (currentQuantity > 1) {
-                this.cartItems.set(item, currentQuantity - 1)
+            this.cartItems = cartItemsCopy;
+        },
+        setQuantity(combination: IProductVariationOptionCombinationResponse, quantity: number) {
+            const cartItemsCopy = new Map<IProductVariationOptionCombinationResponse, number>(this.cartItems);
+
+            if (quantity <= 0) {
+                cartItemsCopy.delete(combination);
             } else {
-                this.cartItems.delete(item)
+                cartItemsCopy.set(combination, quantity)
             }
+
+            this.cartItems = cartItemsCopy;
         },
         clear() {
-            // * list update part
-            this.items = []
-
-            // * map update part
-            this.cartItems.clear()
-        }
+            this.cartItems = new Map<IProductVariationOptionCombinationResponse, number>
+        },
     },
 })
 

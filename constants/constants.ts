@@ -10,3 +10,5 @@ export const TOAST_DURATION_MEDIUM = 5000;
 export const MODELING_ORDER_ATTACHMENT_FILE_TYPES = [
     'application/pdf', 'text/plain'
 ]
+
+export const MAX_CART_ITEMS = 99;
