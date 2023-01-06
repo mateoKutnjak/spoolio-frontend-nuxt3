@@ -44,7 +44,7 @@
     <div class="flex flex-col p-4">
       <strong class="py-2 text-lg ">Total: ${{totalSum}}</strong>
       <div class="justify-center items-end gap-2 text-2xl font-bold">
-        <NuxtLink to="/checkout">
+        <NuxtLink to="/store/checkout">
           <div
             class="btn btn-success btn-block text-lg"
             @click="drawerStore.close()"

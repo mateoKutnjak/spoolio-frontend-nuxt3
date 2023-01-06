@@ -52,7 +52,7 @@
             </div>
             <div
               :class="activeOptionsCombination?.sku ? 'text-success' : 'text-error'"
-              class="font-bold text-error text-lg"
+              class="font-bold text-lg"
             >{{ activeOptionsCombination?.sku ? activeOptionsCombination?.sku : 'Not '}} available in stock </div>
             <div class="flex-1 flex flex-col gap-5">
               <div

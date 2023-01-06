@@ -34,6 +34,16 @@ export const useCartStore = defineStore('cart', {
         getCartQuantityForItem: (state) => {
             return (item: IProductVariationOptionCombinationResponse): number => state.cartItems.get(item) || 0
         },
+        getCartItemForId: (state) => {
+            return (id: number): IProductVariationOptionCombinationResponse | undefined => Array.from(state.cartItems.keys()).find(el => el.id === id)
+        },
+        getCartItemQuantityForId: (state) => {
+            return (id: number): number | undefined => {
+                const item = Array.from(state.cartItems.keys()).find(el => el.id === id);
+                if (!item) return undefined;
+                return state.cartItems.get(item);
+            }
+        },
     },
 
     actions: {
