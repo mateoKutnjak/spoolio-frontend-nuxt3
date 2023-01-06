@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="relative h-[calc(100vh-4rem)]">
+    <div class="fixed h-[calc(100vh-4rem)] top-16">
       <div class="carousel carousel-vertical h-full">
         <div
           id="item1"
@@ -102,19 +102,19 @@
       <div class="absolute right-0 left-0 bottom-0 flex justify-center p-12 gap-2">
         <a
           href="#item1"
-          class="btn btn-circle btn-primary border-2 border-gray-700 hover:border-gray-700"
+          class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
           href="#item2"
-          class="btn btn-circle btn-primary border-2 border-gray-700 hover:border-gray-700"
+          class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
           href="#item3"
-          class="btn btn-circle btn-primary border-2 border-gray-700 hover:border-gray-700"
+          class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
           href="#item4"
-          class="btn btn-circle btn-primary border-2 border-gray-700 hover:border-gray-700"
+          class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
       </div>
     </div>

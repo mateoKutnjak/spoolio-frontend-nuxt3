@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="isShown"
-    class="breadcrumbs text-gray-800"
-  >
+  <div class="breadcrumbs text-gray-800">
     <ul>
       <li
         v-for="crumb in crumbs"
