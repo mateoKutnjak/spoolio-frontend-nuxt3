@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="crumbs.length > 1"
+    v-if="isShown"
     class="breadcrumbs text-gray-800"
   >
     <ul>
@@ -22,6 +22,7 @@ const router = useRouter();
 const currentRoute = router.currentRoute.value.fullPath;
 
 const crumbs = ref([{ name: "home", path: "/" }]);
+const isShown = ref<boolean>(false);
 
 if (currentRoute !== "/") {
   const pathChunks = currentRoute.substring(1).split("/");
@@ -56,7 +57,17 @@ watch(router.currentRoute, (value, oldValue, onInvalidated) => {
         });
       }
     });
+    isShown.value = true;
+    console.log("true");
+  } else {
+    isShown.value = false;
+    console.log("false");
   }
+
+  if (value.fullPath.startsWith("/#")) {
+    isShown.value = false;
+  }
+
   crumbs.value = [...crumbs_copy];
 });
 </script>
