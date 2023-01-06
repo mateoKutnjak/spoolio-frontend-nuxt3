@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="fixed h-[calc(100vh-4rem)] top-16">
+    <div class="fixed h-[calc(100vh-4rem)] top-[4rem]">
       <div class="carousel carousel-vertical h-full">
         <div
           id="item1"
@@ -105,7 +105,7 @@
           class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
-          href="#item2"
+          href="#item2stone"
           class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
