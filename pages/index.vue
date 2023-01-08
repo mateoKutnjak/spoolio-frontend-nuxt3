@@ -105,7 +105,7 @@
           class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a
-          href="#item2stone"
+          href="#item2"
           class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
         <a

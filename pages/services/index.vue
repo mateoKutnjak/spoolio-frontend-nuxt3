@@ -1,37 +1,50 @@
 <template>
   <div class="container px-12 py-6">
-    <div class="px-12 py-8 flex flex-col gap-12">
-      <div class="flex flex-col lg:flex-row gap-10 justify-between items-stretch lg:items-center">
-        <div class="flex-1 flex flex-col gap-3 text-center">
-          <NuxtLink to="/services/printing">
-            <div class="btn btn-outline bg-white hover:btn-info w-full h-[32vh] border-gray-400">
-              <div class="flex flex-col gap-3 items-center text-gray-600">
-                <Icon
-                  name="file-icons:3d-model"
-                  size="50"
-                />
-                3d printing
-              </div>
+    <div class="flex flex-wrap gap-10 justify-center">
+      <div class="flex flex-col gap-3 text-center w-48">
+        <NuxtLink to="/services/printing">
+          <div class="btn btn-outline bg-white hover:btn-info h-40 w-48 border-gray-400">
+            <div class="flex flex-col gap-3 items-center text-gray-600">
+              <Icon
+                name="file-icons:3d-model"
+                size="50"
+              />
+              3d printing
             </div>
-          </NuxtLink>
-          <h1 class="text-lg italic text-gray-600">"Print some 3D files for me"</h1>
-        </div>
-        <div class="flex-1 flex flex-col gap-3 text-center">
-          <NuxtLink to="/services/modeling">
-            <div class="btn btn-outline bg-white hover:btn-success w-full h-[32vh] border-gray-400">
-              <div class="flex flex-col gap-3 items-center text-gray-600">
-                <Icon
-                  name="material-symbols:design-services"
-                  size="50"
-                />
-                Modeling
-              </div>
+          </div>
+        </NuxtLink>
+        <h1 class="text-lg italic text-gray-600">"Print some 3D files for me"</h1>
+      </div>
+      <div class="flex flex-col gap-3 text-center w-48">
+        <NuxtLink to="/services/modeling">
+          <div class="btn btn-outline bg-white hover:btn-success h-40 w-48 border-gray-400">
+            <div class="flex flex-col gap-3 items-center text-gray-600">
+              <Icon
+                name="material-symbols:design-services"
+                size="50"
+              />
+              Modeling
             </div>
-          </NuxtLink>
-          <h1 class="text-lg italic text-gray-600">"Help me create my 3D idea"</h1>
-        </div>
+          </div>
+        </NuxtLink>
+        <h1 class="text-lg italic text-gray-600">"Help me create my 3D idea"</h1>
+      </div>
+      <div class="flex flex-col gap-3 text-center w-48">
+        <NuxtLink to="/services/modeling">
+          <div class="btn btn-outline bg-white hover:btn-success h-40 w-48 border-gray-400">
+            <div class="flex flex-col gap-3 items-center text-gray-600">
+              <Icon
+                name="material-symbols:design-services"
+                size="50"
+              />
+              Modeling
+            </div>
+          </div>
+        </NuxtLink>
+        <h1 class="text-lg italic text-gray-600">"Help me create my 3D idea"</h1>
       </div>
     </div>
+
   </div>
 </template>
 
