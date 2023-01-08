@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
-export default interface IShippingMethod {
+export interface IShippingMethod {
     id: number,
     provider: string,
     description: string,

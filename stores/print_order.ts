@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { useGlobalsStore } from './globals';
+import { IShippingMethod } from './shipping_method';
 
 export interface IPrintOrderAttachmentFileResponse {
     id: number,
@@ -50,13 +51,6 @@ export interface IPrintOrderResponse {
     billing_address: IAddressResponse,
     estimated_price: number,
     status: string,
-}
-
-export interface IShippingMethod {
-    id: number,
-    provider: string,
-    description: string,
-    price: number,
 }
 
 export function printOrderStatusReformat(status: string): string {

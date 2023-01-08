@@ -1,9 +1,16 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { IAddressResponse } from './auth';
 import { IProductVariationOptionCombinationResponse } from './product';
+import { IShippingMethod } from './shipping_method';
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
         cartItems: new Map<IProductVariationOptionCombinationResponse, number>,
+        paymentMethod: "",
+        contactEmail: "",
+        shippingAddress: <IAddressResponse>{},
+        billingAddress: <IAddressResponse>{},
+        shippingMethod: <IShippingMethod>{},
     }),
 
     getters: {

@@ -3,7 +3,7 @@
     <div v-if="cartItem?.product.productimage_set.length || 0 > 0">
       <nuxt-img
         class="rounded-md h-44 w-44 bg-white"
-        :src="cartItem?.product.productimage_set[2].image"
+        :src="cartItem?.product.productimage_set[0].image"
         fit="contain"
       />
     </div>

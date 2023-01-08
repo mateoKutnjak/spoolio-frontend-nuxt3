@@ -64,7 +64,7 @@
       </table>
       <div
         v-else
-        class="flex-1 text-center"
+        class="flex-1 text-center border border-gray-400/[0.5] rounded-md"
       >
         <div class="h-44 w-full flex justify-center items-center text-lg italic text-gray-600">Nothing added yet</div>
       </div>

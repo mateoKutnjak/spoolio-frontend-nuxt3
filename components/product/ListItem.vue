@@ -6,7 +6,7 @@
 
           <div
             v-if="product?.productimage_set?.length"
-            class="flex flex-col gap-3 items-center mx-auto"
+            class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
           >
             <nuxt-img
               class="rounded-2xl h-44"
@@ -32,7 +32,7 @@
             </div>
             <div
               v-if="product.starting_price"
-              class="flex gap-1 items-start"
+              class="flex gap-0.5 items-start"
             >
               <div class="text-2xl font-bold text-gray-700">${{product.starting_price}}</div>
               <div class="font-bold text-gray-700">00</div>
