@@ -57,7 +57,7 @@
           <div class="card shadow-md border bg-white">
             <div class="card-body gap-4">
               <div class="card-title">4. Payment method</div>
-              <ServicesPrintingCheckoutPaymentMethodOverview />
+              <ServicesPrintingCheckoutFormViewPaymentMethodOverview />
             </div>
           </div>
         </div>
@@ -140,10 +140,10 @@ import { createInput } from "@formkit/vue";
 import { useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
-import FormkitShippingAddress from "~~/components/formkit/ShippingAddress.vue";
-import FormkitBillingAddress from "~~/components/formkit/BillingAddress.vue";
-import FormkitContactEmail from "~~/components/formkit/ContactEmail.vue";
-import FormkitShippingMethod from "~~/components/formkit/ShippingMethod.vue";
+import FormkitShippingAddress from "~~/components/services/printing/checkout/formkit_input/ShippingAddress.vue";
+import FormkitBillingAddress from "~~/components/services/printing/checkout/formkit_input/BillingAddress.vue";
+import FormkitContactEmail from "~~/components/services/printing/checkout/formkit_input/ContactEmail.vue";
+import FormkitShippingMethod from "~~/components/services/printing/checkout/formkit_input/ShippingMethod.vue";
 import { useDialogStore } from "~~/stores/dialog";
 
 const shippingAddressInput = createInput(FormkitShippingAddress);

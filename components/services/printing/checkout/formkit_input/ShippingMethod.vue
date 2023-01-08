@@ -1,6 +1,8 @@
+
+
 <template>
   <div
-    class="btn btn-ghost border-gray-300 text-start text-base justify-start h-20 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+    class="w-full btn btn-ghost border-gray-300 text-start text-base justify-start h-20 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="openDialog"
   >
     <div
@@ -32,26 +34,42 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
+  
+  <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
-import { useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
-import { useShippingMethodStore } from "~~/stores/shipping_method";
+import { usePrintOrderStore } from "~~/stores/print_order";
+
+const { context } = defineProps(["context"]);
 
 const authStore = useAuthStore();
-const cartStore = useCartStore();
 const dialogStore = useDialogStore();
-const shippingMethodStore = useShippingMethodStore();
+const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { shippingMethod } = storeToRefs(cartStore);
+const { shippingMethod } = storeToRefs(printOrderStore);
+
+onMounted(() => {
+  context.node.input(shippingMethod.value || "");
+});
+
+watch(
+  shippingMethod,
+  (value) => {
+    if (value) {
+      context.node.input("1");
+    } else {
+      context.node.input("");
+    }
+  },
+  { deep: true }
+);
 
 function openDialog() {
-  dialogStore.open("StoreCheckoutFormDialogShippingMethod", []);
+  dialogStore.open("ServicesPrintingCheckoutDialogShippingMethod", []);
 }
 </script>
-
-<style>
+  
+  <style>
 </style>

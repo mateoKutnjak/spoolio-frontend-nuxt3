@@ -134,7 +134,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 billing_address: this.billingAddress,
                 shipping_method: this.shippingMethod.id,
                 payment_method: this.paymentMethod,
-                user_profile: authStore.getUser?.profile?.id
+                user_profile: authStore.getUser?.profile?.id,
+                estimated_price: 999. // TODO
             }
 
             return new Promise<IPrintOrderResponse>((resolve, reject) => {

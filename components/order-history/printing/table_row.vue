@@ -24,16 +24,16 @@
                 <strong>{{printOrder?.contact_email}}</strong>
               </div>
               <div class="flex gap-8">
-                <div class="flex flex-col text-start text-base text-gray-800">
+                <div class="flex flex-col text-start text-base text-gray-800 w-32">
                   <div class="text-sm text-gray-500">Shipping address</div>
                   <div class="divider m-0"></div>
                   <strong>{{printOrder?.shipping_address.first_name}} {{printOrder?.shipping_address.last_name}}</strong>
-                  <p class="font-normal">{{printOrder?.shipping_address.address}}</p>
+                  <p class="font-normal">{{printOrder?.shipping_address.address}} </p>
                   <p class="font-normal">{{printOrder?.shipping_address.locality}} {{printOrder?.shipping_address.postal_code}}</p>
                   <p class="font-normal">{{printOrder?.shipping_address.country}}</p>
                   <p class="font-normal">{{printOrder?.shipping_address.phone_number}}</p>
                 </div>
-                <div class="flex flex-col text-start text-base text-gray-800">
+                <div class="flex flex-col text-start text-base text-gray-800 w-32">
                   <div class="text-sm text-gray-500">Billing address</div>
                   <div class="divider m-0"></div>
                   <strong>{{printOrder?.billing_address.first_name}} {{printOrder?.billing_address.last_name}}</strong>

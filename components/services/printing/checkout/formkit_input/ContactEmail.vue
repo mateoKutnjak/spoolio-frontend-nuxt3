@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn btn-ghost border-gray-300 text-start text-base justify-start px-4 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
+    class="w-full btn btn-ghost border-gray-300 text-start text-base justify-start px-4 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="openDialog"
   >
     <div v-if="contactEmail">
@@ -17,12 +17,14 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
+  
+  <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { usePrintOrderStore } from "~~/stores/print_order";
+
+const { context } = defineProps(["context"]);
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -37,12 +39,18 @@ onMounted(() => {
       contactEmail.value = user.value.profile.email;
     }
   }
+
+  context.node.input(contactEmail.value || "");
+});
+
+watch(contactEmail, (value) => {
+  context.node.input(value);
 });
 
 function openDialog() {
-  dialogStore.open("ServicesPrintingCheckoutFormEmail", []);
+  dialogStore.open("ServicesPrintingCheckoutDialogContactEmail", []);
 }
 </script>
-
-<style>
+  
+  <style>
 </style>

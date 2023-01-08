@@ -40,6 +40,8 @@ import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
+const { context } = defineProps(["context"]);
+
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const printOrderStore = usePrintOrderStore();
@@ -53,10 +55,28 @@ onMounted(() => {
       shippingAddress.value = user.value.profile.shipping_address;
     }
   }
+
+  if (isValidShippingAddress(shippingAddress.value)) {
+    context.node.input("1");
+  } else {
+    context.node.input("");
+  }
 });
 
+watch(
+  shippingAddress,
+  (value) => {
+    if (isValidShippingAddress(value)) {
+      context.node.input("1");
+    } else {
+      context.node.input("");
+    }
+  },
+  { deep: true }
+);
+
 function openDialog() {
-  dialogStore.open("ServicesPrintingCheckoutFormShippingAddress", []);
+  dialogStore.open("ServicesPrintingCheckoutDialogShippingAddress", []);
 }
 </script>
 
