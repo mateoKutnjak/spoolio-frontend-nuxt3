@@ -8,12 +8,12 @@
     </div>
     <div v-if="getPaginatedProducts.count || 0 > 0">
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 ">
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
         <div
           :key="product.id"
           v-for="product in getPaginatedProducts.products"
         >
-          <ProductListItem :product="product" />
+          <StoreItem :product="product" />
         </div>
       </div>
       <CircularLoadingIndicator :show="showPageLoading" />

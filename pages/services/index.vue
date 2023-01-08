@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-3 text-center">
         <NuxtLink to="/services/printing">
           <div class="btn btn-info h-44 w-52">
-            <div class="flex flex-col gap-3 items-center text-base-600">
+            <div class="flex flex-col gap-3 items-center text-gray-800">
               <Icon
                 name="file-icons:3d-model"
                 size="50"
@@ -18,7 +18,7 @@
       <div class="flex flex-col gap-3 text-center">
         <NuxtLink to="/services/modeling">
           <div class="btn btn-success h-44 w-52">
-            <div class="flex flex-col gap-3 items-center text-gray-600">
+            <div class="flex flex-col gap-3 items-center text-gray-800">
               <Icon
                 name="material-symbols:design-services"
                 size="50"
@@ -32,7 +32,7 @@
       <div class="flex flex-col gap-3 text-center">
         <NuxtLink to="/store">
           <div class="btn btn-warning h-44 w-52">
-            <div class="flex flex-col gap-3 items-center text-gray-600">
+            <div class="flex flex-col gap-3 items-center text-gray-800">
               <Icon
                 name="mdi:chip"
                 size="50"

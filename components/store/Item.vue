@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="h-full">
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card bg-base-100 border-1 rounded-md shadow-md">
+      <div class="card bg-base-100 border-1 rounded-md shadow-md h-full">
         <div class="relative">
 
           <div
@@ -24,11 +24,11 @@
           </div>
 
         </div>
-        <div class="card-body gap-4">
-          <div class="flex justify-between">
+        <div class="card-body gap-5">
+          <div class="flex-1 flex justify-between">
             <div class="flex flex-col gap-1">
               <h2 class="card-title text-base text-gray-700">{{product.title}}</h2>
-              <p class="text-gray-700 line-clamp-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo maxime eaque ratione cupiditate esse modi, illum expedita optio harum sint velit laboriosam reprehenderit mollitia dolores odit nostrum exercitationem qui voluptatum.</p>
+              <p class="text-gray-700 line-clamp-2">{{ product.description }}</p>
             </div>
             <div
               v-if="product.starting_price"
@@ -43,7 +43,7 @@
             <RatingStars />
             <div class="text-sm font-normal">(45)</div>
           </div>
-          <div class="btn btn-accent btn-outline gap-1 rounded-3xl">
+          <div class="btn btn-outline gap-1 rounded-3xl border-2 border-gray-500 text-gray-600">
             <Icon
               name="material-symbols:shopping-cart-outline-rounded"
               size="27"

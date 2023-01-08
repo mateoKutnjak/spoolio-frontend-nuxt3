@@ -14,7 +14,7 @@
     </div>
     <div class="flex gap-2 justify-start">
       <div
-        class="btn btn-primary btn-sm no-animation"
+        class="btn btn-outline btn-sm no-animation"
         v-for="option in combination.options"
         :key="option.id"
       > {{ option.title }}</div>
