@@ -3,12 +3,18 @@
     <div class="flex flex-col flex-grow gap-5 justify-between">
       <DimensionUnitDropdown class="self-end" />
       <div class="block lg:hidden">
-        <ServicesPrintingUnitCard
+        <div
+          class="flex flex-col gap-5"
           v-for="item in units"
           :key="item.localUrl"
-          :unit="item"
-          @on-item-clicked="onItemClicked"
-        />
+        >
+          <ServicesPrintingUnitCard
+            class="mb-3"
+            :unit="item"
+            @on-item-clicked="onItemClicked"
+          />
+        </div>
+
       </div>
       <table
         v-if="units.length"
@@ -88,7 +94,7 @@
               />
             </div>
             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px) [TODO change]</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
             <input
               id="dropzone-file"
               type="file"
@@ -128,12 +134,14 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentColorStore } from "~~/stores/filament_color";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useFilamentMaterialStore } from "~~/stores/filament_material";
 import { useGlobalsStore } from "~~/stores/globals";
+import { useNotificationStore } from "~~/stores/notification";
 import {
   usePrintOrderStore,
   IPrintOrderAttachmentFileResponse,
@@ -149,6 +157,7 @@ const filamentColorStore = useFilamentColorStore();
 const filamentMaterialStore = useFilamentMaterialStore();
 const filamentInfillStore = useFilamentInfillStore();
 const globalsStore = useGlobalsStore();
+const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 const shippingMethodStore = useShippingMethodStore();
 
@@ -268,6 +277,20 @@ function change(e: any) {
   // * files after CLICKING on container
 
   var files = Array.from<File>(e.target.files);
+  for (let index = 0; index < files.length; index++) {
+    const element = files[index];
+
+    if (element.size > MAX_FILE_SIZE_STL) {
+      notificationStore.show(
+        element.name +
+          " exceeds the limit of " +
+          MAX_FILE_SIZE_STL / 1024 / 1024 +
+          " MBs",
+        ToastLevel.info()
+      );
+      return;
+    }
+  }
   onFilesAdded(files);
 }
 
@@ -276,6 +299,19 @@ function drop(e: any) {
   // * files after DRAG AND DROP on container
 
   var files = Array.from<File>(e.dataTransfer.files);
+  for (let index = 0; index < files.length; index++) {
+    const element = files[index];
+
+    if (element.size > MAX_FILE_SIZE_STL) {
+      notificationStore.show(
+        element.name +
+          " exceeds the limit of " +
+          MAX_FILE_SIZE_STL / 1024 / 1024 +
+          " MBs"
+      );
+      return;
+    }
+  }
   onFilesAdded(files);
 }
 
