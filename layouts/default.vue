@@ -79,6 +79,7 @@ watch([isDrawerOpened], (value, oldValue, onInvalidate) => {
   opacity: 0;
 }
 
+/* This is added because of autofill background */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
