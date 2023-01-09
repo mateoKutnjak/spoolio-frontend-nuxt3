@@ -19,6 +19,8 @@ export interface IStoreOrderResponse {
     shipping_address: IAddressResponse,
     billing_address: IAddressResponse,
     shipping_method: IShippingMethod,
+    total_price: number,
+    status: string,
 }
 
 function reformatItems(cartItems: Map<number, [IProductVariationOptionCombinationResponse, number]>): IStoreOrderUnitResponse[] {

@@ -20,7 +20,7 @@
       </tbody>
     </table>
   </div>
-  <div class="md:hidden flex flex-col gap-3">
+  <div class="md:hidden flex flex-col gap-2">
     <OrderHistoryModelingCard
       v-for="order in modeling_orders"
       :key="order.id"

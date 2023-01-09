@@ -1,18 +1,19 @@
 <template>
-  <div class="card w-full rounded-none sm:rounded-xl bg-white px-2 py-1">
+  <div class="card w-full rounded-none sm:rounded-xl bg-white px-2 py-1 shadow rounded-lg">
     <div class="card-body p-4 gap-8">
-      <div class="card-title gap-4 items-end">
+      <div class="flex flex-wrap gap-5 items-center justify-between">
         <div class="text-base font-mono font-bold link link-info">#{{printOrder?.id}}</div>
-        <div class="text-base text-gray-500 pb-0.5">{{ reformatDate(printOrder?.created_at)}}</div>
+        <div class="text-base text-gray-500 pb-0.5 font-normal">{{ reformatDate(printOrder?.created_at)}}</div>
+        <div class="flex-1"></div>
+        <div class="card-actions gap-5 justify-end items-end text-lg text-gray-700 font-medium">
+          {{ printOrder?.estimated_price ? `$${printOrder.estimated_price}` : '-'}}
+        </div>
         <div
           v-if="printOrder"
           class="btn btn-ghost btn-sm px-5 text-gray-700"
           :style="`background-color: ${printOrderStatusBackgroundColor(printOrder.status)}`"
         >{{ printOrderStatusReformat(printOrder.status) }}</div>
-      </div>
-      <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis, tempore quod ipsam deserunt cumque asperiores delectus aliquid nostrum distinctio ullam magni suscipit facere iure aliquam ut nulla esse, sint sunt.</div>
-      <div class="card-actions gap-5 justify-end items-end text-xl text-gray-700 font-bold">
-        {{ printOrder?.estimated_price ? `$${printOrder.estimated_price}` : '-'}}
+
       </div>
     </div>
   </div>

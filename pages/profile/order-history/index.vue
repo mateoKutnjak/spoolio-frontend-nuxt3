@@ -2,7 +2,7 @@
   <div class="container py-12 md:p-12">
     <div class="max-w-4xl mx-auto">
       <TabGroup>
-        <TabList class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto">
+        <TabList class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow-md rounded-lg">
           <Tab
             v-for="
           tabCategory
@@ -24,12 +24,16 @@
           </Tab>
         </TabList>
 
-        <TabPanels class="mt-4">
+        <!-- This shadow and rounded must be aligned with card shadow and rounede and tables also -->
+        <TabPanels class="mt-4 md:shadow-md md:rounded-lg">
           <TabPanel>
             <OrderHistoryPrinting />
           </TabPanel>
           <TabPanel>
             <OrderHistoryModeling />
+          </TabPanel>
+          <TabPanel>
+            <OrderHistoryStore />
           </TabPanel>
         </TabPanels>
       </TabGroup>
