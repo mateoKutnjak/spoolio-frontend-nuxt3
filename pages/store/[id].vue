@@ -239,7 +239,7 @@ function addToCart() {
     return;
   }
 
-  cartStore.add(activeOptionsCombination.value);
+  cartStore.add(activeOptionsCombination.value.id, activeOptionsCombination.value);
 
   notificationStore.show("Added to cart", ToastLevel.success());
 }

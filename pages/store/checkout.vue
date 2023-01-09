@@ -69,11 +69,11 @@
               <div class="flex flex-col gap-10">
 
                 <div
-                  v-for="cartItem in cartItems.keys()"
-                  :key="cartItem.id"
+                  v-for="cartItemId in cartItems.keys()"
+                  :key="cartItemId"
                 >
                   <StoreCheckoutItemCompact
-                    :id="cartItem.id"
+                    :id="cartItemId"
                     class="text-gray-700"
                   />
                 </div>
@@ -176,7 +176,7 @@ onMounted(async () => {
 });
 
 function submitHandler() {
-  dialogStore.open("ServicesPrintingCreatingOrderDialog", [], "2xl", false);
+  dialogStore.open("StoreCheckoutCreatingOrderDialog", [], "2xl", true);
 }
 </script>
 

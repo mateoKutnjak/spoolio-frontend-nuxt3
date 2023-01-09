@@ -45,7 +45,7 @@ const { id } = defineProps<{
 }>();
 
 const cartItem = cartStore.getCartItemForId(id);
-const cartItemQuantity = cartStore.getCartItemQuantityForId(id);
+const cartItemQuantity = cartStore.getCartQuantityForId(id);
 </script>
 
 <style>

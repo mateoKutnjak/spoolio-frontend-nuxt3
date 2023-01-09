@@ -14,12 +14,12 @@
             </h2>
           </div>
           <li
-            v-for="item, index in cartItems.keys()"
-            :key="item.id"
+            v-for="value, index in cartItems.values()"
+            :key="value[0].id"
           >
             <CartItem
-              :combination="item"
-              :quantity="cartItems.get(item) || 0"
+              :combination="value[0]"
+              :quantity="value[1]"
             />
             <div
               class="divider"
@@ -77,8 +77,11 @@ watch(cartItems, (value) => {
   let tmpTotalValue = 0;
 
   cartItems.value.forEach(
-    (value: number, key: IProductVariationOptionCombinationResponse) => {
-      tmpTotalValue += value * key.price;
+    (
+      value: [IProductVariationOptionCombinationResponse, number],
+      key: number
+    ) => {
+      tmpTotalValue += value[1] * value[0].price;
     }
   );
 

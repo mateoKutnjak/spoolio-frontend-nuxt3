@@ -54,21 +54,21 @@ const { combination } = defineProps<{
 }>();
 
 const quantity = computed(() => {
-  return cartStore.getCartQuantityForItem(combination);
+  return cartStore.getCartQuantityForId(combination.id);
 });
 
 console.log(quantity);
 
 function increaseQuantity() {
-  cartStore.add(combination);
+  cartStore.add(combination.id, combination);
 }
 
 function decreaseQuantity() {
-  cartStore.remove(combination);
+  cartStore.remove(combination.id);
 }
 
 function setQuantity(quantity: number) {
-  cartStore.setQuantity(combination, quantity);
+  cartStore.setQuantity(combination.id, combination, quantity);
 }
 </script>
   
