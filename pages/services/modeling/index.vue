@@ -49,12 +49,12 @@
                 required: 'Leave your contact email'
               }"
                   :classes="{
-                input: 'rounded-xl px-2',
-                wrapper: 'shadow-xs rounded-xl',
-                inner: 'rounded-xl',
-                outer: 'rounded-xl mb-3',
-                message: 'px-5 pt-1 mb-0'
-              }"
+                    input: 'rounded-xl px-2',
+                    wrapper: 'shadow-xs rounded-xl',
+                    inner: 'rounded-xl',
+                    outer: 'rounded-xl mb-3',
+                    message: 'px-5 pt-1 mb-0'
+                  }"
                 />
                 <div
                   v-show="user"

@@ -1,43 +1,73 @@
 <template>
-
-  <FormKit
-    type="form"
-    id="register-form"
-    :form-class="submitted ? 'hide' : 'show'"
-    submit-label="Sign In"
-    @submit="submitHandler"
-    :actions="false"
-  >
+  <div class="card-body gap-8">
+    <div class="card-title justify-center">Sign Up</div>
     <FormKit
-      type="email"
-      name="email"
-      label="Email"
-      v-model="email"
-      validation="required|email"
-      validation-visibility="blur"
-    />
-    <FormKit
-      type="password"
-      name="password"
-      label="Password"
-      v-model="password"
-      validation="required|length:5,15|matches:/[0-9]/"
-      validation-visibility="blur"
-    />
-    <FormKit
-      type="password"
-      name="password_confirm"
-      label="Confirm password"
-      v-model="confirmPassword"
-      validation="required|confirm"
-      validation-label="Password confirmation"
-      validation-visibility="blur"
-    />
-    <FormKit
-      type="submit"
-      label="Sign Up"
-    />
-  </FormKit>
+      type="form"
+      id="register-form"
+      :form-class="submitted ? 'hide' : 'show'"
+      submit-label="Sign In"
+      @submit="submitHandler"
+      :actions="false"
+    >
+      <div class="flex flex-col gap-5">
+        <div>
+          <FormKit
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            v-model="email"
+            validation="required|email"
+            validation-visibility="blur"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            placeholder="Password"
+            v-model="password"
+            validation="required|length:5,15|matches:/[0-9]/"
+            validation-visibility="blur"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
+          <FormKit
+            type="password"
+            name="password_confirm"
+            placeholder="Confirm password"
+            v-model="confirmPassword"
+            validation="required|confirm"
+            validation-label="Password confirmation"
+            validation-visibility="blur"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
+        </div>
+        <FormKit
+          type="submit"
+          label="Sign Up"
+          :classes="{
+              input: 'btn-block'
+            }"
+        />
+      </div>
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts" setup>

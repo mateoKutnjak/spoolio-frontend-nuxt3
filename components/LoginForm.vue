@@ -1,31 +1,53 @@
 <template>
-
-  <FormKit
-    type="form"
-    id="login-form"
-    :form-class="submitted ? 'hide' : 'show'"
-    submit-label="Sign In"
-    @submit="submitHandler"
-    :actions="false"
-  >
+  <div class="card-body gap-8">
+    <div class="card-title justify-center">Sign In</div>
     <FormKit
-      type="email"
-      name="email"
-      label="Email"
-      v-model="email"
-    />
-    <FormKit
-      type="password"
-      name="password"
-      label="Password"
-      v-model="password"
-    />
-    <FormKit
-      type="submit"
-      label="Sign In"
-    />
-  </FormKit>
-
+      type="form"
+      id="login-form"
+      :form-class="submitted ? 'hide' : 'show'"
+      submit-label="Sign In"
+      @submit="submitHandler"
+      :actions="false"
+    >
+      <div class="flex flex-col gap-5">
+        <div>
+          <FormKit
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            v-model="email"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            placeholder="Password"
+            v-model="password"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
+        </div>
+        <FormKit
+          type="submit"
+          label="Sign In"
+          :classes="{
+              input: 'btn-block'
+            }"
+        />
+      </div>
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts" setup>
