@@ -25,7 +25,7 @@
         </TabList>
 
         <!-- This shadow and rounded must be aligned with card shadow and rounede and tables also -->
-        <TabPanels class="mt-4 md:shadow-md md:rounded-lg">
+        <TabPanels class="mt-4">
           <TabPanel>
             <OrderHistoryPrinting />
           </TabPanel>

@@ -10,9 +10,9 @@ interface IPrintOrderListResponse {
 
 export const usePrintOrderHistoryStore = defineStore('order-history-print', {
     state: () => ({
-        print_orders_count: undefined as number | undefined,
-        print_orders_next: undefined as string | undefined,
-        print_orders_previous: undefined as string | undefined,
+        count: undefined as number | undefined,
+        next: undefined as string | undefined,
+        previous: undefined as string | undefined,
         print_orders: [] as IPrintOrderResponse[]
     }),
 
@@ -29,9 +29,9 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
                 customFetch<IPrintOrderListResponse>(`http://localhost:8000/api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
                 }).then((response: IPrintOrderListResponse) => {
-                    this.print_orders_count = response.count;
-                    this.print_orders_next = response.next;
-                    this.print_orders_previous = response.previous;
+                    this.count = response.count;
+                    this.next = response.next;
+                    this.previous = response.previous;
 
                     if (append) {
                         this.print_orders = [...this.print_orders, ...response.results];
