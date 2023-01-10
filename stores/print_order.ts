@@ -2,6 +2,8 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
+import { useFilamentInfillStore } from './filament_infill';
+import { useFilamentMaterialStore } from './filament_material';
 import { useGlobalsStore } from './globals';
 import { IShippingMethod } from './shipping_method';
 
@@ -121,6 +123,56 @@ export const usePrintOrderStore = defineStore('print-order', {
         getAttachmentImages: (state) => state.attachmentImages,
         getUnits: (state) => state.units,
         getContactEmail: (state) => state.contactEmail,
+        getPriceByLocalUrl: (state) => {
+            return (localUrl: string) => {
+                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentInfillStore = useFilamentInfillStore()
+
+                const unit = state.units.find(el => el.localUrl === localUrl)
+
+                const v = unit?.modelVolume;
+                const q = unit?.quantity;
+                const i = unit?.infill ? filamentInfillStore.getPercentageById(unit.infill) : undefined;
+                const d = unit?.material ? filamentMaterialStore.getDensityById(unit.material) : undefined;
+                const p = unit?.material ? filamentMaterialStore.getPriceById(unit.material) : undefined;
+
+                if (!v || !q || !i || !d || !p) {
+                    console.log("[SEE BELLOW] Some variables are not set and price for unit cannot be determined");
+                    console.log("volume = " + v);
+                    console.log("quantity = " + q);
+                    console.log("infill = " + i);
+                    console.log("density = " + d);
+                    console.log("price = " + p);
+                    return Number.NEGATIVE_INFINITY;
+                }
+
+                return (v / 1000) * d * p * q * i;
+            }
+        },
+        getTotalPrice: (state) => {
+            return state.units.reduce((acc, item) => {
+                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentInfillStore = useFilamentInfillStore()
+
+                const v = item.modelVolume;
+                const q = item.quantity;
+                const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
+                const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
+                const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
+
+                if (!v || !q || !i || !d || !p) {
+                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
+                    console.log("volume = " + v);
+                    console.log("quantity = " + q);
+                    console.log("infill = " + i);
+                    console.log("density = " + d);
+                    console.log("price = " + p);
+                    return Number.NEGATIVE_INFINITY;
+                }
+
+                return (v / 1000 * d) * p * q * i + acc;
+            }, 0);
+        }
     },
 
     actions: {

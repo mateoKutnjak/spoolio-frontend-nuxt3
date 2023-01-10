@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12">
+  <div class="container p-12 px-0 lg:px-12">
     <div class="flex flex-col flex-grow gap-5 justify-between">
       <DimensionUnitDropdown class="self-end" />
       <div class="block lg:hidden">
@@ -48,7 +48,7 @@
             </th>
             <th
               scope="col"
-              class="py-4"
+              class="py-4 text-end px-10"
             >
               Price
             </th>
@@ -114,7 +114,15 @@
                 </tr>
                 <tr>
                   <th class="pl-0 py-1 text-lg text-start">Total price</th>
-                  <th class="pl-0 py-1 text-lg text-end"> ${{totalPrice}}</th>
+                  <th class="pl-0 py-1 text-lg text-end">
+                    <div v-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
+                    <div v-else>
+                      <Icon
+                        class="text-gray-500"
+                        name="eos-icons:three-dots-loading"
+                      />
+                    </div>
+                  </th>
                 </tr>
               </tbody>
             </table>
@@ -169,8 +177,6 @@ const units = ref<IPrintOrderUnitResponse[]>([]);
 
 const unit = ref<IPrintOrderUnitResponse>();
 
-const totalPrice = ref<number>(0);
-
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
 
@@ -179,6 +185,10 @@ const isDetailsDialogShown = ref(false);
 
 const getUser = computed(() => {
   return authStore.getUser;
+});
+
+const totalPrice = computed(() => {
+  return printOrderStore.getTotalPrice;
 });
 
 onMounted(async () => {
@@ -233,11 +243,6 @@ onMounted(async () => {
     const element: IPrintOrderUnitResponse = printOrderStore.getUnits[index];
     units.value.push(element);
   }
-
-  totalPrice.value = units.value.reduce(
-    (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),
-    0
-  );
 });
 
 watch(getUser, (value, oldValue, onInvalidate) => {});
@@ -246,10 +251,6 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   console.log("Current units " + value.map((el) => el.localUrl));
 
   units.value = value;
-  totalPrice.value = units.value.reduce(
-    (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),
-    0
-  );
 });
 
 watch(printOrderStore.getAttachmentFiles, (value, oldValue, onInvalidate) => {

@@ -2,32 +2,6 @@
   <div class="container p-12">
     <div class="flex flex-col gap-8">
       <div class="text-4xl">3d modeling</div>
-      <div class="flex gap-6 justify-start">
-        <div class="flex gap-3 items-center text-lg">
-          <Icon
-            name="iconoir:3d-select-solid"
-            class="text-red-500"
-            size="37"
-          />
-          <div class="text-gray-700">Mechanical parts</div>
-        </div>
-        <div class="flex gap-3 items-center text-lg">
-          <Icon
-            class="text-primary"
-            name="cil:3d"
-            size="37"
-          />
-          <div class="text-gray-700">Company merchandise</div>
-        </div>
-        <div class="flex gap-3 items-center text-lg">
-          <Icon
-            class="text-green-700"
-            name="iconoir:3d-select-solid"
-            size="37"
-          />
-          <div class="text-gray-700">Gifts</div>
-        </div>
-      </div>
       <FormKit
         type="form"
         id="modeling-order-form"
@@ -81,7 +55,7 @@
                 }"
               />
             </div>
-            <div class="card shadow-sm border border-gray-300 bg-white rounded-xl mb-5">
+            <div class="hidden md:block card shadow-sm border border-gray-300 bg-white rounded-xl mb-5">
               <div
                 class="flex h-full p-4"
                 @dragover.prevent

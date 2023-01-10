@@ -101,7 +101,7 @@
         </button>
       </div>
     </td>
-    <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white">
+    <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
       <div
         class="dropdown dropdown-end"
         @click.stop
@@ -110,13 +110,24 @@
           tabindex="0"
           class="btn btn-ghost text-info"
         >
-          <div class="flex gap-2 items-center font-semibold text-lg text-gray-900 dark:text-white">
-            <div>${{ totalPrice.toFixed(2) }}</div>
-            <Icon
-              class="mt-0.5 text-info"
-              name="material-symbols:info-outline"
-              size="20"
-            />
+          <div class="font-semibold text-lg text-gray-900 dark:text-white">
+            <div
+              v-if="totalPrice >= 0"
+              class="flex gap-1 items-center"
+            >${{totalPrice.toFixed(2)}}
+              <Icon
+                class="mt-0.5 text-info"
+                name="material-symbols:info-outline"
+                size="20"
+              />
+            </div>
+            <div v-else>
+              <Icon
+                class="text-gray-500"
+                name="eos-icons:three-dots-loading"
+              />
+            </div>
+
           </div>
         </label>
         <div
@@ -252,13 +263,7 @@ const fileSize = computed(() => {
 });
 
 const totalPrice = computed(() => {
-  return (
-    unit.quantity *
-    (unit.modelVolume / 1000) *
-    (filamentMaterialStore.getDensityById(unit.material) || 0) *
-    (filamentMaterialStore.getPriceById(unit.material) || 0) *
-    (filamentInfillStore.getPercentageById(unit.infill) || 0)
-  );
+  return printOrderStore.getPriceByLocalUrl(unit.localUrl);
 });
 
 function getMaterialName(): string {
