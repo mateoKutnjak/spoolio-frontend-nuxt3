@@ -254,6 +254,7 @@ const { dimensionUnit} = storeToRefs(globalsStore);
       attachmentImages: [], // todo
       order: undefined,
       lengthUnit: DimensionUnit[dimensionUnit.value],
+      modelVolume: 0,
       modelDimensions: unit.modelDimensions
     });
   }

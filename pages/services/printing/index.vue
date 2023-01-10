@@ -346,6 +346,7 @@ function onFilesAdded(files: File[]) {
         attachmentImages: [],
         order: undefined,
         modelDimensions: undefined,
+        modelVolume: 0,
         lengthUnit: DimensionUnit[dimensionUnit.value],
       });
 

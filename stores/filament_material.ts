@@ -16,6 +16,15 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
 
     getters: {
         getFilamentMaterials: (state) => state.filamentMaterials,
+        getPriceById: (state) => {
+            return (id: number) => state.filamentMaterials.find((item) => item.id === id)?.price
+        },
+        getNameById: (state) => {
+            return (id: number) => state.filamentMaterials.find((item) => item.id === id)?.name
+        },
+        getDensityById: (state) => {
+            return (id: number) => state.filamentMaterials.find((item) => item.id === id)?.density
+        },
     },
 
     actions: {

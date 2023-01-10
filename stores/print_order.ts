@@ -33,6 +33,7 @@ export interface IPrintOrderUnitResponse {
     attachmentImages: IPrintOrderAttachmentImageResponse[],
     order: number | undefined,
     modelDimensions: Vector3 | undefined,
+    modelVolume: number,
     lengthUnit: string
 }
 

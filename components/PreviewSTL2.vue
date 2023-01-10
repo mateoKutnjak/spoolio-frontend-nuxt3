@@ -70,6 +70,8 @@ const root_container = ref<any>(null);
 
 const color = ref<number>();
 
+const volume = ref<number>(0);
+
 onMounted(() => {
   renderer.value.onBeforeRender(() => {
     // box.value.mesh.rotation.x -= 0.003;
@@ -110,6 +112,14 @@ onMounted(() => {
       });
     }
 
+    volume.value = getVolume(geometry);
+
+    if (volume.value) {
+      printOrderStore.updateUnit(stlFileUrl, {
+        modelVolume: volume.value,
+      });
+    }
+
     var middle = new Three.Vector3();
     geometry.computeBoundingBox();
     geometry.boundingBox?.getCenter(middle);
@@ -129,6 +139,30 @@ onMounted(() => {
       mesh.material.color.setHex(value || 0xffffff);
     });
   });
+
+  function getVolume(geometry: BufferGeometry) {
+    let position = geometry.attributes.position;
+    let faces = position.count / 3;
+    let sum = 0;
+    let p1 = new Three.Vector3(),
+      p2 = new Three.Vector3(),
+      p3 = new Three.Vector3();
+    for (let i = 0; i < faces; i++) {
+      p1.fromBufferAttribute(position, i * 3 + 0);
+      p2.fromBufferAttribute(position, i * 3 + 1);
+      p3.fromBufferAttribute(position, i * 3 + 2);
+      sum += signedVolumeOfTriangle(p1, p2, p3);
+    }
+    return sum;
+  }
+
+  function signedVolumeOfTriangle(
+    p1: Three.Vector3,
+    p2: Three.Vector3,
+    p3: Three.Vector3
+  ) {
+    return p1.dot(p2.cross(p3)) / 6.0;
+  }
 
   // const origin = new Three.Vector3(0, 0, 0);
   // const xAxis = new Three.Vector3(100, 0, 0);
@@ -191,5 +225,9 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   const parsed = parseInt(colorStringValueTrimmed, 16);
 
   color.value = parsed;
+});
+
+watch(volume, (value) => {
+  console.log("VOLUME = " + value);
 });
 </script>

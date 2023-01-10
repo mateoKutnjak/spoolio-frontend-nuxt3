@@ -14,6 +14,9 @@ export const useFilamentInfillStore = defineStore('filament-infill', {
 
     getters: {
         getFilamentInfills: (state) => state.filamentInfills,
+        getPercentageById: (state) => {
+            return (id: number) => state.filamentInfills.find((item) => item.id === id)?.percentage
+        },
     },
 
     actions: {
