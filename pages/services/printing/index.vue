@@ -1,7 +1,38 @@
 <template>
   <div class="container p-12 px-0 lg:px-12">
     <div class="flex flex-col flex-grow gap-5 justify-between">
-      <DimensionUnitDropdown class="self-end" />
+      <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
+        <div class="flex gap-2 items-end">
+          <div class="text-base text-gray-700"> Total price: </div>
+          <div>
+            <strong
+              class="text-xl"
+              v-if="totalPrice >= 0"
+            >${{totalPrice.toFixed(2)}}</strong>
+            <div v-else>
+              <Icon
+                class="text-gray-500"
+                name="eos-icons:three-dots-loading"
+              />
+            </div>
+          </div>
+          <div class="px-2"></div>
+          <div class="text-base text-gray-700"> ETA: </div>
+          <div>
+            <strong
+              class="text-md"
+              v-if="totalPrice >= 0"
+            >1 week</strong>
+            <div v-else>
+              <Icon
+                class="text-gray-500"
+                name="eos-icons:three-dots-loading"
+              />
+            </div>
+          </div>
+        </div>
+        <DimensionUnitDropdown class="self-end" />
+      </div>
       <div class="block lg:hidden">
         <div
           class="flex flex-col gap-5"
