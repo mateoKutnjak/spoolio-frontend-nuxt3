@@ -74,9 +74,9 @@
       >
         <div class="h-44 w-full flex justify-center items-center text-lg italic text-gray-600">Nothing added yet</div>
       </div>
-      <div class="flex gap-5">
+      <div class="hidden md:flex gap-5">
         <div
-          class="flex-1 flex w-full mx-auto"
+          class="flex-1 flex w-full mx-auto "
           @dragover.prevent
           @drop.prevent
         >
@@ -137,6 +137,53 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
+
+    <div>
+      <div
+        class="tooltip tooltip-left"
+        data-tip="Upload 3D model"
+      >
+        <label
+          for="dropzone-file"
+          class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
+          @drop="drop"
+        >
+          <Icon
+            name="ic:outline-cloud-upload"
+            size="30"
+            aria-hidden="true"
+          />
+          <input
+            id="dropzone-file"
+            type="file"
+            name="fff"
+            class="hidden"
+            @change="change"
+          />
+        </label>
+      </div>
+    </div>
+    <div>
+      <div
+        class="tooltip tooltip-left"
+        data-tip="Checkout"
+      >
+        <NuxtLink
+          class="btn btn-circle btn-primary btn-lg shadow-md"
+          :class="totalPrice > 0 ? '' : 'btn-disabled'"
+          to="/services/printing/checkout/"
+        >
+          <Icon
+            name="ph:shopping-cart-duotone"
+            size="30"
+            aria-hidden="true"
+          />
+        </NuxtLink>
+      </div>
+    </div>
+
   </div>
 </template>
 
