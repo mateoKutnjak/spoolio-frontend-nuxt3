@@ -12,6 +12,7 @@ export default interface IBlogResponse {
     comment_count: number,
     created_at: string,
     updated_at: string,
+    picture: string,
 }
 
 export interface ILikeResponse {

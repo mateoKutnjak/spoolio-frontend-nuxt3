@@ -1,10 +1,15 @@
 <template>
   <NuxtLink :to="`/blogs/${blog.id}`">
     <div class="card lg:card-side rounded-sm shadow-md bg-white">
-      <img
-        src="https://api.lorem.space/image/album?w=500&h=400"
-        alt="Album"
+      <div
+        v-if="blog?.picture"
+        class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
       >
+        <nuxt-img
+          :src="blog.picture"
+          fit="contain"
+        />
+      </div>
       <div class="card-body flex flex-col justify-between">
         <div class="flex gap-1 justify-between items-center text-gray-500 text-lg">
           <div class="flex items-center">
