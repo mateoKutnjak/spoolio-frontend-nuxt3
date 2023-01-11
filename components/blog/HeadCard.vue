@@ -13,9 +13,8 @@
       <div class="card-body flex flex-col justify-between">
         <div class="flex gap-1 justify-between items-center text-gray-500 text-lg">
           <div class="flex items-center">
-            <div>
-              {{blog?.author.profile?.first_name || "null"}} {{blog?.author.profile?.last_name || "null"}}
-            </div>
+            <strong v-if="!hasAnyName">Anonymous</strong>
+            <strong v-else>{{(blog.author?.profile?.first_name || '')}} {{blog.author?.profile?.last_name || ''}}</strong>
             <Icon
               name="ci:dot-02-s"
               size="20"
@@ -93,6 +92,7 @@
 </template>
     
     <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useBlogListStore } from "~~/stores/blogList";
 import { useNotificationStore } from "~~/stores/notification";
@@ -102,6 +102,12 @@ const { blog } = defineProps(["blog"]);
 const authStore = useAuthStore();
 const blogStore = useBlogListStore();
 const notificationStore = useNotificationStore();
+
+const { user } = storeToRefs(authStore);
+
+const hasAnyName = computed(() => {
+  return blog.author?.profile?.first_name || blog.author?.profile?.last_name;
+});
 
 function toggleLike() {
   if (!authStore.accessToken) {

@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
-    <div class="card rounded-sm shadow-md bg-white">
+    <div class="h-full card rounded-sm shadow-md bg-white">
 
       <div
         v-if="item?.picture"
@@ -14,9 +14,8 @@
       <div class="card-body flex flex-col justify-between">
         <div class="flex justify-between text-gray-500">
           <div class="flex gap-1 items-center text-lg">
-            <div>
-              {{item?.author.profile?.first_name || "null"}} {{item?.author.profile?.last_name || "null"}}
-            </div>
+            <strong v-if="!hasAnyName">Anonymous</strong>
+            <strong v-else>{{(item.user?.profile?.first_name || '')}} {{item.user?.profile?.last_name || ''}}</strong>
             <Icon
               name="ci:dot-02-s"
               size="20"
@@ -103,6 +102,19 @@ const blogStore = useBlogListStore();
 const notificationStore = useNotificationStore();
 
 const { item } = defineProps(["item"]);
+
+const { user } = authStore;
+
+const hasAnyName = computed(() => {
+  return item.user?.profile?.first_name || item.user?.profile?.last_name;
+});
+
+const isCurrentyLoggedUser = computed(() => {
+  if (item.user?.email && user?.email) {
+    return item.user.email === user.email;
+  }
+  return false;
+});
 
 function toggleLike() {
   if (!authStore.accessToken) {

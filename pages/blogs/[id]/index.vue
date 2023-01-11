@@ -4,15 +4,11 @@
       <div class="flex flex-col gap-4 justify-between ">
         <div class="flex gap-4 justify-between">
           <div class="flex gap-4">
-            <div class="avatar">
-              <div class="w-14 h-14 rounded-full">
-                <nuxt-img src="https://placeimg.com/192/192/people" />
-              </div>
-            </div>
+            <UserAvatar :user-data="blog?.author" />
             <div class="grid text-gray-700">
-              <div>
-                {{blog?.author.profile?.first_name || "null"}} {{blog?.author.profile?.last_name || "null"}}
-              </div>
+              <strong v-if="!hasAnyName">Anonymous</strong>
+              <strong v-else>{{(blog?.author?.profile?.first_name || '')}} {{blog?.author?.profile?.last_name || ''}}</strong>
+
               <div>
                 {{reformatDate(blog?.created_at) }}
               </div>
@@ -126,6 +122,13 @@ const getComments = computed(() => {
 const getUser = computed(() => {
   user.value = authStore.getUser;
   return authStore.getUser;
+});
+
+const hasAnyName = computed(() => {
+  return (
+    getBlog.value?.author?.profile?.first_name ||
+    getBlog.value?.author?.profile?.last_name
+  );
 });
 
 watch(getBlog, (value, old, invalidate) => {
