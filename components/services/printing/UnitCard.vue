@@ -7,7 +7,7 @@
       <div class="flex gap-5 justify-between items-center">
         <ClientOnly>
           <PreviewSTL2
-            class="w-16 h-16 p-0 m-0"
+            class="w-16 h-16 p-0 m-0 border border-gray-400"
             :stlFileUrl="unit.localUrl"
           />
         </ClientOnly>

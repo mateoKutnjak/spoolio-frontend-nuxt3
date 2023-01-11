@@ -6,7 +6,7 @@
     <td class="p-6">
       <ClientOnly class="flex-1">
         <PreviewSTL2
-          class="w-16 h-16 p-0 m-0"
+          class="w-16 h-16 p-0 m-0 border border-gray-400"
           :stlFileUrl="unit.localUrl"
         />
       </ClientOnly>

@@ -6,33 +6,35 @@
         @update:modelValue="value => $emit('on-infill-selected', value)"
       >
         <RadioGroupLabel class="text-sm">2. Choose infill percentage</RadioGroupLabel>
-        <div class="flex gap-2 space-y-2">
+        <div class="flex gap-2 py-2">
           <RadioGroupOption
             class="w-min"
             as="template"
             v-for="infill in sortedFilamentInfills"
             :key="infill.name"
             :value="infill"
-            v-slot="{ active, checked }"
+            v-slot="{ checked }"
           >
             <div
-              :class="[
-                    active
-                      ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 '
-                      : '',
-                    checked ? 'bg-gray-300 bg-opacity-75 text-white' : 'bg-white ',
-                  ]"
-              class="relative flex cursor-pointer rounded-lg px-5 py-3 shadow-md focus:outline-none"
+              class="tooltip tooltip-bottom"
+              :data-tip="infill.name"
             >
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <div class="text-sm">
-                    <RadioGroupLabel
-                      as="p"
-                      class="text-gray-800 font-medium"
-                    >
-                      {{ infill.percentage * 100 }}%
-                    </RadioGroupLabel>
+              <div
+                :class="[
+                    checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
+                ]"
+                class="relative flex cursor-pointer rounded-lg px-5 py-3 shadow-md focus:outline-none"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="text-sm">
+                      <RadioGroupLabel
+                        as="p"
+                        class="font-medium"
+                      >
+                        {{ infill.percentage * 100 }}%
+                      </RadioGroupLabel>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -12,15 +12,12 @@
             v-for="material in filamentMaterials"
             :key="material.name"
             :value="material"
-            v-slot="{ active, checked }"
+            v-slot="{ checked }"
           >
             <div
               :class="[
-                    active
-                      ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 '
-                      : '',
-                    checked ? 'bg-gray-300 bg-opacity-75 text-white' : 'bg-white ',
-                  ]"
+                    checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
+                ]"
               class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none"
             >
               <div class="flex w-full items-center justify-between">
@@ -28,13 +25,13 @@
                   <div class="text-sm">
                     <RadioGroupLabel
                       as="p"
-                      class="text-gray-800 font-medium"
+                      class="font-medium"
                     >
                       {{ material.name }}
                     </RadioGroupLabel>
                     <RadioGroupDescription
                       as="span"
-                      class="text-gray-500 inline"
+                      class="inline"
                     >
                       <span> {{ material.description }}</span>
                       <!-- <span aria-hidden="true"> &middot; </span>
