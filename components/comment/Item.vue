@@ -1,24 +1,53 @@
 <template>
-    <div class="flex">
-      <div class="flex-shrink-0 mr-3">
-        <img
-          class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10"
-          src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80"
-          alt=""
+  <div class="flex">
+    <div class="flex-shrink-0 mr-3">
+      <div
+        class="avatar"
+        :class="isCurrentyLoggedUser ? 'online' : 'offline'"
+      >
+        <div
+          class="shadow w-12 h-12 rounded-full bg-white"
+          :class="isCurrentyLoggedUser ? 'ring ring-primary ring-offset-base-100' : ''"
         >
-      </div>
-      <div class="flex-1 border bg-white rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-        <strong>{{(comment.user.profile?.first_name || 'null')}} {{comment.user.profile?.last_name || 'null'}}</strong> <span class="text-xs text-gray-400">{{reformatDate(comment.created_at)}}</span>
-        <p class="text-sm">
-          {{comment.content}}
-        </p>
+          <Icon
+            class="w-12 h-12 p-2 text-gray-500"
+            name="ph:user-duotone"
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </div>
-  </template>
+    <div class="border bg-white rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed text-gray-700">
+      <strong v-if="!comment.user.profile?.first_name && !comment.user.profile?.last_name">Anonymous</strong>
+      <strong v-else>{{(comment.user.profile?.first_name || '')}} {{comment.user.profile?.last_name || ''}}</strong>
+      <span class="text-xs text-gray-400 px-2">{{reformatDate(comment.created_at)}}</span>
+      <p class="text-sm">
+        {{comment.content}}
+      </p>
+    </div>
+  </div>
+</template>
   
-  <script lang="ts" setup>
-  const { comment: item } = defineProps(["comment"]);
-  </script>
+<script lang="ts" setup>
+import { useAuthStore } from "~~/stores/auth";
+
+const authStore = useAuthStore();
+
+const { comment: item } = defineProps(["comment"]);
+
+const { user } = authStore;
+
+const hasAnyName = computed(() => {
+  return item.user.profile?.first_name || item.user.profile?.last_name;
+});
+
+const isCurrentyLoggedUser = computed(() => {
+  if (item.user?.email && user?.email) {
+    return item.user.email === user.email;
+  }
+  return false;
+});
+</script>
   
   <style>
-  </style>
+</style>
