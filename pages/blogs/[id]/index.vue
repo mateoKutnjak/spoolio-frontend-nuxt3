@@ -45,7 +45,7 @@
 
         <div
           class="prose py-2"
-          v-html="$renderer.render((blog?.content || '') + '\n#### Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam dicta ullam laboriosam, eaque consequuntur inventore, architecto earum vel nesciunt id ad. Totam dolore voluptate harum quos? Fugiat maiores earum quae.')"
+          v-html="$renderer.render(blog?.content || '')"
         ></div>
       </div>
 
