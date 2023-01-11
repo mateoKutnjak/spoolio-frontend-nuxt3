@@ -1,12 +1,6 @@
 <template>
-  <div
-    class="avatar"
-    :class="isCurrentyLoggedUser ? 'online' : 'offline'"
-  >
-    <div
-      class="shadow w-12 h-12 rounded-full bg-white"
-      :class="isCurrentyLoggedUser ? 'ring ring-primary ring-offset-base-100' : ''"
-    >
+  <div class="avatar">
+    <div class="shadow w-12 h-12 rounded-full bg-white">
       <Icon
         class="w-12 h-12 p-2 text-gray-500"
         name="ph:user-duotone"
@@ -28,13 +22,6 @@ const { userData } = defineProps(["userData"]);
 
 const hasAnyName = computed(() => {
   return userData?.profile?.first_name || userData?.profile?.last_name;
-});
-
-const isCurrentyLoggedUser = computed(() => {
-  if (userData?.email && user.value?.email) {
-    return userData?.email === user.value.email;
-  }
-  return false;
 });
 </script>
 

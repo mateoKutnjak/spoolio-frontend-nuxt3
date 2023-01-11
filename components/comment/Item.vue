@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div class="flex-shrink-0 mr-3">
-      <UserAvatar :user-data="item?.user" />
+      <UserAvatar :user-data="item?.user"/>
     </div>
     <div class="border bg-white rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed text-gray-700">
       <strong v-if="!comment.user.profile?.first_name && !comment.user.profile?.last_name">Anonymous</strong>
