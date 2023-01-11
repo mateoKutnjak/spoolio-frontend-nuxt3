@@ -37,17 +37,14 @@
           <p class="prose text-3xl font-bold pb-2 pt-0">{{blog?.title}}</p>
           <p class="prose text-xl pt-0 ">{{blog?.subtitle}}</p>
         </div>
-        <div class="py-2">
-          <div class="alert alert-warning shadow-md">
-            <div>
-              <Icon
-                name="eos-icons:bubble-loading"
-                size="30"
-                aria-hidden="true"
-              />
-              <span>TODO: insert picture here</span>
-            </div>
-          </div>
+        <div
+          v-if="blog?.picture"
+          class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
+        >
+          <nuxt-img
+            :src="blog.picture"
+            fit="contain"
+          />
         </div>
 
         <div
