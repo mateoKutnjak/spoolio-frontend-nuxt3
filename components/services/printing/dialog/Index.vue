@@ -20,15 +20,15 @@
               <tbody class="">
                 <tr>
                   <td class="text-md">ETA</td>
-                  <td class="text-md">111 days</td>
+                  <td class="text-md">TODO</td>
                 </tr>
                 <tr>
                   <td class="text-md">Price per part</td>
-                  <td class="text-md">${{ unit.estimatedPrice }}</td>
+                  <td class="text-md">${{ (printOrderStore.getPriceByLocalUrl(unit.localUrl) / unit.quantity).toFixed(2) }}</td>
                 </tr>
                 <tr>
                   <th class=" text-lg">Total price</th>
-                  <th class=" text-lg"> ${{ unit.estimatedPrice * unit.quantity }}</th>
+                  <th class=" text-lg"> ${{ printOrderStore.getPriceByLocalUrl(unit.localUrl).toFixed(2) }}</th>
                 </tr>
               </tbody>
             </table>

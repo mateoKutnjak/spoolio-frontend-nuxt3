@@ -341,9 +341,9 @@ function duplicateUnit() {
     localUrl: URL.createObjectURL(unit.file),
     attachmentFiles: [], // todo
     attachmentImages: [], // todo
-    order: undefined,
-    modelDimensions: undefined,
-    modelVolume: 0,
+    order: unit.order,
+    modelDimensions: unit.modelDimensions,
+    modelVolume: unit.modelVolume,
     lengthUnit: DimensionUnit[dimensionUnit.value],
   });
 }

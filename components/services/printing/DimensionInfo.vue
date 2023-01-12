@@ -5,7 +5,7 @@
       name="gis:coord-system-3d-alt"
       size="30"
     />
-    <strong>{{ data.x.toFixed(0)}}
+    <strong v-if="data">{{ data.x.toFixed(0)}}
       x
       {{ data.y.toFixed(0)}}
       x
