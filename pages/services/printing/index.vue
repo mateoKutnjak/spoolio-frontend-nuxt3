@@ -49,7 +49,7 @@
       </div>
       <table
         v-if="units.length"
-        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
+        class="hidden md:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
       >
         <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
           <tr class="border-2">
@@ -67,25 +67,25 @@
             </th>
             <th
               scope="col"
-              class="py-4"
+              class="py-4 text-center"
             >
               Attributes
             </th>
             <th
               scope="col"
-              class="py-4 px-11"
+              class="py-4 text-center"
             >
               Quantity
             </th>
             <th
               scope="col"
-              class="py-4 text-end px-10"
+              class="py-4 text-center"
             >
               Price
             </th>
             <th
               scope="col"
-              class="px-5"
+              class="text-center"
             >Actions</th>
           </tr>
         </thead>

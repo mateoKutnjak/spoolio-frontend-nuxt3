@@ -12,32 +12,16 @@
       </ClientOnly>
     </td>
     <td class="py-4">
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-3">
         <div class="font-semibold text-gray-900 dark:text-white line-clamp-1">
           {{ unit.file.name }}
         </div>
-        <div>
-          <div
-            class="flex gap-1"
-            v-if="unit.modelDimensions"
-          >
-            Size ({{ DimensionUnit[dimensionUnit] }}): <strong>{{ unit.modelDimensions.x.toFixed(0)}}
-              x
-              {{ unit.modelDimensions.y.toFixed(0)}}
-              x
-              {{ unit.modelDimensions.z.toFixed(0)}}</strong>
-          </div>
-          <div
-            class="flex gap-1"
-            v-if="unit.modelDimensions"
-          >
-            Volume ({{ DimensionUnit[dimensionUnit] }}3): <strong>{{ (unit.modelVolume / 1000).toFixed(3)}} </strong>
-          </div>
-        </div>
+        <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
+        <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
       </div>
     </td>
     <td class="py-4 font-semibold text-gray-900 dark:text-white">
-      <div class="flex items-center">
+      <div class="flex items-center justify-center">
         <div
           class="tooltip tooltip-bottom"
           data-tip="Filament material"
@@ -66,7 +50,7 @@
       </div>
     </td>
     <td class="py-4">
-      <div class="flex items-center space-x-3">
+      <div class="flex gap-2 items-center justify-center">
         <button
           class="btn btn-sm btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
           @click.stop="decreaseQuantity"
@@ -103,7 +87,7 @@
     </td>
     <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
       <div
-        class="dropdown dropdown-end"
+        class="flex dropdown dropdown-end justify-center"
         @click.stop
       >
         <label
@@ -180,7 +164,7 @@
         </div>
       </div>
     </td>
-    <td class="py-4">
+    <td class="py-4 text-center">
       <button
         class="btn btn-md btn-circle btn-ghost text-gray-400"
         @click.stop="duplicateUnit"
