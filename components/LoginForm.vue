@@ -70,6 +70,7 @@ const submitHandler = async () => {
 
   authStore.login(email.value, password.value).then((loginRequestState) => {
     dialogStore.close();
+    navigateTo("/");
   });
 };
 </script>

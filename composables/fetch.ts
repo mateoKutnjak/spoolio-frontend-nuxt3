@@ -1,4 +1,5 @@
 import { useAuthStore } from "~~/stores/auth";
+import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
 interface IRefreshTokenResponse {
@@ -19,9 +20,12 @@ export const customFetch = $fetch.create({
         const controller = new AbortController();
 
         const authStore = useAuthStore();
+        const dialogStore = useDialogStore();
         const notificationStore = useNotificationStore();
 
-        if (!authStore.accessToken) {
+        options.signal = controller.signal;
+
+        if (!authStore.accessToken || !authStore.user) {
             console.log("onRequest interceptor - access token not present");
             return;
         };
@@ -31,6 +35,12 @@ export const customFetch = $fetch.create({
             body: {
                 token: authStore.accessToken
             }
+        }).then(res => {
+
+            // * Add authorization headers (only if access token is verified) 
+
+            options.headers = new Headers(options.headers);
+            options.headers.set("Authorization", `Bearer ${authStore.accessToken}`);
         }).catch(async err => {
             if (err.statusCode === 401) {
 
@@ -48,13 +58,20 @@ export const customFetch = $fetch.create({
 
                     authStore.updateAccessToken(response.access);
                     console.log("Success. Saving to authStore");
+
+                    // * Add authorization headers (only if access token is updated) 
+
+                    options.headers = new Headers(options.headers);
+                    options.headers.set("Authorization", `Bearer ${authStore.accessToken}`);
                 }).catch(err => {
+                    debugger;
                     if (err.statusCode === 401) {
 
-                        // * Token has expired. Logout
+                        // * Token has expired. Try request without any auth tokens, but clean user data (logout)
 
-                        authStore.logout();
-                        notificationStore.show('Session expired. Please log in again', ToastLevel.info());
+                        controller.abort();
+                        dialogStore.close()
+                        notificationStore.show('Cannot perform request. Session expired. Please login again', ToastLevel.info());
                     }
 
                     // * Abort request if refreshing token has failed
@@ -65,10 +82,9 @@ export const customFetch = $fetch.create({
                 })
             }
         });
+    },
 
-        // * Add authorization headers (only if access token is present) 
+    onResponseError(context) {
 
-        options.headers = new Headers(options.headers);
-        options.headers.set("Authorization", `Bearer ${authStore.accessToken}`);
     },
 });

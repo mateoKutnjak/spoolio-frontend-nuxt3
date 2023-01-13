@@ -101,6 +101,34 @@
         </div>
       </FormKit>
     </div>
+    <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
+
+      <div>
+        <div
+          class="tooltip tooltip-left"
+          data-tip="Upload 3D model"
+        >
+          <label
+            for="dropzone-file"
+            class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
+            @drop="drop"
+          >
+            <Icon
+              name="ic:outline-cloud-upload"
+              size="30"
+              aria-hidden="true"
+            />
+            <input
+              id="dropzone-file"
+              type="file"
+              name="fff"
+              class="hidden"
+              @change="change"
+            />
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

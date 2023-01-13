@@ -5,7 +5,7 @@
   >
     <div class="text-gray-500 text-sm font-medium pl-2">
       Attachments: {{ attachmentFiles.length }} {{ attachmentFiles.length === 1 ? "item" : "items" }}</div>
-    <div class="flex gap-3 border border-gray-300 rounded-xl p-3 bg-white shadow-sm">
+    <div class="flex flex-wrap gap-3 rounded-xl p-3">
       <ServicesModelingFileIcon
         v-for="file in attachmentFiles"
         :key="file.localUrl"

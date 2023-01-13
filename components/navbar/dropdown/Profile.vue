@@ -6,13 +6,14 @@
     >
       <MenuButton
         class="btn btn-ghost btn-square avatar"
-        :class="user ? 'hover:bg-transparent' : ''"
+        :class="authStore.loggedIn ? 'hover:bg-transparent' : ''"
       >
         <div
-          :class="user ? 'ring ring-primary ring-offset-base-100 ring-offset-2' : ''"
+          :class="authStore.loggedIn ? 'ring ring-primary ring-offset-base-100 ring-offset-2' : ''"
           class="w-8 rounded-full "
+          :key="user?.id"
         >
-          <div v-if="user">
+          <div v-if="authStore.loggedIn">
             <nuxt-img src="https://placeimg.com/192/192/people" />
           </div>
           <div v-else>
@@ -36,7 +37,7 @@
         <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
 
           <div
-            v-if="!user"
+            v-if="!authStore.loggedIn"
             class="px-2 py-2"
           >
             <MenuItem
@@ -96,7 +97,7 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="authStore.logout()"
+              @click="logout"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -127,7 +128,8 @@ import { useDialogStore } from "~~/stores/dialog";
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 
-const { user } = storeToRefs(authStore);
-
-watch(user, (value) => console.log(value));
+function logout() {
+  authStore.logout();
+  navigateTo("/");
+}
 </script>

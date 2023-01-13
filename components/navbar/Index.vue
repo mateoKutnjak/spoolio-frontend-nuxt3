@@ -118,10 +118,6 @@ const navigation = [
   { name: "about", to: "/about" },
 ];
 
-function logout() {
-  authStore.logout();
-}
-
 function toggleDrawer() {
   drawerStore.toggle();
 }
