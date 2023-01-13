@@ -13,7 +13,14 @@
 
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { useAuthStore } from "~~/stores/auth";
+
+const authStore = useAuthStore();
+
+if (!authStore.getUser) {
+  throw createError({ statusCode: 404, statusMessage: "Page Not Founded" });
+}
 </script>
 
 <style>

@@ -66,6 +66,10 @@ const authStore = useAuthStore();
 const blogStore = useBlogStore();
 const notificationStore = useNotificationStore();
 
+if (!authStore.getUser?.is_staff) {
+  throw createError({ statusCode: 404, statusMessage: "Cannot edit this blog" });
+}
+
 const { id } = useRoute().params;
 
 const blogTitle = ref<string>("");

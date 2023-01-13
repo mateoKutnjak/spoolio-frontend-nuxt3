@@ -267,6 +267,10 @@ import { useNotificationStore } from "~~/stores/notification";
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
+if (!authStore.getUser) {
+  throw createError({ statusCode: 404, statusMessage: "Create account to access profile data" });
+}
+
 const { user } = storeToRefs(authStore);
 
 const generalInfoEmail = ref(user.value?.email || "");

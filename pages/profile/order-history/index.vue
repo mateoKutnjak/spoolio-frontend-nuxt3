@@ -46,9 +46,18 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
+import { useAuthStore } from "~~/stores/auth";
 
+const authStore = useAuthStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
+
+if (!authStore.getUser) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: "Create account to access order history",
+  });
+}
 
 printOrderHistoryStore.fetchPrintOrderHistoryPaginated();
 modelingOrderHistoryStore.fetchPaginated();
