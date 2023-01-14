@@ -381,13 +381,7 @@ const submitGeneralInfoHandler = async () => {
     .then(() => {
       notificationStore.show("Information saved", ToastLevel.success());
     })
-    .catch((err) => {
-      notificationStore.show(
-        "Error while saving. Try again",
-        ToastLevel.error()
-      );
-      console.log(err);
-    })
+    .catch((err) => notificationStore.showFetchError(err))
     .finally(() => (submittingGeneralInfo.value = false));
 };
 
@@ -439,13 +433,7 @@ const submitBillingAddressHandler = async () => {
     .then(() => {
       notificationStore.show("Information saved", ToastLevel.success());
     })
-    .catch((err) => {
-      notificationStore.show(
-        "Error while saving. Try again",
-        ToastLevel.error()
-      );
-      console.log(err);
-    });
+    .catch((err) => notificationStore.showFetchError(err));
 };
 </script>
 

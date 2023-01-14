@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { IPrintOrderResponse } from './print_order'
 
 interface IPrintOrderListResponse {
@@ -25,7 +26,7 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
     actions: {
         async fetchPrintOrderHistoryPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IPrintOrderListResponse>(new Promise((resolve, reject) => {
                 customFetch<IPrintOrderListResponse>(`http://localhost:8000/api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
                 }).then((response: IPrintOrderListResponse) => {
@@ -43,7 +44,7 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
                 }).catch(err => {
                     reject(err)
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
     },
 })

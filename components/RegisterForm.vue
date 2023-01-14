@@ -75,10 +75,12 @@
 <script lang="ts" setup>
 import { FormKitNode } from "@formkit/core";
 import { useDialogStore } from "~~/stores/dialog";
+import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore();
 
 const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
@@ -99,7 +101,11 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       navigateTo("/");
     })
     .catch((err) => {
-      node?.setErrors(err?.data?.non_field_errors || [], err?.data);
+      notificationStore.showFetchError(err)
+      node?.setErrors(
+        err?.data?.non_field_errors || ["Error occurred. Please try again."],
+        err?.data
+      );
     })
     .finally(() => (loading.value = false));
 }

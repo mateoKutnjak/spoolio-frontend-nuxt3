@@ -120,12 +120,7 @@ function toggleLike() {
     .then((res) => {
       notificationStore.show("Content liked", ToastLevel.info());
     })
-    .catch((err) => {
-      notificationStore.show(
-        err.statusMessage + err.statusCode,
-        ToastLevel.error()
-      );
-    });
+    .catch((err) => notificationStore.showFetchError(err));
 }
 </script>
     

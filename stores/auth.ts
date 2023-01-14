@@ -1,5 +1,6 @@
 import { ofetch } from 'ofetch'
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 
 interface ILoginResponse {
     access_token: string,
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         async login(email: string | undefined, password: string | undefined) {
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
                 ofetch<ILoginResponse>('http://localhost:8000/auth/login/', {
                     method: 'POST', body: {
                         email: email,
@@ -66,11 +67,11 @@ export const useAuthStore = defineStore('auth', {
                 }).catch(err => {
                     reject(err)
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
                 ofetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
                     method: 'POST', body: {
                         email: email,
@@ -87,12 +88,12 @@ export const useAuthStore = defineStore('auth', {
                 }).catch(err => {
                     reject(err)
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async patchUserProfile(body: IProfileResponse) {
 
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IProfileResponse>(new Promise((resolve, reject) => {
 
                 if (!this.user || !this.accessToken) {
                     reject('Not logged in')
@@ -114,7 +115,7 @@ export const useAuthStore = defineStore('auth', {
                     }).catch(err => {
                         reject(err)
                     })
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         logout() {

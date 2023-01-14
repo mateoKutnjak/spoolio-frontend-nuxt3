@@ -142,15 +142,18 @@ const productVariationOptionSelections = ref(new Map<string, number>());
 const currentImageIndex = ref(0);
 
 onMounted(() => {
-  productStore.fetchProduct(Number(id)).then((res) => {
-    productVariationOptions.value = extractProductVariations();
-    setDefaultCombination(productVariationOptions.value);
+  productStore
+    .fetchProduct(Number(id))
+    .then((res) => {
+      productVariationOptions.value = extractProductVariations();
+      setDefaultCombination(productVariationOptions.value);
 
-    productStore.fetchProductVariationOptionCombination(
-      getCurrentOptionIds(),
-      Number(id)
-    );
-  });
+      productStore.fetchProductVariationOptionCombination(
+        getCurrentOptionIds(),
+        Number(id)
+      );
+    })
+    .catch((err) => notificationStore.showFetchError(err));
 });
 
 onBeforeRouteLeave((to, from, next) => {
@@ -202,10 +205,9 @@ function setOption(optionName: string, index: number) {
 
   const currentOptionIds = getCurrentOptionIds();
 
-  productStore.fetchProductVariationOptionCombination(
-    currentOptionIds,
-    Number(id)
-  );
+  productStore
+    .fetchProductVariationOptionCombination(currentOptionIds, Number(id))
+    .catch((err) => notificationStore.showFetchError(err));
 }
 
 function getCurrentOptionIds(): number[] {
@@ -239,7 +241,10 @@ function addToCart() {
     return;
   }
 
-  cartStore.add(activeOptionsCombination.value.id, activeOptionsCombination.value);
+  cartStore.add(
+    activeOptionsCombination.value.id,
+    activeOptionsCombination.value
+  );
 
   notificationStore.show("Added to cart", ToastLevel.success());
 }

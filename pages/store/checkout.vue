@@ -149,10 +149,12 @@ import FormkitContactEmail from "~~/components/store/checkout/formkit/ContactEma
 import FormkitShippingMethod from "~~/components/store/checkout/formkit/ShippingMethod.vue";
 import { createInput } from "@formkit/vue";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
+import { useNotificationStore } from "~~/stores/notification";
 
 const taxPercentage = 0.25;
 
 const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore()
 const shippingMethodStore = useShippingMethodStore();
 
 const shippingAddressInput = createInput(FormkitShippingAddress);
@@ -170,7 +172,7 @@ onMounted(async () => {
     .then(() => {
       console.log("Shipping methods fetched successfuly TODO");
     })
-    .catch((err) => console.log("Shipping method fetch error TODO"));
+    .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Shipping method fetched successfuly TODO");
 });

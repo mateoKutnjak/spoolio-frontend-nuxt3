@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 
 export interface IProductResponse {
     id: number,
@@ -50,7 +51,7 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         async fetchProduct(id: number) {
-            return new Promise<IProductResponse>((resolve, reject) => {
+            return promiseWithTimeout<IProductResponse>(new Promise<IProductResponse>((resolve, reject) => {
                 customFetch<IProductResponse>(`http://localhost:8000/api/products/${id}/`, {
                     method: 'GET'
                 }).then((response: IProductResponse) => {
@@ -59,10 +60,10 @@ export const useProductStore = defineStore('product', {
                 }).catch(err => {
                     reject(err);
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
         async fetchProductVariationOptionCombination(optionIds: number[], productId: number) {
-            return new Promise<IProductVariationOptionCombinationResponse[]>((resolve, reject) => {
+            return promiseWithTimeout<IProductVariationOptionCombinationResponse[]>(new Promise<IProductVariationOptionCombinationResponse[]>((resolve, reject) => {
                 customFetch<IProductVariationOptionCombinationResponse[]>(`http://localhost:8000/api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
                     method: 'GET'
                 }).then((response: IProductVariationOptionCombinationResponse[]) => {
@@ -75,7 +76,7 @@ export const useProductStore = defineStore('product', {
                 }).catch(err => {
                     reject(err);
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         clear() {

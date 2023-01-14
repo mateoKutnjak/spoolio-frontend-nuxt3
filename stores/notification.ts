@@ -16,13 +16,26 @@ export const useNotificationStore = defineStore('notification', {
 
     actions: {
         show(message: string, type = ToastLevel.debug()) {
-            console.log("showing " + message);
-
             this.isOpened = true;
             this.message = message;
             this.iconName = type.iconName;
             this.backgroundColor = type.backgroundColor;
             this.iconColor = type.iconColor;
+        },
+        showFetchError(err: any, type = ToastLevel.error()) {
+            this.isOpened = true;
+            this.iconName = type.iconName;
+            this.backgroundColor = type.backgroundColor;
+            this.iconColor = type.iconColor;
+
+            if (!err.statusMessage) {
+                this.message = "Could not reach server. Please try again later"
+            } else if (err.statusMessage && err.statusCode) {
+                this.message = err.statusMessage + " (" + err.statusCode + ")"
+            } else {
+                this.message = err;
+            }
+            console.log(err);
         },
         close() {
             this.isOpened = false;
@@ -30,7 +43,6 @@ export const useNotificationStore = defineStore('notification', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useNotificationStore, import.meta.hot))
 }

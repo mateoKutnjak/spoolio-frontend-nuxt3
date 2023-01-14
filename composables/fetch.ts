@@ -65,7 +65,6 @@ export const customFetch = ofetch.create({
                     options.headers = new Headers(options.headers);
                     options.headers.set("Authorization", `Bearer ${authStore.accessToken}`);
                 }).catch(err => {
-                    debugger;
                     if (err.statusCode === 401) {
 
                         // * Token has expired. Try request without any auth tokens, but clean user data (logout)

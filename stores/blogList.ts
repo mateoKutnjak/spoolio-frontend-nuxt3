@@ -24,7 +24,7 @@ export const useBlogListStore = defineStore('blog-list', {
 
     actions: {
         async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IBlogListResponse>(new Promise((resolve, reject) => {
                 customFetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
                 }).then((response: IBlogListResponse) => {
@@ -42,7 +42,7 @@ export const useBlogListStore = defineStore('blog-list', {
                 }).catch(err => {
                     reject(err)
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async toggleLike(accessToken: string, blogId: number) {

@@ -138,9 +138,7 @@ const submitHandler = async () => {
     .then(() => {
       notificationStore.show("Update saved", ToastLevel.info());
     })
-    .catch((err) => {
-      notificationStore.show(err.statusMessage + err.statusCode);
-    });
+    .catch((err) => notificationStore.showFetchError(err));
 };
 </script>
 

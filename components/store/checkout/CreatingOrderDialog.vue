@@ -104,7 +104,7 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
-    notificationStore.show(error.statusMessage, ToastLevel.error());
+    notificationStore.showFetchError(error);
     return;
   }
 

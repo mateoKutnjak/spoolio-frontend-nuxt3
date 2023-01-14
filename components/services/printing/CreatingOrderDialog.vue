@@ -179,7 +179,7 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
-      notificationStore.show(error.statusMessage, ToastLevel.error())
+    notificationStore.showFetchError(error);
     return;
   }
 
@@ -213,6 +213,7 @@ onMounted(async () => {
         "). Data = " +
         JSON.stringify(error.data) +
         ".";
+      notificationStore.showFetchError(error);
       return;
     }
 
@@ -221,48 +222,6 @@ onMounted(async () => {
     console.log("DONE result_id = " + unitResult.id);
   }
   unitsStatus.value = OrderStatus.success;
-
-  // ------------------------------------------------------
-  // ---------------- ATTACHMENTS UPLOAD ------------------
-  // ------------------------------------------------------
-
-  // attachmentsStatus.value = OrderStatus.progress;
-  // for (
-  //   let index = 0;
-  //   index < printOrderStore.getAttachmentFiles.length;
-  //   index++
-  // ) {
-  //   console.log(
-  //     "Posting attachment file " +
-  //       printOrderStore.getAttachmentFiles[index].file.name
-  //   );
-
-  //   await new Promise((r) => setTimeout(r, 500));
-
-  //   const attachmentFile = printOrderStore.getAttachmentFiles[index];
-  //   var attachmentFileResult: IPrintOrderAttachmentFileResponse;
-
-  //   try {
-  //     attachmentFileResult = await printOrderStore.postPrintOrderAttachmentFile(
-  //       attachmentFile,
-  //       rootOrderResult.id
-  //     );
-  //   } catch (error: any) {
-  //     attachmentsStatus.value = OrderStatus.error;
-  //     errorMessage.value =
-  //       "Error (" +
-  //       error.statusCode +
-  //       "). Data = " +
-  //       JSON.stringify(error.data) +
-  //       ".";
-  //     return;
-  //   }
-
-  //   attachmentsUploadedCount.value++;
-
-  //   console.log("DONE result_id = " + attachmentFileResult.id);
-  // }
-  // attachmentsStatus.value = OrderStatus.success;
 });
 
 function onOkPressed() {

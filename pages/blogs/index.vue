@@ -73,13 +73,7 @@ onMounted(() => {
   blogListStore
     .fetchPaginatedBlogs(limit, offset)
     .then((_) => {})
-    .catch((err) => {
-      debugger;
-      notificationStore.show(
-        err.statusMessage +  err.statusCode,
-        ToastLevel.error()
-      );
-    })
+    .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {
       showInitLoading.value = false;
     });
@@ -123,7 +117,8 @@ onMounted(() => {
         offset = offset + limit;
         blogListStore
           .fetchPaginatedBlogs(limit, offset, "", true)
-          .then(() => (showPageLoading.value = false));
+          .then(() => (showPageLoading.value = false))
+          .catch((err) => notificationStore.showFetchError(err));
       }
     }
   };
@@ -138,7 +133,8 @@ function onSearch(searchPhrase: string) {
 
   blogListStore
     .fetchPaginatedBlogs(limit, offset, searchPhrase, false)
-    .then(() => (showPageLoading.value = false));
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
 }
 </script>
 

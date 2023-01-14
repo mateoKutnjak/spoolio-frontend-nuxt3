@@ -42,7 +42,7 @@
           type="submit"
           label="Sign In"
           :classes="{
-              input: 'btn-block'
+              input: 'btn-block',
             }"
           :input-class="{
             'loading': loading
@@ -84,7 +84,11 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       navigateTo("/");
     })
     .catch((err) => {
-      node?.setErrors(err?.data?.non_field_errors || [], err?.data);
+      notificationStore.showFetchError(err)
+      node?.setErrors(
+        err?.data?.non_field_errors || ["Error occurred. Please try again."],
+        err?.data
+      );
     })
     .finally(() => (loading.value = false));
 }

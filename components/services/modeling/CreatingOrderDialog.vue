@@ -204,10 +204,7 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
-    notificationStore.show(
-      "Root order error" + error.statusMessage,
-      ToastLevel.error()
-    );
+    notificationStore.showFetchError(error);
     return;
   }
 
@@ -241,10 +238,7 @@ onMounted(async () => {
         "). Data = " +
         JSON.stringify(error.data) +
         ".";
-      notificationStore.show(
-        "Attachment file error" + error.statusMessage,
-        ToastLevel.error()
-      );
+      notificationStore.showFetchError(error);
       return;
     }
 
@@ -285,10 +279,7 @@ onMounted(async () => {
         "). Data = " +
         JSON.stringify(error.data) +
         ".";
-      notificationStore.show(
-        "Attachment image error" + error.statusMessage,
-        ToastLevel.error()
-      );
+      notificationStore.showFetchError(error);
       return;
     }
 

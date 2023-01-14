@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { IStoreOrderResponse } from './cart'
 
 interface IStoreOrderListResponse {
@@ -25,7 +26,7 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
 
     actions: {
         async fetchOrderHistoryPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IStoreOrderListResponse>(new Promise((resolve, reject) => {
                 customFetch<IStoreOrderListResponse>(`http://localhost:8000/api/store-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
                 }).then((response: IStoreOrderListResponse) => {
@@ -43,7 +44,7 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
                 }).catch(err => {
                     reject(err)
                 })
-            })
+            }), HTTP_REQUEST_TIMEOUT);
         },
     },
 })

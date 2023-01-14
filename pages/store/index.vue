@@ -36,8 +36,10 @@
   <script lang="ts" setup>
 import { useProductListStore } from "~/stores/productList";
 import { useAuthStore } from "~~/stores/auth";
+import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
+const notificationStore = useNotificationStore();
 const productListStore = useProductListStore();
 
 const showInitLoading = ref<boolean>(true);
@@ -50,9 +52,7 @@ onMounted(async () => {
   productListStore
     .fetchPaginatedProducts(limit, offset)
     .then(() => {})
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {
       showInitLoading.value = false;
     });
@@ -91,7 +91,7 @@ onMounted(() => {
         offset = offset + limit;
         productListStore
           .fetchPaginatedProducts(limit, offset, "", true)
-          .then(() => (showPageLoading.value = false));
+          .then(() => (showPageLoading.value = false)).catch((err) => notificationStore.showFetchError(err));
       }
     }
   };
@@ -106,7 +106,7 @@ function onSearch(searchPhrase: string) {
 
   productListStore
     .fetchPaginatedProducts(limit, offset, searchPhrase, false)
-    .then(() => (showPageLoading.value = false));
+    .then(() => (showPageLoading.value = false)).catch((err) => notificationStore.showFetchError(err));
 }
 </script>
   

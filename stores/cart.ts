@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { IProductVariationOptionCombinationResponse } from './product';
 import { IShippingMethod } from './shipping_method';
@@ -145,7 +146,7 @@ export const useCartStore = defineStore('cart', {
                 items: reformatItems(this.cartItems),
             }
 
-            return new Promise<IStoreOrderResponse>((resolve, reject) => {
+            return promiseWithTimeout<IStoreOrderResponse>(new Promise<IStoreOrderResponse>((resolve, reject) => {
                 customFetch<IStoreOrderResponse>('http://localhost:8000/api/store-orders/', {
                     method: 'POST',
                     body: body,
@@ -156,7 +157,7 @@ export const useCartStore = defineStore('cart', {
                     console.log(err);
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);;
         },
     },
 })

@@ -170,7 +170,7 @@ onMounted(async () => {
     .then(() => {
       console.log("Shipping methods fetched successfuly TODO");
     })
-    .catch((err) => notificationStore.show(err.statusMessage, ToastLevel.error()));
+    .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Shipping method fetched successfuly TODO");
 });

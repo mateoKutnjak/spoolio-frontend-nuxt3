@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IUserResponse}  from './auth'
 
 interface ICommentResponse {
@@ -26,7 +27,7 @@ export const useCommentStore = defineStore('comment', {
                 content: content,
             };
 
-            return new Promise<ICommentResponse>((resolve, reject) => setTimeout(() => {
+            return promiseWithTimeout<ICommentResponse>(new Promise<ICommentResponse>((resolve, reject) => {
                 customFetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
                     method: 'POST',
                     headers: {
@@ -40,7 +41,7 @@ export const useCommentStore = defineStore('comment', {
                 }).catch(err => {
                     reject(err)
                 })
-            }, 5000))
+            }), HTTP_REQUEST_TIMEOUT);
         },
     },
 })

@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IProductResponse } from './product';
 
 interface IProductListResponse {
@@ -22,22 +23,26 @@ export const useProductListStore = defineStore('product-list', {
 
     actions: {
         async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            await customFetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
-                method: 'GET'
-            }
-            ).then((response: IProductListResponse) => {
-                this.count = response.count;
-                this.next = response.next;
-                this.previous = response.previous;
-
-                if (append) {
-                    this.products = [...this.products, ...response.results];
-                } else {
-                    this.products = response.results;
+            return promiseWithTimeout<IProductListResponse>(new Promise<IProductListResponse>((resolve, reject) => {
+                customFetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    method: 'GET'
                 }
-            }).catch(err => {
-                throw err
-            })
+                ).then((response: IProductListResponse) => {
+                    this.count = response.count;
+                    this.next = response.next;
+                    this.previous = response.previous;
+
+                    if (append) {
+                        this.products = [...this.products, ...response.results];
+                    } else {
+                        this.products = response.results;
+                    }
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+
+            }), HTTP_REQUEST_TIMEOUT);
         },
     },
 })

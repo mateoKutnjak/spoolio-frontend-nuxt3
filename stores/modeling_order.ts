@@ -100,7 +100,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IModelingOrderAttachmentFileResponse>(new Promise((resolve, reject) => {
                 customFetch<IModelingOrderAttachmentFileResponse>('http://localhost:8000/api/attachment-files/', {
                     method: 'POST',
                     body: formData,
@@ -110,7 +110,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 }).catch(err => {
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async postAttachmentImage(item: IModelingOrderAttachmentImageResponse, orderId: number): Promise<IModelingOrderAttachmentImageResponse> {
@@ -121,7 +121,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IModelingOrderAttachmentImageResponse>(new Promise((resolve, reject) => {
                 customFetch<IModelingOrderAttachmentImageResponse>('http://localhost:8000/api/attachment-images/', {
                     method: 'POST',
                     body: formData,
@@ -130,7 +130,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 }).catch(err => {
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         addAttachmentFile(attachmentFile: IModelingOrderAttachmentFileResponse) {

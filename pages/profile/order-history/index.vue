@@ -64,19 +64,13 @@ if (!getUser.value) {
 
 printOrderHistoryStore
   .fetchPrintOrderHistoryPaginated()
-  .catch((err) =>
-    notificationStore.show(err.statusMessage, ToastLevel.error())
-  );
+  .catch((err) => notificationStore.showFetchError(err));
 modelingOrderHistoryStore
   .fetchPaginated()
-  .catch((err) =>
-    notificationStore.show(err.statusMessage, ToastLevel.error())
-  );
+  .catch((err) => notificationStore.showFetchError(err));
 storeOrderHistoryStore
   .fetchOrderHistoryPaginated()
-  .catch((err) =>
-    notificationStore.show(err.statusMessage, ToastLevel.error())
-  );
+  .catch((err) => notificationStore.showFetchError(err));
 
 const tabCategories = ["Print orders", "Modeling orders", "Purchases"];
 </script>

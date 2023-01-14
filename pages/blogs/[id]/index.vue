@@ -111,16 +111,9 @@ onMounted(() => {
     .then((blog) => {
       showInitLoading.value = false;
     })
-    .catch((err) => {
-      notificationStore.show(err, ToastLevel.error());
-    });
+    .catch((err) => notificationStore.showFetchError(err));
   commentListStore
-    .fetchComments(Number(id)).catch((err) => {
-      notificationStore.show(
-        err.statusMessage + err.statusCode,
-        ToastLevel.error()
-      );
-    });
+    .fetchComments(Number(id)).catch((err) => notificationStore.showFetchError(err));
 });
 
 const getBlog = computed(() => {

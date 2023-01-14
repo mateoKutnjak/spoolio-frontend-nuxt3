@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IUserResponse } from './auth';
 
 export default interface IBlogResponse {
@@ -48,7 +49,7 @@ export const useBlogStore = defineStore('blog', {
 
         async patchBlog(accessToken: string, title: string, subtitle: string, content: string) {
 
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IBlogResponse>(new Promise<IBlogResponse>((resolve, reject) => {
                 var body: { [name: string]: any } = {
                     title: title,
                     subtitle: subtitle,
@@ -71,13 +72,12 @@ export const useBlogStore = defineStore('blog', {
                         // ! needs proper error handling
                         reject(err)
                     })
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useBlogStore, import.meta.hot))
 }

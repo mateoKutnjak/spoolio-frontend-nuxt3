@@ -275,18 +275,14 @@ onMounted(async () => {
   await filamentColorStore
     .fetchFilamentColors()
     .then(() => {})
-    .catch((err) =>
-      notificationStore.show(err.statusMessage, ToastLevel.error())
-    );
+    .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Colors fetched successfuly TODO");
 
   await filamentMaterialStore
     .fetchFilamentMaterials()
     .then(() => {})
-    .catch((err) =>
-      notificationStore.show(err.statusMessage, ToastLevel.error())
-    );
+    .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Materials fetched successfuly TODO");
 
@@ -295,9 +291,7 @@ onMounted(async () => {
     .then(() => {
       console.log("Infills fetched successfuly TODO");
     })
-    .catch((err) =>
-      notificationStore.show(err.statusMessage, ToastLevel.error())
-    );
+    .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Infills fetched successfuly TODO");
 

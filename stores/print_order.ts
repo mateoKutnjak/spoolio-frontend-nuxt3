@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentMaterialStore } from './filament_material';
@@ -191,7 +191,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 estimated_price: 999. // TODO
             }
 
-            return new Promise<IPrintOrderResponse>((resolve, reject) => {
+            return promiseWithTimeout<IPrintOrderResponse>(new Promise<IPrintOrderResponse>((resolve, reject) => {
                 customFetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
                     method: 'POST',
                     body: body,
@@ -202,7 +202,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     console.log(err);
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async postOrderUnit(unit: IPrintOrderUnitResponse, orderId: number): Promise<IPrintOrderUnitResponse> {
@@ -222,7 +222,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             // todo what to do with this
             formData.append("order", orderId.toString());
 
-            return new Promise((resolve, reject) => {
+            return promiseWithTimeout<IPrintOrderUnitResponse>(new Promise((resolve, reject) => {
                 customFetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
                     method: 'POST',
                     body: formData,
@@ -233,7 +233,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     console.log(err);
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async postPrintOrderAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderId: number): Promise<IPrintOrderAttachmentFileResponse> {

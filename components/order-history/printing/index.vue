@@ -42,8 +42,10 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { PAGE_SIZE } from "~~/constants/constants";
+import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 
+const notificationStore = useNotificationStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 
 const { count, previous, next, print_orders } = storeToRefs(
@@ -56,7 +58,7 @@ onMounted(() => {
   printOrderHistoryStore
     .fetchPrintOrderHistoryPaginated(PAGE_SIZE, currentPage.value * PAGE_SIZE)
     .then((_) => {})
-    .catch((err) => {})
+    .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {});
 });
 
@@ -66,7 +68,7 @@ function onPageSelected(pageSelected: number) {
   printOrderHistoryStore
     .fetchPrintOrderHistoryPaginated(PAGE_SIZE, pageSelected * PAGE_SIZE)
     .then((_) => {})
-    .catch((err) => {})
+    .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {});
 }
 </script>
