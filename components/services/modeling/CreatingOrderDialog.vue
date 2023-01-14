@@ -104,9 +104,11 @@ import {
   IModelingOrderResponse,
   useModelingOrderStore,
 } from "~~/stores/modeling_order";
+import { useNotificationStore } from "~~/stores/notification";
 
 const dialogStore = useDialogStore();
 const modelingOrderStore = useModelingOrderStore();
+const notificationStore = useNotificationStore();
 
 const { attachmentFiles } = storeToRefs(modelingOrderStore);
 
@@ -140,6 +142,10 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
+      notificationStore.show(
+        "Root order error" + error.statusMessage,
+        ToastLevel.error()
+      );
     return;
   }
 
@@ -173,6 +179,10 @@ onMounted(async () => {
         "). Data = " +
         JSON.stringify(error.data) +
         ".";
+      notificationStore.show(
+        "Attachment file error" + error.statusMessage,
+        ToastLevel.error()
+      );
       return;
     }
 

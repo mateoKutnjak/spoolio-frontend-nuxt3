@@ -77,13 +77,18 @@ const submitted = ref(false);
 const showInitLoading = ref<boolean>(true);
 
 onMounted(() => {
-  blogStore.fetchBlog(Number(id)).then((blog) => {
-    showInitLoading.value = false;
+  blogStore
+    .fetchBlog(Number(id))
+    .then((blog) => {
+      showInitLoading.value = false;
 
-    blogTitle.value = blog.title;
-    blogSubtitle.value = blog.subtitle;
-    blogContent.value = blog.content;
-  });
+      blogTitle.value = blog.title;
+      blogSubtitle.value = blog.subtitle;
+      blogContent.value = blog.content;
+    })
+    .catch((err) => {
+      notificationStore.show(err, ToastLevel.error());
+    });
 });
 
 const getBlog = computed(() => {
@@ -133,7 +138,9 @@ const submitHandler = async () => {
     .then(() => {
       notificationStore.show("Update saved", ToastLevel.info());
     })
-    .catch((err) => {});
+    .catch((err) => {
+      notificationStore.show(err.statusMessage + err.statusCode);
+    });
 };
 </script>
 

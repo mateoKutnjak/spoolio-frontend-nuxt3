@@ -57,8 +57,6 @@ export const useCommentListStore = defineStore('comment-list', {
 
                         resolve(response)
                     }).catch(err => {
-                        // ! needs proper error handling
-                        alert("TODO error handling")
                         reject(err)
                     })
                 }),
@@ -91,8 +89,6 @@ export const useCommentListStore = defineStore('comment-list', {
                     // todo what to do with previous ?
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    alert("TODO error handling")
                     reject(err)
                 })
             }), HTTP_REQUEST_TIMEOUT);

@@ -40,8 +40,6 @@ export const useBlogListStore = defineStore('blog-list', {
 
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    // alert("TODO error handling")
                     reject(err)
                 })
             })
@@ -71,8 +69,6 @@ export const useBlogListStore = defineStore('blog-list', {
                         });
                         resolve(response)
                     }).catch(err => {
-                        // ! needs proper error handling
-                        alert("TODO error handling")
                         reject(err)
                     })
                 }),

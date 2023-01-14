@@ -38,8 +38,6 @@ export const useCommentStore = defineStore('comment', {
                     this.insertedComment = response;
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    alert("TODO error handling")
                     reject(err)
                 })
             }, 5000))

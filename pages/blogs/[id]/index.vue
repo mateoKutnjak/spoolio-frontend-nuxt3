@@ -90,12 +90,14 @@ import IBlogResponse, { useBlogStore } from "~/stores/blog";
 import { IUserResponse, useAuthStore } from "~~/stores/auth";
 import ICommentResponse from "~~/stores/commentList";
 import { useCommentListStore } from "~~/stores/commentList";
+import { useNotificationStore } from "~~/stores/notification";
 
 const { id } = useRoute().params;
 
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
 const commentListStore = useCommentListStore();
+const notificationStore = useNotificationStore();
 
 const blog = ref<IBlogResponse>();
 const comments = ref<ICommentResponse[]>([]);
@@ -104,10 +106,21 @@ const user = ref<IUserResponse>();
 const showInitLoading = ref<boolean>(true);
 
 onMounted(() => {
-  blogStore.fetchBlog(Number(id)).then((blog) => {
-    showInitLoading.value = false;
-  });
-  commentListStore.fetchComments(Number(id));
+  blogStore
+    .fetchBlog(Number(id))
+    .then((blog) => {
+      showInitLoading.value = false;
+    })
+    .catch((err) => {
+      notificationStore.show(err, ToastLevel.error());
+    });
+  commentListStore
+    .fetchComments(Number(id)).catch((err) => {
+      notificationStore.show(
+        err.statusMessage + err.statusCode,
+        ToastLevel.error()
+      );
+    });
 });
 
 const getBlog = computed(() => {

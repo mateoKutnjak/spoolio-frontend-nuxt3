@@ -41,8 +41,6 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    // alert("TODO error handling")
                     reject(err)
                 })
             })

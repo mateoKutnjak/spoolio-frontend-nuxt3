@@ -55,10 +55,8 @@ watch(router.currentRoute, (value, oldValue, onInvalidated) => {
       }
     });
     isShown.value = true;
-    console.log("true");
   } else {
     isShown.value = false;
-    console.log("false");
   }
 
   if (value.fullPath.startsWith("/#")) {

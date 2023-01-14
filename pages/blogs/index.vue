@@ -54,9 +54,11 @@
 import { storeToRefs } from "pinia";
 import { useBlogListStore } from "~/stores/blogList";
 import { useAuthStore } from "~~/stores/auth";
+import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
 const blogListStore = useBlogListStore();
+const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
 
@@ -71,7 +73,13 @@ onMounted(() => {
   blogListStore
     .fetchPaginatedBlogs(limit, offset)
     .then((_) => {})
-    .catch((err) => {})
+    .catch((err) => {
+      debugger;
+      notificationStore.show(
+        err.statusMessage +  err.statusCode,
+        ToastLevel.error()
+      );
+    })
     .finally(() => {
       showInitLoading.value = false;
     });

@@ -41,8 +41,6 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
 
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    // alert("TODO error handling")
                     reject(err)
                 })
             })

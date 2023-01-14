@@ -47,20 +47,36 @@ import { storeToRefs } from "pinia";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 import { useAuthStore } from "~~/stores/auth";
+import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
+import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
-const printOrderHistoryStore = usePrintOrderHistoryStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
+const notificationStore = useNotificationStore();
+const printOrderHistoryStore = usePrintOrderHistoryStore();
+const storeOrderHistoryStore = useStoreOrderHistoryStore();
 
-const getUser = computed(() => authStore.getUser)
+const getUser = computed(() => authStore.getUser);
 
 if (!getUser.value) {
-  throw createError('Cannot access this site if you are not authenticated')
+  throw createError("Cannot access this site if you are not authenticated");
 }
 
-
-printOrderHistoryStore.fetchPrintOrderHistoryPaginated();
-modelingOrderHistoryStore.fetchPaginated();
+printOrderHistoryStore
+  .fetchPrintOrderHistoryPaginated()
+  .catch((err) =>
+    notificationStore.show(err.statusMessage, ToastLevel.error())
+  );
+modelingOrderHistoryStore
+  .fetchPaginated()
+  .catch((err) =>
+    notificationStore.show(err.statusMessage, ToastLevel.error())
+  );
+storeOrderHistoryStore
+  .fetchOrderHistoryPaginated()
+  .catch((err) =>
+    notificationStore.show(err.statusMessage, ToastLevel.error())
+  );
 
 const tabCategories = ["Print orders", "Modeling orders", "Purchases"];
 </script>

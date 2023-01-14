@@ -29,7 +29,6 @@ export const useFilamentInfillStore = defineStore('filament-infill', {
                     this.filamentInfills = response;
                     resolve(response);
                 }).catch((err) => {
-                    alert(err);
                     reject(err);
                 })
             }), HTTP_REQUEST_TIMEOUT);

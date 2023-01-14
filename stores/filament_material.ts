@@ -37,7 +37,6 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
                     this.filamentMaterials = response;
                     resolve(response);
                 }).catch((err) => {
-                    alert(err);
                     reject(err);
                 })
             }), HTTP_REQUEST_TIMEOUT);

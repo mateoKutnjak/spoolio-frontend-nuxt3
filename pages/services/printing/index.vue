@@ -49,7 +49,7 @@
       </div>
       <table
         v-if="units.length"
-        class="hidden md:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
+        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
       >
         <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
           <tr class="border-2">
@@ -249,7 +249,7 @@ const shippingMethodStore = useShippingMethodStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
 
-const isLoggedIn = computed(() => authStore.loggedIn)
+const isLoggedIn = computed(() => authStore.loggedIn);
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
@@ -274,19 +274,19 @@ const totalPrice = computed(() => {
 onMounted(async () => {
   await filamentColorStore
     .fetchFilamentColors()
-    .then(() => {
-      console.log("Colors fetched successfuly TODO");
-    })
-    .catch((err) => console.log("Colors fetch error TODO"));
+    .then(() => {})
+    .catch((err) =>
+      notificationStore.show(err.statusMessage, ToastLevel.error())
+    );
 
   console.log("Colors fetched successfuly TODO");
 
   await filamentMaterialStore
     .fetchFilamentMaterials()
-    .then(() => {
-      console.log("Materials fetched successfuly TODO");
-    })
-    .catch((err) => console.log("Materials fetch error TODO"));
+    .then(() => {})
+    .catch((err) =>
+      notificationStore.show(err.statusMessage, ToastLevel.error())
+    );
 
   console.log("Materials fetched successfuly TODO");
 
@@ -295,7 +295,9 @@ onMounted(async () => {
     .then(() => {
       console.log("Infills fetched successfuly TODO");
     })
-    .catch((err) => console.log("Infills fetch error TODO"));
+    .catch((err) =>
+      notificationStore.show(err.statusMessage, ToastLevel.error())
+    );
 
   console.log("Infills fetched successfuly TODO");
 

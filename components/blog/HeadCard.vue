@@ -115,7 +115,17 @@ function toggleLike() {
     return;
   }
 
-  blogStore.toggleLike(authStore.accessToken!, blog.id);
+  blogStore
+    .toggleLike(authStore.accessToken!, blog.id)
+    .then((res) => {
+      notificationStore.show("Content liked", ToastLevel.info());
+    })
+    .catch((err) => {
+      notificationStore.show(
+        err.statusMessage + err.statusCode,
+        ToastLevel.error()
+      );
+    });
 }
 </script>
     

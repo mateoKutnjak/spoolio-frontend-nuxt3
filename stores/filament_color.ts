@@ -26,7 +26,6 @@ export const useFilamentColorStore = defineStore('filament-color', {
                     this.filamentColors = response;
                     resolve(response);
                 }).catch((err) => {
-                    alert(err);
                     reject(err);
                 })
             }), HTTP_REQUEST_TIMEOUT);

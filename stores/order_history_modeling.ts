@@ -41,8 +41,6 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
 
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    // alert("TODO error handling")
                     reject(err)
                 })
             })

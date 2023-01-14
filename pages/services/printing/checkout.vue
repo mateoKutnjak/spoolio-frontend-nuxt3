@@ -145,6 +145,7 @@ import FormkitBillingAddress from "~~/components/services/printing/checkout/form
 import FormkitContactEmail from "~~/components/services/printing/checkout/formkit_input/ContactEmail.vue";
 import FormkitShippingMethod from "~~/components/services/printing/checkout/formkit_input/ShippingMethod.vue";
 import { useDialogStore } from "~~/stores/dialog";
+import { useNotificationStore } from "~~/stores/notification";
 
 const shippingAddressInput = createInput(FormkitShippingAddress);
 const billingAddressInput = createInput(FormkitBillingAddress);
@@ -155,6 +156,7 @@ const taxPercentage = 0.25;
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
@@ -168,7 +170,7 @@ onMounted(async () => {
     .then(() => {
       console.log("Shipping methods fetched successfuly TODO");
     })
-    .catch((err) => console.log("Shipping method fetch error TODO"));
+    .catch((err) => notificationStore.show(err.statusMessage, ToastLevel.error()));
 
   console.log("Shipping method fetched successfuly TODO");
 });

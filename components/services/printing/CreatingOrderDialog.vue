@@ -132,6 +132,7 @@ import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 import { useDialogStore } from "~~/stores/dialog";
 import { IModelingOrderAttachmentFileResponse } from "~~/stores/modeling_order";
+import { useNotificationStore } from "~~/stores/notification";
 import {
   IPrintOrderAttachmentFileResponse,
   IPrintOrderResponse,
@@ -140,6 +141,7 @@ import {
 } from "~~/stores/print_order";
 
 const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
 const { attachmentFiles, units } = storeToRefs(printOrderStore);
@@ -177,6 +179,7 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
+      notificationStore.show(error.statusMessage, ToastLevel.error())
     return;
   }
 

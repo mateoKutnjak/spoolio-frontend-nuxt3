@@ -27,7 +27,6 @@ export const useShippingMethodStore = defineStore('shipping-method', {
                     this.shippingMethods = response;
                     resolve(response);
                 }).catch((err) => {
-                    alert(err);
                     reject(err);
                 })
             }), HTTP_REQUEST_TIMEOUT);

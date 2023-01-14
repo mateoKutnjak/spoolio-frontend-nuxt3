@@ -123,7 +123,17 @@ function toggleLike() {
     return;
   }
 
-  blogStore.toggleLike(authStore.accessToken!, item.id);
+  blogStore
+    .toggleLike(authStore.accessToken!, item.id)
+    .then((res) => {
+      notificationStore.show("Content liked", ToastLevel.info());
+    })
+    .catch((err) => {
+      notificationStore.show(
+        err.statusMessage + err.statusCode,
+        ToastLevel.error()
+      );
+    });
 }
 </script>
     

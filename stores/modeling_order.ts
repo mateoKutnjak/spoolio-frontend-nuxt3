@@ -108,7 +108,6 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                     // this.createdPrintOrder = response;
                     resolve(response)
                 }).catch(err => {
-                    console.log(err);
                     reject(err)
                 });
             });

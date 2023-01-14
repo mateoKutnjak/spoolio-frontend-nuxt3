@@ -68,9 +68,11 @@ import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 import { IStoreOrderResponse, useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
+import { useNotificationStore } from "~~/stores/notification";
 
 const cartStore = useCartStore();
 const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore();
 
 const { cartItems } = storeToRefs(cartStore);
 
@@ -102,6 +104,7 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
+    notificationStore.show(error.statusMessage, ToastLevel.error());
     return;
   }
 
