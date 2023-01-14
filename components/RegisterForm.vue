@@ -4,7 +4,6 @@
     <FormKit
       type="form"
       id="register-form"
-      :form-class="submitted ? 'hide' : 'show'"
       submit-label="Sign In"
       @submit="submitHandler"
       :actions="false"
@@ -64,6 +63,9 @@
           :classes="{
               input: 'btn-block'
             }"
+          :input-class="{
+            'loading': loading
+          }"
         />
       </div>
     </FormKit>
@@ -82,13 +84,13 @@ const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
-const submitted = ref(false);
+const loading = ref(false);
 
 async function submitHandler(data: any, node: FormKitNode | undefined) {
   // This delay is here only because of progress indicator button
   // await new Promise((r) => setTimeout(r, 1000));
 
-  submitted.value = true;
+  loading.value = true;
 
   authStore
     .register(email.value, password.value, confirmPassword.value)
@@ -98,7 +100,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     })
     .catch((err) => {
       node?.setErrors(err?.data?.non_field_errors || [], err?.data);
-    });
+    }).finally(() => loading.value = false);
 }
 </script>
 
