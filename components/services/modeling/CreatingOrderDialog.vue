@@ -292,6 +292,7 @@ onMounted(async () => {
 
 function onOkPressed() {
   dialogStore.close();
+  modelingOrderStore.clear();
   navigateTo("/");
 }
 

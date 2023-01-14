@@ -95,6 +95,14 @@ export const useCartStore = defineStore('cart', {
     },
 
     actions: {
+        clear() {
+            this.cartItems = new Map<number, [IProductVariationOptionCombinationResponse, number]>();
+            this.paymentMethod = "";
+            this.contactEmail = "";
+            this.shippingAddress = <IAddressResponse>{};
+            this.billingAddress = <IAddressResponse>{};
+            this.shippingMethod = <IShippingMethod>{};
+        },
         add(combinationId: number, combination: IProductVariationOptionCombinationResponse) {
             const cartItemsCopy = new Map<number, [IProductVariationOptionCombinationResponse, number]>(this.cartItems);
 
@@ -128,9 +136,6 @@ export const useCartStore = defineStore('cart', {
             }
 
             this.cartItems = cartItemsCopy;
-        },
-        clear() {
-            this.cartItems = new Map<number, [IProductVariationOptionCombinationResponse, number]>
         },
         async postOrder(): Promise<IStoreOrderResponse> {
 

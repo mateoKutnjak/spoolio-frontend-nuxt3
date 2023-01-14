@@ -70,6 +70,13 @@ export const useModelingOrderStore = defineStore('modeling-order', {
 
     actions: {
 
+        clear() {
+            this.comment = "";
+            this.contactEmail = "";
+            this.attachmentFiles = [];
+            this.attachmentImages = []
+        },
+
         async postOrder(): Promise<IModelingOrderResponse> {
             const authStore = useAuthStore();
 

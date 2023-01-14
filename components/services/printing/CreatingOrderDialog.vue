@@ -226,6 +226,7 @@ onMounted(async () => {
 
 function onOkPressed() {
   dialogStore.close();
+  printOrderStore.clear();
   navigateTo("/");
 }
 

@@ -177,6 +177,17 @@ export const usePrintOrderStore = defineStore('print-order', {
 
     actions: {
 
+        clear() {
+            this.paymentMethod = "";
+            this.shippingAddress = <IAddressResponse>{};
+            this.billingAddress = <IAddressResponse>{};
+            this.shippingMethod = <IShippingMethod>{};
+            this.units = [];
+            this.contactEmail = "";
+            this.attachmentFiles = [];
+            this.attachmentImages = []
+        },
+
         async postOrder(): Promise<IPrintOrderResponse> {
 
             const authStore = useAuthStore();
