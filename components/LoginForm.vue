@@ -1,5 +1,5 @@
 <template>
-  <div class="card-body gap-8">
+  <div class="card-body gap-8 px-6 py-2">
     <div class="card-title justify-center">Sign In</div>
     <FormKit
       type="form"
