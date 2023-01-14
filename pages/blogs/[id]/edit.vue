@@ -66,10 +66,6 @@ const authStore = useAuthStore();
 const blogStore = useBlogStore();
 const notificationStore = useNotificationStore();
 
-if (!authStore.getUser?.is_staff) {
-  throw createError({ statusCode: 404, statusMessage: "Cannot edit this blog" });
-}
-
 const { id } = useRoute().params;
 
 const blogTitle = ref<string>("");
@@ -104,6 +100,10 @@ const getUser = computed(() => {
   user.value = authStore.getUser;
   return authStore.getUser;
 });
+
+if (!getUser.value) {
+  throw createError("Cannot access this site if you are not authenticated");
+}
 
 watch(getBlog, (value, old, invalidate) => {
   blogTitle.value = value?.title || "";

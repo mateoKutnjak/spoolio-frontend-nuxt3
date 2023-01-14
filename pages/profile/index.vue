@@ -267,10 +267,6 @@ import { useNotificationStore } from "~~/stores/notification";
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
-if (!authStore.getUser) {
-  throw createError({ statusCode: 404, statusMessage: "Create account to access profile data" });
-}
-
 const { user } = storeToRefs(authStore);
 
 const generalInfoEmail = ref(user.value?.email || "");
@@ -296,6 +292,12 @@ const billingAddressPhoneNumber = ref("");
 const submitted = ref(false);
 
 const submittingGeneralInfo = ref(false);
+
+const getUser = computed(() => authStore.getUser);
+
+if (!getUser.value) {
+  throw createError("Cannot access this site if you are not authenticated");
+}
 
 onMounted(() => {
   generalInfoEmail.value = user.value?.profile?.email || "";
@@ -379,7 +381,13 @@ const submitGeneralInfoHandler = async () => {
     .then(() => {
       notificationStore.show("Information saved", ToastLevel.success());
     })
-    .catch((err) => {})
+    .catch((err) => {
+      notificationStore.show(
+        "Error while saving. Try again",
+        ToastLevel.error()
+      );
+      console.log(err);
+    })
     .finally(() => (submittingGeneralInfo.value = false));
 };
 
@@ -402,7 +410,13 @@ const submitShippingAddressHandler = async () => {
     .then(() => {
       notificationStore.show("Information saved", ToastLevel.success());
     })
-    .catch((err) => {});
+    .catch((err) => {
+      notificationStore.show(
+        "Error while saving. Try again",
+        ToastLevel.error()
+      );
+      console.log(err);
+    });
 };
 
 const submitBillingAddressHandler = async () => {
@@ -425,7 +439,13 @@ const submitBillingAddressHandler = async () => {
     .then(() => {
       notificationStore.show("Information saved", ToastLevel.success());
     })
-    .catch((err) => {});
+    .catch((err) => {
+      notificationStore.show(
+        "Error while saving. Try again",
+        ToastLevel.error()
+      );
+      console.log(err);
+    });
 };
 </script>
 

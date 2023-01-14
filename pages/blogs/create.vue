@@ -18,9 +18,12 @@ import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
-if (!authStore.getUser) {
-  throw createError({ statusCode: 404, statusMessage: "Page Not Founded" });
+const getUser = computed(() => authStore.getUser)
+
+if (!getUser.value) {
+  throw createError('Cannot access this site if you are not authenticated')
 }
+
 </script>
 
 <style>

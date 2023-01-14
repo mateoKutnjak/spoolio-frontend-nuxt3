@@ -63,8 +63,6 @@ export const useAuthStore = defineStore('auth', {
                     this.user = response.user;
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    alert("TODO error handling")
                     reject(err)
                 })
             })
@@ -86,48 +84,9 @@ export const useAuthStore = defineStore('auth', {
                     this.user = response.user;
                     resolve(response)
                 }).catch(err => {
-                    // ! needs proper error handling
-                    alert("TODO error handling")
                     reject(err)
                 })
             })
-        },
-
-        async patchProfile(firstName: string, lastName: string, address: string, phoneNumber: string) {
-
-            return new Promise((resolve, reject) => {
-
-                if (!this.user || !this.accessToken) {
-                    reject('Not logged in')
-                }
-
-                var body: { [name: string]: any } = {
-                    first_name: firstName,
-                    last_name: lastName,
-                    address: address,
-                    phone_number: phoneNumber,
-                };
-
-
-                // todo check user? nullable
-                customFetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `Bearer ${this.accessToken}`
-                    },
-                    body: body,
-                })
-                    .then((response: IProfileResponse) => {
-                        // todo remove !
-                        this.user = { ...this.user! }
-                        this.user.profile = response;
-                        resolve(response)
-                    }).catch(err => {
-                        // ! needs proper error handling
-                        alert("TODO error handling")
-                        reject(err)
-                    })
-            });
         },
 
         async patchUserProfile(body: IProfileResponse) {
@@ -152,8 +111,6 @@ export const useAuthStore = defineStore('auth', {
                         this.user.profile = response;
                         resolve(response)
                     }).catch(err => {
-                        // ! needs proper error handling
-                        alert("TODO error handling")
                         reject(err)
                     })
             });

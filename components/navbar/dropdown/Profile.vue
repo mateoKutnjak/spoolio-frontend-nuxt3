@@ -128,6 +128,8 @@ import { useDialogStore } from "~~/stores/dialog";
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 
+const { user } = storeToRefs(authStore);
+
 function logout() {
   authStore.logout();
   navigateTo("/");

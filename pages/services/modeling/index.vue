@@ -92,7 +92,7 @@
           <div class="flex justify-center mt-12">
             <FormKit
               type="submit"
-              label="Send request"
+              :label="isLoggedIn ? 'Send request' : 'Send request as guest'"
               :classes="{
               input: 'btn-lg btn-block',
             }"
@@ -153,6 +153,8 @@ const modelingOrderStore = useModelingOrderStore();
 
 const { user } = storeToRefs(authStore);
 const { contactEmail, comment } = storeToRefs(modelingOrderStore);
+
+const isLoggedIn = computed(() => authStore.loggedIn);
 
 function change(e: any) {
   // * Gets triggered when user selects

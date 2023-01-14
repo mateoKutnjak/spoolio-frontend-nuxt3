@@ -15,21 +15,22 @@
 </template>
   
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
 const { comment: item } = defineProps(["comment"]);
 
-const { user } = authStore;
+const { user } = storeToRefs(authStore);
 
 const hasAnyName = computed(() => {
   return item.user.profile?.first_name || item.user.profile?.last_name;
 });
 
 const isCurrentyLoggedUser = computed(() => {
-  if (item.user?.email && user?.email) {
-    return item.user.email === user.email;
+  if (item.user?.email && user.value?.email) {
+    return item.user.email === user.value?.email;
   }
   return false;
 });

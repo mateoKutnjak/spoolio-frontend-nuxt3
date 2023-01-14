@@ -1,13 +1,14 @@
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
+import { ofetch } from 'ofetch'
 
 interface IRefreshTokenResponse {
     access: string,
     access_token_expiration: string
 }
 
-export const customFetch = $fetch.create({
+export const customFetch = ofetch.create({
 
     async onRequest({ request, options }) {
 

@@ -52,12 +52,12 @@ const authStore = useAuthStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
 
-if (!authStore.getUser) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: "Create account to access order history",
-  });
+const getUser = computed(() => authStore.getUser)
+
+if (!getUser.value) {
+  throw createError('Cannot access this site if you are not authenticated')
 }
+
 
 printOrderHistoryStore.fetchPrintOrderHistoryPaginated();
 modelingOrderHistoryStore.fetchPaginated();

@@ -52,7 +52,7 @@
           <div
             class="btn btn-success btn-block text-lg"
             @click="drawerStore.close()"
-          >Checkout</div>
+          >{{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
         </NuxtLink>
       </div>
     </div>
@@ -62,14 +62,18 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "~~/stores/auth";
 import { useCartStore } from "~~/stores/cart";
 import { useDrawerStore } from "~~/stores/drawer";
 import { IProductVariationOptionCombinationResponse } from "~~/stores/product";
 
+const authStore = useAuthStore();
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 
 const { cartItems } = storeToRefs(cartStore);
+
+const isLoggedIn = computed(() => authStore.loggedIn);
 
 const totalSum = ref(0);
 

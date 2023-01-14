@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts" setup>
+import { FormKitNode } from "@formkit/core";
 import { useDialogStore } from "~~/stores/dialog";
 import { useAuthStore } from "../stores/auth";
 
@@ -83,7 +84,7 @@ const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - u
 
 const submitted = ref(false);
 
-const submitHandler = async () => {
+async function submitHandler(data: any, node: FormKitNode | undefined) {
   // This delay is here only because of progress indicator button
   // await new Promise((r) => setTimeout(r, 1000));
 
@@ -93,8 +94,12 @@ const submitHandler = async () => {
     .register(email.value, password.value, confirmPassword.value)
     .then((loginRequestState) => {
       dialogStore.close();
+      navigateTo("/");
+    })
+    .catch((err) => {
+      node?.setErrors(err?.data?.non_field_errors || [], err?.data);
     });
-};
+}
 </script>
 
 <style>

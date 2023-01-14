@@ -93,6 +93,7 @@
 </template>
     
     <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useBlogListStore } from "~~/stores/blogList";
 import { useNotificationStore } from "~~/stores/notification";
@@ -103,15 +104,15 @@ const notificationStore = useNotificationStore();
 
 const { item } = defineProps(["item"]);
 
-const { user } = authStore;
+const { user } = storeToRefs(authStore);
 
 const hasAnyName = computed(() => {
   return item.user?.profile?.first_name || item.user?.profile?.last_name;
 });
 
 const isCurrentyLoggedUser = computed(() => {
-  if (item.user?.email && user?.email) {
-    return item.user.email === user.email;
+  if (item.user?.email && user.value?.email) {
+    return item.user.email === user.value?.email;
   }
   return false;
 });

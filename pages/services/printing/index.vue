@@ -162,7 +162,7 @@
               :class="totalPrice > 0 ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
-              Checkout
+              {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}
             </NuxtLink>
           </div>
         </div>
@@ -248,6 +248,8 @@ const printOrderStore = usePrintOrderStore();
 const shippingMethodStore = useShippingMethodStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
+
+const isLoggedIn = computed(() => authStore.loggedIn)
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
