@@ -1,10 +1,10 @@
 export function promiseWithTimeout<T>(
     promise: Promise<T>,
     ms: number,
-    timeoutError = new Error('Timeout error')
-) {
+    timeoutError = { data: 'Timeout error', statusMessage: 'Timeout error', statusCode: 99 }
+): Promise<T> {
     // create a promise that rejects in milliseconds
-    const timeout = new Promise((_, reject) => {
+    const timeout = new Promise<T>((_, reject) => {
         setTimeout(() => {
             reject(timeoutError);
         }, ms);

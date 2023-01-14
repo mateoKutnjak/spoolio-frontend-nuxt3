@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col gap-16 p-12 justify-between">
+  <div class="flex flex-col gap-16 p-12 justify-between items-center">
+    <div class="card-title justify-center text-3xl">Your modeling order</div>
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -31,7 +32,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-3xl text-gray-700">Creating order</div>
+        <div class="text-2xl text-gray-700">Creating order</div>
       </div>
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -63,33 +64,74 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-3xl text-gray-700">Uploading attachments ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
+        <div class="text-2xl text-gray-700">Uploading files ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
+      </div>
+      <div class="flex gap-8 items-center">
+        <div class="h-14 w-14">
+          <Icon
+            v-show="attachmentsImagesStatus === OrderStatus.progress"
+            class="absolute h-14 w-14 text-gray-500"
+            name="eos-icons:three-dots-loading"
+          />
+          <TransitionRoot
+            appear
+            :show="attachmentsImagesStatus === OrderStatus.success || attachmentsImagesStatus === OrderStatus.error"
+            as="template"
+            enter="transform transition duration-[400ms]"
+            enter-from="opacity-0 rotate-[-120deg] scale-50"
+            enter-to="opacity-100 rotate-0 scale-100"
+            leave="transform duration-200 transition ease-in-out"
+            leave-from="opacity-100 rotate-0 scale-100 "
+            leave-to="opacity-0 scale-95 "
+          >
+
+            <div
+              class="h-14 w-14 text-green-700"
+              :class="attachmentsImagesStatus === OrderStatus.success ? `text-green-700` : `text-red-700`"
+            >
+              <Icon
+                class="h-14 w-14"
+                :name="attachmentsImagesStatus === OrderStatus.success ? `ph:check-circle-duotone` : `ph:x-circle-duotone`"
+              />
+            </div>
+          </TransitionRoot>
+        </div>
+        <div class="text-2xl text-gray-700">Uploading images ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
       </div>
     </div>
+
     <div
-      v-show="orderStatus === OrderStatus.error || attachmentsStatus === OrderStatus.error"
-      class="
-      text-lg text-center text-gray-600"
-    >{{ errorMessage }}</div>
+      v-show="hasErrors"
+      class="flex gap-2 items-end
+      text-xl text-center text-red-600 font-bold"
+    >
+      <Icon
+        name="material-symbols:warning-rounded"
+        class="text-red-500"
+        size="30"
+      />
+      <div>{{ errorMessage }}</div>
+    </div>
     <div
-      v-show="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success"
+      v-show="everythingSuccessful"
       class="text-lg text-center text-gray-600"
     >Your modeling request has been sent. We will contact you as soon as possible.</div>
     <div
-      v-show="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success"
+      v-show="everythingSuccessful"
       class="
       btn
-      btn-lg
+      btn-lg btn-block
       text-xl"
-      :class="orderStatus === OrderStatus.success && attachmentsStatus === OrderStatus.success ? '': 'btn-disabled'"
+      :class="everythingSuccessful ? '': 'btn-disabled'"
       @click="onOkPressed"
     >Ok</div>
     <div
-      v-show="orderStatus === OrderStatus.error || attachmentsStatus === OrderStatus.error"
+      v-show="hasErrors"
       class="
       btn
-      btn-lg
-      text-xl"
+      btn-lg btn-block
+      text-xl
+      "
       @click="onReturnPressed"
     >Return</div>
   </div>
@@ -101,6 +143,7 @@ import { storeToRefs } from "pinia";
 import { useDialogStore } from "~~/stores/dialog";
 import {
   IModelingOrderAttachmentFileResponse,
+  IModelingOrderAttachmentImageResponse,
   IModelingOrderResponse,
   useModelingOrderStore,
 } from "~~/stores/modeling_order";
@@ -110,7 +153,7 @@ const dialogStore = useDialogStore();
 const modelingOrderStore = useModelingOrderStore();
 const notificationStore = useNotificationStore();
 
-const { attachmentFiles } = storeToRefs(modelingOrderStore);
+const { attachmentFiles, attachmentImages } = storeToRefs(modelingOrderStore);
 
 enum OrderStatus {
   initial,
@@ -121,9 +164,28 @@ enum OrderStatus {
 
 const orderStatus = ref(OrderStatus.initial);
 const attachmentsStatus = ref(OrderStatus.initial);
+const attachmentsImagesStatus = ref(OrderStatus.initial);
 
 const attachmentsUploadedCount = ref(0);
+const attachmentsImagesUploadedCount = ref(0);
+
 const errorMessage = ref("");
+
+const hasErrors = computed(() => {
+  return [
+    orderStatus.value,
+    attachmentsStatus.value,
+    attachmentsImagesStatus.value,
+  ].find((el) => el === OrderStatus.error);
+});
+
+const everythingSuccessful = computed(() => {
+  return (
+    orderStatus.value === OrderStatus.success &&
+    attachmentsStatus.value === OrderStatus.success &&
+    attachmentsImagesStatus.value === OrderStatus.success
+  );
+});
 
 onMounted(async () => {
   orderStatus.value = OrderStatus.progress;
@@ -142,10 +204,10 @@ onMounted(async () => {
       "). Data = " +
       JSON.stringify(error.data) +
       ".";
-      notificationStore.show(
-        "Root order error" + error.statusMessage,
-        ToastLevel.error()
-      );
+    notificationStore.show(
+      "Root order error" + error.statusMessage,
+      ToastLevel.error()
+    );
     return;
   }
 
@@ -191,6 +253,50 @@ onMounted(async () => {
     console.log("DONE result_id = " + attachmentFileResult.id);
   }
   attachmentsStatus.value = OrderStatus.success;
+
+  // -----------------------------------------------
+  // -----------------------------------------------
+  // -----------------------------------------------
+
+  attachmentsImagesStatus.value = OrderStatus.progress;
+  for (
+    let index = 0;
+    index < modelingOrderStore.getAttachmentImages.length;
+    index++
+  ) {
+    console.log(
+      "Posting attachment image " +
+        modelingOrderStore.getAttachmentImages[index].image.name
+    );
+
+    const attachmentImage = modelingOrderStore.getAttachmentImages[index];
+    var attachmentImageResult: IModelingOrderAttachmentImageResponse;
+
+    try {
+      attachmentImageResult = await modelingOrderStore.postAttachmentImage(
+        attachmentImage,
+        rootOrderResult.id
+      );
+    } catch (error: any) {
+      attachmentsStatus.value = OrderStatus.error;
+      errorMessage.value =
+        "Error (" +
+        error.statusCode +
+        "). Data = " +
+        JSON.stringify(error.data) +
+        ".";
+      notificationStore.show(
+        "Attachment image error" + error.statusMessage,
+        ToastLevel.error()
+      );
+      return;
+    }
+
+    attachmentsImagesUploadedCount.value++;
+
+    console.log("DONE result_id = " + attachmentImageResult.id);
+  }
+  attachmentsImagesStatus.value = OrderStatus.success;
 });
 
 function onOkPressed() {

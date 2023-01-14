@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_MODELING_ORDER } from '~~/constants/constants';
+import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IProfileResponse, useAuthStore } from './auth';
 
 export interface IModelingOrderAttachmentFileResponse {
@@ -79,7 +79,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 user_profile: authStore.getUser?.profile?.id
             }
 
-            return new Promise<IModelingOrderResponse>((resolve, reject) => {
+            return promiseWithTimeout<IModelingOrderResponse>(new Promise<IModelingOrderResponse>((resolve, reject) => {
                 customFetch<IModelingOrderResponse>('http://localhost:8000/api/modeling-orders/', {
                     method: 'POST',
                     body: body,
@@ -89,7 +89,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 }).catch(err => {
                     reject(err)
                 });
-            });
+            }), HTTP_REQUEST_TIMEOUT);
         },
 
         async postAttachmentFile(item: IModelingOrderAttachmentFileResponse, orderId: number): Promise<IModelingOrderAttachmentFileResponse> {
@@ -106,6 +106,26 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                     body: formData,
                 }).then((response: IModelingOrderAttachmentFileResponse) => {
                     // this.createdPrintOrder = response;
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                });
+            });
+        },
+
+        async postAttachmentImage(item: IModelingOrderAttachmentImageResponse, orderId: number): Promise<IModelingOrderAttachmentImageResponse> {
+            var formData = new FormData();
+
+            formData.append("image", item.image);
+
+            formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
+            formData.append("object_id", orderId.toString());
+
+            return new Promise((resolve, reject) => {
+                customFetch<IModelingOrderAttachmentImageResponse>('http://localhost:8000/api/attachment-images/', {
+                    method: 'POST',
+                    body: formData,
+                }).then((response: IModelingOrderAttachmentImageResponse) => {
                     resolve(response)
                 }).catch(err => {
                     reject(err)

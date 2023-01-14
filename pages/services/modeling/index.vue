@@ -74,7 +74,7 @@
                     />
                   </div>
                   <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Drag your attachments here</span></p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">TXT, PDF, JPG or PNG (MAX. 800x400px)</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">.TXT, .PDF, .JPG, .JPEG or .PNG</p>
                   <div class="btn btn-ghost bg-blue-500 text-white mt-1">Browse files</div>
                   <input
                     id="dropzone-file"
@@ -88,7 +88,8 @@
             </div>
           </div>
           <div class="divider p-0 m-0"></div>
-          <ServicesModelingAttachments />
+          <ServicesModelingAttachmentFiles />
+          <ServicesModelingAttachmentImages />
           <div class="flex justify-center mt-12">
             <FormKit
               type="submit"
@@ -134,7 +135,10 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { MODELING_ORDER_ATTACHMENT_FILE_TYPES } from "~~/constants/constants";
+import {
+  MODELING_ORDER_ATTACHMENT_FILE_TYPES,
+  MODELING_ORDER_ATTACHMENT_IMAGE_TYPES,
+} from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import {
@@ -181,15 +185,17 @@ function onFilesAdded(files: File[]) {
         IModelingOrderAttachmentFileResponse
       >{
         file: element,
-        comment: "TODO",
+        comment: "",
         localUrl: URL.createObjectURL(element),
       });
-    } else if (element.type === "image/jpeg") {
+    } else if (
+      MODELING_ORDER_ATTACHMENT_IMAGE_TYPES.indexOf(element.type) > -1
+    ) {
       modelingOrderStore.addAttachmentImage(<
         IModelingOrderAttachmentImageResponse
       >{
         image: element,
-        comment: "TODO",
+        comment: "",
         localUrl: URL.createObjectURL(element),
       });
     } else {

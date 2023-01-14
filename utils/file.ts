@@ -7,6 +7,10 @@ export function toIconName(file: File): string {
             return "mdi:file-pdf-outline"
         case "text/plain":
             return "mdi:file-document-outline";
+        case "image/jpeg":
+        case "image/jpg":
+        case "image/png":
+            return "mdi:file-image-outline";
         default:
             return "mdi:file-question-outline";
     }

@@ -8,7 +8,10 @@ export const CONTENT_TYPE_BLOG = 'blog';
 export const TOAST_DURATION_MEDIUM = 5000;
 
 export const MODELING_ORDER_ATTACHMENT_FILE_TYPES = [
-    'application/pdf', 'text/plain'
+    'application/pdf', 'text/plain',
+]
+export const MODELING_ORDER_ATTACHMENT_IMAGE_TYPES = [
+    'image/jpeg', 'image/jpg', 'image/png',
 ]
 
 export const MAX_CART_ITEMS = 99;

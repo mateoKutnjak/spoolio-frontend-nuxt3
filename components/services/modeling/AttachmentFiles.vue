@@ -21,7 +21,7 @@ import { useModelingOrderStore } from "~~/stores/modeling_order";
 
 const modelingOrderStore = useModelingOrderStore();
 
-const { attachmentFiles, attachmentImages } = storeToRefs(modelingOrderStore);
+const { attachmentFiles } = storeToRefs(modelingOrderStore);
 </script>
 
 <style>
