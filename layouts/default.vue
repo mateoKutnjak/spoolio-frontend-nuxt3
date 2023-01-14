@@ -87,4 +87,8 @@ input:-webkit-autofill:active {
   -webkit-transition-delay: 9999s;
   transition-delay: 9999s;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
 </style>
