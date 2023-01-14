@@ -31,7 +31,7 @@ export const customFetch = ofetch.create({
             return;
         };
 
-        await $fetch('http://localhost:8000/auth/token/verify/', {
+        await ofetch('http://localhost:8000/auth/token/verify/', {
             method: 'POST',
             body: {
                 token: authStore.accessToken
@@ -48,7 +48,7 @@ export const customFetch = ofetch.create({
                 // * Send token refresh request only when status 
                 // * code 401 is returned for token verification
 
-                await $fetch<IRefreshTokenResponse>('http://localhost:8000/auth/token/refresh/', {
+                await ofetch<IRefreshTokenResponse>('http://localhost:8000/auth/token/refresh/', {
                     method: 'POST',
                     body: {
                         refresh: authStore.refreshToken

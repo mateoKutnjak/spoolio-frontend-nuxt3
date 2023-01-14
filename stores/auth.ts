@@ -1,3 +1,4 @@
+import { ofetch } from 'ofetch'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 interface ILoginResponse {
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(email: string | undefined, password: string | undefined) {
             return new Promise((resolve, reject) => {
-                $fetch<ILoginResponse>('http://localhost:8000/auth/login/', {
+                ofetch<ILoginResponse>('http://localhost:8000/auth/login/', {
                     method: 'POST', body: {
                         email: email,
                         password: password,
@@ -70,7 +71,7 @@ export const useAuthStore = defineStore('auth', {
 
         async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
             return new Promise((resolve, reject) => {
-                $fetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
+                ofetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
                     method: 'POST', body: {
                         email: email,
                         password1: password,

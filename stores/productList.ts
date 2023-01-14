@@ -22,7 +22,7 @@ export const useProductListStore = defineStore('product-list', {
 
     actions: {
         async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            await $fetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+            await customFetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
                 method: 'GET'
             }
             ).then((response: IProductListResponse) => {

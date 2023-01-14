@@ -93,7 +93,7 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
     formData.append("object_id", objectId.toString());
 
     return new Promise((resolve, reject) => {
-        $fetch<IPrintOrderAttachmentFileResponse>('http://localhost:8000/api/print-orders/attachment-files/', {
+        customFetch<IPrintOrderAttachmentFileResponse>('http://localhost:8000/api/print-orders/attachment-files/', {
             method: 'POST',
             body: formData,
         }).then((response: IPrintOrderAttachmentFileResponse) => {
@@ -192,7 +192,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
 
             return new Promise<IPrintOrderResponse>((resolve, reject) => {
-                $fetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
+                customFetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
                     method: 'POST',
                     body: body,
                 }).then((response: IPrintOrderResponse) => {
@@ -223,7 +223,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("order", orderId.toString());
 
             return new Promise((resolve, reject) => {
-                $fetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
+                customFetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
                     method: 'POST',
                     body: formData,
                 }).then((response: IPrintOrderUnitResponse) => {

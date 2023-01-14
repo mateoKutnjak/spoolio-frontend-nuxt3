@@ -146,7 +146,7 @@ export const useCartStore = defineStore('cart', {
             }
 
             return new Promise<IStoreOrderResponse>((resolve, reject) => {
-                $fetch<IStoreOrderResponse>('http://localhost:8000/api/store-orders/', {
+                customFetch<IStoreOrderResponse>('http://localhost:8000/api/store-orders/', {
                     method: 'POST',
                     body: body,
                 }).then((response: IStoreOrderResponse) => {

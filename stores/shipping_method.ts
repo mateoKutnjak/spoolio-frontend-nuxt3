@@ -1,3 +1,4 @@
+import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
@@ -20,7 +21,7 @@ export const useShippingMethodStore = defineStore('shipping-method', {
     actions: {
         async fetchShippingMethods() {
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                $fetch<IShippingMethod[]>('http://localhost:8000/api/shipping-methods/?available=true', {
+                ofetch<IShippingMethod[]>('http://localhost:8000/api/shipping-methods/?available=true', {
                     method: 'GET',
                 }).then((response: IShippingMethod[]) => {
                     this.shippingMethods = response;

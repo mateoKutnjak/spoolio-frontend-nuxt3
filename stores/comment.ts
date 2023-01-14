@@ -27,7 +27,7 @@ export const useCommentStore = defineStore('comment', {
             };
 
             return new Promise<ICommentResponse>((resolve, reject) => setTimeout(() => {
-                $fetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
+                customFetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`

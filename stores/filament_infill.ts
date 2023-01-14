@@ -1,3 +1,4 @@
+import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 
@@ -22,7 +23,7 @@ export const useFilamentInfillStore = defineStore('filament-infill', {
     actions: {
         async fetchFilamentInfills() {
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                $fetch<IFilamentInfill[]>('http://localhost:8000/api/filament/infills/?available=true', {
+                ofetch<IFilamentInfill[]>('http://localhost:8000/api/filament/infills/?available=true', {
                     method: 'GET',
                 }).then((response: IFilamentInfill[]) => {
                     this.filamentInfills = response;

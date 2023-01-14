@@ -37,7 +37,7 @@ export const useCommentListStore = defineStore('comment-list', {
 
             return promiseWithTimeout<ICommentListResponse>(
                 new Promise<ICommentListResponse>((resolve, reject) => {
-                    $fetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=blog&object_id=${blog}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=blog&object_id=${blog}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
                         method: 'GET',
                     }
                     ).then((response: ICommentListResponse) => {
