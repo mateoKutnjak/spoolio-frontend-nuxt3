@@ -5,12 +5,12 @@
   >
     <div class="card-body gap-5">
       <div class="flex gap-5 justify-between items-center">
-        <ClientOnly>
+        <client-only>
           <PreviewSTL2
             class="w-16 h-16 p-0 m-0 border border-gray-400"
             :stlFileUrl="unit.localUrl"
           />
-        </ClientOnly>
+        </client-only>
         <div class="flex flex-col gap-1 flex-1">
           <div class="font-semibold text-gray-900 dark:text-white">
             {{ unit.file.name }}

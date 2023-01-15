@@ -3,12 +3,12 @@
     <div class="card-body gap-10">
       <div class="flex gap-12">
         <div class="flex flex-col gap-5">
-          <ClientOnly class="flex-1">
+          <client-only class="flex-1">
             <PreviewSTL2
               class="w-92 h-96 p-0 m-0 border-2 border-gray-400"
               :stlFileUrl="unit.localUrl"
             />
-          </ClientOnly>
+          </client-only>
           <div class="flex-none flex flex-col gap-3">
             <div class="text-lg font-semibold"> {{ unit.file.name }}</div>
             <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />

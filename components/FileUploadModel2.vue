@@ -31,15 +31,12 @@
       </div>
       <div class="flex flex-col md:flex-row gap-6">
         <div class="flex flex-col gap-3 items-center">
-          <ClientOnly>
-            <button>
-              <PreviewSTL2
-                class="h-[10rem] w-[10rem]"
-                :stlFileUrl="data.localUrl"
-              />
-            </button>
-          </ClientOnly>
-
+          <client-only>
+            <PreviewSTL2
+              class="h-[10rem] w-[10rem]"
+              :stlFileUrl="data.localUrl"
+            />
+          </client-only>
           <div>
             <h1 class="text-xs">TODO 6.4cm x 3.2cm x 15cm</h1>
           </div>

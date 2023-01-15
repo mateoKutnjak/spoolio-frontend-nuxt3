@@ -4,12 +4,12 @@
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
     <td class="p-6">
-      <ClientOnly class="flex-1">
+      <client-only class="flex-1">
         <PreviewSTL2
           class="w-16 h-16 p-0 m-0 border border-gray-400"
           :stlFileUrl="unit.localUrl"
         />
-      </ClientOnly>
+      </client-only>
     </td>
     <td class="py-4">
       <div class="flex flex-col gap-3">

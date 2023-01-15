@@ -1,35 +1,33 @@
 <template>
-  <ClientOnly>
-    <div
-      ref="root_container"
-      class="cursor-move"
+  <div
+    ref="root_container"
+    class="cursor-move"
+  >
+    <Renderer
+      ref="renderer"
+      :alpha="true"
+      :resize="true"
+      :orbitCtrl="{active: false, enableZoom: true}"
     >
-      <Renderer
-        ref="renderer"
-        :alpha="true"
-        :resize="true"
-        :orbitCtrl="{active: false, enableZoom: true}"
+      <Camera
+        ref="camera"
+        :position="{ z: 2.5 }"
+        :look-at="{x: 0, y: 0, z: 0}"
+      />
+      <Scene
+        :background="'#FAFAFA'"
+        ref="scene"
       >
-        <Camera
-          ref="camera"
-          :position="{ z: 2.5 }"
-          :look-at="{x: 0, y: 0, z: 0}"
-        />
-        <Scene
-          :background="'#FAFAFA'"
-          ref="scene"
-        >
 
-          <Mesh ref="box">
-          </Mesh>
-        </Scene>
-        <EffectComposer>
-          <RenderPass />
-          <FXAAPass />
-        </EffectComposer>
-      </Renderer>
-    </div>
-  </ClientOnly>
+        <Mesh ref="box">
+        </Mesh>
+      </Scene>
+      <EffectComposer>
+        <RenderPass />
+        <FXAAPass />
+      </EffectComposer>
+    </Renderer>
+  </div>
 </template>
       
       <script lang="ts" setup>
