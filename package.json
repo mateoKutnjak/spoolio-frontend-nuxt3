@@ -17,6 +17,7 @@
     "@types/three": "^0.146.0",
     "autoprefixer": "^10.4.13",
     "daisyui": "^2.41.0",
+    "netlify-cli": "^12.7.2",
     "nuxt": "^3.0.0",
     "nuxt-icon": "^0.1.7",
     "postcss": "^8.4.19",
