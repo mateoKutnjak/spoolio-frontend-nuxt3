@@ -91,6 +91,25 @@ export const useAuthStore = defineStore('auth', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
+        async registerGoogle(googleAccessToken: String) {
+            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
+                ofetch<ILoginResponse>('http://localhost:8000/auth/registration/google/', {
+                    method: 'POST', body: {
+                        access_token: googleAccessToken,
+
+                    }
+                }
+                ).then((response: ILoginResponse) => {
+                    this.accessToken = response.access_token
+                    this.refreshToken = response.refresh_token
+                    this.user = response.user;
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
         async patchUserProfile(body: IProfileResponse) {
 
             return promiseWithTimeout<IProfileResponse>(new Promise((resolve, reject) => {

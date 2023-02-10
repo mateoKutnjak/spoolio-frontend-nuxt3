@@ -8,7 +8,11 @@ export default defineNuxtConfig({
         'nuxt-icon',
         '@formkit/auto-animate',
         '@nuxt/image-edge',
+        'nuxt-vue3-google-signin'
     ],
+    googleSignIn: {
+        clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    },
     formkit: {
         configFile: './formkit.config.js',
     },
@@ -49,5 +53,8 @@ export default defineNuxtConfig({
                 { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
             ]
         }
-    }
+    },
+    runtimeConfig: {
+        googleOAuthClientId: process.env.GOOGLE_OAUTH_CLIENT_ID
+    },
 })

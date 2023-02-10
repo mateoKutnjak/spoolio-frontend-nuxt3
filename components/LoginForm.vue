@@ -50,6 +50,21 @@
         />
       </div>
     </FormKit>
+    <div class="divider h-0 p-0 m-0"></div>
+
+    <div
+      class="btn btn-outline btn-info border-gray-400 gap-3"
+      :class="!isReady ? 'btn-disabled' : ''"
+      @click="() => login()"
+    >
+      <div class="text-gray-700">Log in with Gmail</div>
+      <Icon
+        name="logos:google-gmail"
+        size="25"
+      />
+    </div>
+
+    <!-- <button :disabled="!isReady" @click="() => login()">Login with Google</button> -->
   </div>
 </template>
 
@@ -58,6 +73,14 @@ import { FormKitNode } from "@formkit/core";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
+import {
+  useTokenClient,
+  AuthCodeFlowSuccessResponse,
+  AuthCodeFlowErrorResponse,
+  useOneTap,
+  GoogleSignInButton,
+  CredentialResponse,
+} from "vue3-google-signin";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -84,7 +107,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       navigateTo("/");
     })
     .catch((err) => {
-      notificationStore.showFetchError(err)
+      notificationStore.showFetchError(err);
       node?.setErrors(
         err?.data?.non_field_errors || ["Error occurred. Please try again."],
         err?.data
@@ -92,6 +115,20 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     })
     .finally(() => (loading.value = false));
 }
+
+const handleLoginSuccess = (response: CredentialResponse) => {
+  const { credential } = response;
+  authStore.registerGoogle(credential!); // TODO check null value
+};
+
+const handleLoginError = () => {
+  console.error("Login failed");
+};
+
+const { isReady, login } = useTokenClient({
+  onSuccess: handleLoginSuccess,
+  onError: handleLoginError,
+});
 </script>
 
 <style>
