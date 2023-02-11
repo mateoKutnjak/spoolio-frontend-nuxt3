@@ -130,23 +130,42 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const unit = state.units.find(el => el.localUrl === localUrl)
 
+                // * Model volume
                 const v = unit?.modelVolume;
-                const q = unit?.quantity;
-                const i = unit?.infill ? filamentInfillStore.getPercentageById(unit.infill) : undefined;
-                const d = unit?.material ? filamentMaterialStore.getDensityById(unit.material) : undefined;
-                const p = unit?.material ? filamentMaterialStore.getPriceById(unit.material) : undefined;
 
-                if (!v || !q || !i || !d || !p) {
+                // * Model bounding box volume
+                let vBbox = 0.0;
+                if (unit?.modelDimensions?.x && unit?.modelDimensions?.y && unit?.modelDimensions?.z) {
+                    vBbox = unit?.modelDimensions?.x * unit?.modelDimensions?.y * unit?.modelDimensions?.z;
+                }
+
+                // * Infill percentage
+                const I = unit?.infill ? filamentInfillStore.getPercentageById(unit.infill) : undefined;
+
+                // * Density of material
+                const D = unit?.material ? filamentMaterialStore.getDensityById(unit.material) : undefined;
+
+                // * Price of material per gram
+                const G = unit?.material ? filamentMaterialStore.getPriceById(unit.material) : undefined;
+
+                // * Quantity
+                const q = unit?.quantity;
+
+
+                if (!v || !q || !I || !D || !G || !vBbox) {
                     console.log("[SEE BELLOW] Some variables are not set and price for unit cannot be determined");
                     console.log("volume = " + v);
+                    console.log("bbox volume = " + vBbox);
                     console.log("quantity = " + q);
-                    console.log("infill = " + i);
-                    console.log("density = " + d);
-                    console.log("price = " + p);
+                    console.log("infill = " + I);
+                    console.log("density = " + D);
+                    console.log("price = " + G);
                     return Number.NEGATIVE_INFINITY;
                 }
 
-                return (v / 1000) * d * p * q * i;
+                const vAvg = (v + vBbox) / 2;
+
+                return (vAvg / 1000) * D * G * q * I;
             }
         },
         getTotalPrice: (state) => {
@@ -155,14 +174,21 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const filamentInfillStore = useFilamentInfillStore()
 
                 const v = item.modelVolume;
+
+                let vBbox = 0.0;
+                if (item.modelDimensions?.x && item.modelDimensions?.y && item.modelDimensions?.z) {
+                    vBbox = item.modelDimensions?.x * item.modelDimensions?.y * item.modelDimensions?.z;
+                }
+
                 const q = item.quantity;
                 const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
                 const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
                 const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
 
-                if (!v || !q || !i || !d || !p) {
+                if (!v || !q || !i || !d || !p || !vBbox) {
                     console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
                     console.log("volume = " + v);
+                    console.log('bounding box volume = ' + vBbox);
                     console.log("quantity = " + q);
                     console.log("infill = " + i);
                     console.log("density = " + d);
@@ -170,7 +196,17 @@ export const usePrintOrderStore = defineStore('print-order', {
                     return Number.NEGATIVE_INFINITY;
                 }
 
-                return (v / 1000 * d) * p * q * i + acc;
+                console.log("dimensions = " + item.modelDimensions?.x + " " + item.modelDimensions?.y + " " + item.modelDimensions?.z);
+                console.log("volume = " + v);
+                console.log('bounding box volume = ' + vBbox);
+                console.log("quantity = " + q);
+                console.log("infill = " + i);
+                console.log("density = " + d);
+                console.log("price = " + p);
+
+                const vAvg = (v + vBbox) / 2;
+
+                return (vAvg / 1000 * d) * p * q * i + acc;
             }, 0);
         }
     },

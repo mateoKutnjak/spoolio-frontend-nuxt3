@@ -106,12 +106,6 @@ onMounted(() => {
     var box2 = new Three.Box3().setFromObject(mesh);
     box2.getSize(size);
 
-    if (size) {
-      printOrderStore.updateUnit(stlFileUrl, {
-        modelDimensions: size,
-      });
-    }
-
     volume.value = getVolume(geometry);
 
     if (volume.value) {
@@ -122,6 +116,17 @@ onMounted(() => {
 
     var middle = new Three.Vector3();
     geometry.computeBoundingBox();
+
+    if (geometry.boundingBox) {
+      printOrderStore.updateUnit(stlFileUrl, {
+        modelDimensions: new Vector3(
+          Math.abs(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
+          Math.abs(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
+          Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z),
+        )
+      });
+    }
+
     geometry.boundingBox?.getCenter(middle);
     mesh.geometry.applyMatrix4(
       new Three.Matrix4().makeTranslation(-middle.x, -middle.y, -middle.z)
