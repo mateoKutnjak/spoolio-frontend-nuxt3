@@ -69,6 +69,11 @@
         />
       </div>
     </FormKit>
+
+    <GoogleSignInButton
+      @success="handleLoginSuccess"
+      @error="handleLoginError"
+    ></GoogleSignInButton>
   </div>
 </template>
 
@@ -77,6 +82,8 @@ import { FormKitNode } from "@formkit/core";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "../stores/auth";
+
+import { GoogleSignInButton, CredentialResponse } from "vue3-google-signin";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -101,7 +108,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       navigateTo("/");
     })
     .catch((err) => {
-      notificationStore.showFetchError(err)
+      notificationStore.showFetchError(err);
       node?.setErrors(
         err?.data?.non_field_errors || ["Error occurred. Please try again."],
         err?.data
@@ -109,6 +116,18 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     })
     .finally(() => (loading.value = false));
 }
+
+// handle success event
+const handleLoginSuccess = (response: CredentialResponse) => {
+  const { credential } = response;
+  authStore.registerGoogle(credential!); // TODO check null value
+  console.log("Access Token", credential);
+};
+
+// handle an error event
+const handleLoginError = () => {
+  console.error("Login failed");
+};
 </script>
 
 <style>
