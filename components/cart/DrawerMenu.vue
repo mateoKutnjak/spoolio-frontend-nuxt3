@@ -49,10 +49,13 @@
       </div>
       <div class="justify-center items-end gap-2 text-2xl font-bold">
         <NuxtLink to="/store/checkout">
-          <div
-            class="btn btn-success btn-block text-lg"
-            @click="drawerStore.close()"
-          >{{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+          <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+          <ClientOnly>
+            <div
+              class="btn btn-success btn-block text-lg"
+              @click="drawerStore.close()"
+            >{{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+          </ClientOnly>
         </NuxtLink>
       </div>
     </div>

@@ -13,16 +13,19 @@
           class="w-8 rounded-full "
           :key="user?.id"
         >
-          <div v-if="authStore.loggedIn">
-            <nuxt-img src="https://placeimg.com/192/192/people" />
-          </div>
-          <div v-else>
-            <Icon
-              name="ph:user-duotone"
-              size="30"
-              aria-hidden="true"
-            />
-          </div>
+          <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+          <ClientOnly> 
+            <div v-if="authStore.loggedIn">
+              <nuxt-img src="https://placeimg.com/192/192/people" />
+            </div>
+            <div v-else>
+              <Icon
+                name="ph:user-duotone"
+                size="30"
+                aria-hidden="true"
+              />
+            </div>
+          </ClientOnly>
         </div>
       </MenuButton>
 

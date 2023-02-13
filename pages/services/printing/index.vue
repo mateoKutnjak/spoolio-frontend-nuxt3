@@ -1,131 +1,202 @@
 <template>
-  <div class="container p-12 px-0 lg:px-12">
-    <div class="flex flex-col flex-grow gap-5 justify-between">
-      <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
-        <div class="flex gap-2 items-end">
-          <div class="text-base text-gray-700"> Total price: </div>
-          <div>
-            <strong
-              class="text-xl"
-              v-if="totalPrice >= 0"
-            >${{totalPrice.toFixed(2)}}</strong>
-            <div v-else>
-              <Icon
-                class="text-gray-500"
-                name="eos-icons:three-dots-loading"
-              />
+  <div>
+    <div class="container p-12 px-0 lg:px-12">
+      <div class="flex flex-col flex-grow gap-5 justify-between">
+        <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
+          <div class="flex gap-2 items-end">
+            <div class="text-base text-gray-700"> Total price: </div>
+            <div>
+              <strong
+                class="text-xl"
+                v-if="totalPrice >= 0"
+              >${{totalPrice.toFixed(2)}}</strong>
+              <div v-else>
+                <Icon
+                  class="text-gray-500"
+                  name="eos-icons:three-dots-loading"
+                />
+              </div>
+            </div>
+            <div class="px-2"></div>
+            <div class="text-base text-gray-700"> ETA: </div>
+            <div>
+              <strong
+                class="text-md"
+                v-if="totalPrice >= 0"
+              >1 week</strong>
+              <div v-else>
+                <Icon
+                  class="text-gray-500"
+                  name="eos-icons:three-dots-loading"
+                />
+              </div>
             </div>
           </div>
-          <div class="px-2"></div>
-          <div class="text-base text-gray-700"> ETA: </div>
-          <div>
-            <strong
-              class="text-md"
-              v-if="totalPrice >= 0"
-            >1 week</strong>
-            <div v-else>
-              <Icon
-                class="text-gray-500"
-                name="eos-icons:three-dots-loading"
-              />
-            </div>
-          </div>
+          <DimensionUnitDropdown class="self-end" />
         </div>
-        <DimensionUnitDropdown class="self-end" />
-      </div>
-      <div class="block lg:hidden">
-        <div
-          class="flex flex-col gap-5"
-          v-for="item in units"
-          :key="item.localUrl"
-        >
-          <ServicesPrintingUnitCard
-            class="mb-3"
-            :unit="item"
-            @on-item-clicked="onItemClicked"
-          />
-        </div>
-
-      </div>
-      <table
-        v-if="units.length"
-        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
-      >
-        <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-          <tr class="border-2">
-            <th
-              scope="col"
-              class="py-4"
-            >
-              <span class="sr-only">Image</span>
-            </th>
-            <th
-              scope="col"
-              class="py-4"
-            >
-              Product
-            </th>
-            <th
-              scope="col"
-              class="py-4 text-center"
-            >
-              Attributes
-            </th>
-            <th
-              scope="col"
-              class="py-4 text-center"
-            >
-              Quantity
-            </th>
-            <th
-              scope="col"
-              class="py-4 text-center"
-            >
-              Price
-            </th>
-            <th
-              scope="col"
-              class="text-center"
-            >Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <ServicesPrintingUnitTableRow
+        <div class="block lg:hidden">
+          <div
+            class="flex flex-col gap-5"
             v-for="item in units"
             :key="item.localUrl"
-            :unit="item"
-            @on-item-clicked="onItemClicked"
-          />
-        </tbody>
-      </table>
-      <div
-        v-else
-        class="flex-1 text-center border border-gray-400/[0.5] rounded-md"
-      >
-        <div class="h-44 w-full flex justify-center items-center text-lg italic text-gray-600">Nothing added yet</div>
-      </div>
-      <div class="hidden md:flex gap-5">
+          >
+            <ServicesPrintingUnitCard
+              class="mb-3"
+              :unit="item"
+              @on-item-clicked="onItemClicked"
+            />
+          </div>
+
+        </div>
+        <table
+          v-if="units.length"
+          class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
+        >
+          <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+            <tr class="border-2">
+              <th
+                scope="col"
+                class="py-4"
+              >
+                <span class="sr-only">Image</span>
+              </th>
+              <th
+                scope="col"
+                class="py-4"
+              >
+                Product
+              </th>
+              <th
+                scope="col"
+                class="py-4 text-center"
+              >
+                Attributes
+              </th>
+              <th
+                scope="col"
+                class="py-4 text-center"
+              >
+                Quantity
+              </th>
+              <th
+                scope="col"
+                class="py-4 text-center"
+              >
+                Price
+              </th>
+              <th
+                scope="col"
+                class="text-center"
+              >Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <ServicesPrintingUnitTableRow
+              v-for="item in units"
+              :key="item.localUrl"
+              :unit="item"
+              @on-item-clicked="onItemClicked"
+            />
+          </tbody>
+        </table>
         <div
-          class="flex-1 flex w-full mx-auto "
-          @dragover.prevent
-          @drop.prevent
+          v-else
+          class="flex-1 text-center border border-gray-400/[0.5] rounded-md"
+        >
+          <div class="h-44 w-full flex justify-center items-center text-lg italic text-gray-600">Nothing added yet</div>
+        </div>
+        <div class="hidden md:flex gap-5">
+          <div
+            class="flex-1 flex w-full mx-auto "
+            @dragover.prevent
+            @drop.prevent
+          >
+            <label
+              for="dropzone-file"
+              class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              @drop="drop"
+            >
+              <div class="mb-2">
+                <Icon
+                  color="gray"
+                  name="ic:outline-cloud-upload"
+                  size="30"
+                  aria-hidden="true"
+                />
+              </div>
+              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
+              <input
+                id="dropzone-file"
+                type="file"
+                name="fff"
+                class="hidden"
+                @change="change"
+              />
+            </label>
+          </div>
+          <div class="flex-none card rounded-lg shadow-md bg-white">
+            <div class="card-body flex gap-5">
+              <table class="table table-compact w-full">
+                <tbody class="">
+                  <tr>
+                    <td class="pl-0 py-1 text-md border-transparent text-start">Estimated completion time</td>
+                    <td class="pl-0 py-1 text-md border-transparent text-end">111 days</td>
+                  </tr>
+                  <tr>
+                    <th class="pl-0 py-1 text-lg text-start">Total price</th>
+                    <th class="pl-0 py-1 text-lg text-end">
+                      <div
+                        v-if="totalPrice == 10"
+                        class="flex gap-1 items-center"
+                      >
+                        <DropdownWarning dropdown-message="Minimum price we charge is 10$" />${{ totalPrice }}
+
+                      </div>
+                      <div v-else-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
+                      <div v-else>
+                        <Icon
+                          class="text-gray-500"
+                          name="eos-icons:three-dots-loading"
+                        />
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+              <NuxtLink
+                class="btn btn-primary btn-lg gap-1"
+                :class="units.length ? '' : 'btn-disabled'"
+                to="/services/printing/checkout/"
+              >
+                <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+                <ClientOnly>
+                  <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+                </ClientOnly>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
+
+      <div>
+        <div
+          class="tooltip tooltip-left"
+          data-tip="Upload 3D model"
         >
           <label
             for="dropzone-file"
-            class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
             @drop="drop"
           >
-            <div class="mb-2">
-              <Icon
-                color="gray"
-                name="ic:outline-cloud-upload"
-                size="30"
-                aria-hidden="true"
-              />
-            </div>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
+            <Icon
+              name="ic:outline-cloud-upload"
+              size="30"
+              aria-hidden="true"
+            />
             <input
               id="dropzone-file"
               type="file"
@@ -135,86 +206,26 @@
             />
           </label>
         </div>
-        <div class="flex-none card rounded-lg shadow-md bg-white">
-          <div class="card-body flex gap-5">
-            <table class="table table-compact w-full">
-              <tbody class="">
-                <tr>
-                  <td class="pl-0 py-1 text-md border-transparent text-start">Estimated completion time</td>
-                  <td class="pl-0 py-1 text-md border-transparent text-end">111 days</td>
-                </tr>
-                <tr>
-                  <th class="pl-0 py-1 text-lg text-start">Total price</th>
-                  <th class="pl-0 py-1 text-lg text-end">
-                    <div v-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
-                    <div v-else>
-                      <Icon
-                        class="text-gray-500"
-                        name="eos-icons:three-dots-loading"
-                      />
-                    </div>
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-            <NuxtLink
-              class="btn btn-primary btn-lg gap-1"
-              :class="totalPrice > 0 ? '' : 'btn-disabled'"
-              to="/services/printing/checkout/"
-            >
-              {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}
-            </NuxtLink>
-          </div>
+      </div>
+      <div>
+        <div
+          class="tooltip tooltip-left"
+          data-tip="Checkout"
+        >
+          <NuxtLink
+            class="btn btn-circle btn-primary btn-lg shadow-md"
+            :class="totalPrice > 0 ? '' : 'btn-disabled'"
+            to="/services/printing/checkout/"
+          >
+            <Icon
+              name="ph:shopping-cart-duotone"
+              size="30"
+              aria-hidden="true"
+            />
+          </NuxtLink>
         </div>
       </div>
     </div>
-  </div>
-  <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
-
-    <div>
-      <div
-        class="tooltip tooltip-left"
-        data-tip="Upload 3D model"
-      >
-        <label
-          for="dropzone-file"
-          class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
-          @drop="drop"
-        >
-          <Icon
-            name="ic:outline-cloud-upload"
-            size="30"
-            aria-hidden="true"
-          />
-          <input
-            id="dropzone-file"
-            type="file"
-            name="fff"
-            class="hidden"
-            @change="change"
-          />
-        </label>
-      </div>
-    </div>
-    <div>
-      <div
-        class="tooltip tooltip-left"
-        data-tip="Checkout"
-      >
-        <NuxtLink
-          class="btn btn-circle btn-primary btn-lg shadow-md"
-          :class="totalPrice > 0 ? '' : 'btn-disabled'"
-          to="/services/printing/checkout/"
-        >
-          <Icon
-            name="ph:shopping-cart-duotone"
-            size="30"
-            aria-hidden="true"
-          />
-        </NuxtLink>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -253,7 +264,7 @@ const isLoggedIn = computed(() => authStore.loggedIn);
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
-const units = ref<IPrintOrderUnitResponse[]>([]);
+const { units } = storeToRefs(printOrderStore);
 
 const unit = ref<IPrintOrderUnitResponse>();
 

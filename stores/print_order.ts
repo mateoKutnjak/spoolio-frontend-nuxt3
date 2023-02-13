@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, PRICE_MARGIN_FACTOR } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentMaterialStore } from './filament_material';
@@ -165,11 +165,11 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const vAvg = (v + vBbox) / 2;
 
-                return (vAvg / 1000) * D * G * q * I;
+                return (vAvg / 1000) * D * G * q * I * PRICE_MARGIN_FACTOR;
             }
         },
         getTotalPrice: (state) => {
-            return state.units.reduce((acc, item) => {
+            return Math.max(state.units.reduce((acc, item) => {
                 const filamentMaterialStore = useFilamentMaterialStore()
                 const filamentInfillStore = useFilamentInfillStore()
 
@@ -206,8 +206,8 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const vAvg = (v + vBbox) / 2;
 
-                return (vAvg / 1000 * d) * p * q * i + acc;
-            }, 0);
+                return (vAvg / 1000 * d) * p * q * i * PRICE_MARGIN_FACTOR + acc;
+            }, 0), 10);
         }
     },
 

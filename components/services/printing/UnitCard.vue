@@ -15,92 +15,23 @@
           <div class="font-semibold text-gray-900 dark:text-white">
             {{ unit.file.name }}
           </div>
-          <div class="text-gray-600 text-sm">
-            <div
-              class="flex gap-1"
-              v-if="unit.modelDimensions"
-            >
-              Size ({{ DimensionUnit[dimensionUnit] }}): <strong>{{ unit.modelDimensions.x.toFixed(0)}}
-                x
-                {{ unit.modelDimensions.y.toFixed(0)}}
-                x
-                {{ unit.modelDimensions.z.toFixed(0)}}</strong>
-            </div>
-            <div
-              class="flex gap-1"
-              v-if="unit.modelDimensions"
-            >
-              Volume ({{ DimensionUnit[dimensionUnit] }}3): <strong>{{ (unit.modelVolume / 1000).toFixed(3)}} </strong>
-            </div>
-          </div>
+          <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
+          <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
         </div>
-        <div
-          class="dropdown dropdown-end"
-          @click.stop
-        >
-          <label
-            tabindex="0"
-            class="btn btn-ghost text-info"
-          >
-            <div class="flex gap-2 items-center font-semibold text-lg text-gray-900 dark:text-white">
-              <div>${{ totalPrice.toFixed(2) }}</div>
-              <Icon
-                class="mt-0.5 text-info"
-                name="material-symbols:info-outline"
-                size="20"
-              />
-            </div>
-          </label>
+        <div class="flex justify-center font-semibold text-lg text-gray-900 dark:text-white">
           <div
-            tabindex="0"
-            class="card compact dropdown-content shadow-md bg-base-100 rounded-box w-72 border border-gray-300"
-          >
-            <div class="card-body gap-8 items-start">
-              <div class="w-full card-title text-lg text-gray-700">How is the price calculated?</div>
-              <div class="w-full flex flex-col">
-                <div class="text-sm text-gray-500">{{ filamentMaterialStore.getNameById(unit.material) }} material details</div>
-                <div class="divider m-0"></div>
-                <table class="table table-compact w-full">
-                  <tbody class="">
-                    <tr>
-                      <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Price (<strong>P</strong>)</td>
-                      <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">${{ filamentMaterialStore.getPriceById(unit.material) }} per gram</td>
-                    </tr>
-                    <tr>
-                      <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Density (<strong>D</strong>)</td>
-                      <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">{{ filamentMaterialStore.getDensityById(unit.material) }} g/mm3</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="w-full flex flex-col">
-                <div class="text-sm text-gray-500">Unit details</div>
-                <div class="divider m-0"></div>
-                <table class="table table-compact w-full">
-                  <tbody class="">
-                    <tr>
-                      <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Quantity (<strong>Q</strong>)</td>
-                      <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">{{ unit.quantity }}</td>
-                    </tr>
-                    <tr>
-                      <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Volume (<strong>V</strong>)</td>
-                      <td class="py-1 pb-0 text-sm font-semibold border-transparent text-end bg-transparent">{{ (unit.modelVolume / 1000).toFixed(3) }} mm3</td>
-                    </tr>
-                    <tr>
-                      <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Infill (<strong>I</strong>)</td>
-                      <td class="py-1 pb-0 text-sm font-semibold border-transparent text-end bg-transparent">{{ (filamentInfillStore.getPercentageById(unit.infill) || 0) * 100}}%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="text-center">
-                <p class="text-start font-medium text-info">TOTAL PRICE = P x (V x D) x I x Q</p>
-                <p class="text-start font-medium text-info">TOTAL PRICE = <strong>${{ totalPrice.toFixed(2) }}</strong></p>
-              </div>
-            </div>
+            v-if="totalPrice >= 0"
+            class="flex gap-1 items-center"
+          >${{totalPrice.toFixed(2)}}
           </div>
-        </div>
+          <div v-else>
+            <Icon
+              class="text-gray-500"
+              name="eos-icons:three-dots-loading"
+            />
+          </div>
 
+        </div>
       </div>
       <div class="flex flex-wrap gap-5 justify-between items-center">
 
@@ -252,13 +183,7 @@ const fileSize = computed(() => {
 });
 
 const totalPrice = computed(() => {
-  return (
-    unit.quantity *
-    (unit.modelVolume / 1000) *
-    (filamentMaterialStore.getDensityById(unit.material) || 0) *
-    (filamentMaterialStore.getPriceById(unit.material) || 0) *
-    (filamentInfillStore.getPercentageById(unit.infill) || 0)
-  );
+  return printOrderStore.getPriceByLocalUrl(unit.localUrl);
 });
 
 function getMaterialName(): string {

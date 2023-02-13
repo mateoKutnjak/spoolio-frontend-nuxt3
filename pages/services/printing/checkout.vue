@@ -175,12 +175,7 @@ onMounted(async () => {
   console.log("Shipping method fetched successfuly TODO");
 });
 
-const totalPrice = ref<number>(
-  units.value.reduce(
-    (acc, item) => Number(acc) + Number(item.estimatedPrice * item.quantity),
-    0
-  )
-);
+const totalPrice = ref<number>(printOrderStore.getTotalPrice);
 
 function submitHandler() {
   dialogStore.open("ServicesPrintingCreatingOrderDialog", [], "2xl", false);

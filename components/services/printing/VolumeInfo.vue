@@ -6,7 +6,10 @@
       size="30"
     />
     <strong>{{ (data / 1000).toFixed(3) }}</strong>
-    <div class="text-sm">{{ DimensionUnit[dimensionUnit] }}3</div>
+    <div class="flex gap-0.5">
+      <div class="text-sm">{{ DimensionUnit[dimensionUnit] }}</div>
+      <sup class="pt-2.5">3</sup>
+    </div>
   </div>
 </template>
 

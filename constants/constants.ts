@@ -19,3 +19,5 @@ export const MAX_CART_ITEMS = 99;
 export const MAX_FILE_SIZE_STL = 150 * 1024 * 1024 // MB
 
 export const PAGE_SIZE = 10;
+
+export const PRICE_MARGIN_FACTOR = 3.0;

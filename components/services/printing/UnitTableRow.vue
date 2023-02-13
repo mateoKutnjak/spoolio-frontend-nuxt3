@@ -86,82 +86,19 @@
       </div>
     </td>
     <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
-      <div
-        class="flex dropdown dropdown-end justify-center"
-        @click.stop
-      >
-        <label
-          tabindex="0"
-          class="btn btn-ghost text-info"
-        >
-          <div class="font-semibold text-lg text-gray-900 dark:text-white">
-            <div
-              v-if="totalPrice >= 0"
-              class="flex gap-1 items-center"
-            >${{totalPrice.toFixed(2)}}
-              <Icon
-                class="mt-0.5 text-info"
-                name="material-symbols:info-outline"
-                size="20"
-              />
-            </div>
-            <div v-else>
-              <Icon
-                class="text-gray-500"
-                name="eos-icons:three-dots-loading"
-              />
-            </div>
-
-          </div>
-        </label>
+      <div class="flex justify-center font-semibold text-lg text-gray-900 dark:text-white">
         <div
-          tabindex="0"
-          class="card compact dropdown-content shadow-md bg-base-100 rounded-box w-72 border border-gray-300"
-        >
-          <div class="card-body gap-8 items-start">
-            <div class="w-full card-title text-lg text-gray-700">How is the price calculated?</div>
-            <div class="w-full flex flex-col">
-              <div class="text-sm text-gray-500">{{ filamentMaterialStore.getNameById(unit.material) }} material details</div>
-              <div class="divider m-0"></div>
-              <table class="table table-compact w-full">
-                <tbody class="">
-                  <tr>
-                    <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Price (<strong>P</strong>)</td>
-                    <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">${{ filamentMaterialStore.getPriceById(unit.material) }} per gram</td>
-                  </tr>
-                  <tr>
-                    <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Density (<strong>D</strong>)</td>
-                    <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">{{ filamentMaterialStore.getDensityById(unit.material) }} g/mm3</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="w-full flex flex-col">
-              <div class="text-sm text-gray-500">Unit details</div>
-              <div class="divider m-0"></div>
-              <table class="table table-compact w-full">
-                <tbody class="">
-                  <tr>
-                    <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Quantity (<strong>Q</strong>)</td>
-                    <td class="py-1 pb-0 text-sm font-medium border-transparent text-end bg-transparent">{{ unit.quantity }}</td>
-                  </tr>
-                  <tr>
-                    <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Volume (<strong>V</strong>)</td>
-                    <td class="py-1 pb-0 text-sm font-semibold border-transparent text-end bg-transparent">{{ (unit.modelVolume / 1000).toFixed(3) }} mm3</td>
-                  </tr>
-                  <tr>
-                    <td class="pl-0 py-1 pb-0 text-sm font-normal border-transparent text-start bg-transparent">Infill (<strong>I</strong>)</td>
-                    <td class="py-1 pb-0 text-sm font-semibold border-transparent text-end bg-transparent">{{ (filamentInfillStore.getPercentageById(unit.infill) || 0) * 100}}%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="text-center">
-              <p class="text-start font-medium text-info">TOTAL PRICE = P x (V x D) x I x Q</p>
-              <p class="text-start font-medium text-info">TOTAL PRICE = <strong>${{ totalPrice.toFixed(2) }}</strong></p>
-            </div>
-          </div>
+          v-if="totalPrice >= 0"
+          class="flex gap-1 items-center"
+        >${{totalPrice.toFixed(2)}}
         </div>
+        <div v-else>
+          <Icon
+            class="text-gray-500"
+            name="eos-icons:three-dots-loading"
+          />
+        </div>
+
       </div>
     </td>
     <td class="py-4 text-center">
