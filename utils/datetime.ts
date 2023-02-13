@@ -31,3 +31,27 @@ export function reformatDate(rawDate: string | undefined): string {
     if (!rawDate) return "NULL ERROR"
     return formatDate(parseDate(rawDate));
 }
+
+export function reformatSeconds(seconds: number): string {
+    if (seconds < 60) {
+        const result = Math.floor(seconds);
+        const suffix = result % 10 == 1 ? 'second' : 'seconds';
+        return `${result.toFixed(0)} ${suffix}`;
+    }
+
+    if (seconds < 60 * 60) {
+        const result = Math.floor(seconds / 60);
+        const suffix = result % 10 == 1 ? 'min' : 'mins';
+        return `${result.toFixed(0)} ${suffix}`;
+    }
+
+    if (seconds < 60 * 60 * 24) {
+        const result = Math.floor(seconds / 60 / 60);
+        const suffix = result % 10 == 1 ? 'hour' : 'hours';
+        return `${result.toFixed(0)} ${suffix}`;
+    }
+
+    const result = Math.floor(seconds / 60 / 60 / 24);
+    const suffix = result % 10 == 1 ? 'day' : 'days';
+    return `${result.toFixed(0)} ${suffix}`;
+}

@@ -4,10 +4,10 @@
       <div class="flex flex-col flex-grow gap-5 justify-between">
         <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
           <div class="flex gap-2 items-end">
-            <div class="text-base text-gray-700"> Total price: </div>
+            <div class="text-base text-gray-700 font-light"> Total price: </div>
             <div>
               <strong
-                class="text-xl"
+                class="text-lg font-medium"
                 v-if="totalPrice >= 0"
               >${{totalPrice.toFixed(2)}}</strong>
               <div v-else>
@@ -18,16 +18,17 @@
               </div>
             </div>
             <div class="px-2"></div>
-            <div class="text-base text-gray-700"> ETA: </div>
+            <div class="text-base text-gray-700 font-light"> ETA: </div>
             <div>
               <strong
-                class="text-md"
-                v-if="totalPrice >= 0"
-              >1 week</strong>
+                class="text-lg font-medium"
+                v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+              >{{reformatSeconds(etaSeconds)}}</strong>
               <div v-else>
                 <Icon
-                  class="text-gray-500"
+                  class="text-gray-900 pt-1.5"
                   name="eos-icons:three-dots-loading"
+                  size="30"
                 />
               </div>
             </div>
@@ -141,12 +142,26 @@
               <table class="table table-compact w-full">
                 <tbody class="">
                   <tr>
-                    <td class="pl-0 py-1 text-md border-transparent text-start">Estimated completion time</td>
-                    <td class="pl-0 py-1 text-md border-transparent text-end">111 days</td>
+                    <td class="pl-0 py-1 text-base border-transparent text-start font-light">ETA</td>
+                    <td class="pl-0 py-1 text-lg border-transparent text-end font-medium">
+                      <div>
+                        <strong
+                          class="text-lg font-medium"
+                          v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+                        >{{reformatSeconds(etaSeconds)}}</strong>
+                        <div v-else>
+                          <Icon
+                            class="text-gray-900 pt-1.5"
+                            name="eos-icons:three-dots-loading"
+                            size="30"
+                          />
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <th class="pl-0 py-1 text-lg text-start">Total price</th>
-                    <th class="pl-0 py-1 text-lg text-end">
+                    <th class="pl-0 py-1 text-base text-start font-light">Price</th>
+                    <th class="pl-0 py-1 text-lg text-end font-medium">
                       <div
                         v-if="totalPrice == 10"
                         class="flex gap-1 items-center"
@@ -280,6 +295,10 @@ const getUser = computed(() => {
 
 const totalPrice = computed(() => {
   return printOrderStore.getTotalPrice;
+});
+
+const etaSeconds = computed(() => {
+  return printOrderStore.getETASeconds;
 });
 
 onMounted(async () => {

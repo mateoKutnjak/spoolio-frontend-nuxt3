@@ -21,3 +21,8 @@ export const MAX_FILE_SIZE_STL = 150 * 1024 * 1024 // MB
 export const PAGE_SIZE = 10;
 
 export const PRICE_MARGIN_FACTOR = 3.0;
+
+// * Printing duration constants
+export const LAYER_HEIGHT = 0.15; // millimeters
+export const LAYER_WIDTH = 0.45; // millimeters
+export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;

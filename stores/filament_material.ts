@@ -8,6 +8,7 @@ export interface IFilamentMaterial {
     description: string,
     density: number,
     price: number,
+    printing_speed: number,
 }
 
 export const useFilamentMaterialStore = defineStore('filament-material', {
@@ -26,6 +27,9 @@ export const useFilamentMaterialStore = defineStore('filament-material', {
         getDensityById: (state) => {
             return (id: number) => state.filamentMaterials.find((item) => item.id === id)?.density
         },
+        getPrintingSpeedById: (state) => {
+            return (id: number) => state.filamentMaterials.find((item) => item.id === id)?.printing_speed
+        }
     },
 
     actions: {

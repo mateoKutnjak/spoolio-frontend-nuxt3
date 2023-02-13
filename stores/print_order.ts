@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, PRICE_MARGIN_FACTOR } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentMaterialStore } from './filament_material';
@@ -208,7 +208,45 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 return (vAvg / 1000 * d) * p * q * i * PRICE_MARGIN_FACTOR + acc;
             }, 0), 10);
-        }
+        },
+        getETASeconds: (state) => {
+            return state.units.reduce((acc, item) => {
+
+                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentInfillStore = useFilamentInfillStore()
+
+                const objVolume = item.modelVolume;
+
+                let vBbox = 0.0;
+                if (item.modelDimensions?.x && item.modelDimensions?.y && item.modelDimensions?.z) {
+                    vBbox = item.modelDimensions?.x * item.modelDimensions?.y * item.modelDimensions?.z;
+                }
+
+                const q = item.quantity;
+                const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
+                // const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
+                // const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
+                const vPrint = item.material ? filamentMaterialStore.getPrintingSpeedById(item.material) : undefined;
+
+                if (!objVolume || !q || !i || !vPrint || !vBbox) {
+                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
+                    console.log("volume = " + objVolume);
+                    console.log('bounding box volume = ' + vBbox);
+                    console.log("quantity = " + q);
+                    console.log("infill = " + i);
+                    console.log("printing speed = " + vPrint);
+                    // console.log("price = " + p);
+                    return Number.NEGATIVE_INFINITY;
+                }
+
+                const vAvg = (objVolume + vBbox) / 2;
+                const V = i * vAvg;
+                const vVolume = vPrint * LAYER_AREA;
+                const t = V / vVolume;
+
+                return q * t + acc;
+            }, 0);
+        },
     },
 
     actions: {
