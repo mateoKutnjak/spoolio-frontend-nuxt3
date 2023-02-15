@@ -57,9 +57,10 @@ function setRenderer() {
     renderer = new WebGLRenderer({
       canvas: experience.value,
       alpha: true,
+      antialias: true,
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
