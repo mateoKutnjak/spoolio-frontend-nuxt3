@@ -3,10 +3,10 @@
     class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
-    <td class="p-6">
+    <td class="px-6 pr-16 py-6 w-24 h-24">
       <client-only class="flex-1">
         <PreviewSTL
-          class="w-16 h-16 p-0 m-0 border border-gray-400"
+          class="w-24 h-24 p-0 m-0 border border-gray-400"
           :stlFileUrl="unit.localUrl"
         />
       </client-only>
@@ -85,7 +85,7 @@
         </button>
       </div>
     </td>
-    <td class="py-4 pr-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
+    <td class="py-4 px-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
       <div class="flex justify-center font-semibold text-lg text-gray-900 dark:text-white">
         <div
           v-if="totalPrice >= 0"
