@@ -4,7 +4,7 @@
       <div class="flex gap-12">
         <div class="flex flex-col gap-5">
           <client-only class="flex-1">
-            <PreviewSTL2
+            <PreviewSTL
               class="w-92 h-96 p-0 m-0 border-2 border-gray-400"
               :stlFileUrl="unit.localUrl"
             />

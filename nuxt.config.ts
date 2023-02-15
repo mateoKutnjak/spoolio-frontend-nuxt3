@@ -31,7 +31,7 @@ export default defineNuxtConfig({
         },
     },
     build: {
-        transpile: ['troisjs', 'three']
+        transpile: ['three']
     },
     piniaPersistedstate: {
         cookieOptions: {

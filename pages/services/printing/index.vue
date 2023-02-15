@@ -164,7 +164,7 @@
                     <th class="pl-0 py-1 text-lg text-end font-medium">
                       <div
                         v-if="totalPrice == 10"
-                        class="flex gap-1 items-center"
+                        class="flex gap-1 items-center justify-end"
                       >
                         <DropdownWarning dropdown-message="Minimum price we charge is 10$" />${{ totalPrice }}
 
@@ -279,7 +279,7 @@ const isLoggedIn = computed(() => authStore.loggedIn);
 
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
-const { units } = storeToRefs(printOrderStore);
+const units = ref<IPrintOrderUnitResponse[]>([]);
 
 const unit = ref<IPrintOrderUnitResponse>();
 
