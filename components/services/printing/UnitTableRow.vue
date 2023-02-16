@@ -65,11 +65,11 @@
           :max="MAX_PRINT_QUANTITY"
           @input="updateValue"
           @blur="handleBlur"
-          @click.stop
+          @click.stop.prevent
         />
       </div>
     </td>
-    <td class="py-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
+    <td class="py-4 px-8 font-semibold text-lg text-gray-900 dark:text-white text-end">
       <div class="flex justify-center font-light text-xl text-gray-900 dark:text-white">
         <div
           v-if="totalPrice >= 0"

@@ -2,12 +2,17 @@
   <div class="dropdown dropdown-end">
     <label
       tabindex="0"
-      class="btn btn-circle btn-ghost btn-sm text-error"
+      class="flex gap-2 btn btn-ghost btn-sm"
     >
+
       <Icon
+        class="text-error"
         name="material-symbols:warning-rounded"
         size="18"
       />
+      <div class="text-lg font-medium text-gray-700 ">
+        {{ text }}
+      </div>
     </label>
     <div
       tabindex="0"
@@ -28,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-const { dropdownMessage } = defineProps(["dropdownMessage"]);
+const { dropdownMessage, text } = defineProps(["dropdownMessage", "text"]);
 </script>
 
 <style>

@@ -4,13 +4,24 @@
       <div class="flex flex-col flex-grow gap-5 justify-between pt-4">
         <div class="text-3xl font-light">Printing order</div>
         <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
-          <div class="flex gap-2 items-end px-4 py-3 rounded-lg bg-base-100 shadow">
+          <div class="flex gap-2 items-center px-4 py-3 rounded-lg bg-base-100 shadow">
             <div class="text-base text-gray-700 font-light"> Total price: </div>
             <div>
-              <strong
-                class="text-md font-medium"
-                v-if="totalPrice >= 0"
-              >${{totalPrice.toFixed(2)}}</strong>
+              <div
+                v-if="totalPrice == 10"
+                class="flex gap-1 items-center justify-end"
+              >
+                <DropdownWarning
+                  dropdown-message="Minimum price we charge is 10$"
+                  :text="`$${totalPrice}`"
+                />
+
+              </div>
+              <div v-else-if="totalPrice >= 0">
+                <div class="text-lg font-medium text-gray-700 ">
+                  ${{totalPrice.toFixed(2)}}
+                </div>
+              </div>
               <div v-else>
                 <Icon
                   class="text-gray-500"
@@ -18,7 +29,7 @@
                 />
               </div>
             </div>
-            <div class="px-2"></div>
+            <div class="px-1"></div>
             <div class="text-base text-gray-700 font-light"> ETA: </div>
             <div>
               <strong
@@ -72,7 +83,7 @@
                 scope="col"
                 class="py-4"
               >
-                Material
+                Dimensions
               </th>
               <th
                 scope="col"
@@ -82,7 +93,7 @@
               </th>
               <th
                 scope="col"
-                class="py-4 text-center"
+                class="py-4 px-8 text-center"
               >
                 Price
               </th>
@@ -104,9 +115,9 @@
         </table>
         <div
           v-else
-          class="flex-1 text-center border border-gray-400/[0.5] rounded-md"
+          class="flex-1 text-center"
         >
-          <div class="h-44 w-full flex justify-center items-center text-lg italic text-gray-600">Nothing added yet</div>
+          <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-600">Order is empty</div>
         </div>
         <div class="hidden md:flex gap-5">
           <div
