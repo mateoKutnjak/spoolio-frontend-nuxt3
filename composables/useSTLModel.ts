@@ -1,9 +1,11 @@
-import { BufferGeometry } from "three";
+import { BufferGeometry, LoadingManager } from "three";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 
 
 export function useSTLModel() {
-    const loader = new STLLoader();
+    const loadingManager = new LoadingManager();
+
+    const loader = new STLLoader(loadingManager);
 
     function load(url: string) {
         return new Promise<BufferGeometry>((resolve, reject) => {
@@ -12,6 +14,7 @@ export function useSTLModel() {
     }
 
     return {
-        load
+        load,
+        loadingManager,
     }
 }

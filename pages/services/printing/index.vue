@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="container p-12 px-0 lg:px-12">
-      <div class="flex flex-col flex-grow gap-5 justify-between">
+      <div class="flex flex-col flex-grow gap-5 justify-between pt-4">
+        <div class="text-3xl font-light">Printing order</div>
         <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
-          <div class="flex gap-2 items-end">
+          <div class="flex gap-2 items-end px-4 py-3 rounded-lg bg-base-100 shadow">
             <div class="text-base text-gray-700 font-light"> Total price: </div>
             <div>
               <strong
-                class="text-lg font-medium"
+                class="text-md font-medium"
                 v-if="totalPrice >= 0"
               >${{totalPrice.toFixed(2)}}</strong>
               <div v-else>
@@ -21,7 +22,7 @@
             <div class="text-base text-gray-700 font-light"> ETA: </div>
             <div>
               <strong
-                class="text-lg font-medium"
+                class="text-md font-medium"
                 v-if="etaSeconds > Number.NEGATIVE_INFINITY"
               >{{reformatSeconds(etaSeconds)}}</strong>
               <div v-else>
@@ -53,7 +54,7 @@
           v-if="units.length"
           class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
         >
-          <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
             <tr class="border-2">
               <th
                 scope="col"

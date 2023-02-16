@@ -19,7 +19,6 @@ import {
   Material,
   Matrix4,
   Mesh,
-  MeshPhongMaterial,
   MeshStandardMaterial,
   PerspectiveCamera,
   Scene,
