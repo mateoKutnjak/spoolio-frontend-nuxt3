@@ -6,87 +6,71 @@
     <td class="px-6 pr-16 py-6 w-24 h-24">
       <client-only class="flex-1">
         <PreviewSTL
-          class="w-24 h-24 p-0 m-0 border border-gray-400"
+          class="w-36 h-36 p-0 m-0 border border-gray-500 shadow-md"
           :stlFileUrl="unit.localUrl"
         />
       </client-only>
     </td>
     <td class="py-4">
-      <div class="flex flex-col gap-3">
-        <div class="font-semibold text-gray-900 dark:text-white line-clamp-1">
+      <div class="h-36 max-w-xs flex flex-col gap-3 justify-center">
+        <div class="text-lg text-gray-900 font-light dark:text-white line-clamp-1">
           {{ unit.file.name }}
         </div>
-        <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
-        <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
-      </div>
-    </td>
-    <td class="py-4 font-semibold text-gray-900 dark:text-white">
-      <div class="flex items-center justify-center">
-        <div
-          class="tooltip tooltip-bottom"
-          data-tip="Filament material"
-        >{{ getMaterialName() }}</div>
-        <Icon
-          name="bi:dot"
-          size="20"
-        />
-        <div
-          class="tooltip tooltip-bottom"
-          data-tip="Infill percentage"
-        >{{ getInfillPercentage() * 100 }}%</div>
-        <Icon
-          name="bi:dot"
-          size="20"
-        />
-        <div
-          class="tooltip tooltip-bottom"
-          data-tip="Filament color"
-        >
+        <div class="flex items-start justify-start">
           <div
-            class="btn btn-xs btn-circle btn-ghost"
-            :style="`background-color: ${getColorValue()}`"
+            class="tooltip tooltip-bottom"
+            data-tip="Filament material"
+          >{{ getMaterialName() }}</div>
+          <Icon
+            name="bi:dot"
+            size="20"
           />
+          <div
+            class="tooltip tooltip-bottom"
+            data-tip="Infill percentage"
+          >{{ getInfillPercentage() * 100 }}%</div>
+          <Icon
+            name="bi:dot"
+            size="20"
+          />
+          <div
+            class="tooltip tooltip-bottom"
+            data-tip="Material color"
+          >{{ getColorName() }}</div>
         </div>
       </div>
     </td>
     <td class="py-4">
-      <div class="flex gap-2 items-center justify-center">
-        <button
-          class="btn btn-sm btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click.stop="decreaseQuantity"
-        >
-          <Icon
-            class="text-gray-500"
-            name="ic:round-minus"
-            size="16"
-          />
-        </button>
-        <div>
-          <input
-            type="number"
-            v-model="unit.quantity"
-            class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="1"
-            :max="999"
-            :min="1"
-            required
-            @click.stop
-          >
-        </div>
-        <button
-          class="btn btn-sm btn-circle btn-outline border-gray-300 hover:bg-gray-200 hover:border-gray-300"
-          @click.stop="increaseQuantity"
-        >
-          <Icon
-            class="text-gray-500"
-            name="ic:round-plus"
-            size="16"
-          />
-        </button>
+      <div class="flex flex-col gap-2 pb-2">
+        <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
+        <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
       </div>
     </td>
-    <td class="py-4 px-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
-      <div class="flex justify-center font-semibold text-lg text-gray-900 dark:text-white">
+    <!-- <td class="py-4 text-center">
+      {{ getInfillPercentage() * 100 }}%
+    </td> -->
+    <!-- <td class="py-4 text-center">
+      <div
+        class="btn btn-xs btn-circle btn-ghost"
+        :style="`background-color: ${getColorValue()}`"
+      />
+    </td> -->
+    <td class="py-4">
+      <div class="flex items-center justify-center">
+        <input
+          type="number"
+          class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          :value="unit.quantity"
+          :min="1"
+          :max="MAX_PRINT_QUANTITY"
+          @input="updateValue"
+          @blur="handleBlur"
+          @click.stop
+        />
+      </div>
+    </td>
+    <td class="py-4 font-semibold text-lg text-gray-900 dark:text-white text-end">
+      <div class="flex justify-center font-light text-xl text-gray-900 dark:text-white">
         <div
           v-if="totalPrice >= 0"
           class="flex gap-1 items-center"
@@ -126,6 +110,7 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
 import IFilamentColor, {
   useFilamentColorStore,
@@ -199,6 +184,10 @@ function getColorValue(): string {
   return colors.value.find((el) => el.id === unit.color)?.value || "#000000";
 }
 
+function getColorName(): string {
+  return colors.value.find((el) => el.id === unit.color)?.name || "null";
+}
+
 function increaseQuantity() {
   printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity + 1 });
 }
@@ -208,6 +197,49 @@ function decreaseQuantity() {
     printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity - 1 });
   } else {
     printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
+  }
+}
+
+function updateValue(event: Event) {
+  let value = (event.target as HTMLInputElement).value;
+
+  if (value == "") {
+    // * When empty string do nothing. Dont update pinia or manipulate input
+    return;
+  }
+
+  const numValue = Number(value);
+
+  if (numValue < 1) {
+    (event.target as HTMLInputElement).value = "1";
+  }
+
+  if (numValue > MAX_PRINT_QUANTITY) {
+    (event.target as HTMLInputElement).value = MAX_PRINT_QUANTITY.toString();
+  }
+
+  value = (event.target as HTMLInputElement).value;
+
+  printOrderStore.updateUnit(unit.localUrl, { quantity: Number(value) });
+}
+
+function handleBlur(event: Event) {
+  let value = (event.target as HTMLInputElement).value;
+
+  const numValue = Number(value);
+
+  if (value == "") {
+    (event.target as HTMLInputElement).value = "1";
+    printOrderStore.updateUnit(unit.localUrl, { quantity: Number(value) });
+    return;
+  }
+
+  if (numValue < 1) {
+    (event.target as HTMLInputElement).value = "1";
+  }
+
+  if (numValue > MAX_PRINT_QUANTITY) {
+    (event.target as HTMLInputElement).value = MAX_PRINT_QUANTITY.toString();
   }
 }
 

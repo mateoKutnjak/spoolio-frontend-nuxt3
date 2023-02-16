@@ -70,9 +70,9 @@
               </th>
               <th
                 scope="col"
-                class="py-4 text-center"
+                class="py-4"
               >
-                Attributes
+                Material
               </th>
               <th
                 scope="col"
@@ -89,7 +89,7 @@
               <th
                 scope="col"
                 class="text-center"
-              >Actions</th>
+              ></th>
             </tr>
           </thead>
           <tbody>

@@ -14,7 +14,7 @@
             <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
             <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
           </div>
-          <div class="flex flex-col justify-end items-end">
+          <div class="flex flex-col gap-1 justify-end items-end">
             <ListboxMaterial
               class="w-full"
               :file-url="unit.localUrl"
