@@ -102,24 +102,24 @@
       </div>
     </td>
     <td class="py-4 text-center">
-      <button
+      <div
         class="btn btn-md btn-circle btn-ghost text-gray-400"
-        @click.stop="duplicateUnit"
+        @click.stop.prevent="duplicateUnit"
       >
         <Icon
           name="majesticons:duplicate"
           size="24"
         />
-      </button>
-      <button
-        class="btn btn-md btn-circle btn-ghost text-red-600"
-        @click.stop="removeUnit"
+      </div>
+      <div
+        class="btn btn-md btn-circle btn-ghost text-error"
+        @click.stop.prevent="removeUnit"
       >
         <Icon
           name="material-symbols:delete"
           size="24"
         />
-      </button>
+      </div>
     </td>
   </tr>
 </template>
