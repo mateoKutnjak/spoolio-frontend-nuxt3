@@ -37,6 +37,13 @@ const { stlFileUrl } = defineProps(["stlFileUrl"]);
 const filamentColorStore = useFilamentColorStore();
 const printOrderStore = usePrintOrderStore();
 
+const printOrderUnit = printOrderStore.getUnitByLocalUrl(stlFileUrl);
+
+if (!printOrderUnit) {
+  console.error(`Print order unit is null for fileUrl=${stlFileUrl}`);
+  throw createError(`Print order unit is null for fileUrl=${stlFileUrl}`);
+}
+
 let renderer: WebGLRenderer;
 let controls: OrbitControls;
 const experience = ref<HTMLCanvasElement | null>(null);
@@ -97,9 +104,14 @@ const geometry = await load(stlFileUrl);
 
 // *** OBJECT MODELING *** //
 
+const meshColor =
+  filamentColorStore.getFilamentColors.find(
+    (el) => el.id === printOrderUnit.color
+  )?.value || "#EAEAEA";
+
 const mesh = new Mesh(
   geometry,
-  new MeshStandardMaterial({ color: "#EAEAEA", roughness: 0.9, metalness: 0.5 })
+  new MeshStandardMaterial({ color: meshColor, roughness: 0.9, metalness: 0.5 })
 );
 
 geometry.computeBoundingBox();
@@ -221,7 +233,7 @@ function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
   let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
   camera.position.x = largestDimension * 0.5;
   camera.position.y = largestDimension * 0.5;
-  camera.position.z = largestDimension * 1.5;
+  camera.position.z = largestDimension * 2.5;
 }
 
 function centerObject(mesh: Mesh<BufferGeometry, Material>, bbox: Box3) {

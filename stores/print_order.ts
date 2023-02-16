@@ -122,6 +122,11 @@ export const usePrintOrderStore = defineStore('print-order', {
         getAttachmentFiles: (state) => state.attachmentFiles,
         getAttachmentImages: (state) => state.attachmentImages,
         getUnits: (state) => state.units,
+        getUnitByLocalUrl: (state) => {
+            return (localUrl: string) => {
+                return state.units.find(el => el.localUrl === localUrl);
+            }
+        },
         getContactEmail: (state) => state.contactEmail,
         getPriceByLocalUrl: (state) => {
             return (localUrl: string) => {

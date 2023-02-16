@@ -28,7 +28,6 @@
     </div>
 
     <GenericDialog
-      title="Login"
       :component-name="componentName"
       :show="isDialogOpened"
       @on-close-clicked="dialogStore.close()"

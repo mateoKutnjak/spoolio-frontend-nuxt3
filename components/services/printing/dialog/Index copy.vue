@@ -1,48 +1,98 @@
 <template>
-  <div class="card-body gap-10 p-0 m-0">
-    <div class="relative flex flex-col">
-      <client-only class="flex-1">
-        <PreviewSTL
-          class="w-92 h-[80vh] p-0 border-gray-400"
-          :stlFileUrl="unit.localUrl"
-        />
-      </client-only>
-      <div class="absolute top-0 left-0 right-0 py-4 px-6">
-        <div class="flex justify-between">
-          <div class="flex flex-col gap-3">
-            <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ unit.file.name }}</div>
+  <div class="card">
+    <div class="card-body gap-10">
+      <div class="flex gap-12">
+        <div class="flex flex-col gap-5">
+          <client-only class="flex-1">
+            <PreviewSTL
+              class="w-92 h-96 p-0 m-0 border-2 border-gray-400"
+              :stlFileUrl="unit.localUrl"
+            />
+          </client-only>
+          <div class="flex-none flex flex-col gap-3">
+            <div class="text-lg font-semibold"> {{ unit.file.name }}</div>
             <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
             <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
           </div>
-          <div class="flex flex-col justify-end items-end">
-            <ListboxMaterial
-              class="w-full"
-              :file-url="unit.localUrl"
-            />
-            <ListboxInfill
-              class="w-full"
-              :file-url="unit.localUrl"
-            />
-            <ListboxColor
-              class="w-full"
-              :file-url="unit.localUrl"
-            />
+          <div class="flex-1"></div>
+          <div class="flex-none">
+            <table class="table table-compact w-full rounded-md border border-1 rounded-md shadow-md">
+              <tbody class="">
+                <tr>
+                  <td class="text-md">ETA</td>
+                  <td class="text-md">TODO</td>
+                </tr>
+                <tr>
+                  <td class="text-md">Price per part</td>
+                  <td class="text-md">${{ (printOrderStore.getPriceByLocalUrl(unit.localUrl) / unit.quantity).toFixed(2) }}</td>
+                </tr>
+                <tr>
+                  <th class=" text-lg">Total price</th>
+                  <th class=" text-lg"> ${{ printOrderStore.getPriceByLocalUrl(unit.localUrl).toFixed(2) }}</th>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+        <ul>
+          <li class="my-3">
+            <ServicesPrintingDialogMaterialRadioGroup @on-material-selected="onMaterialSelected" />
+          </li>
+          <li class="my-3">
+            <ServicesPrintingDialogInfillRadioGroup @on-infill-selected="onInfillSelected" />
+          </li>
+          <li class="my-3">
+            <ServicesPrintingDialogColorRadioGroup @on-color-selected="onColorSelected" />
+          </li>
+          <li class="my-1">
+            <div class="
+              flex
+              flex-col
+              gap-4">
+              <div class="text-sm">4. Quantity</div>
+              <div class="flex gap-2 justify-start items-center">
+                <button
+                  class="btn btn-md btn-circle btn-ghost"
+                  @click="decreaseQuantity"
+                >
+                  <Icon
+                    class="text-gray-500"
+                    name="ic:round-minus"
+                    size="24"
+                  />
+                </button>
+                <div>
+                  <input
+                    type="number"
+                    v-model="quantity"
+                    class="bg-gray-50 w-14 h-12 text-xl text-center border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1"
+                    :max="999"
+                    :min="1"
+                    required
+                  >
+                </div>
+                <button
+                  class="btn btn-md btn-circle btn-ghost"
+                  @click="increaseQuantity"
+                >
+                  <Icon
+                    class="text-gray-500"
+                    name="ic:round-plus"
+                    size="24"
+                  />
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div class="absolute bottom-0 left-0 right-0 px-6 py-2">
-        <div class="flex justify-between items-start">
-          <IncreaseDecreaseQuantityButtons
-            :max="MAX_PRINT_QUANTITY"
-            :min="0"
-            :initialValue="quantity"
-            :key="quantity"
-            @on-decrease-value="decreaseQuantity"
-            @on-increase-value="increaseQuantity"
-            @on-value-set="(q) => setQuantity(q)"
-          />
-          <div class="text-4xl font-light text-gray-700">${{ price.toFixed(2) }}</div>
-        </div>
+      <div class="card-actions justify-between">
+
+        <button
+          class="btn btn-primary btn-lg btn-block "
+          @click="dialogStore.close()"
+        >Apply</button>
       </div>
     </div>
   </div>
@@ -50,7 +100,6 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
 import IFilamentColor, {
   useFilamentColorStore,
@@ -73,7 +122,7 @@ import {
 
 const { props } = defineProps(["props"]);
 
-const unit = props[0] as IPrintOrderUnitResponse; // todo error check
+const unit = props[0]; // todo error check
 
 const dialogStore = useDialogStore();
 const filamentColorStore = useFilamentColorStore();
@@ -108,8 +157,6 @@ onMounted(() => {
   attachmentImages.value = unit.attachmentImages || [];
 });
 
-const price = computed(() => printOrderStore.getPriceByLocalUrl(unit.localUrl));
-
 const fileSize = computed(() => {
   return fileSizeFormatted(unit.file);
 });
@@ -136,10 +183,6 @@ function decreaseQuantity() {
   } else {
     quantity.value = 1;
   }
-}
-
-function setQuantity(q: number) {
-  quantity.value = q;
 }
 
 watch(filamentColorStore.getFilamentColors, (value, oldValue, onInvalidate) => {

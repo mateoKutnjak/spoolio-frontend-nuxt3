@@ -3,7 +3,7 @@
     <Icon
       class="mr-2"
       name="gis:cube-3d"
-      size="30"
+      size="25"
     />
     <strong>{{ (data / 1000).toFixed(3) }}</strong>
     <div class="flex gap-0.5">

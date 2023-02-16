@@ -3,7 +3,7 @@
     <Icon
       class="mr-2"
       name="gis:coord-system-3d-alt"
-      size="30"
+      size="25"
     />
     <strong v-if="data">{{ data.x.toFixed(0)}}
       x
@@ -24,7 +24,7 @@ const globalsStore = useGlobalsStore();
 const { dimensionUnit } = storeToRefs(globalsStore);
 
 const { data } = defineProps<{
-  data: Vector3;
+  data: Vector3 | undefined;
 }>();
 </script>
 

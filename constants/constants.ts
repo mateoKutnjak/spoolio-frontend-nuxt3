@@ -15,6 +15,7 @@ export const MODELING_ORDER_ATTACHMENT_IMAGE_TYPES = [
 ]
 
 export const MAX_CART_ITEMS = 99;
+export const MAX_PRINT_QUANTITY = 299;
 
 export const MAX_FILE_SIZE_STL = 150 * 1024 * 1024 // MB
 

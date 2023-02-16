@@ -20,7 +20,7 @@
           leave-from-class="opacity-100"
           leave-to-class="opacity-0"
         >
-          <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <ListboxOptions class="absolute z-10 w-full mt-2 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             <ListboxOption
               v-slot="{ active, selected }"
               v-for="colors in filamentColors"
@@ -30,18 +30,12 @@
             >
               <li :class="[
                     active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                    'relative cursor-default select-none py-2 pl-10 pr-4',
+                    'relative cursor-default select-none py-2 px-4',
                   ]">
                 <span :class="[
-                      selected ? 'font-medium' : 'font-normal',
+                      selected ? 'font-medium' : 'font-base',
                       'block truncate',
                     ]">{{ colors.name }}</span>
-                <span
-                  v-if="selected"
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
-                >
-                  <Icon name="material-symbols:check" />
-                </span>
               </li>
             </ListboxOption>
           </ListboxOptions>
@@ -51,7 +45,7 @@
   </div>
 </template>
   
-  <script setup>
+<script lang="ts" setup>
 import {
   Listbox,
   ListboxLabel,
@@ -61,14 +55,30 @@ import {
 } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 import { useFilamentColorStore } from "~~/stores/filament_color";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
-const { filamentColorId } = defineProps(["filamentColorId"]);
+const { fileUrl } = defineProps<{
+  fileUrl: string;
+}>();
 
 const filamentColorStore = useFilamentColorStore();
+const printOrderStore = usePrintOrderStore();
 
 const { filamentColors } = storeToRefs(filamentColorStore);
+const printOrderUnit = printOrderStore.getUnitByLocalUrl(fileUrl);
+
+if (!printOrderUnit) {
+  console.error(`Print order unit is null for fileUrl=${fileUrl}`);
+  throw createError(`Print order unit is null for fileUrl=${fileUrl}`);
+}
 
 const selectedItem = ref(
-  filamentColors.value.find((el) => el.id === Number(filamentColorId))
+  filamentColors.value.find((el) => el.id === Number(printOrderUnit.color))
 );
+
+watch(selectedItem, (value) => {
+  if (value) {
+    printOrderStore.updateUnit(fileUrl, { color: value.id });
+  }
+});
 </script>
