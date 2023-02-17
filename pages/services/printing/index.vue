@@ -2,7 +2,15 @@
   <div>
     <div class="container p-12 px-0 lg:px-12">
       <div class="flex flex-col flex-grow gap-5 justify-between pt-4">
-        <div class="text-3xl font-light">Printing order</div>
+        <div class="flex justify-between">
+          <div class="text-3xl font-light">Printing order</div>
+          <div
+            class="btn btn-error"
+            :class="units.length ? '' : 'btn-disabled'"
+            @click="onClearOrder"
+          >Clear order</div>
+        </div>
+        <div class="divider"></div>
         <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
           <div class="flex gap-2 items-center px-4 py-3 rounded-lg bg-base-100 shadow">
             <div class="text-base text-gray-700 font-light"> Total price: </div>
@@ -65,45 +73,12 @@
           v-if="units.length"
           class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
         >
-          <thead class="text-xs text-gray-700 uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
-            <tr class="border-2">
-              <th
-                scope="col"
-                class="py-4"
-              >
-                <span class="sr-only">Image</span>
-              </th>
-              <th
-                scope="col"
-                class="py-4"
-              >
-                Product
-              </th>
-              <th
-                scope="col"
-                class="py-4"
-              >
-                Dimensions
-              </th>
-              <th
-                scope="col"
-                class="py-4 text-center"
-              >
-                Quantity
-              </th>
-              <th
-                scope="col"
-                class="py-4 px-8 text-center"
-              >
-                Price
-              </th>
-              <th
-                scope="col"
-                class="text-center"
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
+
+          <tbody
+            name="list"
+            is="vue:transition-group"
+            tag="tbody"
+          >
 
             <ServicesPrintingUnitTableRow
               v-for="item in units"
@@ -178,7 +153,10 @@
                         v-if="totalPrice == 10"
                         class="flex gap-1 items-center justify-end"
                       >
-                        <DropdownWarning dropdown-message="Minimum price we charge is 10$" />${{ totalPrice }}
+                        <DropdownWarning
+                          dropdown-message="Minimum price we charge is 10$"
+                          :text="`$${totalPrice}`"
+                        />
 
                       </div>
                       <div v-else-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
@@ -487,6 +465,10 @@ function removeUnit(unit: IPrintOrderUnitResponse) {
   printOrderStore.removeUnit(unit);
 }
 
+function onClearOrder() {
+  dialogStore.open("DialogConfirmClearPrintOrder", []);
+}
+
 function removeFile(file: File) {
   printOrderStore.removeAttachmentFile(<IPrintOrderAttachmentFileResponse>{
     file: file,
@@ -514,4 +496,32 @@ const submitHandler = async () => {
 </script>
 
 <style>
+.list-move {
+  transition: all 0.5s;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transform: scaleY(0) 1s;
+  /* transition: all 0.5s; */
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: scaleY(0);
+  transition: 1s;
+}
+
+.list .cont {
+  font-size: 0px;
+}
+
+.cell {
+  font-size: 24px;
+  border-left: 1px solid #888;
+  padding-left: 1em;
+  width: 4em;
+  display: inline-block;
+}
 </style>

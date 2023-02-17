@@ -1,15 +1,17 @@
 <template>
   <tr
-    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
-    <td class="px-6 pr-16 py-6 w-24 h-24">
-      <client-only class="flex-1">
-        <PreviewSTL
-          class="w-36 h-36 p-0 m-0 border border-gray-500 shadow-md"
-          :stlFileUrl="unit.localUrl"
-        />
-      </client-only>
+    <td class="px-6 pr-16 py-6 w-36">
+      <div class="w-36 h-36">
+        <client-only>
+          <PreviewSTL
+            class="w-36 h-36 p-0 m-0 border border-gray-500 shadow-md"
+            :stlFileUrl="unit.localUrl"
+          />
+        </client-only>
+      </div>
     </td>
     <td class="py-4">
       <div class="h-36 max-w-xs flex flex-col gap-3 justify-center">

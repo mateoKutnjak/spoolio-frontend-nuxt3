@@ -257,14 +257,9 @@ export const usePrintOrderStore = defineStore('print-order', {
     actions: {
 
         clear() {
-            this.paymentMethod = "";
-            this.shippingAddress = <IAddressResponse>{};
-            this.billingAddress = <IAddressResponse>{};
-            this.shippingMethod = <IShippingMethod>{};
-            this.units = [];
-            this.contactEmail = "";
-            this.attachmentFiles = [];
-            this.attachmentImages = []
+            this.units.splice(0, this.units.length);
+            this.attachmentFiles.splice(0, this.attachmentFiles.length);
+            this.attachmentImages.splice(0, this.attachmentImages.length);
         },
 
         async postOrder(): Promise<IPrintOrderResponse> {

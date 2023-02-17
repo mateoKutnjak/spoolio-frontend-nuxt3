@@ -31,7 +31,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useFilamentColorStore } from "~~/stores/filament_color";
 
-const { stlFileUrl } = defineProps(["stlFileUrl"]);
+const { stlFileUrl } = defineProps<{
+  stlFileUrl: string;
+}>();
 
 const filamentColorStore = useFilamentColorStore();
 const printOrderStore = usePrintOrderStore();
