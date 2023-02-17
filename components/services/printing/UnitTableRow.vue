@@ -1,6 +1,6 @@
 <template>
   <tr
-    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48"
+    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48 shadow"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
     <td class="px-6 pr-16 py-6 w-36">

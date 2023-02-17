@@ -71,11 +71,11 @@
         </div>
         <table
           v-if="units.length"
-          class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md"
+          class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
 
           <tbody
-            name="list"
+            name="slide-fade"
             is="vue:transition-group"
             tag="tbody"
           >
@@ -496,32 +496,15 @@ const submitHandler = async () => {
 </script>
 
 <style>
-.list-move {
-  transition: all 0.5s;
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
 }
-
-.list-enter-active,
-.list-leave-active {
-  transform: scaleY(0) 1s;
-  /* transition: all 0.5s; */
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: scaleY(0);
-  transition: 1s;
-}
-
-.list .cont {
-  font-size: 0px;
-}
-
-.cell {
-  font-size: 24px;
-  border-left: 1px solid #888;
-  padding-left: 1em;
-  width: 4em;
-  display: inline-block;
+.slide-fade-enter-from, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(150%);
+  transition: all 0.5s ease-in-out;
 }
 </style>
