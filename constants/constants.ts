@@ -27,3 +27,5 @@ export const PRICE_MARGIN_FACTOR = 3.0;
 export const LAYER_HEIGHT = 0.15; // millimeters
 export const LAYER_WIDTH = 0.45; // millimeters
 export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;
+
+export const PRINT_ORDER_FILES_TYPES = ['model/stl'];

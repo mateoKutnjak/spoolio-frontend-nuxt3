@@ -1,7 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
+import { useFilamentColorStore } from './filament_color';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentMaterialStore } from './filament_material';
 import { useGlobalsStore } from './globals';
@@ -36,7 +37,8 @@ export interface IPrintOrderUnitResponse {
     order: number | undefined,
     modelDimensions: Vector3 | undefined,
     modelVolume: number,
-    lengthUnit: string
+    lengthUnit: string,
+    screenshotURL: string,
 }
 
 export interface IPrintOrderResponse {
@@ -331,6 +333,72 @@ export const usePrintOrderStore = defineStore('print-order', {
 
         addUnit(unit: IPrintOrderUnitResponse) {
             this.units.push(unit);
+        },
+
+        async add3dModelFile(file: File) {
+            if (PRINT_ORDER_FILES_TYPES.indexOf(file.type) < 0) {
+                console.error(`Cannot add file type ${file.type} as 3d model. Supported models are ${PRINT_ORDER_FILES_TYPES}`);
+                return;
+            }
+
+            const filamentColorStore = useFilamentColorStore();
+            const filamentMaterialStore = useFilamentMaterialStore();
+            const filamentInfillStore = useFilamentInfillStore();
+            const globalsStore = useGlobalsStore();
+
+            if (!filamentColorStore.getFilamentColors.length) {
+                console.error(`Cannot add file as 3d model. No default filament color found`);
+                return;
+            }
+
+            if (!filamentMaterialStore.getFilamentMaterials.length) {
+                console.error(`Cannot add file as 3d model. No default filament infill found`);
+                return;
+            }
+
+            if (!filamentInfillStore.getFilamentInfills.length) {
+                console.error(`Cannot add file as 3d model. No default filament infill found`);
+                return;
+            }
+
+            const localUrl = URL.createObjectURL(file);
+            const { modelVolume, modelDimensions } = await preprocess3dObject(localUrl);
+
+            create3dObjectScreenshot(localUrl, filamentColorStore.getFilamentColors[0].value, 400, 400, blob => {
+                this.units.push(<IPrintOrderUnitResponse>{
+                    id: undefined,
+                    quantity: 1,
+                    color: filamentColorStore.getFilamentColors[0].id,
+                    material: filamentMaterialStore.getFilamentMaterials[0].id,
+                    infill: filamentInfillStore.getFilamentInfills[0].id,
+                    estimatedPrice: 0,
+                    file: file,
+                    comment: "TODO",
+                    localUrl: localUrl,
+                    attachmentFiles: [],
+                    attachmentImages: [],
+                    order: undefined,
+                    modelDimensions: modelDimensions,
+                    modelVolume: modelVolume,
+                    lengthUnit: DimensionUnit[globalsStore.getDimensionUnit],
+                    screenshotURL: URL.createObjectURL(blob)
+                });
+            })
+        },
+
+        updateScreenshot(localUrl: string) {
+            const unit = this.getUnitByLocalUrl(localUrl);
+
+            if (!unit) {
+                console.log(`Cannot update screenshot. Unit with local URL ${localUrl} does not exist`);
+                return;
+            }
+
+            const filamentColorStore = useFilamentColorStore();
+
+            create3dObjectScreenshot(localUrl, filamentColorStore.getFilamentColorById(unit.color)?.value, 400, 400, blob => {
+                this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob) });
+            })
         },
 
         updateUnit(localUrl: string, fieldUpdate: any) {

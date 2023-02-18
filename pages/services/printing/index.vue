@@ -236,7 +236,9 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
+import {
+  MAX_FILE_SIZE_STL,
+} from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentColorStore } from "~~/stores/filament_color";
@@ -429,27 +431,7 @@ function onFilesAdded(files: File[]) {
         localUrl: URL.createObjectURL(element),
       });
     } else {
-      printOrderStore.addUnit(<IPrintOrderUnitResponse>{
-        id: undefined,
-        quantity: 1,
-        color: filamentColorStore.getFilamentColors[0].id,
-        material: filamentMaterialStore.getFilamentMaterials[0].id,
-        infill: filamentInfillStore.getFilamentInfills[0].id,
-        estimatedPrice: 20,
-        file: element,
-        comment: "TODO",
-        localUrl: URL.createObjectURL(element),
-        attachmentFiles: [],
-        attachmentImages: [],
-        order: undefined,
-        modelDimensions: undefined,
-        modelVolume: 0,
-        lengthUnit: DimensionUnit[dimensionUnit.value],
-      });
-
-      console.log(
-        "Current units " + printOrderStore.getUnits.map((el) => el.localUrl)
-      );
+      printOrderStore.add3dModelFile(element);
     }
   }
 }

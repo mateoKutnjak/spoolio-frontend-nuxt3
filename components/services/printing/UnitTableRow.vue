@@ -5,12 +5,11 @@
   >
     <td class="px-6 pr-16 py-6 w-36">
       <div class="w-36 h-36">
-        <client-only>
-          <PreviewSTL
-            class="w-36 h-36 p-0 m-0 border border-gray-500 shadow-md"
-            :stlFileUrl="unit.localUrl"
-          />
-        </client-only>
+        <nuxt-img
+          class="w-36 h-36 p-0 m-0 border border-gray-500 shadow-md"
+          :src="unit.screenshotURL"
+        >
+        </nuxt-img>
       </div>
     </td>
     <td class="py-4">
@@ -62,9 +61,7 @@
         <input
           type="number"
           class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          :value="unit.quantity"
-          :min="1"
-          :max="MAX_PRINT_QUANTITY"
+          v-model="unit.quantity"
           @input="updateValue"
           @blur="handleBlur"
           @click.stop.prevent
@@ -315,6 +312,7 @@ function duplicateUnit() {
     order: unit.order,
     modelDimensions: unit.modelDimensions,
     modelVolume: unit.modelVolume,
+    screenshotURL: unit.screenshotURL,
     lengthUnit: DimensionUnit[dimensionUnit.value],
   });
 }

@@ -79,6 +79,7 @@ const selectedItem = ref(
 watch(selectedItem, (value) => {
   if (value) {
     printOrderStore.updateUnit(fileUrl, { color: value.id });
+    printOrderStore.updateScreenshot(fileUrl);
   }
 });
 </script>

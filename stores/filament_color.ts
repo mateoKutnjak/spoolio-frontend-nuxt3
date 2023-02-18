@@ -15,6 +15,9 @@ export const useFilamentColorStore = defineStore('filament-color', {
 
     getters: {
         getFilamentColors: (state) => state.filamentColors,
+        getFilamentColorById: (state) => {
+            return (id: number) => state.filamentColors.find((item) => item.id === id);
+        },
     },
 
     actions: {
