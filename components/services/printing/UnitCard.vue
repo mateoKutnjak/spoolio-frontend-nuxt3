@@ -144,10 +144,6 @@ onMounted(() => {
   attachmentImages.value = unit.attachmentImages || [];
 });
 
-const fileSize = computed(() => {
-  return fileSizeFormatted(unit.file);
-});
-
 const totalPrice = computed(() => {
   return printOrderStore.getPriceByLocalUrl(unit.localUrl);
 });

@@ -55,7 +55,6 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
         canvas: experience,
         alpha: true,
         antialias: true,
-        preserveDrawingBuffer: true
     });
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -124,5 +123,7 @@ function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
     let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
     camera.position.x = largestDimension * 0.5;
     camera.position.y = largestDimension * 0.5;
-    camera.position.z = largestDimension * 2.5;
+    camera.position.z = largestDimension * 1.75;
+    
+    camera.lookAt(new Vector3())
 }
