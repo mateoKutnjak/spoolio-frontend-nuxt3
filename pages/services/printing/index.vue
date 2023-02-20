@@ -2,58 +2,59 @@
   <div>
     <div class="container p-12 px-0 lg:px-12">
       <div class="flex flex-col flex-grow gap-5 justify-between pt-4">
-        <div class="flex justify-between">
+        <div class="flex flex-col gap-5 sm:flex-row justify-between">
           <div class="text-3xl font-light">Printing order</div>
-          <div
-            class="btn btn-error"
-            :class="units.length ? '' : 'btn-disabled'"
-            @click="onClearOrder"
-          >Clear order</div>
+          <div class="flex gap-4 items-end">
+            <DimensionUnitDropdown class="self-end" />
+            <div
+              class="btn btn-error"
+              :class="units.length ? '' : 'btn-disabled'"
+              @click="onClearOrder"
+            >Clear order</div>
+          </div>
         </div>
         <div class="divider"></div>
-        <div class="px-6 md:px-0 flex gap-2 justify-between items-end">
-          <div class="flex gap-2 items-center px-4 py-3 rounded-lg bg-base-100 shadow">
+        <div class="mx-4 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
+          <div class="flex items-center">
             <div class="text-base text-gray-700 font-light"> Total price: </div>
-            <div>
-              <div
-                v-if="totalPrice == 10"
-                class="flex gap-1 items-center justify-end"
-              >
-                <DropdownWarning
-                  dropdown-message="Minimum price we charge is 10$"
-                  :text="`$${totalPrice}`"
-                />
+            <div
+              v-if="totalPrice == 10"
+              class="flex gap-1 items-center justify-end"
+            >
+              <DropdownWarning
+                dropdown-message="Minimum price we charge is 10$"
+                :text="`$${totalPrice}`"
+              />
 
-              </div>
-              <div v-else-if="totalPrice >= 0">
-                <div class="text-lg font-medium text-gray-700 ">
-                  ${{totalPrice.toFixed(2)}}
-                </div>
-              </div>
-              <div v-else>
-                <Icon
-                  class="text-gray-500"
-                  name="eos-icons:three-dots-loading"
-                />
+            </div>
+            <div v-else-if="totalPrice >= 0">
+              <div class="text-lg font-medium text-gray-700 ">
+                ${{totalPrice.toFixed(2)}}
               </div>
             </div>
-            <div class="px-1"></div>
-            <div class="text-base text-gray-700 font-light"> ETA: </div>
-            <div>
-              <strong
-                class="text-md font-medium"
-                v-if="etaSeconds > Number.NEGATIVE_INFINITY"
-              >{{reformatSeconds(etaSeconds)}}</strong>
-              <div v-else>
-                <Icon
-                  class="text-gray-900 pt-1.5"
-                  name="eos-icons:three-dots-loading"
-                  size="30"
-                />
-              </div>
+            <div v-else>
+              <Icon
+                class="text-gray-500"
+                name="eos-icons:three-dots-loading"
+              />
             </div>
           </div>
-          <DimensionUnitDropdown class="self-end" />
+          <div class="px-1"></div>
+          <div class="flex gap-2 items-center">
+            <div class="text-base text-gray-700 font-light"> ETA: </div>
+
+            <strong
+              class="text-md font-medium"
+              v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+            >{{reformatSeconds(etaSeconds)}}</strong>
+            <div v-else>
+              <Icon
+                class="text-gray-900 pt-1.5"
+                name="eos-icons:three-dots-loading"
+                size="30"
+              />
+            </div>
+          </div>
         </div>
         <div class="block lg:hidden">
           <div

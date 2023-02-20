@@ -15,9 +15,9 @@
             />
           </div>
 
-          <div class="absolute top-4 right-4 btn btn-circle border-none bg-white">
+          <div class="absolute top-4 right-4 btn btn-circle border-none bg-white shadow hover:bg-gray-200">
             <Icon
-              class="text-gray-500"
+              class="text-red-300"
               name="mdi:cards-heart-outline"
               size="25"
             />
