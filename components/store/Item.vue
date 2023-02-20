@@ -6,12 +6,12 @@
 
           <div
             v-if="product?.productimage_set?.length"
-            class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
+            class="h-44 flex justify-center bg-gray-100"
           >
             <nuxt-img
-              class="rounded-2xl h-44"
+              class="h-full"
               :src="product?.productimage_set[0].image"
-              fit="contain"
+              fit="inside"
             />
           </div>
 
@@ -68,5 +68,5 @@ const notificationStore = useNotificationStore();
 const { product } = defineProps(["product"]); // props
 </script>
     
-    <style>
+<style>
 </style>

@@ -15,15 +15,11 @@
             <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
           </div>
           <div class="flex flex-col gap-1 justify-end items-end">
-            <ListboxMaterial
+            <ListboxSpool
               class="w-full"
               :file-url="unit.localUrl"
             />
             <ListboxInfill
-              class="w-full"
-              :file-url="unit.localUrl"
-            />
-            <ListboxColor
               class="w-full"
               :file-url="unit.localUrl"
             />
@@ -52,17 +48,14 @@
 import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
-import IFilamentColor, {
-  useFilamentColorStore,
-} from "~~/stores/filament_color";
 import {
   IFilamentInfill,
   useFilamentInfillStore,
 } from "~~/stores/filament_infill";
 import {
-  IFilamentMaterial,
-  useFilamentMaterialStore,
-} from "~~/stores/filament_material";
+  IFilamentSpool,
+  useFilamentSpoolStore,
+} from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import {
   IPrintOrderAttachmentFileResponse,
@@ -76,22 +69,16 @@ const { props } = defineProps(["props"]);
 const unit = props[0] as IPrintOrderUnitResponse; // todo error check
 
 const dialogStore = useDialogStore();
-const filamentColorStore = useFilamentColorStore();
-const filamentMaterialStore = useFilamentMaterialStore();
+const filamentSpoolStore = useFilamentSpoolStore();
 const filamentInfillStore = useFilamentInfillStore();
 const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
 
-const colors = ref<IFilamentColor[]>(filamentColorStore.getFilamentColors);
-const materials = ref<IFilamentMaterial[]>(
-  filamentMaterialStore.getFilamentMaterials
-);
 const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
-const selectedMaterial = ref<number>();
-const selectedColor = ref<number>();
+const selectedSpool = ref<number>();
 const selectedInfill = ref<number>();
 const quantity = ref<number>(1);
 const comment = ref<string>("");
@@ -99,8 +86,7 @@ const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 
 onMounted(() => {
-  selectedColor.value = unit.color;
-  selectedMaterial.value = unit.material;
+  selectedSpool.value = unit.spool;
   selectedInfill.value = unit.infill;
   comment.value = unit.comment;
   quantity.value = unit.quantity;
@@ -109,22 +95,6 @@ onMounted(() => {
 });
 
 const price = computed(() => printOrderStore.getPriceByLocalUrl(unit.localUrl));
-
-const fileSize = computed(() => {
-  return fileSizeFormatted(unit.file);
-});
-
-function getMaterialName(): string {
-  return materials.value.find((el) => el.id === unit.material)?.name || "null";
-}
-
-function getInfillPercentage(): number {
-  return infills.value.find((el) => el.id === unit.infill)?.percentage || 0;
-}
-
-function getColorValue(): string {
-  return colors.value.find((el) => el.id === unit.color)?.value || "#000000";
-}
 
 function increaseQuantity() {
   quantity.value = Number(quantity.value) + 1;
@@ -142,30 +112,8 @@ function setQuantity(q: number) {
   quantity.value = q;
 }
 
-watch(filamentColorStore.getFilamentColors, (value, oldValue, onInvalidate) => {
-  colors.value = value;
-});
-
-watch(
-  filamentMaterialStore.getFilamentMaterials,
-  (value, oldValue, onInvalidate) => {
-    materials.value = value;
-  }
-);
-
-watch(
-  filamentInfillStore.getFilamentInfills,
-  (value, oldValue, onInvalidate) => {
-    infills.value = value;
-  }
-);
-
-watch(selectedColor, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { color: value });
-});
-
-watch(selectedMaterial, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { material: value });
+watch(selectedSpool, (value, oldValue, onInvalidate) => {
+  printOrderStore.updateUnit(unit.localUrl, { spool: value });
 });
 
 watch(selectedInfill, (value, oldValue, onInvalidate) => {
@@ -187,62 +135,6 @@ watch(attachmentFiles, (value, oldValue, onInvalidate) => {
 watch(attachmentImages, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { attachmentImages: value });
 });
-
-function onColorSelected(color: IFilamentColor) {
-  selectedColor.value = color.id;
-}
-
-function onInfillSelected(infill: IFilamentInfill) {
-  selectedInfill.value = infill.id;
-}
-
-function onMaterialSelected(material: IFilamentMaterial) {
-  selectedMaterial.value = material.id;
-}
-
-function duplicateUnit() {
-  printOrderStore.addUnit(<IPrintOrderUnitResponse>{
-    id: undefined,
-    quantity: quantity.value,
-    color: selectedColor.value,
-    material: selectedMaterial.value,
-    infill: selectedInfill.value,
-    estimatedPrice: unit.estimatedPrice,
-    file: unit.file,
-    comment: comment.value,
-    localUrl: URL.createObjectURL(unit.file),
-    attachmentFiles: [], // todo
-    attachmentImages: [], // todo
-    order: undefined,
-    lengthUnit: DimensionUnit[dimensionUnit.value],
-    modelVolume: 0,
-    modelDimensions: unit.modelDimensions,
-  });
-}
-
-function removeUnit() {
-  console.log("Deleting unit with URL " + unit.localUrl);
-
-  printOrderStore.removeUnitByFileLocalUrl(unit.localUrl);
-}
-
-function onAttachmentFilesChange(e: any) {
-  console.log("HERE");
-  console.log(attachmentFiles.value);
-
-  var files = Array.from<File>(e.target.files);
-  for (let index = 0; index < files.length; index++) {
-    const element = files[index];
-
-    // todo if file is image put is in attachmentImages
-
-    attachmentFiles.value.push(<IPrintOrderAttachmentFileResponse>{
-      file: element,
-      localUrl: URL.createObjectURL(element),
-      comment: "EMPTY TODO",
-    });
-  }
-}
 </script>
   
   <style scoped>

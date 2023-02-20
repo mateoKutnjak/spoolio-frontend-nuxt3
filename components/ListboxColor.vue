@@ -54,17 +54,17 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
-import { useFilamentColorStore } from "~~/stores/filament_color";
+import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { fileUrl } = defineProps<{
   fileUrl: string;
 }>();
 
-const filamentColorStore = useFilamentColorStore();
+const filamentSpoolStore = useFilamentSpoolStore();
 const printOrderStore = usePrintOrderStore();
 
-const { filamentColors } = storeToRefs(filamentColorStore);
+const { filamentSpools } = storeToRefs(filamentSpoolStore);
 const printOrderUnit = printOrderStore.getUnitByLocalUrl(fileUrl);
 
 if (!printOrderUnit) {
@@ -73,7 +73,7 @@ if (!printOrderUnit) {
 }
 
 const selectedItem = ref(
-  filamentColors.value.find((el) => el.id === Number(printOrderUnit.color))
+  filamentSpoolStore.getColorsForCurrentMaterial(printOrderUnit.spool)
 );
 
 watch(selectedItem, (value) => {

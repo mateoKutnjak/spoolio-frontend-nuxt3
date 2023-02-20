@@ -111,17 +111,11 @@
 import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
-import IFilamentColor, {
-  useFilamentColorStore,
-} from "~~/stores/filament_color";
 import {
   IFilamentInfill,
   useFilamentInfillStore,
 } from "~~/stores/filament_infill";
-import {
-  IFilamentMaterial,
-  useFilamentMaterialStore,
-} from "~~/stores/filament_material";
+import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import {
   IPrintOrderAttachmentFileResponse,
@@ -130,34 +124,29 @@ import {
   usePrintOrderStore,
 } from "~~/stores/print_order";
 
-const { unit } = defineProps(["unit"]);
+const { unit } = defineProps<{
+  unit: IPrintOrderUnitResponse;
+}>();
 
 const dialogStore = useDialogStore();
 const globalsStore = useGlobalsStore();
-const filamentColorStore = useFilamentColorStore();
-const filamentMaterialStore = useFilamentMaterialStore();
+const filamentSpoolStore = useFilamentSpoolStore();
 const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
 
-const colors = ref<IFilamentColor[]>(filamentColorStore.getFilamentColors);
-const materials = ref<IFilamentMaterial[]>(
-  filamentMaterialStore.getFilamentMaterials
-);
 const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
-const selectedMaterial = ref<number>();
-const selectedColor = ref<number>();
-const selectedInfill = ref<number>();
 const comment = ref<string>("");
 const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
 const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
 
+const printOrderUnit = computed(() =>
+  printOrderStore.getUnitByLocalUrl(unit.localUrl)
+);
+
 onMounted(() => {
-  selectedColor.value = unit.color;
-  selectedMaterial.value = unit.material;
-  selectedInfill.value = unit.infill;
   comment.value = unit.comment;
   attachmentFiles.value = unit.attachmentFiles || [];
   attachmentImages.value = unit.attachmentImages || [];
@@ -172,19 +161,29 @@ const totalPrice = computed(() => {
 });
 
 function getMaterialName(): string {
-  return materials.value.find((el) => el.id === unit.material)?.name || "null";
+  if (printOrderUnit.value) {
+    return (
+      filamentSpoolStore.getById(printOrderUnit.value.spool)?.material.name ||
+      "null"
+    );
+  }
+  console.error("Print order unit is null when displaying material name");
+  return "null";
 }
 
 function getInfillPercentage(): number {
   return infills.value.find((el) => el.id === unit.infill)?.percentage || 0;
 }
 
-function getColorValue(): string {
-  return colors.value.find((el) => el.id === unit.color)?.value || "#000000";
-}
-
 function getColorName(): string {
-  return colors.value.find((el) => el.id === unit.color)?.name || "null";
+  if (printOrderUnit.value) {
+    return (
+      filamentSpoolStore.getById(printOrderUnit.value!.spool)?.color.name ||
+      "null"
+    );
+  }
+  console.error("Print order unit is null when displaying material name");
+  return "null";
 }
 
 function increaseQuantity() {
@@ -242,35 +241,12 @@ function handleBlur(event: Event) {
   }
 }
 
-watch(filamentColorStore.getFilamentColors, (value, oldValue, onInvalidate) => {
-  colors.value = value;
-});
-
-watch(
-  filamentMaterialStore.getFilamentMaterials,
-  (value, oldValue, onInvalidate) => {
-    materials.value = value;
-  }
-);
-
 watch(
   filamentInfillStore.getFilamentInfills,
   (value, oldValue, onInvalidate) => {
     infills.value = value;
   }
 );
-
-watch(selectedColor, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { color: value });
-});
-
-watch(selectedMaterial, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { material: value });
-});
-
-watch(selectedInfill, (value, oldValue, onInvalidate) => {
-  printOrderStore.updateUnit(unit.localUrl, { infill: value });
-});
 
 watch(comment, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { comment: value });
@@ -284,25 +260,12 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { attachmentImages: value });
 });
 
-function onColorSelected(color: IFilamentColor) {
-  selectedColor.value = color.id;
-}
-
-function onInfillSelected(infill: IFilamentInfill) {
-  selectedInfill.value = infill.id;
-}
-
-function onMaterialSelected(material: IFilamentMaterial) {
-  selectedMaterial.value = material.id;
-}
-
 function duplicateUnit() {
   printOrderStore.addUnit(<IPrintOrderUnitResponse>{
     id: undefined,
     quantity: unit.quantity,
-    color: selectedColor.value,
-    material: selectedMaterial.value,
-    infill: selectedInfill.value,
+    spool: unit.spool,
+    infill: unit.infill,
     estimatedPrice: unit.estimatedPrice,
     file: unit.file,
     comment: comment.value,

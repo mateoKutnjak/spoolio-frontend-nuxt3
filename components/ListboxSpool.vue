@@ -9,7 +9,7 @@
     >
       <div class="relative mt-1">
         <ListboxButton class="relative z-0 w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-          <span class="block truncate">{{ selectedItem.name }}</span>
+          <span class="block truncate">{{ selectedItem.material.name }} {{ selectedItem.color.name }}</span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <Icon name="charm:chevrons-up-down" />
           </span>
@@ -23,9 +23,9 @@
           <ListboxOptions class="absolute z-10 mt-2 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             <ListboxOption
               v-slot="{ active, selected }"
-              v-for="material in availableMaterials"
-              :key="material.name"
-              :value="material"
+              v-for="spool in filamentSpools"
+              :key="spool.id"
+              :value="spool"
               as="template"
             >
               <li :class="[
@@ -35,7 +35,7 @@
                 <span :class="[
                       selected ? 'font-medium' : 'font-base',
                       'block truncate',
-                    ]">{{ material.name }}</span>
+                    ]">{{ spool.material.name }} {{ spool.color.name }}</span>
               </li>
             </ListboxOption>
           </ListboxOptions>
@@ -74,23 +74,13 @@ if (!printOrderUnit) {
 }
 
 const selectedItem = ref(
-  filamentSpoolStore.getById(printOrderUnit.spool)?.material
+  filamentSpools.value.find((el) => el.id === Number(printOrderUnit.spool))
 );
-
-const availableMaterials = computed(() => filamentSpoolStore.getMaterials);
 
 watch(selectedItem, (value) => {
   if (value) {
-    const spoolsWithSelectedMaterial = filamentSpoolStore.getByMaterialId(
-      value.id
-    );
-    if (!spoolsWithSelectedMaterial) {
-      console.error(`No spools for material ${value.name}`);
-      return;
-    }
-    printOrderStore.updateUnit(fileUrl, {
-      spool: spoolsWithSelectedMaterial[0],
-    });
+    printOrderStore.updateUnit(fileUrl, { spool: value.id });
+    printOrderStore.updateScreenshot(fileUrl);
   }
 });
 </script>

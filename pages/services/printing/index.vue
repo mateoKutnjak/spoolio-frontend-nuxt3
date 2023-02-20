@@ -241,9 +241,8 @@ import {
 } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
-import { useFilamentColorStore } from "~~/stores/filament_color";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
-import { useFilamentMaterialStore } from "~~/stores/filament_material";
+import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import { useNotificationStore } from "~~/stores/notification";
 import {
@@ -257,8 +256,7 @@ import { useShippingMethodStore } from "~~/stores/shipping_method";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
-const filamentColorStore = useFilamentColorStore();
-const filamentMaterialStore = useFilamentMaterialStore();
+const filamentSpoolStore = useFilamentSpoolStore();
 const filamentInfillStore = useFilamentInfillStore();
 const globalsStore = useGlobalsStore();
 const notificationStore = useNotificationStore();
@@ -294,19 +292,12 @@ const etaSeconds = computed(() => {
 });
 
 onMounted(async () => {
-  await filamentColorStore
-    .fetchFilamentColors()
+  await filamentSpoolStore
+    .fetchFilamentSpools()
     .then(() => {})
     .catch((err) => notificationStore.showFetchError(err));
 
-  console.log("Colors fetched successfuly TODO");
-
-  await filamentMaterialStore
-    .fetchFilamentMaterials()
-    .then(() => {})
-    .catch((err) => notificationStore.showFetchError(err));
-
-  console.log("Materials fetched successfuly TODO");
+  console.log("Spools fetched successfuly TODO");
 
   await filamentInfillStore
     .fetchFilamentInfills()

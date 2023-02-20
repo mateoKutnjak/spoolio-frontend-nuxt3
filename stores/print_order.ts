@@ -2,9 +2,8 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
-import { useFilamentColorStore } from './filament_color';
 import { useFilamentInfillStore } from './filament_infill';
-import { useFilamentMaterialStore } from './filament_material';
+import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { IShippingMethod } from './shipping_method';
 
@@ -26,8 +25,7 @@ export interface IPrintOrderUnitResponse {
     id: number | undefined,
     comment: string,
     quantity: number,
-    color: number, // color id
-    material: number, // material id
+    spool: number,
     infill: number,
     file: File,
     localUrl: string,
@@ -132,7 +130,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         getContactEmail: (state) => state.contactEmail,
         getPriceByLocalUrl: (state) => {
             return (localUrl: string) => {
-                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentSpoolStore = useFilamentSpoolStore()
                 const filamentInfillStore = useFilamentInfillStore()
 
                 const unit = state.units.find(el => el.localUrl === localUrl)
@@ -150,10 +148,10 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const I = unit?.infill ? filamentInfillStore.getPercentageById(unit.infill) : undefined;
 
                 // * Density of material
-                const D = unit?.material ? filamentMaterialStore.getDensityById(unit.material) : undefined;
+                const D = unit?.spool ? filamentSpoolStore.getById(unit.spool)?.material.density : undefined;
 
                 // * Price of material per gram
-                const G = unit?.material ? filamentMaterialStore.getPriceById(unit.material) : undefined;
+                const G = unit?.spool ? filamentSpoolStore.getById(unit.spool)?.material.price : undefined;
 
                 // * Quantity
                 const q = unit?.quantity;
@@ -177,7 +175,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         },
         getTotalPrice: (state) => {
             return Math.max(state.units.reduce((acc, item) => {
-                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentSpoolStore = useFilamentSpoolStore()
                 const filamentInfillStore = useFilamentInfillStore()
 
                 const v = item.modelVolume;
@@ -189,8 +187,8 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const q = item.quantity;
                 const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
-                const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
-                const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
+                const d = item.spool ? filamentSpoolStore.getById(item.spool)?.material.density : undefined;
+                const p = item.spool ? filamentSpoolStore.getById(item.spool)?.material.price : undefined;
 
                 if (!v || !q || !i || !d || !p || !vBbox) {
                     console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
@@ -219,7 +217,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         getETASeconds: (state) => {
             return state.units.reduce((acc, item) => {
 
-                const filamentMaterialStore = useFilamentMaterialStore()
+                const filamentSpoolStore = useFilamentSpoolStore()
                 const filamentInfillStore = useFilamentInfillStore()
 
                 const objVolume = item.modelVolume;
@@ -233,7 +231,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
                 // const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
                 // const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
-                const vPrint = item.material ? filamentMaterialStore.getPrintingSpeedById(item.material) : undefined;
+                const vPrint = item.spool ? filamentSpoolStore.getById(item.spool)?.material.printing_speed : undefined;
 
                 if (!objVolume || !q || !i || !vPrint || !vBbox) {
                     console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
@@ -298,8 +296,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
-            formData.append("color", unit.color.toString());
-            formData.append("material", unit.material.toString());
+            formData.append("spool", unit.spool.toString());
             formData.append("infill", unit.infill.toString());
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
@@ -341,18 +338,12 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            const filamentColorStore = useFilamentColorStore();
-            const filamentMaterialStore = useFilamentMaterialStore();
+            const filamentSpoolStore = useFilamentSpoolStore();
             const filamentInfillStore = useFilamentInfillStore();
             const globalsStore = useGlobalsStore();
 
-            if (!filamentColorStore.getFilamentColors.length) {
+            if (!filamentSpoolStore.getAll.length) {
                 console.error(`Cannot add file as 3d model. No default filament color found`);
-                return;
-            }
-
-            if (!filamentMaterialStore.getFilamentMaterials.length) {
-                console.error(`Cannot add file as 3d model. No default filament infill found`);
                 return;
             }
 
@@ -364,12 +355,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             const localUrl = URL.createObjectURL(file);
             const { modelVolume, modelDimensions } = await preprocess3dObject(localUrl);
 
-            create3dObjectScreenshot(localUrl, filamentColorStore.getFilamentColors[0].value, 400, 400, blob => {
+            create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
                 this.units.push(<IPrintOrderUnitResponse>{
                     id: undefined,
                     quantity: 1,
-                    color: filamentColorStore.getFilamentColors[0].id,
-                    material: filamentMaterialStore.getFilamentMaterials[0].id,
+                    spool: filamentSpoolStore.getAll[0].id,
                     infill: filamentInfillStore.getFilamentInfills[0].id,
                     estimatedPrice: 0,
                     file: file,
@@ -394,9 +384,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            const filamentColorStore = useFilamentColorStore();
+            const filamentSpoolStore = useFilamentSpoolStore();
 
-            create3dObjectScreenshot(localUrl, filamentColorStore.getFilamentColorById(unit.color)?.value, 400, 400, blob => {
+            create3dObjectScreenshot(localUrl, filamentSpoolStore.getById(unit.spool)?.color.value, 400, 400, blob => {
                 this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob) });
             })
         },

@@ -5,14 +5,16 @@
   >
     <div class="card-body gap-5">
       <div class="flex gap-5 justify-between items-center">
-        <client-only>
-          <PreviewSTL
-            class="w-24 h-24 p-0 m-0 border border-gray-400"
-            :stlFileUrl="unit.localUrl"
-          />
-        </client-only>
+        <div class="">
+          <nuxt-img
+            class="p-0 m-0 border border-gray-500 shadow-md"
+            :src="unit.screenshotURL"
+            sizes="sm:11vw md:50vw lg:400px"
+          >
+          </nuxt-img>
+        </div>
         <div class="flex flex-col gap-1 flex-1">
-          <div class="font-semibold text-gray-900 dark:text-white">
+          <div class="text-lg text-gray-900 font-light dark:text-white line-clamp-1">
             {{ unit.file.name }}
           </div>
           <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />

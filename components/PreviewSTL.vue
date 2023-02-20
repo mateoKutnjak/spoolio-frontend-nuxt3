@@ -29,13 +29,13 @@ import {
 import { useElementSize } from "@vueuse/core";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { usePrintOrderStore } from "~~/stores/print_order";
-import { useFilamentColorStore } from "~~/stores/filament_color";
+import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 
 const { stlFileUrl } = defineProps<{
   stlFileUrl: string;
 }>();
 
-const filamentColorStore = useFilamentColorStore();
+const filamentSpoolStore = useFilamentSpoolStore();
 const printOrderStore = usePrintOrderStore();
 
 const printOrderUnit = printOrderStore.getUnitByLocalUrl(stlFileUrl);
@@ -106,9 +106,7 @@ const geometry = await load(stlFileUrl);
 // *** OBJECT MODELING *** //
 
 const meshColor =
-  filamentColorStore.getFilamentColors.find(
-    (el) => el.id === printOrderUnit.color
-  )?.value || "#EAEAEA";
+  filamentSpoolStore.getById(printOrderUnit.spool)?.color.value || "#EAEAEA";
 
 const mesh = new Mesh(
   geometry,
@@ -160,8 +158,7 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   }
 
   const colorStringValue =
-    filamentColorStore.getFilamentColors.find((el) => el.id === item.color)
-      ?.value || "#EAEAEA";
+    filamentSpoolStore.getById(printOrderUnit.spool)?.color.value || "#EAEAEA";
   const colorStringValueTrimmed = colorStringValue.substring(1);
   const parsed = parseInt(colorStringValueTrimmed, 16);
 
