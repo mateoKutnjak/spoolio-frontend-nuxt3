@@ -16,7 +16,7 @@
         <div class="divider"></div>
         <div class="mx-4 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
           <div class="flex items-center">
-            <div class="text-base text-gray-700 font-light"> Total price: </div>
+            <div class="text-base text-gray-700 font-light mr-2"> Total price: </div>
             <div
               v-if="totalPrice == 10"
               class="flex gap-1 items-center justify-end"
