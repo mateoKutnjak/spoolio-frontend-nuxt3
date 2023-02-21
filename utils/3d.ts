@@ -123,7 +123,7 @@ function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
     let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
     camera.position.x = largestDimension * 0.5;
     camera.position.y = largestDimension * 0.5;
-    camera.position.z = largestDimension * 1.75;
-    
+    camera.position.z = largestDimension * 2;
+
     camera.lookAt(new Vector3())
 }

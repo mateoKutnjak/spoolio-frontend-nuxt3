@@ -20,11 +20,14 @@
 </template>
     
     <script lang="ts" setup>
-import ICommentResponse, { useCommentListStore } from "~~/stores/commentList";
+import { useCommentListStore } from "~~/stores/commentList";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "~~/stores/auth";
 
-const { blogId } = defineProps(["blogId"]);
+const { objectId, contentType } = defineProps<{
+  objectId: number;
+  contentType: string,
+}>();
 
 const authStore = useAuthStore();
 const commentStore = useCommentListStore();
@@ -50,10 +53,11 @@ const submitHandler = async () => {
 
   submitted.value = true;
   commentStore
-    .postBlogComment(
+    .postComment(
       Number(authStore.getUser?.id),
       content.value,
-      Number(blogId)
+      objectId,
+      contentType
     )
     .then(() => {
       notificationStore.show("Comment posted", ToastLevel.success());

@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
+import { HTTP_REQUEST_TIMEOUT, PAGE_SIZE } from '~~/constants/constants'
 import { promiseWithTimeout } from '~~/utils/promise'
 import { IUserResponse, useAuthStore } from './auth'
 
@@ -30,14 +30,14 @@ export const useCommentListStore = defineStore('comment-list', {
 
     getters: {
         getComments: (state) => state,
+        getCommentCount: (state) => state.count || 0,
     },
 
     actions: {
-        async fetchComments(blog: number, limit: number = 10, offset: number = 0, append: boolean = false) {
-
+        async fetchComments(objectId: number, contentType: string, limit: number = PAGE_SIZE, offset: number = 0, append: boolean = false) {
             return promiseWithTimeout<ICommentListResponse>(
                 new Promise<ICommentListResponse>((resolve, reject) => {
-                    customFetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=blog&object_id=${blog}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
                         method: 'GET',
                     }
                     ).then((response: ICommentListResponse) => {
@@ -45,11 +45,9 @@ export const useCommentListStore = defineStore('comment-list', {
                         this.next = response.next;
                         this.previous = response.previous;
 
-                        if (append)
-                        {
+                        if (append) {
                             this.comments = [...this.comments, ...response.results];
-                        } else
-                        {
+                        } else {
                             this.comments = response.results;
                         }
 
@@ -64,14 +62,14 @@ export const useCommentListStore = defineStore('comment-list', {
             );
         },
 
-        async postBlogComment(user: number, content: string, blogId: number,) {
+        async postComment(user: number, content: string, objectId: number, contentType: string) {
             const authStore = useAuthStore();
 
             var body: { [name: string]: any } = {
                 user: user,
                 content: content,
-                content_type: CONTENT_TYPE_BLOG,
-                object_id: blogId,
+                content_type: contentType,
+                object_id: objectId,
             };
 
             return promiseWithTimeout(new Promise<ICommentResponse>((resolve, reject) => {
@@ -96,7 +94,6 @@ export const useCommentListStore = defineStore('comment-list', {
     },
 })
 
-if (import.meta.hot)
-{
+if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useCommentListStore, import.meta.hot))
 }

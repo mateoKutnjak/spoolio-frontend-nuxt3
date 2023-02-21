@@ -50,36 +50,11 @@
       </div>
 
       <div class="divider h-0"></div>
-      <div class="flex flex-col">
-        <CommentForm
-          :blog-id="id"
-          class="justify-end"
-        />
-      </div>
-      <div
-        v-if="getComments.comments.length > 0"
-        class="flex flex-col "
-      >
-        <h3
-          v0if
-          class="mb-4 text-lg font-semibold text-gray-900"
-        >Comments</h3>
-        <div class="space-y-4">
-          <div
-            :key="comment.id"
-            v-for="comment in getComments.comments"
-          >
-            <CommentItem :comment="comment" />
-          </div>
-        </div>
 
-      </div>
-      <div
-        v-else
-        class="flex justify-center italic"
-      >
-        No comments yet
-      </div>
+      <CommentList
+        :object-id="objectId"
+        :content-type="CONTENT_TYPE_BLOG"
+      />
     </div>
   </div>
 
@@ -87,16 +62,16 @@
     
     <script lang="ts" setup>
 import IBlogResponse, { useBlogStore } from "~/stores/blog";
+import { CONTENT_TYPE_BLOG } from "~~/constants/constants";
 import { IUserResponse, useAuthStore } from "~~/stores/auth";
 import ICommentResponse from "~~/stores/commentList";
-import { useCommentListStore } from "~~/stores/commentList";
 import { useNotificationStore } from "~~/stores/notification";
 
 const { id } = useRoute().params;
+const objectId = Number(id);
 
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
-const commentListStore = useCommentListStore();
 const notificationStore = useNotificationStore();
 
 const blog = ref<IBlogResponse>();
@@ -112,17 +87,11 @@ onMounted(() => {
       showInitLoading.value = false;
     })
     .catch((err) => notificationStore.showFetchError(err));
-  commentListStore
-    .fetchComments(Number(id)).catch((err) => notificationStore.showFetchError(err));
 });
 
 const getBlog = computed(() => {
   blog.value = blogStore.getBlog;
   return blogStore.getBlog;
-});
-
-const getComments = computed(() => {
-  return commentListStore.getComments;
 });
 
 const getUser = computed(() => {
@@ -139,10 +108,6 @@ const hasAnyName = computed(() => {
 
 watch(getBlog, (value, old, invalidate) => {
   blog.value = value;
-});
-
-watch(getComments, (value, old, invalidate) => {
-  comments.value = value.comments;
 });
 
 watch(getUser, (value, old, invalidate) => {
