@@ -4,6 +4,7 @@ export const CONTENT_TYPE_ORDER_UNIT = 'orderunit';
 export const CONTENT_TYPE_ORDER = 'printorder';
 export const CONTENT_TYPE_MODELING_ORDER = 'modelingorder';
 export const CONTENT_TYPE_BLOG = 'blog';
+export const CONTENT_TYPE_PRODUCT = 'product';
 
 export const TOAST_DURATION_MEDIUM = 5000;
 

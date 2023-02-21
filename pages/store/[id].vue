@@ -7,7 +7,7 @@
           class="flex flex-col gap-3 items-center mx-auto"
         >
           <nuxt-img
-            class="rounded-2xl h-96 "
+            class="rounded-2xl h-96 shadow-md"
             :src="product?.productimage_set[currentImageIndex].image"
             fit="cover"
           />
@@ -39,30 +39,31 @@
           </div>
         </div>
         <div class="text-gray-700">{{product?.description}}</div>
+        <RatingList
+          v-if="product"
+          :object-id="product?.id"
+          :content-type="CONTENT_TYPE_PRODUCT"
+          :rated-by-me="product.rated_by_me"
+        />
       </div>
       <aside class="md:sticky order-first md:order-last top-8 col-span-3 h-full">
         <div class="card border border-gray-300 rounded-2xl shadow-md bg-white">
-          <div class="card-body gap-10">
-            <div class="card-title gap-12 items-center">
-              <div class="flex-1">{{product?.title}}</div>
-              <div class="flex gap-2">
-                <RatingStars />
-                <div class="text-sm font-normal">(45)</div>
-              </div>
+          <div class="card-body">
+            <div class="card-title items-center mb-6">
+              <div class="flex-1 font-light text-xl text-gray-800 dark:text-white">{{product?.title}}</div>
+              <RatingPreview
+                :rating-value="product?.average_rating || 0"
+                :rating-count="product?.rating_count || 0"
+              />
             </div>
-            <div
-              :class="activeOptionsCombination?.sku ? 'text-success' : 'text-error'"
-              class="font-bold text-lg"
-            >{{ activeOptionsCombination?.sku ? activeOptionsCombination?.sku : 'Not '}} available in stock </div>
-            <div class="flex-1 flex flex-col gap-5">
+            <div class="flex-1 flex flex-col gap-3">
               <div
-                class="flex flex-col gap-1"
                 v-for="[variationName, variations] in productVariationOptions"
                 :key="variationName"
               >
-                <div class="flex gap-1 items-start">
-                  <div class="text-gray-700 text-base font-medium">{{ variationName }}</div>
-                  <div class="dropdown dropdown-end">
+                <div class="flex gap-4 items-center">
+                  <div class="text-gray-700 font-light text-lg text-gray-800 dark:text-white">{{ variationName }}</div>
+                  <!-- <div class="dropdown dropdown-end">
                     <label
                       tabindex="0"
                       class="btn btn-ghost btn-xs text-info text-xs"
@@ -77,29 +78,53 @@
                         <p>TODO variation description</p>
                       </div>
                     </div>
+                  </div> -->
+                  <div class="btn-group gap-1">
+                    <div
+                      class="btn btn-outline btn-xs border-gray-400 text-gray-600"
+                      :class="productVariationOptionSelections.get(variationName) === index ? 'btn-active' : ''"
+                      v-for="option, index in variations"
+                      :key="option.title"
+                      @click="setOption(variationName, index)"
+                    >{{ option.title }}
+                    </div>
                   </div>
                 </div>
-                <div class="btn-group gap-1">
-                  <div
-                    class="btn btn-outline btn-sm border-gray-400 text-gray-600"
-                    :class="productVariationOptionSelections.get(variationName) === index ? 'btn-active' : ''"
-                    v-for="option, index in variations"
-                    :key="option.title"
-                    @click="setOption(variationName, index)"
-                  >{{ option.title }}
-                  </div>
-                </div>
+              </div>
+              <div
+                v-if="activeOptionsCombination?.sku"
+                class="flex gap-2 items-center text-center mt-6 font-normal text-lg text-gray-700 dark:text-white"
+              >
+                <Icon
+                  class="text-success"
+                  name="material-symbols:check-circle-rounded"
+                  size="25"
+                />{{ activeOptionsCombination?.sku }} available in stock
+              </div>
+              <div
+                v-else
+                class="flex gap-2 items-center text-center mt-6 font-normal text-lg text-gray-700 dark:text-white"
+              >
+                <Icon
+                  class="text-error"
+                  name="material-symbols:cancel-rounded"
+                  size="25"
+                />
+                Out of stock
               </div>
             </div>
+            <div class="divider m-3"></div>
+
             <div class="card-actions gap-12 justify-between items-center">
               <div v-if="activeOptionsCombination?.price">
-                <div class="text-3xl font-semibold text-gray-700">{{`$${activeOptionsCombination?.price}`}}</div>
+                <div class="text-3xl font-light text-xl text-gray-800 dark:text-white">
+                  {{`$${activeOptionsCombination?.price}`}}
+                </div>
               </div>
               <div v-else>
-                <div class="text-3xl font-semibold text-gray-700">-</div>
               </div>
               <button
-                class="btn btn-info gap-1"
+                class="btn btn-success gap-1"
                 :class="activeOptionsCombination?.price ? '' : 'btn-disabled' "
                 @click="addToCart"
               >
@@ -126,6 +151,7 @@ import {
 import { useCartStore } from "~~/stores/cart";
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
+import { CONTENT_TYPE_PRODUCT } from "~~/constants/constants";
 
 const { id } = useRoute().params;
 

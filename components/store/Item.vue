@@ -2,46 +2,43 @@
   <div class="h-full">
     <NuxtLink :to="`/store/${product.id}/`">
       <div class="card bg-base-100 border-1 rounded-md shadow-md h-full">
-        <div class="relative">
 
-          <div
-            v-if="product?.productimage_set?.length"
-            class="h-44 flex justify-center bg-gray-100"
-          >
-            <nuxt-img
-              class="h-full"
-              :src="product?.productimage_set[0].image"
-              fit="inside"
-            />
-          </div>
-
-          <div class="absolute top-4 right-4 btn btn-circle border-none bg-white shadow hover:bg-gray-200">
-            <Icon
-              class="text-red-300"
-              name="mdi:cards-heart-outline"
-              size="25"
-            />
-          </div>
-
+        <div
+          v-if="product?.productimage_set?.length"
+          class="h-44 flex justify-center bg-gray-100"
+        >
+          <nuxt-img
+            class="h-full"
+            :src="product?.productimage_set[0].image"
+            fit="inside"
+          />
         </div>
         <div class="card-body gap-5">
           <div class="flex-1 flex justify-between">
             <div class="flex flex-col gap-1">
-              <h2 class="card-title text-base text-gray-700">{{product.title}}</h2>
-              <p class="text-gray-700 line-clamp-2">{{ product.description }}</p>
+              <div class="mb-2 text-xl text-gray-600 font-normal dark:text-white line-clamp-1">{{product.title}}</div>
+              <p class="text-sm text-gray-500 font-normal dark:text-white line-clamp-2">{{ product.description }}</p>
             </div>
             <div
               v-if="product.starting_price"
               class="flex gap-0.5 items-start"
             >
-              <div class="text-2xl font-bold text-gray-700">${{product.starting_price}}</div>
-              <div class="font-bold text-gray-700">00</div>
+              <div class="font-light text-xl text-gray-800 dark:text-white">${{product.starting_price}}</div>
+              <div class="font-light text-sm text-gray-800">00</div>
             </div>
             <div v-else></div>
           </div>
-          <div class="flex gap-2 items-center">
-            <RatingStars />
-            <div class="text-sm font-normal">(45)</div>
+          <div v-if="product?.rating_count">
+            <RatingPreview
+              :rating-value="product?.average_rating || 0"
+              :rating-count="product?.rating_count || 0"
+            />
+          </div>
+          <div
+            v-else
+            class="text-sm font-light italic text-gray-500"
+          >
+            No ratings yet
           </div>
           <div class="btn btn-outline gap-1 rounded-3xl border-2 border-gray-500 text-gray-600">
             <Icon

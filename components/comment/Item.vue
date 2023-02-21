@@ -1,13 +1,12 @@
 <template>
   <div class="flex">
     <div class="flex-shrink-0 mr-3">
-      <UserAvatar :user-data="comment?.user"/>
+      <UserAvatar :user-data="comment?.user" />
     </div>
     <div class="border bg-white rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed text-gray-700">
-      <strong v-if="!comment.user.profile?.first_name && !comment.user.profile?.last_name">Anonymous</strong>
-      <strong v-else>{{(comment.user.profile?.first_name || '')}} {{comment.user.profile?.last_name || ''}}</strong>
+      <strong>{{ displayUserName }}</strong>
       <span class="text-xs text-gray-400 px-2">{{reformatDate(comment.created_at)}}</span>
-      <p class="text-sm">
+      <p class="text-sm mt-1">
         {{comment.content}}
       </p>
     </div>
@@ -15,24 +14,22 @@
 </template>
   
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~~/stores/auth";
+import { IUserResponse } from "~~/stores/auth";
+import ICommentResponse from "~~/stores/commentList";
 
-const authStore = useAuthStore();
+const { comment } = defineProps<{
+  comment: ICommentResponse;
+}>();
 
-const { comment } = defineProps(["comment"]);
-
-const { user } = storeToRefs(authStore);
-
-const hasAnyName = computed(() => {
-  return comment.user.profile?.first_name || comment.user.profile?.last_name;
-});
-
-const isCurrentyLoggedUser = computed(() => {
-  if (comment.user?.email && user.value?.email) {
-    return comment.user.email === user.value?.email;
+const displayUserName = computed(() => {
+  if ((comment.user as IUserResponse).profile) {
+    return (
+      (comment.user as IUserResponse).profile?.first_name +
+      " " +
+      (comment.user as IUserResponse).profile?.last_name
+    );
   }
-  return false;
+  return "Anonymous";
 });
 </script>
   

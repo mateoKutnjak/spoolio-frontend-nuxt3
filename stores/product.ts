@@ -7,10 +7,13 @@ export interface IProductResponse {
     description: string,
     comment_count: number,
     like_count: number,
+    rating_count: number,
     productvariationoption_set: IProductVariationOptionResponse[],
     productimage_set: IProductImageResponse[],
     starting_price: number,
     ending_price: number,
+    average_rating: number,
+    rated_by_me: boolean,
 }
 
 export interface IProductImageResponse {
@@ -18,7 +21,16 @@ export interface IProductImageResponse {
     comment: string,
 }
 
-export interface IProductVariationResponse {
+export interface IProductVariatconst displayUserName = computed(() => {
+    if ((rating.user as IUserResponse).profile) {
+      return (
+        (rating.user as IUserResponse).profile?.first_name +
+        " " +
+        (rating.user as IUserResponse).profile?.last_name
+      );
+    }
+    return "Anonymous";
+  });onResponse {
     id: number,
     name: string,
 }
