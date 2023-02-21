@@ -21,16 +21,7 @@ export interface IProductImageResponse {
     comment: string,
 }
 
-export interface IProductVariatconst displayUserName = computed(() => {
-    if ((rating.user as IUserResponse).profile) {
-      return (
-        (rating.user as IUserResponse).profile?.first_name +
-        " " +
-        (rating.user as IUserResponse).profile?.last_name
-      );
-    }
-    return "Anonymous";
-  });onResponse {
+export interface IProductVariationResponse {
     id: number,
     name: string,
 }
