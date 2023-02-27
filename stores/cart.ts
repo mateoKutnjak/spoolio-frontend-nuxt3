@@ -21,6 +21,7 @@ export interface IStoreOrderResponse {
     billing_address: IAddressResponse,
     shipping_method: IShippingMethod,
     total_price: number,
+    payment_method: string,
     status: string,
 }
 
@@ -40,11 +41,14 @@ function reformatItems(cartItems: Map<number, [IProductVariationOptionCombinatio
 export const useCartStore = defineStore('cart', {
     state: () => ({
         cartItems: new Map<number, [IProductVariationOptionCombinationResponse, number]>,
-        paymentMethod: "",
-        contactEmail: "",
-        shippingAddress: <IAddressResponse>{},
-        billingAddress: <IAddressResponse>{},
-        shippingMethod: <IShippingMethod>{},
+
+        store_order: <IStoreOrderResponse>{
+            contact_email: '',
+            shipping_address: <IAddressResponse>{},
+            billing_address: <IAddressResponse>{},
+            shipping_method: <IShippingMethod>{},
+            payment_method: '',
+        },
     }),
 
     getters: {
@@ -97,11 +101,13 @@ export const useCartStore = defineStore('cart', {
     actions: {
         clear() {
             this.cartItems = new Map<number, [IProductVariationOptionCombinationResponse, number]>();
-            this.paymentMethod = "";
-            this.contactEmail = "";
-            this.shippingAddress = <IAddressResponse>{};
-            this.billingAddress = <IAddressResponse>{};
-            this.shippingMethod = <IShippingMethod>{};
+            this.store_order = <IStoreOrderResponse>{
+                payment_method: "",
+                contact_email: '',
+                shipping_address: <IAddressResponse>{},
+                billing_address: <IAddressResponse>{},
+                shipping_method: <IShippingMethod>{}
+            };
         },
         add(combinationId: number, combination: IProductVariationOptionCombinationResponse) {
             const cartItemsCopy = new Map<number, [IProductVariationOptionCombinationResponse, number]>(this.cartItems);
@@ -142,11 +148,11 @@ export const useCartStore = defineStore('cart', {
             const authStore = useAuthStore();
 
             const body = {
-                contact_email: this.contactEmail,
-                shipping_address: this.shippingAddress,
-                billing_address: this.billingAddress,
-                shipping_method: this.shippingMethod.id,
-                payment_method: this.paymentMethod,
+                contact_email: this.store_order.contact_email,
+                shipping_address: this.store_order.shipping_address,
+                billing_address: this.store_order.billing_address,
+                shipping_method: this.store_order.shipping_method.id,
+                payment_method: this.store_order.payment_method,
                 user_profile: authStore.getUser?.profile?.id,
                 items: reformatItems(this.cartItems),
             }

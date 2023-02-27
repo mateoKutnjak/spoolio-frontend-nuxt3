@@ -55,12 +55,13 @@ const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { contactEmail } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
 
 const email = ref("");
 
 onMounted(() => {
-  email.value = contactEmail.value || user.value?.profile?.email || "";
+  email.value =
+    print_order.value?.contact_email || user.value?.profile?.email || "";
 });
 
 function onUseDefaultClicked() {
@@ -73,7 +74,11 @@ function onUseDefaultClicked() {
 }
 
 function submitHandler() {
-  contactEmail.value = email.value;
+  if (!print_order.value) {
+    throw createError("Print order for this id is undefined");
+  }
+
+  print_order.value.contact_email = email.value;
   dialogStore.close();
 }
 </script>

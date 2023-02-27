@@ -43,24 +43,15 @@
 
 <script lang="ts" setup>
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { storeToRefs } from "pinia";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
-import { useAuthStore } from "~~/stores/auth";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 import { useNotificationStore } from "~~/stores/notification";
 
-const authStore = useAuthStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
 const notificationStore = useNotificationStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 const storeOrderHistoryStore = useStoreOrderHistoryStore();
-
-const getUser = computed(() => authStore.getUser);
-
-if (!getUser.value) {
-  throw createError("Cannot access this site if you are not authenticated");
-}
 
 printOrderHistoryStore
   .fetchPrintOrderHistoryPaginated()

@@ -5,14 +5,14 @@
   >
     <div
       class="w-full"
-      v-if="paymentMethod && Object.keys(paymentMethod).length"
+      v-if="store_order?.payment_method && Object.keys(store_order.payment_method).length"
     >
       <div class="flex gap-3 font-normal">
         <Icon
           name="noto-v1:credit-card"
           size="26"
         />
-        <div>{{paymentMethod}}</div>
+        <div>{{store_order.payment_method}}</div>
       </div>
     </div>
     <div v-else>
@@ -35,10 +35,11 @@ import { useNotificationStore } from "~~/stores/notification";
 const cartStore = useCartStore();
 const notificationStore = useNotificationStore();
 
-const { paymentMethod } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 onMounted(() => {
-  paymentMethod.value = "Credit card";
+  console.error("TODO check if shipping address updates (see linr below)");
+  store_order.value!.payment_method = "Credit card";
 });
 
 function onClicked() {

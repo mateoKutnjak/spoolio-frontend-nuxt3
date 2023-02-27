@@ -11,8 +11,8 @@
         <div
           v-if="order"
           class="btn btn-ghost btn-sm px-5 text-gray-700"
-          :style="`background-color: ${printOrderStatusBackgroundColor(order.status)}`"
-        >{{ printOrderStatusReformat(order.status) }}</div>
+          :style="`background-color: ${OrderStatus.all[order.status].colorHex}`"
+        >{{ OrderStatus.all[order.status].display_name }}</div>
 
       </div>
     </div>
@@ -20,17 +20,17 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
+import { OrderStatus } from "~~/constants/constants";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
-import {
-  printOrderStatusReformat,
-  printOrderStatusBackgroundColor,
-} from "~~/stores/print_order";
 const { orderId } = defineProps(["orderId"]);
 
 const storeOrderHistoryStore = useStoreOrderHistoryStore();
 
 const order = storeOrderHistoryStore.getOrderById(orderId);
+
+if (!order) {
+  throw createError(`No order with giver id ${orderId}`);
+}
 </script>
 
 <style>

@@ -15,7 +15,7 @@
               <div class="flex gap-5 justify-start">
                 <FormKit
                   type="text"
-                  v-model="contactEmail"
+                  v-model="modeling_order.contact_email"
                   placeholder="Contact e-mail"
                   validation="email|required"
                   validation-visibility="submit"
@@ -38,7 +38,7 @@
               </div>
               <FormKit
                 type="textarea"
-                v-model="comment"
+                v-model="modeling_order.comment"
                 rows="1"
                 placeholder="What can we do for you?"
                 validation="required"
@@ -144,11 +144,9 @@ import { useDialogStore } from "~~/stores/dialog";
 import {
   IModelingOrderAttachmentFileResponse,
   IModelingOrderAttachmentImageResponse,
-  IModelingOrderResponse,
   useModelingOrderStore,
 } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
-import { IPrintOrderAttachmentFileResponse } from "~~/stores/print_order";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -156,7 +154,7 @@ const notificationStore = useNotificationStore();
 const modelingOrderStore = useModelingOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { contactEmail, comment } = storeToRefs(modelingOrderStore);
+const { modeling_order } = storeToRefs(modelingOrderStore);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
@@ -216,7 +214,7 @@ async function submitHandler() {
 
 function onUseDefaultContactEmail() {
   if (user.value?.profile?.email) {
-    contactEmail.value = user.value?.profile?.email;
+    modeling_order.value.contact_email = user.value?.profile?.email;
   }
 }
 </script>

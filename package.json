@@ -31,12 +31,13 @@
     "@formkit/themes": "^1.0.0-beta.12",
     "@headlessui/vue": "^1.7.4",
     "@pinia/nuxt": "^0.4.4",
+    "@stripe/stripe-js": "^1.47.0",
     "@tailwindcss/typography": "^0.5.8",
     "markdown-it": "^13.0.1",
     "nuxt-vue3-google-signin": "^0.0.8",
     "ofetch": "^1.0.0",
     "pinia": "^2.0.24",
-    "stripe": "^11.6.0",
+    "stripe": "^11.11.0",
     "three": "^0.134.0"
   },
   "rules": {

@@ -3,8 +3,8 @@
     class="w-full btn btn-ghost border-gray-300 text-start text-base justify-start px-4 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
     @click="openDialog"
   >
-    <div v-if="contactEmail">
-      <h1 class="font-normal">{{contactEmail}}</h1>
+    <div v-if="store_order?.contact_email">
+      <h1 class="font-normal">{{store_order.contact_email}}</h1>
     </div>
     <div v-else>
       <div class="flex gap-2 items-center italic font-normal text-gray-500">
@@ -31,20 +31,28 @@ const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 
 const { user } = storeToRefs(authStore);
-const { contactEmail } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 onMounted(() => {
-  if (!contactEmail.value || !Object.keys(contactEmail.value)) {
+  if (!store_order.value) {
+    throw createError("Printing order undefined");
+  }
+
+  if (
+    !store_order.value.contact_email ||
+    !Object.keys(store_order.value.contact_email)
+  ) {
     if (user.value?.profile?.email) {
-      contactEmail.value = user.value.profile.email;
+      console.error("TODO check if email updates (see linr below)");
+      store_order.value!.contact_email = user.value.profile.email;
     }
   }
 
-  context.node.input(contactEmail.value || "");
+  context.node.input(store_order.value?.contact_email || "");
 });
 
-watch(contactEmail, (value) => {
-  context.node.input(value);
+watch(store_order, (value) => {
+  context.node.input(value.contact_email);
 });
 
 function openDialog() {

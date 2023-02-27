@@ -16,13 +16,13 @@
       class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
-      <div v-if="Object.keys(shippingAddress).length">
+      <div v-if="store_order?.shipping_address && Object.keys(store_order.shipping_address).length">
         <div class="flex flex-col text-start text-base text-gray-800">
-          <strong>{{shippingAddress.first_name}} {{shippingAddress.last_name}}</strong>
-          <p class="font-normal">{{shippingAddress.address}} </p>
-          <p class="font-normal">{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
-          <p class="font-normal">{{shippingAddress.country}}</p>
-          <p class="font-normal">{{shippingAddress.phone_number}}</p>
+          <strong>{{store_order.shipping_address.first_name}} {{store_order.shipping_address.last_name}}</strong>
+          <p class="font-normal">{{store_order.shipping_address.address}} </p>
+          <p class="font-normal">{{store_order.shipping_address.locality}} {{store_order.shipping_address.postal_code}}</p>
+          <p class="font-normal">{{store_order.shipping_address.country}}</p>
+          <p class="font-normal">{{store_order.shipping_address.phone_number}}</p>
         </div>
       </div>
       <div v-else>
@@ -47,16 +47,21 @@ const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 
 const { user } = storeToRefs(authStore);
-const { shippingAddress } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 onMounted(() => {
-  if (!Object.keys(shippingAddress.value).length) {
+  if (!store_order.value) {
+    throw createError("Printing order undefined");
+  }
+
+  if (!Object.keys(store_order.value.shipping_address).length) {
     if (user.value?.profile?.shipping_address) {
-      shippingAddress.value = user.value.profile.shipping_address;
+      console.error("TODO check if shipping address updates (see linr below)");
+      store_order.value!.shipping_address = user.value.profile.shipping_address;
     }
   }
 
-  if (isValidShippingAddress(shippingAddress.value)) {
+  if (isValidShippingAddress(store_order.value!.shipping_address)) {
     context.node.input("1");
   } else {
     context.node.input("");
@@ -64,9 +69,9 @@ onMounted(() => {
 });
 
 watch(
-  shippingAddress,
+  store_order,
   (value) => {
-    if (isValidShippingAddress(value)) {
+    if (isValidShippingAddress(value.shipping_address)) {
       context.node.input("1");
     } else {
       context.node.input("");

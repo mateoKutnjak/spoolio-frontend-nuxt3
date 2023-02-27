@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, OrderStatus, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
 import { IAddressResponse, useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
@@ -52,34 +52,10 @@ export interface IPrintOrderResponse {
     contact_email: string,
     shipping_address: IAddressResponse,
     billing_address: IAddressResponse,
+    shipping_method: IShippingMethod,
+    payment_method: string,
     estimated_price: number,
     status: string,
-}
-
-export function printOrderStatusReformat(status: string): string {
-    var result = status.replace("_", " ");
-    return result.charAt(0).toUpperCase() + result.slice(1);
-}
-
-export function printOrderStatusBackgroundColor(status: string): string {
-    switch (status) {
-        case "reviewing":
-            return "#cbd5e1";
-        case "estimating_price":
-            return '#d1d5db'
-        case "rejected":
-            return "#fca5a5";
-        case "awaiting_payment":
-            return "#fcd34d";
-        case "in_progress":
-            return "#38bdf8";
-        case "shipped":
-            return "#14b8a6";
-        case "delivered":
-            return "#84cc16";
-        default:
-            return "green";
-    }
 }
 
 async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number): Promise<IPrintOrderAttachmentFileResponse> {
@@ -108,15 +84,16 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
 
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
-        paymentMethod: "",
-        contactEmail: "",
-        shippingAddress: <IAddressResponse>{},
-        billingAddress: <IAddressResponse>{},
-        shippingMethod: <IShippingMethod>{},
+        print_order: <IPrintOrderResponse>{
+            contact_email: '',
+            shipping_address: <IAddressResponse>{},
+            billing_address: <IAddressResponse>{},
+            payment_method: '',
+        },
         units: [] as IPrintOrderUnitResponse[],
         attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
         attachmentImages: [] as IPrintOrderAttachmentImageResponse[],
-    }),
+   }),
 
     getters: {
         getAttachmentFiles: (state) => state.attachmentFiles,
@@ -127,7 +104,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return state.units.find(el => el.localUrl === localUrl);
             }
         },
-        getContactEmail: (state) => state.contactEmail,
+        getContactEmail: (state) => state.print_order?.contact_email || '',
         getPriceByLocalUrl: (state) => {
             return (localUrl: string) => {
                 const filamentSpoolStore = useFilamentSpoolStore()
@@ -267,13 +244,13 @@ export const usePrintOrderStore = defineStore('print-order', {
             const authStore = useAuthStore();
 
             const body = {
-                contact_email: this.contactEmail,
-                shipping_address: this.shippingAddress,
-                billing_address: this.billingAddress,
-                shipping_method: this.shippingMethod.id,
-                payment_method: this.paymentMethod,
+                contact_email: this.print_order?.contact_email || '',
+                shipping_address: this.print_order?.shipping_address || '',
+                billing_address: this.print_order?.billing_address || '',
+                shipping_method: this.print_order?.shipping_method.id || '',
+                payment_method: this.print_order?.payment_method || '',
                 user_profile: authStore.getUser?.profile?.id,
-                estimated_price: 999. // TODO
+                estimated_price: this.getTotalPrice.toFixed(2) || 99999,
             }
 
             return promiseWithTimeout<IPrintOrderResponse>(new Promise<IPrintOrderResponse>((resolve, reject) => {

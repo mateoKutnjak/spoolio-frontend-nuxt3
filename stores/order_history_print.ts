@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { IPrintOrderResponse } from './print_order'
+import { useAuthStore } from "../stores/auth";
 
 interface IPrintOrderListResponse {
     count: number,
@@ -38,6 +39,49 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
                         this.print_orders = [...this.print_orders, ...response.results];
                     } else {
                         this.print_orders = response.results;
+                    }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchPrintOrderById(id: number) {
+            return promiseWithTimeout<IPrintOrderResponse>(new Promise((resolve, reject) => {
+                customFetch<IPrintOrderResponse>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+                    method: 'GET',
+                }).then((response: IPrintOrderResponse) => {
+                    this.print_orders.push(response);
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async updatePrintOrderStatusById(id: number, status: string) {
+
+            const authStore = useAuthStore();
+
+            return promiseWithTimeout<IPrintOrderResponse>(new Promise((resolve, reject) => {
+                customFetch<IPrintOrderResponse>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`
+                    },
+                    body: {
+                        status: status,
+                    },
+                }).then((response: IPrintOrderResponse) => {
+                    const index = this.print_orders.findIndex(el => el.id === id);
+
+                    if (index != -1) {
+                        this.print_orders[index] = response;
+                    } else {
+                        console.error("Print order with id cannot be find locally. Refresh please");
+                        reject("Print order with id cannot be find locally. Refresh please")
                     }
 
                     resolve(response)

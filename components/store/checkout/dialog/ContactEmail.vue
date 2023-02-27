@@ -55,12 +55,13 @@ const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
-const { contactEmail } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 const email = ref("");
 
 onMounted(() => {
-  email.value = contactEmail.value || user.value?.profile?.email || "";
+  email.value =
+    store_order.value?.contact_email || user.value?.profile?.email || "";
 });
 
 function onUseDefaultClicked() {
@@ -73,7 +74,11 @@ function onUseDefaultClicked() {
 }
 
 function submitHandler() {
-  contactEmail.value = email.value;
+  if (!store_order.value) {
+    throw createError("Print order for this id is undefined");
+  }
+
+  store_order.value.contact_email = email.value;
   dialogStore.close();
 }
 </script>

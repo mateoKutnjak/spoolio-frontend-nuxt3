@@ -117,7 +117,7 @@ const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { shippingAddress } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
 
 const shippingAddressCountry = ref("");
 const shippingAddressFirstName = ref("");
@@ -131,15 +131,19 @@ const shippingAddressPhoneNumber = ref("");
 const submittingGeneralInfo = ref(false);
 
 onMounted(() => {
-  if (Object.keys(shippingAddress.value).length) {
-    shippingAddressCountry.value = shippingAddress.value.country || "";
-    shippingAddressFirstName.value = shippingAddress.value.first_name || "";
-    shippingAddressLastName.value = shippingAddress.value.last_name || "";
-    shippingAddressStreetAddress.value = shippingAddress.value.address || "";
-    shippingAddressCity.value = shippingAddress.value.locality || "";
-    shippingAddressState.value = shippingAddress.value.state || "";
-    shippingAddressPostalCode.value = shippingAddress.value.postal_code || "";
-    shippingAddressPhoneNumber.value = shippingAddress.value.phone_number || "";
+  if (!print_order.value) {
+    throw createError('Print order for this id is undefined');
+  }
+
+  if (Object.keys(print_order.value.shipping_address).length) {
+    shippingAddressCountry.value = print_order.value.shipping_address.country || "";
+    shippingAddressFirstName.value = print_order.value.shipping_address.first_name || "";
+    shippingAddressLastName.value = print_order.value.shipping_address.last_name || "";
+    shippingAddressStreetAddress.value = print_order.value.shipping_address.address || "";
+    shippingAddressCity.value = print_order.value.shipping_address.locality || "";
+    shippingAddressState.value = print_order.value.shipping_address.state || "";
+    shippingAddressPostalCode.value = print_order.value.shipping_address.postal_code || "";
+    shippingAddressPhoneNumber.value = print_order.value.shipping_address.phone_number || "";
   } else if (user.value?.profile?.shipping_address) {
     shippingAddressCountry.value =
       user?.value?.profile?.shipping_address.country || "";
@@ -185,14 +189,18 @@ function onUseDefaultClicked() {
 }
 
 function submitHandler() {
-  shippingAddress.value.country = shippingAddressCountry.value;
-  shippingAddress.value.first_name = shippingAddressFirstName.value;
-  shippingAddress.value.last_name = shippingAddressLastName.value;
-  shippingAddress.value.address = shippingAddressStreetAddress.value;
-  shippingAddress.value.locality = shippingAddressCity.value;
-  shippingAddress.value.state = shippingAddressState.value;
-  shippingAddress.value.postal_code = shippingAddressPostalCode.value;
-  shippingAddress.value.phone_number = shippingAddressPhoneNumber.value;
+  if (!print_order.value) {
+    throw createError('Print order for this id is undefined');
+  }
+
+  print_order.value.shipping_address.country = shippingAddressCountry.value;
+  print_order.value.shipping_address.first_name = shippingAddressFirstName.value;
+  print_order.value.shipping_address.last_name = shippingAddressLastName.value;
+  print_order.value.shipping_address.address = shippingAddressStreetAddress.value;
+  print_order.value.shipping_address.locality = shippingAddressCity.value;
+  print_order.value.shipping_address.state = shippingAddressState.value;
+  print_order.value.shipping_address.postal_code = shippingAddressPostalCode.value;
+  print_order.value.shipping_address.phone_number = shippingAddressPhoneNumber.value;
 
   dialogStore.close();
 }

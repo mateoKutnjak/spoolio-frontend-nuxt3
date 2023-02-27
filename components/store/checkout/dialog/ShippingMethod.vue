@@ -95,13 +95,17 @@ const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 const shippingMethodStore = useShippingMethodStore();
 
-const { shippingMethod } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 const { shippingMethods } = storeToRefs(shippingMethodStore);
 
-const selected = ref(shippingMethod.value || shippingMethods.value[0]); // todo check index error
+const selected = ref(store_order.value?.shipping_method || shippingMethods.value[0]); // todo check index error
 
 function onSubmit() {
-  shippingMethod.value = selected.value;
+  if (!store_order.value) {
+    throw createError('Print order for this id is undefined');
+  }
+
+  store_order.value.shipping_method = selected.value;
   dialogStore.close();
 }
 </script>

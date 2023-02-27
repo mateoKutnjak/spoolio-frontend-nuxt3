@@ -5,14 +5,14 @@
   >
     <div
       class="w-full"
-      v-if="paymentMethod && Object.keys(paymentMethod).length"
+      v-if="print_order?.payment_method && Object.keys(print_order.payment_method).length"
     >
       <div class="flex gap-3 font-normal">
         <Icon
           name="noto-v1:credit-card"
           size="26"
         />
-        <div>{{paymentMethod}}</div>
+        <div>{{print_order.payment_method}}</div>
       </div>
     </div>
     <div v-else>
@@ -35,10 +35,10 @@ import { usePrintOrderStore } from "~~/stores/print_order";
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
-const { paymentMethod } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
 
 onMounted(() => {
-  paymentMethod.value = "Credit card";
+  print_order.value!.payment_method = "Credit card";
 });
 
 function onClicked() {

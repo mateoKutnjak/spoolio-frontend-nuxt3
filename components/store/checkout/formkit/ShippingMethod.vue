@@ -7,19 +7,19 @@
   >
     <div
       class="w-full"
-      v-if="shippingMethod && Object.keys(shippingMethod).length"
+      v-if="store_order?.shipping_method && Object.keys(store_order.shipping_method).length"
     >
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
           <div>
-            {{shippingMethod.provider}}
+            {{store_order.shipping_method.provider}}
           </div>
           <div class="font-light">
-            {{shippingMethod.description}}
+            {{store_order.shipping_method.description}}
           </div>
         </div>
         <div>
-          ${{shippingMethod.price}}
+          ${{store_order.shipping_method.price}}
         </div>
       </div>
     </div>
@@ -48,16 +48,16 @@ const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 
 const { user } = storeToRefs(authStore);
-const { shippingMethod } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 onMounted(() => {
-  context.node.input(shippingMethod.value || "");
+  context.node.input(store_order.value?.shipping_method || "");
 });
 
 watch(
-  shippingMethod,
+  store_order,
   (value) => {
-    if (value) {
+    if (value.shipping_method) {
       context.node.input("1");
     } else {
       context.node.input("");

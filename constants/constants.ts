@@ -30,3 +30,45 @@ export const LAYER_WIDTH = 0.45; // millimeters
 export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;
 
 export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
+
+export class ServiceType {
+    public static readonly printing = new ServiceType('printing', 'Printing');
+    public static readonly modeling = new ServiceType('modeling', 'Modeling');
+    public static readonly store = new ServiceType('store', 'Store');
+
+    private constructor(public readonly name: string, public readonly display_name: string) {
+    }
+}
+
+// ! IMPORTANT ! For every change in server side (django choices) 
+// ! IMPORTANT ! adjust frontend enums (constants.vue)
+export class OrderStatus {
+
+    public static readonly reviewing = new OrderStatus('reviewing', 'Reviewing', '#ced4da');
+    public static readonly estimatingPrice = new OrderStatus('estimating_price', 'Estimating price', '#eae4e9');
+    public static readonly rejected = new OrderStatus('rejected', 'Rejected', '#f28482');
+    public static readonly awaitingPayment = new OrderStatus('awaiting_payment', 'Awaiting payment', '#FFE19C')
+    public static readonly inProgress = new OrderStatus('in_progress', 'In progress', '#90e0ef');
+    public static readonly shipped = new OrderStatus('shipped', 'Shipped', '#e7bc91');
+    public static readonly delivered = new OrderStatus('delivered', 'Delivered', '#99e2b4');
+
+    public static readonly all: { [key: string]: OrderStatus } = {
+        'reviewing':
+            this.reviewing,
+        'estimating_price':
+            this.estimatingPrice,
+        'rejected':
+            this.rejected,
+        'awaiting_payment':
+            this.awaitingPayment,
+        'in_progress':
+            this.inProgress,
+        'shipped':
+            this.shipped,
+        'delivered':
+            this.delivered,
+    }
+
+    private constructor(public readonly server_name: string, public readonly display_name: string, public readonly colorHex: string) {
+    }
+}

@@ -1,6 +1,8 @@
 import { IAddressResponse } from "~~/stores/auth";
 
-export function isValidShippingAddress(address: IAddressResponse) {
+export function isValidShippingAddress(address: IAddressResponse | undefined) {
+    if (!address) return false;
+
     return address.first_name &&
         address.last_name &&
         address.address &&
@@ -9,7 +11,9 @@ export function isValidShippingAddress(address: IAddressResponse) {
         address.postal_code;
 }
 
-export function isValidBillingAddress(address: IAddressResponse) {
+export function isValidBillingAddress(address: IAddressResponse | undefined) {
+    if (!address) return false;
+
     return address.first_name &&
         address.last_name &&
         address.address &&

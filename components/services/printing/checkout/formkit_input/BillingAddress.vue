@@ -16,13 +16,13 @@
       class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
-      <div v-if="Object.keys(billingAddress).length">
+      <div v-if="print_order?.billing_address && Object.keys(print_order.billing_address).length">
         <div class="flex flex-col text-start text-base text-gray-800">
-          <strong>{{billingAddress.first_name}} {{billingAddress.last_name}}</strong>
-          <p class="font-normal">{{billingAddress.address}}</p>
-          <p class="font-normal">{{billingAddress.locality}} {{billingAddress.postal_code}}</p>
-          <p class="font-normal">{{billingAddress.country}}</p>
-          <p class="font-normal">{{billingAddress.phone_number}}</p>
+          <strong>{{print_order.billing_address.first_name}} {{print_order.billing_address.last_name}}</strong>
+          <p class="font-normal">{{print_order.billing_address.address}}</p>
+          <p class="font-normal">{{print_order.billing_address.locality}} {{print_order.billing_address.postal_code}}</p>
+          <p class="font-normal">{{print_order.billing_address.country}}</p>
+          <p class="font-normal">{{print_order.billing_address.phone_number}}</p>
         </div>
       </div>
       <div v-else>
@@ -47,16 +47,20 @@ const dialogStore = useDialogStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { billingAddress } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
 
 onMounted(() => {
-  if (!Object.keys(billingAddress.value).length) {
+  if (!print_order.value) {
+    throw createError("Printing order undefined");
+  }
+
+  if (!Object.keys(print_order.value.billing_address).length) {
     if (user.value?.profile?.billing_address) {
-      billingAddress.value = user.value.profile.billing_address;
+      print_order.value!.billing_address = user.value.profile.billing_address;
     }
   }
 
-  if (isValidShippingAddress(billingAddress.value)) {
+  if (isValidShippingAddress(print_order.value!.shipping_address)) {
     context.node.input("1");
   } else {
     context.node.input("");
@@ -64,9 +68,9 @@ onMounted(() => {
 });
 
 watch(
-  billingAddress,
+  print_order,
   (value) => {
-    if (isValidBillingAddress(value)) {
+    if (isValidBillingAddress(value?.billing_address)) {
       context.node.input("1");
     } else {
       context.node.input("");

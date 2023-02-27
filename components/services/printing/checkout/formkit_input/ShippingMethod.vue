@@ -7,19 +7,19 @@
   >
     <div
       class="w-full"
-      v-if="shippingMethod && Object.keys(shippingMethod).length"
+      v-if="print_order?.shipping_method && Object.keys(print_order.shipping_method).length"
     >
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
           <div>
-            {{shippingMethod.provider}}
+            {{print_order.shipping_method.provider}}
           </div>
           <div class="font-light">
-            {{shippingMethod.description}}
+            {{print_order.shipping_method.description}}
           </div>
         </div>
         <div>
-          ${{shippingMethod.price}}
+          ${{print_order.shipping_method.price}}
         </div>
       </div>
     </div>
@@ -37,27 +37,24 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { context } = defineProps(["context"]);
 
-const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const printOrderStore = usePrintOrderStore();
 
-const { user } = storeToRefs(authStore);
-const { shippingMethod } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
 
 onMounted(() => {
-  context.node.input(shippingMethod.value || "");
+  context.node.input(print_order.value?.shipping_method || "");
 });
 
 watch(
-  shippingMethod,
+  print_order,
   (value) => {
-    if (value) {
+    if (value?.shipping_method) {
       context.node.input("1");
     } else {
       context.node.input("");

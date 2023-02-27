@@ -16,13 +16,13 @@
       class="btn btn-ghost border-gray-300 text-start text-base justify-start h-40 px-7 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
       @click="openDialog"
     >
-      <div v-if="Object.keys(shippingAddress).length">
+      <div v-if="print_order?.shipping_address && Object.keys(print_order.shipping_address).length">
         <div class="flex flex-col text-start text-base text-gray-800">
-          <strong>{{shippingAddress.first_name}} {{shippingAddress.last_name}}</strong>
-          <p class="font-normal">{{shippingAddress.address}} </p>
-          <p class="font-normal">{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
-          <p class="font-normal">{{shippingAddress.country}}</p>
-          <p class="font-normal">{{shippingAddress.phone_number}}</p>
+          <strong>{{print_order?.shipping_address.first_name}} {{print_order?.shipping_address.last_name}}</strong>
+          <p class="font-normal">{{print_order?.shipping_address.address}} </p>
+          <p class="font-normal">{{print_order?.shipping_address.locality}} {{print_order?.shipping_address.postal_code}}</p>
+          <p class="font-normal">{{print_order?.shipping_address.country}}</p>
+          <p class="font-normal">{{print_order?.shipping_address.phone_number}}</p>
         </div>
       </div>
       <div v-else>
@@ -47,16 +47,21 @@ const dialogStore = useDialogStore();
 const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { shippingAddress } = storeToRefs(printOrderStore);
+const { print_order } = storeToRefs(printOrderStore);
+
 
 onMounted(() => {
-  if (!Object.keys(shippingAddress.value).length) {
+  if (!print_order.value) {
+    throw createError("Printing order undefined");
+  }
+
+  if (!Object.keys(print_order.value.shipping_address).length) {
     if (user.value?.profile?.shipping_address) {
-      shippingAddress.value = user.value.profile.shipping_address;
+      print_order.value!.shipping_address = user.value.profile.shipping_address;
     }
   }
 
-  if (isValidShippingAddress(shippingAddress.value)) {
+  if (isValidShippingAddress(print_order.value!.shipping_address)) {
     context.node.input("1");
   } else {
     context.node.input("");
@@ -64,9 +69,9 @@ onMounted(() => {
 });
 
 watch(
-  shippingAddress,
+  print_order,
   (value) => {
-    if (isValidShippingAddress(value)) {
+    if (isValidShippingAddress(value.shipping_address)) {
       context.node.input("1");
     } else {
       context.node.input("");

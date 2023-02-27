@@ -55,6 +55,10 @@ export default defineNuxtConfig({
         }
     },
     runtimeConfig: {
-        googleOAuthClientId: process.env.GOOGLE_OAUTH_CLIENT_ID
+        googleOAuthClientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+        stripeSecretKeyTest: process.env.STRIPE_SECRET_KEY_TEST,
+        public: {
+            stripePublishableKeyTest: process.env.STRIPE_PUBLISHABLE_KEY_TEST
+        }
     },
 })

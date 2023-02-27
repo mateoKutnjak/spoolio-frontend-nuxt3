@@ -71,8 +71,14 @@
                     <div
                       v-for="unit in units"
                       :key="unit.localUrl"
-                      class="btn btn-square btn-lg btn-outline rounded-none text-xs font-normal"
-                    >Preview static image with x{number of items}</div>
+                      class="relative w-24 h-24 border-gray-400 rounded-none"
+                    > <nuxt-img :src="unit.screenshotURL">
+
+                      </nuxt-img>
+                      <div class="absolute bottom-1 right-2 font-bold text-sm text-gray-600">
+                        x{{ unit.quantity }}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="flex flex-col gap-4">
@@ -95,13 +101,13 @@
                       </tr>
                       <tr>
                         <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">Shipping fees</td>
-                        <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">${{shippingMethod.price}}</td>
+                        <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">${{print_order?.shipping_method?.price}}</td>
                       </tr>
                       <tr>
                         <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
                           <div class="flex gap-1"><strong>TOTAL PRICE</strong>(VAT included)</div>
                         </td>
-                        <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>${{(totalPrice * (1+taxPercentage) + Number(shippingMethod.price)).toFixed(2)}}</strong></td>
+                        <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>${{(totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2)}}</strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -137,7 +143,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { createInput } from "@formkit/vue";
-import { useAuthStore } from "~~/stores/auth";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 import FormkitShippingAddress from "~~/components/services/printing/checkout/formkit_input/ShippingAddress.vue";
@@ -154,15 +159,12 @@ const shippingMethodInput = createInput(FormkitShippingMethod);
 
 const taxPercentage = 0.25;
 
-const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
-const { user } = storeToRefs(authStore);
-const { contactEmail, units, shippingAddress, shippingMethod } =
-  storeToRefs(printOrderStore);
+const { print_order, units } = storeToRefs(printOrderStore);
 
 onMounted(async () => {
   await shippingMethodStore

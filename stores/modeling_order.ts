@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IProfileResponse, useAuthStore } from './auth';
+import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT, OrderStatus } from '~~/constants/constants';
+import { useAuthStore } from './auth';
 
 export interface IModelingOrderAttachmentFileResponse {
     id: number,
@@ -28,36 +28,13 @@ export interface IModelingOrderResponse {
     status: string,
 }
 
-export function modelingStatusReformat(status: string): string {
-    var result = status.replace("_", " ");
-    return result.charAt(0).toUpperCase() + result.slice(1);
-}
-
-export function modelingStatusBackgroundColor(status: string): string {
-    switch (status) {
-        case "reviewing":
-            return "#cbd5e1";
-        case "estimating_price":
-            return '#d1d5db'
-        case "rejected":
-            return "#fca5a5";
-        case "awaiting_payment":
-            return "#fcd34d";
-        case "in_progress":
-            return "#38bdf8";
-        case "shipped":
-            return "#14b8a6";
-        case "delivered":
-            return "#84cc16";
-        default:
-            return "green";
-    }
-}
-
 export const useModelingOrderStore = defineStore('modeling-order', {
     state: () => ({
-        comment: "",
-        contactEmail: "",
+        modeling_order: <IModelingOrderResponse>{
+            contact_email: '',
+            comment: '',
+        },
+        
         attachmentFiles: [] as IModelingOrderAttachmentFileResponse[],
         attachmentImages: [] as IModelingOrderAttachmentImageResponse[],
     }),
@@ -65,24 +42,24 @@ export const useModelingOrderStore = defineStore('modeling-order', {
     getters: {
         getAttachmentFiles: (state) => state.attachmentFiles,
         getAttachmentImages: (state) => state.attachmentImages,
-        getContactEmail: (state) => state.contactEmail,
+        getContactEmail: (state) => state.modeling_order.contact_email,
     },
 
     actions: {
 
         clear() {
-            this.comment = "";
-            this.contactEmail = "";
-            this.attachmentFiles = [];
-            this.attachmentImages = []
+            this.modeling_order = <IModelingOrderResponse>{
+                contact_email: '',
+                comment: '',
+            }
         },
 
         async postOrder(): Promise<IModelingOrderResponse> {
             const authStore = useAuthStore();
 
             const body = {
-                contact_email: this.contactEmail,
-                comment: this.comment,
+                contact_email: this.modeling_order.contact_email,
+                comment: this.modeling_order.comment,
                 user_profile: authStore.getUser?.profile?.id
             }
 

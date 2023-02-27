@@ -111,7 +111,7 @@ const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
-const { billingAddress } = storeToRefs(cartStore);
+const { store_order } = storeToRefs(cartStore);
 
 const county = ref("");
 const firstName = ref("");
@@ -125,15 +125,19 @@ const phoneNumber = ref("");
 const submittingGeneralInfo = ref(false);
 
 onMounted(() => {
-  if (Object.keys(billingAddress.value).length) {
-    county.value = billingAddress.value.country || "";
-    firstName.value = billingAddress.value.first_name || "";
-    lastName.value = billingAddress.value.last_name || "";
-    address.value = billingAddress.value.address || "";
-    city.value = billingAddress.value.locality || "";
-    state.value = billingAddress.value.state || "";
-    postalCode.value = billingAddress.value.postal_code || "";
-    phoneNumber.value = billingAddress.value.phone_number || "";
+  if (!store_order.value) {
+    throw createError('Print order for this id is undefined');
+  }
+
+  if (Object.keys(store_order.value.billing_address).length) {
+    county.value = store_order.value.billing_address.country || "";
+    firstName.value = store_order.value.billing_address.first_name || "";
+    lastName.value = store_order.value.billing_address.last_name || "";
+    address.value = store_order.value.billing_address.address || "";
+    city.value = store_order.value.billing_address.locality || "";
+    state.value = store_order.value.billing_address.state || "";
+    postalCode.value = store_order.value.billing_address.postal_code || "";
+    phoneNumber.value = store_order.value.billing_address.phone_number || "";
   } else if (user?.value?.profile?.billing_address) {
     county.value = user?.value?.profile?.billing_address.country || "";
     firstName.value = user?.value?.profile?.billing_address.first_name || "";
@@ -164,14 +168,18 @@ function onUseDefaultClicked() {
 }
 
 function submitHandler() {
-  billingAddress.value.country = county.value;
-  billingAddress.value.first_name = firstName.value;
-  billingAddress.value.last_name = lastName.value;
-  billingAddress.value.address = address.value;
-  billingAddress.value.locality = city.value;
-  billingAddress.value.state = state.value;
-  billingAddress.value.postal_code = postalCode.value;
-  billingAddress.value.phone_number = phoneNumber.value;
+  if (!store_order.value) {
+    throw createError('Print order for this id is undefined');
+  }
+
+  store_order.value.billing_address.country = county.value;
+  store_order.value.billing_address.first_name = firstName.value;
+  store_order.value.billing_address.last_name = lastName.value;
+  store_order.value.billing_address.address = address.value;
+  store_order.value.billing_address.locality = city.value;
+  store_order.value.billing_address.state = state.value;
+  store_order.value.billing_address.postal_code = postalCode.value;
+  store_order.value.billing_address.phone_number = phoneNumber.value;
 
   dialogStore.close();
 }

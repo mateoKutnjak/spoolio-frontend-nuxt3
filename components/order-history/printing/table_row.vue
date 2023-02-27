@@ -54,18 +54,15 @@
       <div
         v-if="printOrder"
         class="btn btn-ghost btn-sm px-5 text-gray-700"
-        :style="`background-color: ${printOrderStatusBackgroundColor(printOrder.status)}`"
-      >{{ printOrderStatusReformat(printOrder.status) }}</div>
+        :style="`background-color: ${ OrderStatus.all[printOrder.status].colorHex}`"
+      >{{ OrderStatus.all[printOrder.status].display_name }}</div>
     </td>
   </tr>
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import {
-  printOrderStatusReformat,
-  printOrderStatusBackgroundColor,
-} from "~~/stores/print_order";
+import { OrderStatus } from "~~/constants/constants";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 
 const { printOrderId } = defineProps(["printOrderId"]);

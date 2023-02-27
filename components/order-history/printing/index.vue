@@ -20,6 +20,7 @@
               v-for="order in print_orders"
               :key="order.id"
               :printOrderId="order.id"
+              @click="onItemClicked(order)"
             />
 
           </tbody>
@@ -30,6 +31,7 @@
           v-for="order in print_orders"
           :key="order.id"
           :printOrderId="order.id"
+          @click="onItemClicked(order)"
         />
       </div>
       <PaginationButtons
@@ -68,9 +70,10 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { PAGE_SIZE } from "~~/constants/constants";
+import { OrderStatus, PAGE_SIZE } from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
+import { IPrintOrderResponse } from "~~/stores/print_order";
 
 const notificationStore = useNotificationStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
@@ -97,6 +100,16 @@ function onPageSelected(pageSelected: number) {
     .then((_) => {})
     .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {});
+}
+
+function onItemClicked(order: IPrintOrderResponse) {
+  if (OrderStatus.all[order.status] === OrderStatus.awaitingPayment) {
+    navigateTo({
+      path: `/payment/printing/${order.id}`,
+    });
+  } else {
+    console.error("TODO order details");
+  }
 }
 </script>
   

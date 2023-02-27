@@ -99,13 +99,13 @@
                       </tr>
                       <tr>
                         <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">Shipping fees</td>
-                        <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">${{shippingMethod.price}}</td>
+                        <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">${{store_order?.shipping_method?.price}}</td>
                       </tr>
                       <tr>
                         <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
                           <div class="flex gap-1"><strong>TOTAL PRICE</strong>(VAT included)</div>
                         </td>
-                        <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>${{(cartStore.getCartTotalPrice * (1+taxPercentage) + Number(shippingMethod.price)).toFixed(2)}}</strong></td>
+                        <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>${{(cartStore.getCartTotalPrice * (1+taxPercentage) + Number(store_order?.shipping_method?.price)).toFixed(2)}}</strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -154,7 +154,7 @@ import { useNotificationStore } from "~~/stores/notification";
 const taxPercentage = 0.25;
 
 const dialogStore = useDialogStore();
-const notificationStore = useNotificationStore()
+const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 
 const shippingAddressInput = createInput(FormkitShippingAddress);
@@ -164,7 +164,7 @@ const shippingMethodInput = createInput(FormkitShippingMethod);
 
 const cartStore = useCartStore();
 
-const { cartItems, shippingMethod } = storeToRefs(cartStore);
+const { cartItems, store_order } = storeToRefs(cartStore);
 
 onMounted(async () => {
   await shippingMethodStore
