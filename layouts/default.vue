@@ -9,11 +9,11 @@
       class="drawer-content"
       style="background-color: #ECECEC"
     >
-      <div class="flex flex-col h-screen">
+      <div>
         <Navbar />
         <Toast />
-        <div class="flex-1 container mx-auto max-w-5xl">
-          <Breadcrumbs class="py-12 mx-4 pb-0" />
+        <div class="container mx-auto">
+          <Breadcrumbs class="p-12 pb-0" />
           <slot />
         </div>
       </div>
@@ -65,7 +65,7 @@ watch([isDrawerOpened], (value, oldValue, onInvalidate) => {
 .page-to-enter-active,
 .page-from-leave-active {
   position: fixed;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .page-from-leave-from,

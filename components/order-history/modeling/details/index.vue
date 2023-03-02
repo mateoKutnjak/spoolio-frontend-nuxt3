@@ -114,7 +114,9 @@ const {
 );
 
 function iconName(obj: string | File) {
-  return toIconNameByExtension(urlExtractFileSuffix(extractFilenameFileStringUnion(obj)));
+  return toIconNameByExtension(
+    urlExtractFileSuffix(extractFilenameFileStringUnion(obj))
+  );
 }
 </script>
   

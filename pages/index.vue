@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="fixed h-[calc(100vh-4rem)] top-[4rem]">
+    <div class="fixed top-0 right-0 left-0 h-[calc(100vh-4rem)] top-[4rem]">
       <div class="carousel carousel-vertical h-full">
         <div
           id="item1"

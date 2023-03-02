@@ -1,254 +1,253 @@
 <template>
-  <div>
-    <div class="container p-12 px-0 lg:px-12">
-      <div class="flex flex-col flex-grow gap-5 justify-between pt-4">
-        <div class="flex flex-col gap-5 sm:flex-row justify-between">
-          <div class="text-3xl font-light">Printing order</div>
-          <div class="flex gap-4 items-end">
-            <DimensionUnitDropdown class="self-end" />
-            <div
-              class="btn btn-error"
-              :class="units.length ? '' : 'btn-disabled'"
-              @click="onClearOrder"
-            >Clear order</div>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="mx-4 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
-          <div class="flex items-center">
-            <div class="text-base text-gray-700 font-light mr-2"> Total price: </div>
-            <div
-              v-if="totalPrice == 10"
-              class="flex gap-1 items-center justify-end"
-            >
-              <DropdownWarning
-                dropdown-message="Minimum price we charge is 10$"
-                :text="`$${totalPrice}`"
-              />
-
-            </div>
-            <div v-else-if="totalPrice >= 0">
-              <div class="text-lg font-medium text-gray-700 ">
-                ${{totalPrice.toFixed(2)}}
-              </div>
-            </div>
-            <div v-else>
-              <Icon
-                class="text-gray-500"
-                name="eos-icons:three-dots-loading"
-              />
-            </div>
-          </div>
-          <div class="px-1"></div>
-          <div class="flex gap-2 items-center">
-            <div class="text-base text-gray-700 font-light"> ETA: </div>
-
-            <strong
-              class="text-md font-medium"
-              v-if="etaSeconds > Number.NEGATIVE_INFINITY"
-            >{{reformatSeconds(etaSeconds)}}</strong>
-            <div v-else>
-              <Icon
-                class="text-gray-900 pt-1.5"
-                name="eos-icons:three-dots-loading"
-                size="30"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="block lg:hidden">
+  <div class="container p-12 px-0 lg:px-12">
+    <div class="max-w-5xl mx-auto flex flex-col gap-5 justify-between pt-4">
+      <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
+        <div class="text-3xl font-light">Printing order</div>
+        <div class="flex gap-4 items-end">
+          <DimensionUnitDropdown class="self-end" />
           <div
-            class="flex flex-col gap-5"
-            v-for="item in units"
-            :key="item.localUrl"
+            class="btn btn-error"
+            :class="units.length ? '' : 'btn-disabled'"
+            @click="onClearOrder"
+          >Clear order</div>
+        </div>
+      </div>
+      <div class="mx-4 mt-8 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
+        <div class="flex items-center">
+          <div class="text-base text-gray-700 font-light mr-2"> Total price: </div>
+          <div
+            v-if="totalPrice == 10"
+            class="flex gap-1 items-center justify-end"
           >
-            <ServicesPrintingUnitCard
-              class="mb-3"
-              :unit="item"
-              @on-item-clicked="onItemClicked"
+            <DropdownWarning
+              dropdown-message="Minimum price we charge is 10$"
+              :text="`$${totalPrice}`"
+            />
+
+          </div>
+          <div v-else-if="totalPrice >= 0">
+            <div class="text-lg font-medium text-gray-700 ">
+              ${{totalPrice.toFixed(2)}}
+            </div>
+          </div>
+          <div v-else>
+            <Icon
+              class="text-gray-500"
+              name="eos-icons:three-dots-loading"
             />
           </div>
-
         </div>
-        <table
-          v-if="units.length"
-          class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400"
-        >
+        <div class="px-1"></div>
+        <div class="flex gap-2 items-center">
+          <div class="text-base text-gray-700 font-light"> ETA: </div>
 
-          <tbody
-            name="slide-fade"
-            is="vue:transition-group"
-            tag="tbody"
-          >
-
-            <ServicesPrintingUnitTableRow
-              v-for="item in units"
-              :key="item.localUrl"
-              :unit="item"
-              @on-item-clicked="onItemClicked"
+          <strong
+            class="text-md font-medium"
+            v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+          >{{reformatSeconds(etaSeconds)}}</strong>
+          <div v-else>
+            <Icon
+              class="text-gray-900 pt-1.5"
+              name="eos-icons:three-dots-loading"
+              size="30"
             />
-          </tbody>
-        </table>
-        <div
-          v-else
-          class="flex-1 text-center"
-        >
-          <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-600">Order is empty</div>
-        </div>
-        <div class="hidden md:flex gap-5">
-          <div
-            class="flex-1 flex w-full mx-auto "
-            @dragover.prevent
-            @drop.prevent
-          >
-            <label
-              for="dropzone-file"
-              class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-              @drop="drop"
-            >
-              <div class="mb-2">
-                <Icon
-                  color="gray"
-                  name="ic:outline-cloud-upload"
-                  size="30"
-                  aria-hidden="true"
-                />
-              </div>
-              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
-              <input
-                id="dropzone-file"
-                type="file"
-                name="fff"
-                class="hidden"
-                @change="change"
-              />
-            </label>
-          </div>
-          <div class="flex-none card rounded-lg shadow-md bg-white">
-            <div class="card-body flex gap-5">
-              <table class="table table-compact w-full">
-                <tbody class="">
-                  <tr>
-                    <td class="pl-0 py-1 text-base border-transparent text-start font-light">ETA</td>
-                    <td class="pl-0 py-1 text-lg border-transparent text-end font-medium">
-                      <div>
-                        <strong
-                          class="text-lg font-medium"
-                          v-if="etaSeconds > Number.NEGATIVE_INFINITY"
-                        >{{reformatSeconds(etaSeconds)}}</strong>
-                        <div v-else>
-                          <Icon
-                            class="text-gray-900 pt-1.5"
-                            name="eos-icons:three-dots-loading"
-                            size="30"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="pl-0 py-1 text-base text-start font-light">Price</th>
-                    <th class="pl-0 py-1 text-lg text-end font-medium">
-                      <div
-                        v-if="totalPrice == 10"
-                        class="flex gap-1 items-center justify-end"
-                      >
-                        <DropdownWarning
-                          dropdown-message="Minimum price we charge is 10$"
-                          :text="`$${totalPrice}`"
-                        />
-
-                      </div>
-                      <div v-else-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
-                      <div v-else>
-                        <Icon
-                          class="text-gray-500"
-                          name="eos-icons:three-dots-loading"
-                        />
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-              <NuxtLink
-                class="btn btn-primary btn-lg gap-1"
-                :class="units.length ? '' : 'btn-disabled'"
-                to="/services/printing/checkout/"
-              >
-                <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
-                <ClientOnly>
-                  <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
-                </ClientOnly>
-              </NuxtLink>
-            </div>
           </div>
         </div>
       </div>
-      <div class="md:hidden mx-6 my-6 flex justify-end gap-3">
+      <div class="divider my-0"></div>
+      <div class="block lg:hidden">
+        <div
+          class="flex flex-col gap-5"
+          v-for="item in units"
+          :key="item.localUrl"
+        >
+          <ServicesPrintingUnitCard
+            class="mb-3"
+            :unit="item"
+            @on-item-clicked="onItemClicked"
+          />
+        </div>
 
-        <div>
-          <div
-            class="tooltip tooltip-left"
-            data-tip="Upload 3D model"
+      </div>
+      <table
+        v-if="units.length"
+        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400"
+      >
+
+        <tbody
+          name="slide-fade"
+          is="vue:transition-group"
+          tag="tbody"
+        >
+
+          <ServicesPrintingUnitTableRow
+            v-for="item in units"
+            :key="item.localUrl"
+            :unit="item"
+            @on-item-clicked="onItemClicked"
+          />
+        </tbody>
+      </table>
+      <div
+        v-else
+        class="flex-1 text-center"
+      >
+        <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-600">Order is empty</div>
+      </div>
+      <div class="hidden md:flex gap-5">
+        <div
+          class="flex-1 flex w-full mx-auto "
+          @dragover.prevent
+          @drop.prevent
+        >
+          <label
+            for="dropzone-file"
+            class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            @drop="drop"
           >
-            <label
-              for="dropzone-file"
-              class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
-              @drop="drop"
-            >
+            <div class="mb-2">
               <Icon
+                color="gray"
                 name="ic:outline-cloud-upload"
                 size="30"
                 aria-hidden="true"
               />
-              <input
-                id="dropzone-file"
-                type="file"
-                name="fff"
-                class="hidden"
-                @change="change"
-              />
-            </label>
-          </div>
+            </div>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
+            <input
+              id="dropzone-file"
+              type="file"
+              name="fff"
+              class="hidden"
+              @change="change"
+            />
+          </label>
         </div>
-        <div>
-          <div
-            class="tooltip tooltip-left"
-            data-tip="Checkout"
-          >
+        <div class="flex-none card rounded-lg shadow-md bg-white">
+          <div class="card-body flex gap-5">
+            <table class="table table-compact w-full">
+              <tbody class="">
+                <tr>
+                  <td class="pl-0 py-1 text-base border-transparent text-start font-light">ETA</td>
+                  <td class="pl-0 py-1 text-lg border-transparent text-end font-medium">
+                    <div>
+                      <strong
+                        class="text-lg font-medium"
+                        v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+                      >{{reformatSeconds(etaSeconds)}}</strong>
+                      <div v-else>
+                        <Icon
+                          class="text-gray-900 pt-1.5"
+                          name="eos-icons:three-dots-loading"
+                          size="30"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="pl-0 py-1 text-base text-start font-light">Price</th>
+                  <th class="pl-0 py-1 text-lg text-end font-medium">
+                    <div
+                      v-if="totalPrice == 10"
+                      class="flex gap-1 items-center justify-end"
+                    >
+                      <DropdownWarning
+                        dropdown-message="Minimum price we charge is 10$"
+                        :text="`$${totalPrice}`"
+                      />
+
+                    </div>
+                    <div v-else-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
+                    <div v-else>
+                      <Icon
+                        class="text-gray-500"
+                        name="eos-icons:three-dots-loading"
+                      />
+                    </div>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
             <NuxtLink
-              class="btn btn-circle btn-primary btn-lg shadow-md"
-              :class="totalPrice > 0 ? '' : 'btn-disabled'"
+              class="btn btn-primary btn-lg gap-1"
+              :class="units.length ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
-              <Icon
-                name="ph:shopping-cart-duotone"
-                size="30"
-                aria-hidden="true"
-              />
+              <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+              <ClientOnly>
+                <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+              </ClientOnly>
             </NuxtLink>
           </div>
         </div>
       </div>
     </div>
+    <div class="md:hidden mx-6 my-6 flex justify-end gap-3">
 
+      <div>
+        <div
+          class="tooltip tooltip-left"
+          data-tip="Upload 3D model"
+        >
+          <label
+            for="dropzone-file"
+            class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
+            @drop="drop"
+          >
+            <Icon
+              name="ic:outline-cloud-upload"
+              size="30"
+              aria-hidden="true"
+            />
+            <input
+              id="dropzone-file"
+              type="file"
+              name="fff"
+              class="hidden"
+              @change="change"
+            />
+          </label>
+        </div>
+      </div>
+      <div>
+        <div
+          class="tooltip tooltip-left"
+          data-tip="Checkout"
+        >
+          <NuxtLink
+            class="btn btn-circle btn-primary btn-lg shadow-md"
+            :class="totalPrice > 0 ? '' : 'btn-disabled'"
+            to="/services/printing/checkout/"
+          >
+            <Icon
+              name="ph:shopping-cart-duotone"
+              size="30"
+              aria-hidden="true"
+            />
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
-import { IAttachmentFile, IAttachmentImage, IPrintOrderUnit } from "~~/constants/data";
+import {
+  IAttachmentFile,
+  IAttachmentImage,
+  IPrintOrderUnit,
+} from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import { useNotificationStore } from "~~/stores/notification";
-import {
-  usePrintOrderStore,
-} from "~~/stores/print_order";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -307,8 +306,7 @@ onMounted(async () => {
     index < printOrderStore.getAttachmentFiles.length;
     index++
   ) {
-    const element: IAttachmentFile =
-      printOrderStore.getAttachmentFiles[index];
+    const element: IAttachmentFile = printOrderStore.getAttachmentFiles[index];
     attachmentFiles.value.push(element);
   }
 
@@ -431,10 +429,9 @@ function onItemClicked(localUrl: string) {
 function onClearOrder() {
   dialogStore.open("DialogConfirmClearPrintOrder", []);
 }
-
 </script>
 
-<style>
+<style scoped>
 .slide-fade-enter-active {
   transition: all 0.3s ease;
 }
