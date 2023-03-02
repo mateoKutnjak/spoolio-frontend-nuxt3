@@ -1,0 +1,70 @@
+<template>
+  <div class="container py-12 mx-auto">
+    <div class="flex flex-col gap-8">
+      <div class="flex justify-between items-end">
+        <div class="flex flex-col gap-4 justify-between items-start">
+          <div class="text-3xl font-light">Store order #{{ order.id }}</div>
+          <div class="text-xl font-light text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
+          <OrderStatusView :raw-status="order.status" />
+        </div>
+        <div class="flex gap-8 justify-center items-center">
+          <CommonAddressShipping
+            :shipping-address="order.shipping_address"
+            class="max-w-fit"
+          />
+          <CommonAddressBilling
+            :billing-address="order.billing_address"
+            class="max-w-fit"
+          />
+
+        </div>
+      </div>
+      <div
+        v-if="data && data.items"
+        class="divider"
+      ></div>
+      <div
+        v-if="data && data.items"
+        class=" flex flex-col gap-4"
+      >
+        <OrderHistoryStoreDetailsUnitCard
+          v-for="item in data.items"
+          :key="item.id"
+          :store-order-unit="item"
+        />
+      </div>
+      <div v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment">
+        <NuxtLink
+          :to="`/payment/store/${order.id}`"
+          class="btn btn-primary btn-block btn-lg"
+        >
+          Pay Now ({{total_price}} €)
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+  
+  <script lang="ts" setup>
+import { OrderStatus } from "~~/constants/constants";
+import { IStoreOrder } from "~~/constants/data";
+import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
+
+const storeOrderHistoryStore = useStoreOrderHistoryStore();
+
+const { order } = defineProps<{
+  order: IStoreOrder;
+}>();
+
+const { data, pending, error, refresh } = useAsyncData(
+  "store_order_history_details",
+  () => storeOrderHistoryStore.fetchById(order.id)
+);
+
+const total_price = computed(() =>
+  storeOrderHistoryStore.getTotalPriceById(order.id)
+);
+</script>
+  
+  <style>
+</style>

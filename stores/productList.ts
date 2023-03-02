@@ -1,20 +1,13 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IProductResponse } from './product';
-
-interface IProductListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: IProductResponse[]
-}
+import { IPaginatedResponse, IProduct } from '~~/constants/data';
 
 export const useProductListStore = defineStore('product-list', {
     state: () => ({
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
-        products: [] as IProductResponse[]
+        products: [] as IProduct[]
     }),
 
     getters: {
@@ -23,11 +16,11 @@ export const useProductListStore = defineStore('product-list', {
 
     actions: {
         async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return promiseWithTimeout<IProductListResponse>(new Promise<IProductListResponse>((resolve, reject) => {
-                customFetch<IProductListResponse>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+            return promiseWithTimeout<IPaginatedResponse<IProduct>>(new Promise<IPaginatedResponse<IProduct>>((resolve, reject) => {
+                customFetch<IPaginatedResponse<IProduct>>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET'
                 }
-                ).then((response: IProductListResponse) => {
+                ).then((response: IPaginatedResponse<IProduct>) => {
                     this.count = response.count;
                     this.next = response.next;
                     this.previous = response.previous;

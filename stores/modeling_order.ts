@@ -1,42 +1,17 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT, OrderStatus } from '~~/constants/constants';
+import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
+import { IAttachmentFile, IAttachmentImage, IModelingOrder } from '~~/constants/data';
 import { useAuthStore } from './auth';
-
-export interface IModelingOrderAttachmentFileResponse {
-    id: number,
-    file: File,
-    comment: string,
-    localUrl: string,
-}
-
-export interface IModelingOrderAttachmentImageResponse {
-    id: number,
-    image: File,
-    comment: string,
-    localUrl: string,
-}
-
-export interface IModelingOrderResponse {
-    id: number,
-    created_at: string,
-    updated_at: string,
-    comment: string,
-    attachmentFiles: IModelingOrderAttachmentFileResponse[],
-    attachmentImages: IModelingOrderAttachmentImageResponse[],
-    contact_email: string,
-    estimated_price: number,
-    status: string,
-}
 
 export const useModelingOrderStore = defineStore('modeling-order', {
     state: () => ({
-        modeling_order: <IModelingOrderResponse>{
+        modeling_order: <IModelingOrder>{
             contact_email: '',
             comment: '',
         },
         
-        attachmentFiles: [] as IModelingOrderAttachmentFileResponse[],
-        attachmentImages: [] as IModelingOrderAttachmentImageResponse[],
+        attachmentFiles: [] as IAttachmentFile[],
+        attachmentImages: [] as IAttachmentImage[],
     }),
 
     getters: {
@@ -48,13 +23,13 @@ export const useModelingOrderStore = defineStore('modeling-order', {
     actions: {
 
         clear() {
-            this.modeling_order = <IModelingOrderResponse>{
+            this.modeling_order = <IModelingOrder>{
                 contact_email: '',
                 comment: '',
             }
         },
 
-        async postOrder(): Promise<IModelingOrderResponse> {
+        async postOrder(): Promise<IModelingOrder> {
             const authStore = useAuthStore();
 
             const body = {
@@ -63,11 +38,11 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 user_profile: authStore.getUser?.profile?.id
             }
 
-            return promiseWithTimeout<IModelingOrderResponse>(new Promise<IModelingOrderResponse>((resolve, reject) => {
-                customFetch<IModelingOrderResponse>('http://localhost:8000/api/modeling-orders/', {
+            return promiseWithTimeout<IModelingOrder>(new Promise<IModelingOrder>((resolve, reject) => {
+                customFetch<IModelingOrder>('http://localhost:8000/api/modeling-orders/', {
                     method: 'POST',
                     body: body,
-                }).then((response: IModelingOrderResponse) => {
+                }).then((response: IModelingOrder) => {
                     // this.createdPrintOrder = response;
                     resolve(response)
                 }).catch(err => {
@@ -76,7 +51,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async postAttachmentFile(item: IModelingOrderAttachmentFileResponse, orderId: number): Promise<IModelingOrderAttachmentFileResponse> {
+        async postAttachmentFile(item: IAttachmentFile, orderId: number): Promise<IAttachmentFile> {
             var formData = new FormData();
 
             formData.append("file", item.file);
@@ -84,11 +59,11 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
-            return promiseWithTimeout<IModelingOrderAttachmentFileResponse>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrderAttachmentFileResponse>('http://localhost:8000/api/attachment-files/', {
+            return promiseWithTimeout<IAttachmentFile>(new Promise((resolve, reject) => {
+                customFetch<IAttachmentFile>('http://localhost:8000/api/attachment-files/', {
                     method: 'POST',
                     body: formData,
-                }).then((response: IModelingOrderAttachmentFileResponse) => {
+                }).then((response: IAttachmentFile) => {
                     // this.createdPrintOrder = response;
                     resolve(response)
                 }).catch(err => {
@@ -97,7 +72,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async postAttachmentImage(item: IModelingOrderAttachmentImageResponse, orderId: number): Promise<IModelingOrderAttachmentImageResponse> {
+        async postAttachmentImage(item: IAttachmentImage, orderId: number): Promise<IAttachmentImage> {
             var formData = new FormData();
 
             formData.append("image", item.image);
@@ -105,11 +80,11 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
-            return promiseWithTimeout<IModelingOrderAttachmentImageResponse>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrderAttachmentImageResponse>('http://localhost:8000/api/attachment-images/', {
+            return promiseWithTimeout<IAttachmentImage>(new Promise((resolve, reject) => {
+                customFetch<IAttachmentImage>('http://localhost:8000/api/attachment-images/', {
                     method: 'POST',
                     body: formData,
-                }).then((response: IModelingOrderAttachmentImageResponse) => {
+                }).then((response: IAttachmentImage) => {
                     resolve(response)
                 }).catch(err => {
                     reject(err)
@@ -117,11 +92,11 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        addAttachmentFile(attachmentFile: IModelingOrderAttachmentFileResponse) {
+        addAttachmentFile(attachmentFile: IAttachmentFile) {
             this.attachmentFiles.push(attachmentFile);
         },
 
-        removeAttachmentFile(attachmentFile: IModelingOrderAttachmentFileResponse) {
+        removeAttachmentFile(attachmentFile: IAttachmentFile) {
             var index = this.attachmentFiles.map((el) => el.file).indexOf(attachmentFile.file);
 
             if (index > -1) {
@@ -135,11 +110,11 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             this.attachmentFiles = this.attachmentFiles.filter(el => el.localUrl !== localUrl);
         },
 
-        addAttachmentImage(attachmentImage: IModelingOrderAttachmentImageResponse) {
+        addAttachmentImage(attachmentImage: IAttachmentImage) {
             this.attachmentImages.push(attachmentImage);
         },
 
-        removeAttachmentImage(attachmentImage: IModelingOrderAttachmentImageResponse) {
+        removeAttachmentImage(attachmentImage: IAttachmentImage) {
             var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
 
             if (index > -1) {

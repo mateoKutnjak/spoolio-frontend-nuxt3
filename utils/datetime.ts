@@ -32,6 +32,17 @@ export function reformatDate(rawDate: string | undefined): string {
     return formatDate(parseDate(rawDate));
 }
 
+export function reformatDateTime(rawDate: string | undefined): string {
+    if (!rawDate) return "NULL ERROR"
+
+    const [datePart, timePart] = rawDate.replaceAll('Z', '').split('T');
+    const [year, month, day] = datePart.split('-')
+    const [hour, minute, secondDecimal] = timePart.split(':')
+    const [second, _] = secondDecimal.split('.')
+
+    return `${day}/${month}/${year} at ${hour}:${minute}:${second}`
+}
+
 export function reformatSeconds(seconds: number): string {
     if (seconds < 60) {
         const result = Math.floor(seconds);

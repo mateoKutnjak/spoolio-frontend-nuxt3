@@ -5,17 +5,12 @@
     <td class="px-4 pt-4 pb-3 text-sm ">{{ modelingOrder?.contact_email }} </td>
     <td class="px-4 pt-4 pb-3 text-sm font-bold">{{ modelingOrder?.estimated_price ? `$${modelingOrder.estimated_price}` : '-'}}</td>
     <td class="px-4 pt-4 pb-3 text-end">
-      <div
-        v-if="modelingOrder"
-        class="btn btn-ghost btn-sm px-5 text-gray-700"
-        :style="`background-color: ${ OrderStatus.all[modelingOrder.status].colorHex }`"
-      >{{ OrderStatus.all[modelingOrder.status].display_name }}</div>
+      <OrderStatusView :raw-status="modelingOrder?.status" />
     </td>
   </tr>
 </template>
 
 <script lang="ts" setup>
-import { OrderStatus } from "~~/constants/constants";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 
 const { modelingOrderId } = defineProps(["modelingOrderId"]);

@@ -73,13 +73,11 @@ if (!printOrderUnit) {
   throw createError(`Print order unit is null for fileUrl=${fileUrl}`);
 }
 
-const selectedItem = ref(
-  filamentSpools.value.find((el) => el.id === Number(printOrderUnit.spool))
-);
+const selectedItem = ref(printOrderUnit.spool);
 
 watch(selectedItem, (value) => {
   if (value) {
-    printOrderStore.updateUnit(fileUrl, { spool: value.id });
+    printOrderStore.updateUnit(fileUrl, { spool: value });
     printOrderStore.updateScreenshot(fileUrl);
   }
 });

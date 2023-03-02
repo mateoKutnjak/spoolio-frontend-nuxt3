@@ -45,19 +45,18 @@
 </template>
   
 <script lang="ts" setup>
-import { IUserResponse } from "~~/stores/auth";
-import IRatingResponse from "~~/stores/rating";
+import { IRating, IUser } from "~~/constants/data";
 
 const { rating } = defineProps<{
-  rating: IRatingResponse;
+  rating: IRating;
 }>();
 
 const displayUserName = computed(() => {
-  if ((rating.user as IUserResponse).profile) {
+  if ((rating.user as IUser).profile) {
     return (
-      (rating.user as IUserResponse).profile?.first_name +
+      (rating.user as IUser).profile?.first_name +
       " " +
-      (rating.user as IUserResponse).profile?.last_name
+      (rating.user as IUser).profile?.last_name
     );
   }
   return "Anonymous";

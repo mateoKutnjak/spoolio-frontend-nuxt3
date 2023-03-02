@@ -1,0 +1,311 @@
+// ************** //
+// **** USER **** //
+// ************** //
+
+export interface IUserLogin {
+    access_token: string,
+    refresh_token: string,
+    user: IUser | undefined
+}
+
+export interface IUser {
+    id: number,
+    email: string,
+    is_staff: boolean,
+    profile: IProfile | undefined
+}
+
+export interface IProfile {
+    id: number,
+    email: string,
+    first_name: string,
+    last_name: string,
+    shipping_address: IAddressShipping,
+    billing_address: IAddressBilling,
+    phone_number: string,
+}
+
+export interface IAddressShipping {
+    first_name: string,
+    last_name: string,
+    address: string,
+    country: string,
+    state: string | undefined,
+    locality: string,
+    postal_code: string,
+    phone_number: string,
+}
+
+export interface IAddressBilling {
+    first_name: string,
+    last_name: string,
+    address: string,
+    country: string,
+    state: string | undefined,
+    locality: string,
+    postal_code: string,
+    phone_number: string,
+}
+
+// **************** //
+// **** COMMON **** //
+// **************** //
+
+import { Vector3 } from "three"
+
+export interface IAttachmentFile {
+    id: number,
+    file: File | string,
+    comment: string,
+    localUrl: string,
+}
+
+export interface IAttachmentImage {
+    id: number,
+    image: File | string,
+    comment: string,
+    localUrl: string,
+}
+
+export interface ILike {
+    id: number,
+    user: IUser,
+    content_type: string,
+    object_id: number,
+}
+
+export interface IRating {
+    id: number,
+    content: string,
+    value: number,
+    user: IUser | number,
+    content_type: string,
+    object_id: number,
+    created_at: string,
+    updated_at: string,
+}
+
+export interface IComment {
+    id: number,
+    content: string,
+    user: IUser,
+    created_at: string,
+    updated_at: string,
+}
+
+// ******************** //
+// **** PAGINATION **** //
+// ******************** //
+
+export interface IPaginatedResponse<T> {
+    count: number,
+    next: string,
+    previous: string,
+    results: T[]
+}
+
+// ************** //
+// **** BLOG **** //
+// ************** //
+
+export interface IBlog {
+    id: number,
+    title: string,
+    subtitle: string,
+    content: string,
+    author: IUser,
+    like_count: number,
+    liked_by_me: boolean,
+    comment_count: number,
+    created_at: string,
+    updated_at: string,
+    picture: string,
+}
+
+// ************************* //
+// **** SHIPPING METHOD **** //
+// ************************* //
+
+export interface IShippingMethod {
+    id: number,
+    provider: string,
+    description: string,
+    price: number
+}
+
+// ****************** //
+// **** FILAMENT **** //
+// ****************** //
+
+export interface IFilamentColor {
+    id: number,
+    name: string,
+    value: string
+}
+
+export interface IFilamentMaterial {
+    id: number,
+    name: string,
+    description: string,
+    density: number,
+    price: number,
+    printing_speed: number,
+}
+
+export interface IFilamentInfill {
+    id: number,
+    name: string,
+    percentage: number
+}
+
+export interface IFilamentSpool {
+    id: number,
+    material: IFilamentMaterial,
+    color: IFilamentColor,
+}
+
+// ************* //
+// ** PRODUCT ** //
+// ************* //
+
+export interface IProduct {
+    id: number,
+    title: string,
+    description: string,
+    comment_count: number,
+    like_count: number,
+    rating_count: number,
+    productvariationoption_set: IProductVariationOption[],
+    productimage_set: IProductImage[],
+    starting_price: number,
+    ending_price: number,
+    average_rating: number,
+    rated_by_me: boolean,
+    category: IProductCategory,
+    subcategory: IProductSubcategory,
+}
+
+export interface IProductCategory {
+    id: number,
+    name: string,
+}
+
+export interface IProductSubcategory {
+    id: number,
+    name: string,
+}
+
+export interface IProductVariation {
+    id: number,
+    name: string,
+}
+
+export interface IProductVariationOption {
+    id: number,
+    title: string,
+    description: string,
+    type: IProductVariation,
+}
+
+export interface IProductVariationOptionCombination {
+    id: number,
+    price: number,
+    sku: number,
+    product: IProduct,
+    options: IProductVariationOption[],
+}
+
+export interface IProductImage {
+    image: string,
+    comment: string,
+}
+
+// ********************* //
+// **** PRINT ORDER **** //
+// ********************* //
+
+export interface IPrintOrderUnit {
+    id: number | undefined,
+    comment: string,
+    quantity: number,
+    spool: IFilamentSpool,
+    infill: IFilamentInfill,
+    file: File | string,
+    localUrl: string,
+    attachmentFiles: IAttachmentFile[],
+    attachmentImages: IAttachmentImage[],
+    order: number | undefined,
+    modelDimensions: Vector3 | undefined,
+    modelVolume: number,
+    length_unit: string,
+    screenshotURL: string,
+    estimated_price: number,
+}
+
+export interface IPrintOrder {
+    id: number,
+    created_at: string,
+    updated_at: string,
+    units: IPrintOrderUnit[],
+    unit_count: number,
+    comment: string,
+    attachmentFiles: IAttachmentFile[],
+    attachmentImages: IAttachmentImage[],
+    user_profile: number,
+    contact_email: string,
+    shipping_address: IAddressShipping,
+    billing_address: IAddressBilling,
+    shipping_method: IShippingMethod,
+    payment_method: string,
+    estimated_price: number,
+    status: string,
+}
+
+// ************************ //
+// **** MODELING ORDER **** //
+// ************************ //
+
+export interface IModelingOrder {
+    id: number,
+    created_at: string,
+    updated_at: string,
+    comment: string,
+    attachmentFiles: IAttachmentFile[],
+    attachmentImages: IAttachmentImage[],
+    contact_email: string,
+    estimated_price: number,
+    status: string,
+}
+
+// ***************** //
+// ** STORE ORDER ** //
+// ***************** //
+
+export interface IStoreOrder {
+    id: number,
+    items: IStoreOrderUnit[],
+    created_at: string,
+    updated_at: string,
+    contact_email: string,
+    shipping_address: IAddressShipping,
+    billing_address: IAddressBilling,
+    shipping_method: IShippingMethod,
+    total_price: number,
+    payment_method: string,
+    status: string,
+}
+
+export interface IStoreOrderUnit {
+    id: number,
+    quantity: number,
+    order: number,
+    item: IProductVariationOptionCombination
+}
+
+// ************* //
+// ** PAYMENT ** //
+// ************* //
+
+export interface IPaymenIntent {
+    clientSecret: string,
+}

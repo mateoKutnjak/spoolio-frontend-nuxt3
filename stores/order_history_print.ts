@@ -1,21 +1,14 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
-import { IPrintOrderResponse } from './print_order'
+import { IPaginatedResponse, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from "../stores/auth";
-
-interface IPrintOrderListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: IPrintOrderResponse[]
-}
 
 export const usePrintOrderHistoryStore = defineStore('order-history-print', {
     state: () => ({
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
-        print_orders: [] as IPrintOrderResponse[]
+        print_orders: [] as IPrintOrder[]
     }),
 
     getters: {
@@ -27,10 +20,10 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
     actions: {
         async fetchPrintOrderHistoryPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return promiseWithTimeout<IPrintOrderListResponse>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrderListResponse>(`http://localhost:8000/api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+            return promiseWithTimeout<IPaginatedResponse<IPrintOrder>>(new Promise((resolve, reject) => {
+                customFetch<IPaginatedResponse<IPrintOrder>>(`http://localhost:8000/api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
-                }).then((response: IPrintOrderListResponse) => {
+                }).then((response: IPaginatedResponse<IPrintOrder>) => {
                     this.count = response.count;
                     this.next = response.next;
                     this.previous = response.previous;
@@ -49,11 +42,39 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
         },
 
         async fetchPrintOrderById(id: number) {
-            return promiseWithTimeout<IPrintOrderResponse>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrderResponse>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+            return promiseWithTimeout<IPrintOrder>(new Promise(async (resolve, reject) => {
+                customFetch<IPrintOrder>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
                     method: 'GET',
-                }).then((response: IPrintOrderResponse) => {
-                    this.print_orders.push(response);
+                }).then((response: IPrintOrder) => {
+                    const index = this.print_orders.findIndex(el => el.id === id);
+
+                    if (index != -1) {
+                        this.print_orders[index] = response;
+                    } else {
+                        this.print_orders.push(response);
+                    }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchPrintOrderUnitNamesById(id: number) {
+            return promiseWithTimeout<IPrintOrderUnit[]>(new Promise(async (resolve, reject) => {
+                customFetch<IPrintOrderUnit[]>(`http://localhost:8000/api/print-orders/units/?order=${id}`, {
+                    method: 'GET',
+                }).then((response: IPrintOrderUnit[]) => {
+                    const index = this.print_orders.findIndex(el => el.id === id);
+
+                    if (index != -1) {
+                        this.print_orders[index].units = response;
+                    } else {
+                        console.error("Print order with id cannot be find locally. Refresh please");
+                        reject("Print order with id cannot be find locally. Refresh please")
+                    }
+
                     resolve(response)
                 }).catch(err => {
                     reject(err)
@@ -65,8 +86,8 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
             const authStore = useAuthStore();
 
-            return promiseWithTimeout<IPrintOrderResponse>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrderResponse>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+            return promiseWithTimeout<IPrintOrder>(new Promise((resolve, reject) => {
+                customFetch<IPrintOrder>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`
@@ -74,7 +95,7 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
                     body: {
                         status: status,
                     },
-                }).then((response: IPrintOrderResponse) => {
+                }).then((response: IPrintOrder) => {
                     const index = this.print_orders.findIndex(el => el.id === id);
 
                     if (index != -1) {

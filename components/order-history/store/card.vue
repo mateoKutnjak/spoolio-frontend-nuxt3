@@ -8,11 +8,7 @@
         <div class=" gap-5 justify-end items-end text-lg text-gray-700 font-medium">
           {{ order?.total_price ? `$${order.total_price}` : '-'}}
         </div>
-        <div
-          v-if="order"
-          class="btn btn-ghost btn-sm px-5 text-gray-700"
-          :style="`background-color: ${OrderStatus.all[order.status].colorHex}`"
-        >{{ OrderStatus.all[order.status].display_name }}</div>
+        <OrderStatusView :raw-status="order?.status" />
 
       </div>
     </div>
@@ -20,7 +16,6 @@
 </template>
 
 <script lang="ts" setup>
-import { OrderStatus } from "~~/constants/constants";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 const { orderId } = defineProps(["orderId"]);
 

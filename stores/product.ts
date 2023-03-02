@@ -1,50 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-
-export interface IProductResponse {
-    id: number,
-    title: string,
-    description: string,
-    comment_count: number,
-    like_count: number,
-    rating_count: number,
-    productvariationoption_set: IProductVariationOptionResponse[],
-    productimage_set: IProductImageResponse[],
-    starting_price: number,
-    ending_price: number,
-    average_rating: number,
-    rated_by_me: boolean,
-}
-
-export interface IProductImageResponse {
-    image: string,
-    comment: string,
-}
-
-export interface IProductVariationResponse {
-    id: number,
-    name: string,
-}
-
-export interface IProductVariationOptionResponse {
-    id: number,
-    title: string,
-    description: string,
-    type: IProductVariationResponse,
-}
-
-export interface IProductVariationOptionCombinationResponse {
-    id: number,
-    price: number,
-    sku: number,
-    product: IProductResponse,
-    options: IProductVariationOptionResponse[],
-}
+import { IProduct, IProductVariationOptionCombination } from '~~/constants/data';
 
 export const useProductStore = defineStore('product', {
     state: () => ({
-        product: undefined as IProductResponse | undefined,
-        activeOptionsCombination: undefined as IProductVariationOptionCombinationResponse | undefined
+        product: undefined as IProduct | undefined,
+        activeOptionsCombination: undefined as IProductVariationOptionCombination | undefined
     }),
 
     getters: {
@@ -54,10 +15,10 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         async fetchProduct(id: number) {
-            return promiseWithTimeout<IProductResponse>(new Promise<IProductResponse>((resolve, reject) => {
-                customFetch<IProductResponse>(`http://localhost:8000/api/products/${id}/`, {
+            return promiseWithTimeout<IProduct>(new Promise<IProduct>((resolve, reject) => {
+                customFetch<IProduct>(`http://localhost:8000/api/products/${id}/`, {
                     method: 'GET'
-                }).then((response: IProductResponse) => {
+                }).then((response: IProduct) => {
                     this.product = response;
                     resolve(response);
                 }).catch(err => {
@@ -66,10 +27,10 @@ export const useProductStore = defineStore('product', {
             }), HTTP_REQUEST_TIMEOUT);
         },
         async fetchProductVariationOptionCombination(optionIds: number[], productId: number) {
-            return promiseWithTimeout<IProductVariationOptionCombinationResponse[]>(new Promise<IProductVariationOptionCombinationResponse[]>((resolve, reject) => {
-                customFetch<IProductVariationOptionCombinationResponse[]>(`http://localhost:8000/api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
+            return promiseWithTimeout<IProductVariationOptionCombination[]>(new Promise<IProductVariationOptionCombination[]>((resolve, reject) => {
+                customFetch<IProductVariationOptionCombination[]>(`http://localhost:8000/api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
                     method: 'GET'
-                }).then((response: IProductVariationOptionCombinationResponse[]) => {
+                }).then((response: IProductVariationOptionCombination[]) => {
                     if (response.length > 0) {
                         this.activeOptionsCombination = response[0]; // TODO is this ok?
                     } else {

@@ -38,19 +38,16 @@
 import { useDrawerStore } from "~~/stores/drawer";
 import { useCartStore } from "~~/stores/cart";
 
-import {
-  IProductResponse,
-  IProductVariationOptionCombinationResponse,
-} from "~~/stores/product";
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
 import { MAX_CART_ITEMS } from "~~/constants/constants";
+import { IProductVariationOptionCombination } from "~~/constants/data";
 
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 
 const { combination } = defineProps<{
-  combination: IProductVariationOptionCombinationResponse;
+  combination: IProductVariationOptionCombination;
 }>();
 
 const quantity = computed(() => {

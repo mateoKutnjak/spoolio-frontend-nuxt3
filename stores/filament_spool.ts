@@ -1,27 +1,7 @@
 import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
-
-export default interface IFilamentColor {
-    id: number,
-    name: string,
-    value: string
-}
-
-export interface IFilamentMaterial {
-    id: number,
-    name: string,
-    description: string,
-    density: number,
-    price: number,
-    printing_speed: number,
-}
-
-export interface IFilamentSpool {
-    id: number,
-    material: IFilamentMaterial,
-    color: IFilamentColor,
-}
+import { IFilamentSpool } from "~~/constants/data";
 
 export const useFilamentSpoolStore = defineStore('filament-spool', {
     state: () => ({

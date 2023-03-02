@@ -14,19 +14,18 @@
 </template>
   
 <script lang="ts" setup>
-import { IUserResponse } from "~~/stores/auth";
-import ICommentResponse from "~~/stores/commentList";
+import { IComment, IUser } from "~~/constants/data";
 
 const { comment } = defineProps<{
-  comment: ICommentResponse;
+  comment: IComment;
 }>();
 
 const displayUserName = computed(() => {
-  if ((comment.user as IUserResponse).profile) {
+  if ((comment.user as IUser).profile) {
     return (
-      (comment.user as IUserResponse).profile?.first_name +
+      (comment.user as IUser).profile?.first_name +
       " " +
-      (comment.user as IUserResponse).profile?.last_name
+      (comment.user as IUser).profile?.last_name
     );
   }
   return "Anonymous";

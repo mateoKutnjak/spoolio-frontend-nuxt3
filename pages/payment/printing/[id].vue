@@ -111,7 +111,7 @@ const { data, pending, error, refresh } = await useAsyncData(
     paymentStore.createPaymentIntent(
       ServiceType.printing,
       printOrder!.id,
-      printOrder!.estimated_price * 100 // Stripe has cents format for amount
+      Math.round(printOrder!.estimated_price * 100) // Stripe has cents format for amount
     )
 );
 

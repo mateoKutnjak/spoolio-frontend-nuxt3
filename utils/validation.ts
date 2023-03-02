@@ -1,6 +1,6 @@
-import { IAddressResponse } from "~~/stores/auth";
+import { IAddressBilling, IAddressShipping } from "~~/constants/data";
 
-export function isValidShippingAddress(address: IAddressResponse | undefined) {
+export function isValidShippingAddress(address: IAddressShipping | undefined) {
     if (!address) return false;
 
     return address.first_name &&
@@ -11,7 +11,7 @@ export function isValidShippingAddress(address: IAddressResponse | undefined) {
         address.postal_code;
 }
 
-export function isValidBillingAddress(address: IAddressResponse | undefined) {
+export function isValidBillingAddress(address: IAddressBilling | undefined) {
     if (!address) return false;
 
     return address.first_name &&

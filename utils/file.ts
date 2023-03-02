@@ -16,6 +16,21 @@ export function toIconName(file: File): string {
     }
 }
 
+export function toIconNameByExtension(fileExtension: string): string {
+    switch (fileExtension) {
+        case "pdf":
+            return "mdi:file-pdf-outline"
+        case "txt":
+            return "mdi:file-document-outline";
+        case "jpeg":
+        case "jpg":
+        case "png":
+            return "mdi:file-image-outline";
+        default:
+            return "mdi:file-question-outline";
+    }
+}
+
 export function toIconNameSafe(file: File | undefined): string {
     if (!file) {
         return "material-symbols:error-circle-rounded-outline";
@@ -32,4 +47,24 @@ export function fileSizeFormatted(file: File): string {
     const extensions = ["B", "kB", "MB", "GB", "TB"]
 
     return (file.size / (1024 ** Math.floor(baseLog))).toFixed(1) + " " + extensions[Math.floor(baseLog)]
+}
+
+export function urlExtractFilename(url: string): string {
+    const splitted = url.split('/');
+    return splitted[splitted.length - 1]
+}
+
+export function urlExtractFileSuffix(url: string): string {
+    const splitted = url.split('.');
+    return splitted[splitted.length - 1]
+}
+
+export function extractFilenameFileStringUnion(obj: File | string) {
+    if (typeof obj === 'string') {
+        return obj;
+    } else if (obj instanceof File) {
+        return obj.name;
+    }
+
+    throw createError(`Object ${obj} is neither File nor string`)
 }

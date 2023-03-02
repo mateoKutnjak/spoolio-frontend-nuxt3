@@ -258,11 +258,10 @@ import { COUNTRIES } from "~~/constants/countries";
 import { storeToRefs } from "pinia";
 
 import {
-  IAddressResponse,
-  IProfileResponse,
   useAuthStore,
 } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
+import { IAddressBilling, IAddressShipping, IProfile } from "~~/constants/data";
 
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
@@ -292,12 +291,6 @@ const billingAddressPhoneNumber = ref("");
 const submitted = ref(false);
 
 const submittingGeneralInfo = ref(false);
-
-const getUser = computed(() => authStore.getUser);
-
-if (!getUser.value) {
-  throw createError("Cannot access this site if you are not authenticated");
-}
 
 onMounted(() => {
   generalInfoEmail.value = user.value?.profile?.email || "";
@@ -375,7 +368,7 @@ const submitGeneralInfoHandler = async () => {
   // await new Promise((r) => setTimeout(r, 1000));
 
   authStore
-    .patchUserProfile(<IProfileResponse>{
+    .patchUserProfile(<IProfile>{
       email: generalInfoEmail.value,
     })
     .then(() => {
@@ -389,8 +382,8 @@ const submitShippingAddressHandler = async () => {
   // This delay is here only because of progress indicator button
   //   await new Promise((r) => setTimeout(r, 1000));
   authStore
-    .patchUserProfile(<IProfileResponse>{
-      shipping_address: <IAddressResponse>{
+    .patchUserProfile(<IProfile>{
+      shipping_address: <IAddressShipping>{
         country: shippingAddressCountry.value,
         first_name: shippingAddressFirstName.value,
         last_name: shippingAddressLastName.value,
@@ -418,8 +411,8 @@ const submitBillingAddressHandler = async () => {
   //   await new Promise((r) => setTimeout(r, 1000));
 
   authStore
-    .patchUserProfile(<IProfileResponse>{
-      billing_address: <IAddressResponse>{
+    .patchUserProfile(<IProfile>{
+      billing_address: <IAddressBilling>{
         country: billingAddressCountry.value,
         first_name: billingAddressFirstName.value,
         last_name: billingAddressLastName.value,

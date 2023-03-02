@@ -20,6 +20,7 @@
               v-for="order in modeling_orders"
               :key="order.id"
               :modelingOrderId="order.id"
+              @click="onItemClicked(order)"
             />
 
           </tbody>
@@ -30,6 +31,7 @@
           v-for="order in modeling_orders"
           :key="order.id"
           :modelingOrderId="order.id"
+          @click="onItemClicked(order)"
         />
       </div>
       <PaginationButtons
@@ -69,6 +71,7 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { PAGE_SIZE } from "~~/constants/constants";
+import { IModelingOrder } from "~~/constants/data";
 import { useNotificationStore } from "~~/stores/notification";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 
@@ -97,6 +100,10 @@ function onPageSelected(pageSelected: number) {
     .then((_) => {})
     .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {});
+}
+
+function onItemClicked(order: IModelingOrder) {
+  navigateTo(`/profile/order-history/modeling/${order.id}`);
 }
 </script>
   

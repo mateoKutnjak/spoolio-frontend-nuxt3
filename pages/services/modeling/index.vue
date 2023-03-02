@@ -139,11 +139,10 @@ import {
   MODELING_ORDER_ATTACHMENT_FILE_TYPES,
   MODELING_ORDER_ATTACHMENT_IMAGE_TYPES,
 } from "~~/constants/constants";
+import { IAttachmentFile, IAttachmentImage } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import {
-  IModelingOrderAttachmentFileResponse,
-  IModelingOrderAttachmentImageResponse,
   useModelingOrderStore,
 } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
@@ -180,7 +179,7 @@ function onFilesAdded(files: File[]) {
 
     if (MODELING_ORDER_ATTACHMENT_FILE_TYPES.indexOf(element.type) > -1) {
       modelingOrderStore.addAttachmentFile(<
-        IModelingOrderAttachmentFileResponse
+        IAttachmentFile
       >{
         file: element,
         comment: "",
@@ -190,7 +189,7 @@ function onFilesAdded(files: File[]) {
       MODELING_ORDER_ATTACHMENT_IMAGE_TYPES.indexOf(element.type) > -1
     ) {
       modelingOrderStore.addAttachmentImage(<
-        IModelingOrderAttachmentImageResponse
+        IAttachmentImage
       >{
         image: element,
         comment: "",

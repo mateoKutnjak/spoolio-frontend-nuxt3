@@ -59,8 +59,9 @@
 
 <script lang="ts" setup>
 import { useBlogStore } from "~~/stores/blog";
-import { IUserResponse, useAuthStore } from "~~/stores/auth";
+import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
+import { IUser } from "~~/constants/data";
 
 const authStore = useAuthStore();
 const blogStore = useBlogStore();
@@ -71,7 +72,7 @@ const { id } = useRoute().params;
 const blogTitle = ref<string>("");
 const blogSubtitle = ref<string>("");
 const blogContent = ref<string>("");
-const user = ref<IUserResponse>();
+const user = ref<IUser>();
 
 const submitted = ref(false);
 const showInitLoading = ref<boolean>(true);

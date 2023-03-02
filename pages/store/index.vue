@@ -8,7 +8,7 @@
     </div>
     <div v-if="getPaginatedProducts.count || 0 > 0">
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div
           :key="product.id"
           v-for="product in getPaginatedProducts.products"
@@ -91,7 +91,8 @@ onMounted(() => {
         offset = offset + limit;
         productListStore
           .fetchPaginatedProducts(limit, offset, "", true)
-          .then(() => (showPageLoading.value = false)).catch((err) => notificationStore.showFetchError(err));
+          .then(() => (showPageLoading.value = false))
+          .catch((err) => notificationStore.showFetchError(err));
       }
     }
   };
@@ -106,7 +107,8 @@ function onSearch(searchPhrase: string) {
 
   productListStore
     .fetchPaginatedProducts(limit, offset, searchPhrase, false)
-    .then(() => (showPageLoading.value = false)).catch((err) => notificationStore.showFetchError(err));
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
 }
 </script>
   

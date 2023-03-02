@@ -96,7 +96,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-2xl text-gray-700">Uploading images ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
+        <div class="text-2xl text-gray-700">Uploading images ({{ attachmentsImagesUploadedCount }}/{{  attachmentImages.length }})</div>
       </div>
     </div>
 
@@ -140,11 +140,9 @@
   <script lang="ts" setup>
 import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
+import { IAttachmentFile, IAttachmentImage, IModelingOrder } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import {
-  IModelingOrderAttachmentFileResponse,
-  IModelingOrderAttachmentImageResponse,
-  IModelingOrderResponse,
   useModelingOrderStore,
 } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
@@ -192,7 +190,7 @@ onMounted(async () => {
 
   await new Promise((r) => setTimeout(r, 1000));
 
-  var rootOrderResult: IModelingOrderResponse;
+  var rootOrderResult: IModelingOrder;
   try {
     rootOrderResult = await modelingOrderStore.postOrder();
     orderStatus.value = OrderStatus.success;
@@ -217,13 +215,9 @@ onMounted(async () => {
     index < modelingOrderStore.getAttachmentFiles.length;
     index++
   ) {
-    console.log(
-      "Posting attachment file " +
-        modelingOrderStore.getAttachmentFiles[index].file.name
-    );
 
     const attachmentFile = modelingOrderStore.getAttachmentFiles[index];
-    var attachmentFileResult: IModelingOrderAttachmentFileResponse;
+    var attachmentFileResult: IAttachmentFile;
 
     try {
       attachmentFileResult = await modelingOrderStore.postAttachmentFile(
@@ -258,13 +252,9 @@ onMounted(async () => {
     index < modelingOrderStore.getAttachmentImages.length;
     index++
   ) {
-    console.log(
-      "Posting attachment image " +
-        modelingOrderStore.getAttachmentImages[index].image.name
-    );
 
     const attachmentImage = modelingOrderStore.getAttachmentImages[index];
-    var attachmentImageResult: IModelingOrderAttachmentImageResponse;
+    var attachmentImageResult: IAttachmentImage;
 
     try {
       attachmentImageResult = await modelingOrderStore.postAttachmentImage(

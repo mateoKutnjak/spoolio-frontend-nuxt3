@@ -1,35 +1,13 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IAddressResponse, useAuthStore } from './auth';
-import { IProductVariationOptionCombinationResponse } from './product';
-import { IShippingMethod } from './shipping_method';
+import { IAddressBilling, IAddressShipping, IProductVariationOptionCombination, IShippingMethod, IStoreOrder, IStoreOrderUnit } from '~~/constants/data';
+import { useAuthStore } from './auth';
 
-export interface IStoreOrderUnitResponse {
-    id: number,
-    quantity: number,
-    item: number,
-    order: number,
-}
+function reformatItems(cartItems: Map<number, [IProductVariationOptionCombination, number]>): any[] {
+    let items = [] as any[];
 
-export interface IStoreOrderResponse {
-    id: number,
-    items: IStoreOrderUnitResponse[],
-    created_at: string,
-    updated_at: string,
-    contact_email: string,
-    shipping_address: IAddressResponse,
-    billing_address: IAddressResponse,
-    shipping_method: IShippingMethod,
-    total_price: number,
-    payment_method: string,
-    status: string,
-}
-
-function reformatItems(cartItems: Map<number, [IProductVariationOptionCombinationResponse, number]>): IStoreOrderUnitResponse[] {
-    let items = [] as IStoreOrderUnitResponse[];
-
-    cartItems.forEach((value: [IProductVariationOptionCombinationResponse, number], key: number) => {
-        items.push(<IStoreOrderUnitResponse>{
+    cartItems.forEach((value: [IProductVariationOptionCombination, number], key: number) => {
+        items.push({
             item: key,
             quantity: value[1],
         })
@@ -40,12 +18,12 @@ function reformatItems(cartItems: Map<number, [IProductVariationOptionCombinatio
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
-        cartItems: new Map<number, [IProductVariationOptionCombinationResponse, number]>,
+        cartItems: new Map<number, [IProductVariationOptionCombination, number]>,
 
-        store_order: <IStoreOrderResponse>{
+        store_order: <IStoreOrder>{
             contact_email: '',
-            shipping_address: <IAddressResponse>{},
-            billing_address: <IAddressResponse>{},
+            shipping_address: <IAddressShipping>{},
+            billing_address: <IAddressBilling>{},
             shipping_method: <IShippingMethod>{},
             payment_method: '',
         },
@@ -58,7 +36,7 @@ export const useCartStore = defineStore('cart', {
             let totalPrice = 0;
 
             state.cartItems.forEach(
-                (value: [IProductVariationOptionCombinationResponse, number], key: number) => {
+                (value: [IProductVariationOptionCombination, number], key: number) => {
                     totalPrice += value[1] * value[0].price;
                 }
             );
@@ -69,7 +47,7 @@ export const useCartStore = defineStore('cart', {
             let totalQuantity = 0;
 
             state.cartItems.forEach(
-                (value: [IProductVariationOptionCombinationResponse, number], key: number) => {
+                (value: [IProductVariationOptionCombination, number], key: number) => {
                     totalQuantity += value[1];
                 }
             );
@@ -87,7 +65,7 @@ export const useCartStore = defineStore('cart', {
             }
         },
         getCartItemForId: (state) => {
-            return (id: number): IProductVariationOptionCombinationResponse | undefined => {
+            return (id: number): IProductVariationOptionCombination | undefined => {
                 const value = state.cartItems.get(id);
 
                 if (value) {
@@ -100,17 +78,17 @@ export const useCartStore = defineStore('cart', {
 
     actions: {
         clear() {
-            this.cartItems = new Map<number, [IProductVariationOptionCombinationResponse, number]>();
-            this.store_order = <IStoreOrderResponse>{
+            this.cartItems = new Map<number, [IProductVariationOptionCombination, number]>();
+            this.store_order = <IStoreOrder>{
                 payment_method: "",
                 contact_email: '',
-                shipping_address: <IAddressResponse>{},
-                billing_address: <IAddressResponse>{},
+                shipping_address: <IAddressShipping>{},
+                billing_address: <IAddressBilling>{},
                 shipping_method: <IShippingMethod>{}
             };
         },
-        add(combinationId: number, combination: IProductVariationOptionCombinationResponse) {
-            const cartItemsCopy = new Map<number, [IProductVariationOptionCombinationResponse, number]>(this.cartItems);
+        add(combinationId: number, combination: IProductVariationOptionCombination) {
+            const cartItemsCopy = new Map<number, [IProductVariationOptionCombination, number]>(this.cartItems);
 
             let currentQuantity = this.getCartQuantityForId(combinationId) || 0;
 
@@ -119,7 +97,7 @@ export const useCartStore = defineStore('cart', {
             this.cartItems = cartItemsCopy;
         },
         remove(combinationId: number) {
-            const cartItemsCopy = new Map<number, [IProductVariationOptionCombinationResponse, number]>(this.cartItems);
+            const cartItemsCopy = new Map<number, [IProductVariationOptionCombination, number]>(this.cartItems);
 
             let currentQuantity = this.getCartQuantityForId(combinationId) || 0;
             let currentItem = this.getCartItemForId(combinationId);
@@ -132,8 +110,8 @@ export const useCartStore = defineStore('cart', {
 
             this.cartItems = cartItemsCopy;
         },
-        setQuantity(combinationId: number, combination: IProductVariationOptionCombinationResponse, quantity: number) {
-            const cartItemsCopy = new Map<number, [IProductVariationOptionCombinationResponse, number]>(this.cartItems);
+        setQuantity(combinationId: number, combination: IProductVariationOptionCombination, quantity: number) {
+            const cartItemsCopy = new Map<number, [IProductVariationOptionCombination, number]>(this.cartItems);
 
             if (quantity <= 0) {
                 cartItemsCopy.delete(combinationId);
@@ -143,7 +121,7 @@ export const useCartStore = defineStore('cart', {
 
             this.cartItems = cartItemsCopy;
         },
-        async postOrder(): Promise<IStoreOrderResponse> {
+        async postOrder(): Promise<IStoreOrder> {
 
             const authStore = useAuthStore();
 
@@ -157,11 +135,11 @@ export const useCartStore = defineStore('cart', {
                 items: reformatItems(this.cartItems),
             }
 
-            return promiseWithTimeout<IStoreOrderResponse>(new Promise<IStoreOrderResponse>((resolve, reject) => {
-                customFetch<IStoreOrderResponse>('http://localhost:8000/api/store-orders/', {
+            return promiseWithTimeout<IStoreOrder>(new Promise<IStoreOrder>((resolve, reject) => {
+                customFetch<IStoreOrder>('http://localhost:8000/api/store-orders/', {
                     method: 'POST',
                     body: body,
-                }).then((response: IStoreOrderResponse) => {
+                }).then((response: IStoreOrder) => {
                     console.log(response);
                     resolve(response)
                 }).catch(err => {

@@ -20,6 +20,7 @@
               v-for="order in orders"
               :key="order.id"
               :orderId="order.id"
+              @click="onItemClicked(order)"
             />
 
           </tbody>
@@ -30,6 +31,7 @@
           v-for="order in orders"
           :key="order.id"
           :orderId="order.id"
+          @click="onItemClicked(order)"
         />
       </div>
       <PaginationButtons
@@ -65,6 +67,7 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { PAGE_SIZE } from "~~/constants/constants";
+import { IStoreOrder } from "~~/constants/data";
 import { useNotificationStore } from "~~/stores/notification";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 
@@ -90,10 +93,6 @@ onMounted(() => {
     });
 });
 
-const getOrders = computed(() => {
-  return storeOrderHistoryStore.getOrders;
-});
-
 function onPageSelected(pageSelected: number) {
   currentPage.value = pageSelected;
 
@@ -105,6 +104,10 @@ function onPageSelected(pageSelected: number) {
     .finally(() => {
       showInitLoading.value = false;
     });
+}
+
+function onItemClicked(order: IStoreOrder) {
+  navigateTo(`/profile/order-history/store/${order.id}`);
 }
 </script>
   

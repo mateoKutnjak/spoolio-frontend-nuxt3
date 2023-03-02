@@ -144,14 +144,13 @@
   
 <script lang="ts" setup>
 import {
-  IProductResponse,
-  IProductVariationOptionResponse,
   useProductStore,
 } from "~~/stores/product";
 import { useCartStore } from "~~/stores/cart";
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
 import { CONTENT_TYPE_PRODUCT } from "~~/constants/constants";
+import { IProductVariationOption } from "~~/constants/data";
 
 const { id } = useRoute().params;
 
@@ -162,7 +161,7 @@ const productStore = useProductStore();
 const { product, activeOptionsCombination } = storeToRefs(productStore);
 
 const productVariationOptions = ref(
-  new Map<string, IProductVariationOptionResponse[]>()
+  new Map<string, IProductVariationOption[]>()
 );
 const productVariationOptionSelections = ref(new Map<string, number>());
 const currentImageIndex = ref(0);
@@ -212,9 +211,9 @@ function onNextImage() {
 }
 
 function setDefaultCombination(
-  opts: Map<string, IProductVariationOptionResponse[]>
+  opts: Map<string, IProductVariationOption[]>
 ) {
-  opts.forEach((value: IProductVariationOptionResponse[], key: string) => {
+  opts.forEach((value: IProductVariationOption[], key: string) => {
     if (value.length > 0) {
       productVariationOptionSelections.value.set(value[0].type.name, 0);
     }
@@ -277,9 +276,9 @@ function addToCart() {
 
 function extractProductVariations(): Map<
   string,
-  IProductVariationOptionResponse[]
+  IProductVariationOption[]
 > {
-  let options = new Map<string, IProductVariationOptionResponse[]>();
+  let options = new Map<string, IProductVariationOption[]>();
 
   if (!product.value?.productvariationoption_set) {
     return options;

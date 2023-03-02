@@ -34,24 +34,14 @@
               <p class="text-sm text-gray-500 font-normal dark:text-white line-clamp-2 mt-1">{{ product.description }}</p>
             </div>
           </div>
-          <div class="flex justify-between items-end">
-            <div
-              v-if="product.starting_price"
-              class="flex gap-0.5 items-start"
-            >
-              <div class="font-thin text-lg text-gray-800 mt-1 mr-2">From</div>
-              <div class="font-light text-2xl text-gray-800 dark:text-white">${{product.starting_price}}</div>
-              <div class="font-light text-gray-800">00</div>
-            </div>
-            <div v-else></div>
 
-            <div class="btn btn-outline gap-1 border border-gray-400 hover:border-gray-500 text-gray-600 hover:text-gray-700 hover:bg-gray-200">
-              <Icon
-                name="material-symbols:shopping-cart-outline-rounded"
-                size="27"
-                aria-hidden="true"
-              />Add to cart
-            </div>
+          <div
+            v-if="product.starting_price"
+            class="flex gap-0.5 justify-end items-start"
+          >
+            <div class="font-light text-lg text-gray-500 mt-1 mr-2">From</div>
+            <div class="font-light text-2xl text-gray-800 dark:text-white">${{product.starting_price}}</div>
+            <div class="font-light text-gray-800">00</div>
           </div>
         </div>
       </div>
@@ -61,12 +51,6 @@
 </template>
     
     <script lang="ts" setup>
-import { IProductResponse } from "~~/stores/product";
-import { useCartStore } from "~~/stores/cart";
-import { useNotificationStore } from "~~/stores/notification";
-
-const cartStore = useCartStore();
-const notificationStore = useNotificationStore();
 
 const { product } = defineProps(["product"]); // props
 </script>

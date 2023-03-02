@@ -10,7 +10,7 @@
       <div class="absolute top-0 left-0 right-0 py-4 px-6">
         <div class="flex justify-between">
           <div class="flex flex-col gap-3">
-            <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ unit.file.name }}</div>
+            <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ extractFilenameFileStringUnion(unit.file) }}</div>
             <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
             <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
           </div>
@@ -45,45 +45,28 @@
 </template>
   
   <script lang="ts" setup>
-import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
-import { useDialogStore } from "~~/stores/dialog";
 import {
+  IAttachmentFile,
+  IAttachmentImage,
   IFilamentInfill,
-  useFilamentInfillStore,
-} from "~~/stores/filament_infill";
-import {
   IFilamentSpool,
-  useFilamentSpoolStore,
-} from "~~/stores/filament_spool";
-import { useGlobalsStore } from "~~/stores/globals";
-import {
-  IPrintOrderAttachmentFileResponse,
-  IPrintOrderAttachmentImageResponse,
-  IPrintOrderUnitResponse,
-  usePrintOrderStore,
-} from "~~/stores/print_order";
+  IPrintOrderUnit,
+} from "~~/constants/data";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { props } = defineProps(["props"]);
 
-const unit = props[0] as IPrintOrderUnitResponse; // todo error check
+const unit = props[0] as IPrintOrderUnit; // todo error check
 
-const dialogStore = useDialogStore();
-const filamentSpoolStore = useFilamentSpoolStore();
-const filamentInfillStore = useFilamentInfillStore();
-const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
 
-const { dimensionUnit } = storeToRefs(globalsStore);
-
-const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
-
-const selectedSpool = ref<number>();
-const selectedInfill = ref<number>();
+const selectedSpool = ref<IFilamentSpool>();
+const selectedInfill = ref<IFilamentInfill>();
 const quantity = ref<number>(1);
 const comment = ref<string>("");
-const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
-const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
+const attachmentFiles = ref<IAttachmentFile[]>([]);
+const attachmentImages = ref<IAttachmentImage[]>([]);
 
 onMounted(() => {
   selectedSpool.value = unit.spool;

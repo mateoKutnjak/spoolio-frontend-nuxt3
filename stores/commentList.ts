@@ -1,31 +1,15 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT, PAGE_SIZE } from '~~/constants/constants'
+import { IComment, IPaginatedResponse, IUser } from '~~/constants/data'
 import { promiseWithTimeout } from '~~/utils/promise'
-import { IUserResponse, useAuthStore } from './auth'
-
-export default interface ICommentResponse {
-    id: number,
-    content: string,
-    user: IUserResponse | number,
-    content_type: string,
-    object_id: number,
-    created_at: string,
-    updated_at: string,
-}
-
-export interface ICommentListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: ICommentResponse[]
-}
+import { useAuthStore } from './auth'
 
 export const useCommentListStore = defineStore('comment-list', {
     state: () => ({
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
-        comments: [] as ICommentResponse[]
+        comments: [] as IComment[]
     }),
 
     getters: {
@@ -35,12 +19,12 @@ export const useCommentListStore = defineStore('comment-list', {
 
     actions: {
         async fetchComments(objectId: number, contentType: string, limit: number = PAGE_SIZE, offset: number = 0, append: boolean = false) {
-            return promiseWithTimeout<ICommentListResponse>(
-                new Promise<ICommentListResponse>((resolve, reject) => {
-                    customFetch<ICommentListResponse>(`http://localhost:8000/api/comments/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+            return promiseWithTimeout<IPaginatedResponse<IComment>>(
+                new Promise<IPaginatedResponse<IComment>>((resolve, reject) => {
+                    customFetch<IPaginatedResponse<IComment>>(`http://localhost:8000/api/comments/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
                         method: 'GET',
                     }
-                    ).then((response: ICommentListResponse) => {
+                    ).then((response: IPaginatedResponse<IComment>) => {
                         this.count = response.count;
                         this.next = response.next;
                         this.previous = response.previous;
@@ -72,15 +56,15 @@ export const useCommentListStore = defineStore('comment-list', {
                 object_id: objectId,
             };
 
-            return promiseWithTimeout(new Promise<ICommentResponse>((resolve, reject) => {
-                customFetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
+            return promiseWithTimeout(new Promise<IComment>((resolve, reject) => {
+                customFetch<IComment>(`http://localhost:8000/api/comments/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`
                     },
                     body: body,
                 }
-                ).then((response: ICommentResponse) => {
+                ).then((response: IComment) => {
                     this.comments.unshift(response);
                     this.count = this.count || 0 + 1;
                     // todo what to do with next ?

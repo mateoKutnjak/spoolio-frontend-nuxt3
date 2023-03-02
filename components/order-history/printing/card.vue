@@ -8,12 +8,7 @@
         <div class="card-actions gap-5 justify-end items-end text-lg text-gray-700 font-medium">
           {{ printOrder?.estimated_price ? `$${printOrder.estimated_price}` : '-'}}
         </div>
-        <div
-          v-if="printOrder"
-          class="btn btn-ghost btn-sm px-5 text-gray-700"
-          :style="`background-color: ${OrderStatus.all[printOrder.status].colorHex}`"
-        >{{ OrderStatus.all[printOrder.status].display_name }}</div>
-
+        <OrderStatusView :raw-status="printOrder?.status" />
       </div>
     </div>
   </div>

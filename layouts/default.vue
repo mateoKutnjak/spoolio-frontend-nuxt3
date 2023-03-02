@@ -12,8 +12,8 @@
       <div class="flex flex-col h-screen">
         <Navbar />
         <Toast />
-        <div class="flex-1 container mx-auto">
-          <Breadcrumbs class="py-12 px-12 mx-4 pb-0" />
+        <div class="flex-1 container mx-auto max-w-5xl">
+          <Breadcrumbs class="py-12 mx-4 pb-0" />
           <slot />
         </div>
       </div>

@@ -105,8 +105,7 @@ const geometry = await load(stlFileUrl);
 
 // *** OBJECT MODELING *** //
 
-const meshColor =
-  filamentSpoolStore.getById(printOrderUnit.spool)?.color.value || "#EAEAEA";
+const meshColor = printOrderUnit.spool.color.value;
 
 const mesh = new Mesh(
   geometry,
@@ -157,8 +156,7 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
     return;
   }
 
-  const colorStringValue =
-    filamentSpoolStore.getById(printOrderUnit.spool)?.color.value || "#EAEAEA";
+  const colorStringValue = printOrderUnit.spool.color.value;
   const colorStringValueTrimmed = colorStringValue.substring(1);
   const parsed = parseInt(colorStringValueTrimmed, 16);
 

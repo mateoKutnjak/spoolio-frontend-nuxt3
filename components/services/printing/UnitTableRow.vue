@@ -15,7 +15,7 @@
     <td class="py-4">
       <div class="h-36 max-w-xs flex flex-col gap-3 justify-center">
         <div class="text-lg text-gray-900 font-light dark:text-white line-clamp-1">
-          {{ unit.file.name }}
+          {{ extractFilenameFileStringUnion(unit.file) }}
         </div>
         <div class="flex items-start justify-start">
           <div
@@ -47,15 +47,6 @@
         <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
       </div>
     </td>
-    <!-- <td class="py-4 text-center">
-      {{ getInfillPercentage() * 100 }}%
-    </td> -->
-    <!-- <td class="py-4 text-center">
-      <div
-        class="btn btn-xs btn-circle btn-ghost"
-        :style="`background-color: ${getColorValue()}`"
-      />
-    </td> -->
     <td class="py-4">
       <div class="flex items-center justify-center">
         <input
@@ -110,27 +101,22 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
+import { IAttachmentFile, IAttachmentImage, IFilamentInfill, IPrintOrderUnit } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import {
-  IFilamentInfill,
   useFilamentInfillStore,
 } from "~~/stores/filament_infill";
-import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import {
-  IPrintOrderAttachmentFileResponse,
-  IPrintOrderAttachmentImageResponse,
-  IPrintOrderUnitResponse,
   usePrintOrderStore,
 } from "~~/stores/print_order";
 
 const { unit } = defineProps<{
-  unit: IPrintOrderUnitResponse;
+  unit: IPrintOrderUnit;
 }>();
 
 const dialogStore = useDialogStore();
 const globalsStore = useGlobalsStore();
-const filamentSpoolStore = useFilamentSpoolStore();
 const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
 
@@ -139,8 +125,8 @@ const { dimensionUnit } = storeToRefs(globalsStore);
 const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
 const comment = ref<string>("");
-const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
-const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
+const attachmentFiles = ref<IAttachmentFile[]>([]);
+const attachmentImages = ref<IAttachmentImage[]>([]);
 
 const printOrderUnit = computed(() =>
   printOrderStore.getUnitByLocalUrl(unit.localUrl)
@@ -158,40 +144,22 @@ const totalPrice = computed(() => {
 
 function getMaterialName(): string {
   if (printOrderUnit.value) {
-    return (
-      filamentSpoolStore.getById(printOrderUnit.value.spool)?.material.name ||
-      "null"
-    );
+    return printOrderUnit.value.spool.material.name;
   }
   console.error("Print order unit is null when displaying material name");
   return "null";
 }
 
 function getInfillPercentage(): number {
-  return infills.value.find((el) => el.id === unit.infill)?.percentage || 0;
+  return unit.infill.percentage;
 }
 
 function getColorName(): string {
   if (printOrderUnit.value) {
-    return (
-      filamentSpoolStore.getById(printOrderUnit.value!.spool)?.color.name ||
-      "null"
-    );
+    return printOrderUnit.value.spool.color.name;
   }
   console.error("Print order unit is null when displaying material name");
   return "null";
-}
-
-function increaseQuantity() {
-  printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity + 1 });
-}
-
-function decreaseQuantity() {
-  if (unit.quantity > 1) {
-    printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity - 1 });
-  } else {
-    printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
-  }
 }
 
 function updateValue(event: Event) {
@@ -257,45 +225,33 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
 });
 
 function duplicateUnit() {
-  printOrderStore.addUnit(<IPrintOrderUnitResponse>{
-    id: undefined,
-    quantity: unit.quantity,
-    spool: unit.spool,
-    infill: unit.infill,
-    estimatedPrice: unit.estimatedPrice,
-    file: unit.file,
-    comment: comment.value,
-    localUrl: URL.createObjectURL(unit.file),
-    attachmentFiles: [], // todo
-    attachmentImages: [], // todo
-    order: unit.order,
-    modelDimensions: unit.modelDimensions,
-    modelVolume: unit.modelVolume,
-    screenshotURL: unit.screenshotURL,
-    lengthUnit: DimensionUnit[dimensionUnit.value],
-  });
+  if (unit.file instanceof File) {
+    printOrderStore.addUnit(<IPrintOrderUnit>{
+      id: undefined,
+      quantity: unit.quantity,
+      spool: unit.spool,
+      infill: unit.infill,
+      estimated_price: unit.estimated_price,
+      file: unit.file,
+      comment: comment.value,
+      localUrl: URL.createObjectURL(unit.file),
+      attachmentFiles: [], // todo
+      attachmentImages: [], // todo
+      order: unit.order,
+      modelDimensions: unit.modelDimensions,
+      modelVolume: unit.modelVolume,
+      screenshotURL: unit.screenshotURL,
+      length_unit: DimensionUnit[dimensionUnit.value],
+    });
+  } else {
+    throw createError(
+      `Cannot duplicate print order unit. Original unit.file is not of type File`
+    );
+  }
 }
 
 function removeUnit() {
   dialogStore.open("DialogConfirmDeletePrintOrderUnit", [unit.localUrl]);
-}
-
-function onAttachmentFilesChange(e: any) {
-  console.log("HERE");
-  console.log(attachmentFiles.value);
-
-  var files = Array.from<File>(e.target.files);
-  for (let index = 0; index < files.length; index++) {
-    const element = files[index];
-
-    // todo if file is image put is in attachmentImages
-
-    attachmentFiles.value.push(<IPrintOrderAttachmentFileResponse>{
-      file: element,
-      localUrl: URL.createObjectURL(element),
-      comment: "EMPTY TODO",
-    });
-  }
 }
 </script>
   

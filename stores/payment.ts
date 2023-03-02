@@ -1,10 +1,7 @@
 import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT, ServiceType } from "~~/constants/constants";
-
-export default interface IPaymenIntent {
-    clientSecret: string,
-}
+import { IPaymenIntent } from "~~/constants/data";
 
 export const usePaymentStore = defineStore('payment', {
     state: () => ({

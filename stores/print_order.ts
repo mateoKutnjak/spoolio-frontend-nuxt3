@@ -1,64 +1,12 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { Vector3 } from 'three';
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, OrderStatus, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
-import { IAddressResponse, useAuthStore } from './auth';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
+import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
+import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
-import { IShippingMethod } from './shipping_method';
 
-export interface IPrintOrderAttachmentFileResponse {
-    id: number,
-    file: File,
-    comment: string,
-    localUrl: string,
-}
-
-export interface IPrintOrderAttachmentImageResponse {
-    id: number,
-    image: File,
-    comment: string,
-    localUrl: string,
-}
-
-export interface IPrintOrderUnitResponse {
-    id: number | undefined,
-    comment: string,
-    quantity: number,
-    spool: number,
-    infill: number,
-    file: File,
-    localUrl: string,
-    estimatedPrice: number,
-    attachmentFiles: IPrintOrderAttachmentFileResponse[],
-    attachmentImages: IPrintOrderAttachmentImageResponse[],
-    order: number | undefined,
-    modelDimensions: Vector3 | undefined,
-    modelVolume: number,
-    lengthUnit: string,
-    screenshotURL: string,
-}
-
-export interface IPrintOrderResponse {
-    id: number,
-    created_at: string,
-    updated_at: string,
-    units: IPrintOrderUnitResponse[],
-    unit_count: number,
-    comment: string,
-    attachmentFiles: IPrintOrderAttachmentFileResponse[],
-    attachmentImages: IPrintOrderAttachmentImageResponse[],
-    user_profile: number,
-    contact_email: string,
-    shipping_address: IAddressResponse,
-    billing_address: IAddressResponse,
-    shipping_method: IShippingMethod,
-    payment_method: string,
-    estimated_price: number,
-    status: string,
-}
-
-async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, contentType: string, objectId: number): Promise<IPrintOrderAttachmentFileResponse> {
+async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
     var formData = new FormData();
 
@@ -69,10 +17,10 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
     formData.append("object_id", objectId.toString());
 
     return new Promise((resolve, reject) => {
-        customFetch<IPrintOrderAttachmentFileResponse>('http://localhost:8000/api/print-orders/attachment-files/', {
+        customFetch<IAttachmentFile>('http://localhost:8000/api/print-orders/attachment-files/', {
             method: 'POST',
             body: formData,
-        }).then((response: IPrintOrderAttachmentFileResponse) => {
+        }).then((response: IAttachmentFile) => {
             // this.createdPrintOrder = response;
             resolve(response)
         }).catch(err => {
@@ -84,16 +32,16 @@ async function postAttachmentFile(item: IPrintOrderAttachmentFileResponse, conte
 
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
-        print_order: <IPrintOrderResponse>{
+        print_order: <IPrintOrder>{
             contact_email: '',
-            shipping_address: <IAddressResponse>{},
-            billing_address: <IAddressResponse>{},
+            shipping_address: <IAddressShipping>{},
+            billing_address: <IAddressBilling>{},
             payment_method: '',
         },
-        units: [] as IPrintOrderUnitResponse[],
-        attachmentFiles: [] as IPrintOrderAttachmentFileResponse[],
-        attachmentImages: [] as IPrintOrderAttachmentImageResponse[],
-   }),
+        units: [] as IPrintOrderUnit[],
+        attachmentFiles: [] as IAttachmentFile[],
+        attachmentImages: [] as IAttachmentImage[],
+    }),
 
     getters: {
         getAttachmentFiles: (state) => state.attachmentFiles,
@@ -112,26 +60,30 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const unit = state.units.find(el => el.localUrl === localUrl)
 
+                if (!unit) {
+                    throw createError(`Cannot calculate unit price. Unit with localUrl ${localUrl} not found`);
+                }
+
                 // * Model volume
-                const v = unit?.modelVolume;
+                const v = unit.modelVolume;
 
                 // * Model bounding box volume
                 let vBbox = 0.0;
-                if (unit?.modelDimensions?.x && unit?.modelDimensions?.y && unit?.modelDimensions?.z) {
-                    vBbox = unit?.modelDimensions?.x * unit?.modelDimensions?.y * unit?.modelDimensions?.z;
+                if (unit.modelDimensions?.x && unit.modelDimensions?.y && unit.modelDimensions?.z) {
+                    vBbox = unit.modelDimensions.x * unit.modelDimensions.y * unit?.modelDimensions.z;
                 }
 
                 // * Infill percentage
-                const I = unit?.infill ? filamentInfillStore.getPercentageById(unit.infill) : undefined;
+                const I = unit.infill.percentage;
 
                 // * Density of material
-                const D = unit?.spool ? filamentSpoolStore.getById(unit.spool)?.material.density : undefined;
+                const D = unit.spool.material.density;
 
                 // * Price of material per gram
-                const G = unit?.spool ? filamentSpoolStore.getById(unit.spool)?.material.price : undefined;
+                const G = unit.spool.material.price;
 
                 // * Quantity
-                const q = unit?.quantity;
+                const q = unit.quantity;
 
 
                 if (!v || !q || !I || !D || !G || !vBbox) {
@@ -163,9 +115,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 }
 
                 const q = item.quantity;
-                const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
-                const d = item.spool ? filamentSpoolStore.getById(item.spool)?.material.density : undefined;
-                const p = item.spool ? filamentSpoolStore.getById(item.spool)?.material.price : undefined;
+                const i = item.infill.percentage;
+                const d = item.spool.material.density;
+                const p = item.spool.material.price;
 
                 if (!v || !q || !i || !d || !p || !vBbox) {
                     console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
@@ -205,10 +157,10 @@ export const usePrintOrderStore = defineStore('print-order', {
                 }
 
                 const q = item.quantity;
-                const i = item.infill ? filamentInfillStore.getPercentageById(item.infill) : undefined;
+                const i = item.infill.percentage;
                 // const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
                 // const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
-                const vPrint = item.spool ? filamentSpoolStore.getById(item.spool)?.material.printing_speed : undefined;
+                const vPrint = item.spool.material.printing_speed;
 
                 if (!objVolume || !q || !i || !vPrint || !vBbox) {
                     console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
@@ -239,7 +191,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             this.attachmentImages.splice(0, this.attachmentImages.length);
         },
 
-        async postOrder(): Promise<IPrintOrderResponse> {
+        async postOrder(): Promise<IPrintOrder> {
 
             const authStore = useAuthStore();
 
@@ -253,11 +205,11 @@ export const usePrintOrderStore = defineStore('print-order', {
                 estimated_price: this.getTotalPrice.toFixed(2) || 99999,
             }
 
-            return promiseWithTimeout<IPrintOrderResponse>(new Promise<IPrintOrderResponse>((resolve, reject) => {
-                customFetch<IPrintOrderResponse>('http://localhost:8000/api/print-orders/orders/', {
+            return promiseWithTimeout<IPrintOrder>(new Promise<IPrintOrder>((resolve, reject) => {
+                customFetch<IPrintOrder>('http://localhost:8000/api/print-orders/orders/', {
                     method: 'POST',
                     body: body,
-                }).then((response: IPrintOrderResponse) => {
+                }).then((response: IPrintOrder) => {
                     // this.createdPrintOrder = response;
                     resolve(response)
                 }).catch(err => {
@@ -267,28 +219,27 @@ export const usePrintOrderStore = defineStore('print-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async postOrderUnit(unit: IPrintOrderUnitResponse, orderId: number): Promise<IPrintOrderUnitResponse> {
+        async postOrderUnit(unit: IPrintOrderUnit, orderId: number): Promise<IPrintOrderUnit> {
 
             const globalsStore = useGlobalsStore();
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
-            formData.append("spool", unit.spool.toString());
-            formData.append("infill", unit.infill.toString());
+            formData.append("spool", unit.spool.id.toString());
+            formData.append("infill", unit.infill.id.toString());
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', DimensionUnit[globalsStore.getDimensionUnit])
-            formData.append("estimatedPrice", unit.estimatedPrice.toString());
+            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2).toString());
 
             // todo what to do with this
             formData.append("order", orderId.toString());
 
-            return promiseWithTimeout<IPrintOrderUnitResponse>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrderUnitResponse>('http://localhost:8000/api/print-orders/units/', {
+            return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
+                customFetch<IPrintOrderUnit>('http://localhost:8000/api/print-orders/units/', {
                     method: 'POST',
                     body: formData,
-                }).then((response: IPrintOrderUnitResponse) => {
-                    // this.createdPrintOrder = response;
+                }).then((response: IPrintOrderUnit) => {
                     resolve(response)
                 }).catch(err => {
                     console.log(err);
@@ -297,15 +248,15 @@ export const usePrintOrderStore = defineStore('print-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async postPrintOrderAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderId: number): Promise<IPrintOrderAttachmentFileResponse> {
+        async postPrintOrderAttachmentFile(item: IAttachmentFile, orderId: number): Promise<IAttachmentFile> {
             return postAttachmentFile(item, CONTENT_TYPE_ORDER, orderId);
         },
 
-        async postPrintOrderUnitAttachmentFile(item: IPrintOrderAttachmentFileResponse, orderUnitId: number) {
+        async postPrintOrderUnitAttachmentFile(item: IAttachmentFile, orderUnitId: number) {
             return postAttachmentFile(item, CONTENT_TYPE_ORDER_UNIT, orderUnitId);
         },
 
-        addUnit(unit: IPrintOrderUnitResponse) {
+        addUnit(unit: IPrintOrderUnit) {
             this.units.push(unit);
         },
 
@@ -333,12 +284,12 @@ export const usePrintOrderStore = defineStore('print-order', {
             const { modelVolume, modelDimensions } = await preprocess3dObject(localUrl);
 
             create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
-                this.units.push(<IPrintOrderUnitResponse>{
+                this.units.push(<IPrintOrderUnit>{
                     id: undefined,
                     quantity: 1,
-                    spool: filamentSpoolStore.getAll[0].id,
-                    infill: filamentInfillStore.getFilamentInfills[0].id,
-                    estimatedPrice: 0,
+                    spool: filamentSpoolStore.getAll[0],
+                    infill: filamentInfillStore.getFilamentInfills[0],
+                    estimated_price: 0,
                     file: file,
                     comment: "TODO",
                     localUrl: localUrl,
@@ -347,8 +298,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     order: undefined,
                     modelDimensions: modelDimensions,
                     modelVolume: modelVolume,
-                    lengthUnit: DimensionUnit[globalsStore.getDimensionUnit],
-                    screenshotURL: URL.createObjectURL(blob)
+                    length_unit: DimensionUnit[globalsStore.getDimensionUnit],
+                    screenshotURL: URL.createObjectURL(blob),
                 });
             })
         },
@@ -361,9 +312,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            const filamentSpoolStore = useFilamentSpoolStore();
-
-            create3dObjectScreenshot(localUrl, filamentSpoolStore.getById(unit.spool)?.color.value, 400, 400, blob => {
+            create3dObjectScreenshot(localUrl, unit.spool.color.value, 400, 400, blob => {
                 this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob) });
             })
         },
@@ -384,7 +333,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
         },
 
-        removeUnit(unit: IPrintOrderUnitResponse) {
+        removeUnit(unit: IPrintOrderUnit) {
             var index = this.units.findIndex(el => el.localUrl === unit.localUrl);
 
             if (index > -1) {
@@ -404,11 +353,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
         },
 
-        addAttachmentFile(attachmentFile: IPrintOrderAttachmentFileResponse) {
+        addAttachmentFile(attachmentFile: IAttachmentFile) {
             this.attachmentFiles.push(attachmentFile);
         },
 
-        removeAttachmentFile(attachmentFile: IPrintOrderAttachmentFileResponse) {
+        removeAttachmentFile(attachmentFile: IAttachmentFile) {
             var index = this.attachmentFiles.map((el) => el.file).indexOf(attachmentFile.file);
 
             if (index > -1) {
@@ -418,11 +367,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
         },
 
-        addAttachmentImage(attachmentImage: IPrintOrderAttachmentImageResponse) {
+        addAttachmentImage(attachmentImage: IAttachmentImage) {
             this.attachmentImages.push(attachmentImage);
         },
 
-        removeAttachmentImage(attachmentImage: IPrintOrderAttachmentImageResponse) {
+        removeAttachmentImage(attachmentImage: IAttachmentImage) {
             var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
 
             if (index > -1) {

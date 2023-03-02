@@ -1,31 +1,10 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IUserResponse } from './auth';
-
-export default interface IBlogResponse {
-    id: number,
-    title: string,
-    subtitle: string,
-    content: string,
-    author: IUserResponse,
-    like_count: number,
-    liked_by_me: boolean,
-    comment_count: number,
-    created_at: string,
-    updated_at: string,
-    picture: string,
-}
-
-export interface ILikeResponse {
-    id: number,
-    user: IUserResponse,
-    content_type: string,
-    object_id: number,
-}
+import { IBlog } from '~~/constants/data';
 
 export const useBlogStore = defineStore('blog', {
     state: () => ({
-        blog: undefined as IBlogResponse | undefined
+        blog: undefined as IBlog | undefined
     }),
 
     getters: {
@@ -34,11 +13,11 @@ export const useBlogStore = defineStore('blog', {
 
     actions: {
         async fetchBlog(id: number) {
-            return new Promise<IBlogResponse>((resolve, reject) => {
-                customFetch<IBlogResponse>(`http://localhost:8000/api/blogs/${id}/`, {
+            return new Promise<IBlog>((resolve, reject) => {
+                customFetch<IBlog>(`http://localhost:8000/api/blogs/${id}/`, {
                     method: 'GET'
                 }
-                ).then((response: IBlogResponse) => {
+                ).then((response: IBlog) => {
                     this.blog = response;
                     resolve(response)
                 }).catch(err => {
@@ -49,7 +28,7 @@ export const useBlogStore = defineStore('blog', {
 
         async patchBlog(accessToken: string, title: string, subtitle: string, content: string) {
 
-            return promiseWithTimeout<IBlogResponse>(new Promise<IBlogResponse>((resolve, reject) => {
+            return promiseWithTimeout<IBlog>(new Promise<IBlog>((resolve, reject) => {
                 var body: { [name: string]: any } = {
                     title: title,
                     subtitle: subtitle,
@@ -57,14 +36,14 @@ export const useBlogStore = defineStore('blog', {
                 };
 
                 // todo check user? nullable
-                customFetch<IBlogResponse>(`http://localhost:8000/api/blogs/${this.blog?.id}/`, {
+                customFetch<IBlog>(`http://localhost:8000/api/blogs/${this.blog?.id}/`, {
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },
                     body: body,
                 })
-                    .then((response: IBlogResponse) => {
+                    .then((response: IBlog) => {
                         // todo remove !
                         this.blog = response
                         resolve(response)

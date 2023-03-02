@@ -1,18 +1,10 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IUserResponse}  from './auth'
-
-interface ICommentResponse {
-    id: number,
-    content: string,
-    user: IUserResponse,
-    created_at: string,
-    updated_at: string,
-}
+import { IComment } from '~~/constants/data';
 
 export const useCommentStore = defineStore('comment', {
     state: () => ({
-        insertedComment: undefined as ICommentResponse | undefined
+        insertedComment: undefined as IComment | undefined
     }),
 
     getters: {
@@ -27,15 +19,15 @@ export const useCommentStore = defineStore('comment', {
                 content: content,
             };
 
-            return promiseWithTimeout<ICommentResponse>(new Promise<ICommentResponse>((resolve, reject) => {
-                customFetch<ICommentResponse>(`http://localhost:8000/api/comments/`, {
+            return promiseWithTimeout<IComment>(new Promise<IComment>((resolve, reject) => {
+                customFetch<IComment>(`http://localhost:8000/api/comments/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },
                     body: body,
                 }
-                ).then((response: ICommentResponse) => {
+                ).then((response: IComment) => {
                     this.insertedComment = response;
                     resolve(response)
                 }).catch(err => {

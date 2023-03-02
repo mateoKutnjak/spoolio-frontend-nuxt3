@@ -66,15 +66,14 @@
   <script lang="ts" setup>
 import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
-import { IStoreOrderResponse, useCartStore } from "~~/stores/cart";
+import { IStoreOrder } from "~~/constants/data";
+import { useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
 const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
-
-const { cartItems } = storeToRefs(cartStore);
 
 enum OrderStatus {
   initial,
@@ -92,7 +91,7 @@ onMounted(async () => {
 
   await new Promise((r) => setTimeout(r, 1000));
 
-  var rootOrderResult: IStoreOrderResponse;
+  var rootOrderResult: IStoreOrder;
   try {
     rootOrderResult = await cartStore.postOrder();
     orderStatus.value = OrderStatus.success;

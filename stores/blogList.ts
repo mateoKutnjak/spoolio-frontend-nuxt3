@@ -1,21 +1,14 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
+import { IBlog, ILike, IPaginatedResponse } from '~~/constants/data'
 import { useAuthStore } from './auth'
-import IBlogResponse, { ILikeResponse } from './blog'
-
-interface IBlogListResponse {
-    count: number,
-    next: string,
-    previous: string,
-    results: IBlogResponse[]
-}
 
 export const useBlogListStore = defineStore('blog-list', {
     state: () => ({
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
-        blogs: [] as IBlogResponse[]
+        blogs: [] as IBlog[]
     }),
 
     getters: {
@@ -24,10 +17,10 @@ export const useBlogListStore = defineStore('blog-list', {
 
     actions: {
         async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
-            return promiseWithTimeout<IBlogListResponse>(new Promise((resolve, reject) => {
-                customFetch<IBlogListResponse>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+            return promiseWithTimeout<IPaginatedResponse<IBlog>>(new Promise((resolve, reject) => {
+                customFetch<IPaginatedResponse<IBlog>>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
                     method: 'GET',
-                }).then((response: IBlogListResponse) => {
+                }).then((response: IPaginatedResponse<IBlog>) => {
                     this.count = response.count;
                     this.next = response.next;
                     this.previous = response.previous;
@@ -50,15 +43,15 @@ export const useBlogListStore = defineStore('blog-list', {
 
             // todo check if user data exists
 
-            return promiseWithTimeout<ILikeResponse>(
-                new Promise<ILikeResponse>((resolve, reject) => {
+            return promiseWithTimeout<ILike>(
+                new Promise<ILike>((resolve, reject) => {
                     var body: { [name: string]: any } = {
                         object_id: blogId,
                         content_type: CONTENT_TYPE_BLOG,
                         user: authStore.getUser?.id
                     };
 
-                    customFetch<ILikeResponse>(`http://localhost:8000/api/likes/toggle/?content_type=blog&object_id=${blogId}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<ILike>(`http://localhost:8000/api/likes/toggle/?content_type=blog&object_id=${blogId}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
                         method: 'POST',
                         body: body,
                     }

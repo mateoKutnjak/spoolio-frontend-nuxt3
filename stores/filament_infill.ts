@@ -1,12 +1,7 @@
 import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
-
-export interface IFilamentInfill {
-    id: number,
-    name: string,
-    percentage: number
-}
+import { IFilamentInfill } from "~~/constants/data";
 
 export const useFilamentInfillStore = defineStore('filament-infill', {
     state: () => ({

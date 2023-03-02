@@ -130,13 +130,10 @@
   <script lang="ts" setup>
 import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
+import { IPrintOrder, IPrintOrderUnit } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
-import { IModelingOrderAttachmentFileResponse } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
 import {
-  IPrintOrderAttachmentFileResponse,
-  IPrintOrderResponse,
-  IPrintOrderUnitResponse,
   usePrintOrderStore,
 } from "~~/stores/print_order";
 
@@ -167,7 +164,7 @@ onMounted(async () => {
 
   await new Promise((r) => setTimeout(r, 1000));
 
-  var rootOrderResult: IPrintOrderResponse;
+  var rootOrderResult: IPrintOrder;
   try {
     rootOrderResult = await printOrderStore.postOrder();
     orderStatus.value = OrderStatus.success;
@@ -191,14 +188,11 @@ onMounted(async () => {
   // ------------------------------------------------
   unitsStatus.value = OrderStatus.progress;
   for (let index = 0; index < printOrderStore.getUnits.length; index++) {
-    console.log(
-      "Posting unit file " + printOrderStore.getUnits[index].file.name
-    );
 
     await new Promise((r) => setTimeout(r, 500));
 
     const unit = printOrderStore.getUnits[index];
-    var unitResult: IPrintOrderUnitResponse;
+    var unitResult: IPrintOrderUnit;
 
     try {
       unitResult = await printOrderStore.postOrderUnit(

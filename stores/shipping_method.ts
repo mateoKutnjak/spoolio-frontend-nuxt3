@@ -1,13 +1,7 @@
 import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
-
-export interface IShippingMethod {
-    id: number,
-    provider: string,
-    description: string,
-    price: number
-}
+import { IShippingMethod } from "~~/constants/data";
 
 export const useShippingMethodStore = defineStore('shipping-method', {
     state: () => ({

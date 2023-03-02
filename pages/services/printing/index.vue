@@ -239,6 +239,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
+import { IAttachmentFile, IAttachmentImage, IPrintOrderUnit } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
@@ -247,12 +248,7 @@ import { useGlobalsStore } from "~~/stores/globals";
 import { useNotificationStore } from "~~/stores/notification";
 import {
   usePrintOrderStore,
-  IPrintOrderAttachmentFileResponse,
-  IPrintOrderAttachmentImageResponse,
-  IPrintOrderUnitResponse,
-  IPrintOrderResponse,
 } from "~~/stores/print_order";
-import { useShippingMethodStore } from "~~/stores/shipping_method";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -261,22 +257,20 @@ const filamentInfillStore = useFilamentInfillStore();
 const globalsStore = useGlobalsStore();
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
-const shippingMethodStore = useShippingMethodStore();
 
 const { dimensionUnit } = storeToRefs(globalsStore);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
-const attachmentFiles = ref<IPrintOrderAttachmentFileResponse[]>([]);
-const attachmentImages = ref<IPrintOrderAttachmentImageResponse[]>([]);
-const units = ref<IPrintOrderUnitResponse[]>([]);
+const attachmentFiles = ref<IAttachmentFile[]>([]);
+const attachmentImages = ref<IAttachmentImage[]>([]);
+const units = ref<IPrintOrderUnit[]>([]);
 
-const unit = ref<IPrintOrderUnitResponse>();
+const unit = ref<IPrintOrderUnit>();
 
 const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
 
-const submitted = ref(false);
 const isDetailsDialogShown = ref(false);
 
 const getUser = computed(() => {
@@ -313,7 +307,7 @@ onMounted(async () => {
     index < printOrderStore.getAttachmentFiles.length;
     index++
   ) {
-    const element: IPrintOrderAttachmentFileResponse =
+    const element: IAttachmentFile =
       printOrderStore.getAttachmentFiles[index];
     attachmentFiles.value.push(element);
   }
@@ -323,13 +317,13 @@ onMounted(async () => {
     index < printOrderStore.getAttachmentImages.length;
     index++
   ) {
-    const element: IPrintOrderAttachmentImageResponse =
+    const element: IAttachmentImage =
       printOrderStore.getAttachmentImages[index];
     attachmentImages.value.push(element);
   }
 
   for (let index = 0; index < printOrderStore.units.length; index++) {
-    const element: IPrintOrderUnitResponse = printOrderStore.getUnits[index];
+    const element: IPrintOrderUnit = printOrderStore.getUnits[index];
     units.value.push(element);
   }
 });
@@ -357,7 +351,7 @@ watch(formkitFiles, (value, oldValue, onInvalidate) => {
 watch(dimensionUnit, (value) => {
   printOrderStore.units.forEach((el) => {
     printOrderStore.updateUnit(el.localUrl, {
-      lengthUnit: DimensionUnit[value],
+      length_unit: DimensionUnit[value],
     });
   });
 });
@@ -410,13 +404,13 @@ function onFilesAdded(files: File[]) {
     const element = files[index];
 
     if (element.type === "application/pdf") {
-      printOrderStore.addAttachmentFile(<IPrintOrderAttachmentFileResponse>{
+      printOrderStore.addAttachmentFile(<IAttachmentFile>{
         file: element,
         comment: "TODO",
         localUrl: URL.createObjectURL(element),
       });
     } else if (element.type === "image/jpeg") {
-      printOrderStore.addAttachmentImage(<IPrintOrderAttachmentImageResponse>{
+      printOrderStore.addAttachmentImage(<IAttachmentImage>{
         image: element,
         comment: "TODO",
         localUrl: URL.createObjectURL(element),
@@ -434,38 +428,10 @@ function onItemClicked(localUrl: string) {
   dialogStore.open("ServicesPrintingDialog", [unit.value], "2xl");
 }
 
-function removeUnit(unit: IPrintOrderUnitResponse) {
-  printOrderStore.removeUnit(unit);
-}
-
 function onClearOrder() {
   dialogStore.open("DialogConfirmClearPrintOrder", []);
 }
 
-function removeFile(file: File) {
-  printOrderStore.removeAttachmentFile(<IPrintOrderAttachmentFileResponse>{
-    file: file,
-    comment: "TODO",
-  });
-}
-
-function removeImage(file: File) {
-  printOrderStore.removeAttachmentImage(<IPrintOrderAttachmentImageResponse>{
-    image: file,
-    comment: "TODO",
-  });
-}
-
-function previewFile(file: File) {
-  console.log("TODO");
-}
-
-const submitHandler = async () => {
-  // This delay is here only because of progress indicator button
-  // await new Promise((r) => setTimeout(r, 1000));
-
-  submitted.value = true;
-};
 </script>
 
 <style>

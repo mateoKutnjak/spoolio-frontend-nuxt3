@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12">
+  <div class="container p-12 mx-auto">
     <div class="pb-12 pt-3 flex flex-col md:flex-row gap-6 justify-between">
       <div class="text-4xl text-gray-700">Projects</div>
       <SearchBar
@@ -25,7 +25,7 @@
     <div v-if="getPaginatedBlogs.count || 0 > 0">
       <div class="flex flex-col gap-10">
         <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
-        <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-10">
+        <div class="grid lg:grid-cols-2 gap-10">
           <div
             :key="blog.id"
             v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"

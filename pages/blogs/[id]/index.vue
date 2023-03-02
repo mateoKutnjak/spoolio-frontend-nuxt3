@@ -61,10 +61,10 @@
 </template>
     
     <script lang="ts" setup>
-import IBlogResponse, { useBlogStore } from "~/stores/blog";
+import { useBlogStore } from "~/stores/blog";
 import { CONTENT_TYPE_BLOG } from "~~/constants/constants";
-import { IUserResponse, useAuthStore } from "~~/stores/auth";
-import ICommentResponse from "~~/stores/commentList";
+import { IBlog, IComment, IUser } from "~~/constants/data";
+import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 
 const { id } = useRoute().params;
@@ -74,9 +74,8 @@ const authStore = useAuthStore();
 const blogStore = useBlogStore();
 const notificationStore = useNotificationStore();
 
-const blog = ref<IBlogResponse>();
-const comments = ref<ICommentResponse[]>([]);
-const user = ref<IUserResponse>();
+const blog = ref<IBlog>();
+const user = ref<IUser>();
 
 const showInitLoading = ref<boolean>(true);
 

@@ -3,7 +3,10 @@
     <td class="px-4 pt-4 pb-3 font-mono font-bold link link-info">#{{order?.id}}</td>
     <td class="px-4 pt-4 pb-3 text-sm">{{ reformatDate(order?.created_at)}}</td>
     <td class="px-4 pt-4 pb-3 text-sm text-center">
-      <div class="dropdown dropdown-end">
+      <div
+        class="dropdown dropdown-end"
+        @click.stop
+      >
         <label
           tabindex="0"
           class="btn btn-circle btn-ghost btn-sm text-info"
@@ -51,17 +54,12 @@
 
     <td class="px-4 pt-4 pb-3 text-sm font-bold ">{{ order?.items.reduce ? `$${order.total_price}` : '-'}}</td>
     <td class="px-4 pt-4 pb-3 text-end">
-      <div
-        v-if="order"
-        class="btn btn-ghost btn-sm px-5 text-gray-700"
-        :style="`background-color: ${OrderStatus.all[order.status].colorHex}`"
-      >{{ OrderStatus.all[order.status].display_name }}</div>
+      <OrderStatusView :raw-status="order?.status" />
     </td>
   </tr>
 </template>
 
 <script lang="ts" setup>
-import { OrderStatus } from "~~/constants/constants";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 
 const { orderId } = defineProps(["orderId"]);

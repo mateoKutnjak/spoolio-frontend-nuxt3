@@ -70,10 +70,10 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { OrderStatus, PAGE_SIZE } from "~~/constants/constants";
+import { PAGE_SIZE } from "~~/constants/constants";
+import { IPrintOrder } from "~~/constants/data";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
-import { IPrintOrderResponse } from "~~/stores/print_order";
 
 const notificationStore = useNotificationStore();
 const printOrderHistoryStore = usePrintOrderHistoryStore();
@@ -102,14 +102,8 @@ function onPageSelected(pageSelected: number) {
     .finally(() => {});
 }
 
-function onItemClicked(order: IPrintOrderResponse) {
-  if (OrderStatus.all[order.status] === OrderStatus.awaitingPayment) {
-    navigateTo({
-      path: `/payment/printing/${order.id}`,
-    });
-  } else {
-    console.error("TODO order details");
-  }
+function onItemClicked(order: IPrintOrder) {
+  navigateTo(`/profile/order-history/printing/${order.id}`);
 }
 </script>
   

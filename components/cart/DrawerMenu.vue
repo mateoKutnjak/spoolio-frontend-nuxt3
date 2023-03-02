@@ -65,10 +65,10 @@
   
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { IProductVariationOptionCombination } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useCartStore } from "~~/stores/cart";
 import { useDrawerStore } from "~~/stores/drawer";
-import { IProductVariationOptionCombinationResponse } from "~~/stores/product";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
@@ -85,7 +85,7 @@ watch(cartItems, (value) => {
 
   cartItems.value.forEach(
     (
-      value: [IProductVariationOptionCombinationResponse, number],
+      value: [IProductVariationOptionCombination, number],
       key: number
     ) => {
       tmpTotalValue += value[1] * value[0].price;

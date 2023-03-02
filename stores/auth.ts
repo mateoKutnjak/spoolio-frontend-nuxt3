@@ -1,65 +1,36 @@
 import { ofetch } from 'ofetch'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
-
-interface ILoginResponse {
-    access_token: string,
-    refresh_token: string,
-    user: IUserResponse | undefined
-}
-
-export interface IUserResponse {
-    id: number,
-    email: string,
-    is_staff: boolean,
-    profile: IProfileResponse | undefined
-}
-
-export interface IProfileResponse {
-    id: number,
-    email: string,
-    first_name: string,
-    last_name: string,
-    shipping_address: IAddressResponse,
-    billing_address: IAddressResponse,
-    phone_number: string,
-}
-
-export interface IAddressResponse {
-    first_name: string,
-    last_name: string,
-    address: string,
-    country: string,
-    state: string | undefined,
-    locality: string,
-    postal_code: string,
-    phone_number: string,
-}
+import { IProfile, IUser, IUserLogin } from '~~/constants/data'
 
 export const useAuthStore = defineStore('auth', {
-    persist: true,
+    persist: {
+        storage: persistedState.cookiesWithOptions({
+            sameSite: 'strict',
+        }),
+    },
 
     state: () => ({
         accessToken: undefined as string | undefined,
         refreshToken: undefined as string | undefined,
-        user: undefined as IUserResponse | undefined,
+        user: undefined as IUser | undefined,
     }),
 
     getters: {
         getUser: (state) => state.user,
-        loggedIn: (state) => state.accessToken != null
+        loggedIn: (state) => state.accessToken
     },
 
     actions: {
         async login(email: string | undefined, password: string | undefined) {
-            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
-                ofetch<ILoginResponse>('http://localhost:8000/auth/login/', {
+            return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
+                ofetch<IUserLogin>('http://localhost:8000/auth/login/', {
                     method: 'POST', body: {
                         email: email,
                         password: password,
                     }
                 }
-                ).then((response: ILoginResponse) => {
+                ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
                     this.refreshToken = response.refresh_token
                     this.user = response.user;
@@ -71,8 +42,8 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
-            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
-                ofetch<ILoginResponse>('http://localhost:8000/auth/registration/', {
+            return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
+                ofetch<IUserLogin>('http://localhost:8000/auth/registration/', {
                     method: 'POST', body: {
                         email: email,
                         password1: password,
@@ -80,7 +51,7 @@ export const useAuthStore = defineStore('auth', {
 
                     }
                 }
-                ).then((response: ILoginResponse) => {
+                ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
                     this.refreshToken = response.refresh_token
                     this.user = response.user;
@@ -92,14 +63,14 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async registerGoogle(googleAccessToken: String) {
-            return promiseWithTimeout<ILoginResponse>(new Promise((resolve, reject) => {
-                ofetch<ILoginResponse>('http://localhost:8000/auth/registration/google/', {
+            return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
+                ofetch<IUserLogin>('http://localhost:8000/auth/registration/google/', {
                     method: 'POST', body: {
                         access_token: googleAccessToken,
 
                     }
                 }
-                ).then((response: ILoginResponse) => {
+                ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
                     this.refreshToken = response.refresh_token
                     this.user = response.user;
@@ -110,23 +81,23 @@ export const useAuthStore = defineStore('auth', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async patchUserProfile(body: IProfileResponse) {
+        async patchUserProfile(body: IProfile) {
 
-            return promiseWithTimeout<IProfileResponse>(new Promise((resolve, reject) => {
+            return promiseWithTimeout<IProfile>(new Promise((resolve, reject) => {
 
                 if (!this.user || !this.accessToken) {
                     reject('Not logged in')
                 }
 
                 // todo check user? nullable
-                customFetch<IProfileResponse>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                customFetch<IProfile>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     },
                     body: body,
                 })
-                    .then((response: IProfileResponse) => {
+                    .then((response: IProfile) => {
                         // todo remove !
                         this.user = { ...this.user! }
                         this.user.profile = response;

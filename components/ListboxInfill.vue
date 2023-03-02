@@ -72,13 +72,11 @@ if (!printOrderUnit) {
   throw createError(`Print order unit is null for fileUrl=${fileUrl}`);
 }
 
-const selectedItem = ref(
-  filamentInfills.value.find((el) => el.id === Number(printOrderUnit.infill))
-);
+const selectedItem = ref(printOrderUnit.infill);
 
 watch(selectedItem, (value) => {
   if (value) {
-    printOrderStore.updateUnit(fileUrl, { infill: value.id });
+    printOrderStore.updateUnit(fileUrl, { infill: value });
   }
 });
 </script>
