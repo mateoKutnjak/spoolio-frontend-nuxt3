@@ -43,8 +43,8 @@
     </td>
     <td class="py-4">
       <div class="flex flex-col gap-2 pb-2">
-        <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
-        <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
+        <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
+        <ServicesPrintingVolumeInfo :data="unit.model_volume"/>
       </div>
     </td>
     <td class="py-4">
@@ -238,10 +238,10 @@ function duplicateUnit() {
       attachmentFiles: [], // todo
       attachmentImages: [], // todo
       order: unit.order,
-      modelDimensions: unit.modelDimensions,
-      modelVolume: unit.modelVolume,
+      model_dimensions: unit.model_dimensions,
+      model_volume: unit.model_volume,
       screenshotURL: unit.screenshotURL,
-      length_unit: DimensionUnit[dimensionUnit.value],
+      length_unit: unit.length_unit,
     });
   } else {
     throw createError(

@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-12 mx-auto">
+  <div class="container p-12 mx-auto">
     <div class="flex flex-col gap-8">
       <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 md:gap-8 justify-between items-start md:items-end">
         <div class="text-3xl font-light">Modeling order #{{ order.id }}</div>

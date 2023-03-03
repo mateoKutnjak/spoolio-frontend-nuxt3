@@ -124,15 +124,17 @@ scene.add(mesh);
 // ** OBJECT INFORMATION ** //
 
 printOrderStore.updateUnit(stlFileUrl, {
-  modelVolume: calculateVolume(mesh.geometry),
+  model_volume: calculateVolume(mesh.geometry),
 });
 
 if (geometry.boundingBox) {
   printOrderStore.updateUnit(stlFileUrl, {
-    modelDimensions: new Vector3(
-      Math.abs(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
-      Math.abs(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
-      Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
+    model_dimensions: vector3ToString(
+      new Vector3(
+        Math.abs(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
+        Math.abs(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
+        Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
+      )
     ),
   });
 }

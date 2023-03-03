@@ -68,7 +68,7 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
     });
 }
 
-export async function preprocess3dObject(stlFileUrl: string): Promise<{ modelVolume: number, modelDimensions: Vector3 }> {
+export async function preprocess3dObject(stlFileUrl: string): Promise<{ model_volume: number, model_dimensions: Vector3 }> {
     const { load } = useSTLModel();
     const geometry = await load(stlFileUrl);
 
@@ -78,14 +78,14 @@ export async function preprocess3dObject(stlFileUrl: string): Promise<{ modelVol
         throw Error('Bounding box not calculated')
     }
 
-    const modelVolume = calculateVolume(geometry)
-    const modelDimensions = new Vector3(
+    const model_volume = calculateVolume(geometry)
+    const model_dimensions = new Vector3(
         Math.abs(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
         Math.abs(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
         Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
     );
 
-    return { modelVolume, modelDimensions }
+    return { model_volume, model_dimensions }
 }
 
 function calculateVolume(geometry: BufferGeometry) {
@@ -126,4 +126,32 @@ function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
     camera.position.z = largestDimension * 2;
 
     camera.lookAt(new Vector3())
+}
+
+export function vector3ToString(obj: Vector3 | undefined): string {
+    if (!obj) {
+        return 'null'
+    }
+    return `${obj.x},${obj.y},${obj.z}`
+}
+
+export function vector3Parse(rawObj: string | undefined): Vector3 {
+    if (!rawObj || rawObj === 'null' || rawObj === 'undefined') {
+        throw createError(`Cannot parse object ${rawObj} to Vector3`)
+    }
+
+    const rawDimensions = rawObj.split(',')
+    if (rawDimensions.length != 3) {
+        throw createError(`Number of dimensions of an object trying to parse as Vector3d is not 3. Obj=${rawObj}`)
+    }
+
+    let x = Number(rawDimensions[0])
+    let y = Number(rawDimensions[1])
+    let z = Number(rawDimensions[2])
+
+    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
+        throw createError(`Some of the following values cannot be parsed as number: ${rawDimensions[0]} ${rawDimensions[1]} ${rawDimensions[2]}`)
+    }
+
+    return new Vector3(x, y, z);
 }

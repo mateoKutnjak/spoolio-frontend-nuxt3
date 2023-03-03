@@ -64,8 +64,8 @@
                   >{{ getColorName() }}</div>
                 </div>
               </div>
-              <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
-              <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
+              <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
+              <ServicesPrintingVolumeInfo :data="unit.model_volume" />
             </div>
             <div class="flex flex-wrap gap-8 justify-end items-center">
 
@@ -102,16 +102,17 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
-import { IAttachmentFile, IAttachmentImage, IFilamentInfill, IPrintOrderUnit } from "~~/constants/data";
-import { useDialogStore } from "~~/stores/dialog";
 import {
-  useFilamentInfillStore,
-} from "~~/stores/filament_infill";
+  IAttachmentFile,
+  IAttachmentImage,
+  IFilamentInfill,
+  IPrintOrderUnit,
+} from "~~/constants/data";
+import { useDialogStore } from "~~/stores/dialog";
+import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
-import {
-  usePrintOrderStore,
-} from "~~/stores/print_order";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { unit } = defineProps<{
   unit: IPrintOrderUnit;
@@ -253,10 +254,10 @@ function duplicateUnit() {
       attachmentFiles: [], // todo
       attachmentImages: [], // todo
       order: unit.order,
-      modelDimensions: unit.modelDimensions,
-      modelVolume: unit.modelVolume,
+      model_dimensions: unit.model_dimensions,
+      model_volume: unit.model_volume,
       screenshotURL: unit.screenshotURL,
-      length_unit: DimensionUnit[dimensionUnit.value],
+      length_unit: unit.length_unit,
       estimated_price: unit.estimated_price,
     });
   } else {

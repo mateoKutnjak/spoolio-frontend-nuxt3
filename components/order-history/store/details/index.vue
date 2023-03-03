@@ -1,20 +1,20 @@
 <template>
-  <div class="container py-12 mx-auto">
+  <div class="container p-12 mx-auto max-w-5xl">
     <div class="flex flex-col gap-8">
-      <div class="flex justify-between items-end">
+      <div class="flex flex-col gap-8 lg:flex-row justify-between lg:items-end">
         <div class="flex flex-col gap-4 justify-between items-start">
           <div class="text-3xl font-light">Store order #{{ order.id }}</div>
           <div class="text-xl font-light text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
           <OrderStatusView :raw-status="order.status" />
         </div>
-        <div class="flex gap-8 justify-center items-center">
+        <div class="flex flex-col sm:flex-row gap-8">
           <CommonAddressShipping
             :shipping-address="order.shipping_address"
-            class="max-w-fit"
+            class="flex-1"
           />
           <CommonAddressBilling
             :billing-address="order.billing_address"
-            class="max-w-fit"
+            class="flex-1"
           />
 
         </div>

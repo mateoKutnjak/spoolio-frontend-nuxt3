@@ -21,7 +21,6 @@ async function postAttachmentFile(item: IAttachmentFile, contentType: string, ob
             method: 'POST',
             body: formData,
         }).then((response: IAttachmentFile) => {
-            // this.createdPrintOrder = response;
             resolve(response)
         }).catch(err => {
             console.log(err);
@@ -55,9 +54,6 @@ export const usePrintOrderStore = defineStore('print-order', {
         getContactEmail: (state) => state.print_order?.contact_email || '',
         getPriceByLocalUrl: (state) => {
             return (localUrl: string) => {
-                const filamentSpoolStore = useFilamentSpoolStore()
-                const filamentInfillStore = useFilamentInfillStore()
-
                 const unit = state.units.find(el => el.localUrl === localUrl)
 
                 if (!unit) {
@@ -65,19 +61,18 @@ export const usePrintOrderStore = defineStore('print-order', {
                 }
 
                 // * Model volume
-                const v = unit.modelVolume;
+                const v = unit.model_volume;
 
                 // * Model bounding box volume
-                let vBbox = 0.0;
-                if (unit.modelDimensions?.x && unit.modelDimensions?.y && unit.modelDimensions?.z) {
-                    vBbox = unit.modelDimensions.x * unit.modelDimensions.y * unit?.modelDimensions.z;
-                }
+                let model_dimensions = vector3Parse(unit.model_dimensions)
+                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
 
                 // * Infill percentage
                 const I = unit.infill.percentage;
 
                 // * Density of material
-                const D = unit.spool.material.density;
+                // ! Divide by 1000 because of conversion g/cm3 => g/mm3
+                const D = unit.spool.material.density / 1000;
 
                 // * Price of material per gram
                 const G = unit.spool.material.price;
@@ -99,48 +94,30 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const vAvg = (v + vBbox) / 2;
 
-                return (vAvg / 1000) * D * G * q * I * PRICE_MARGIN_FACTOR;
+                return vAvg * D * G * q * I * PRICE_MARGIN_FACTOR;
             }
         },
         getTotalPrice: (state) => {
             return Math.max(state.units.reduce((acc, item) => {
-                const filamentSpoolStore = useFilamentSpoolStore()
-                const filamentInfillStore = useFilamentInfillStore()
+                const v = item.model_volume;
 
-                const v = item.modelVolume;
-
-                let vBbox = 0.0;
-                if (item.modelDimensions?.x && item.modelDimensions?.y && item.modelDimensions?.z) {
-                    vBbox = item.modelDimensions?.x * item.modelDimensions?.y * item.modelDimensions?.z;
-                }
+                let model_dimensions = vector3Parse(item.model_dimensions)
+                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
 
                 const q = item.quantity;
                 const i = item.infill.percentage;
-                const d = item.spool.material.density;
+
+                // ! Divide by 1000 because of conversion g/cm3 => g/mm3
+                const d = item.spool.material.density / 1000;
                 const p = item.spool.material.price;
 
                 if (!v || !q || !i || !d || !p || !vBbox) {
-                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
-                    console.log("volume = " + v);
-                    console.log('bounding box volume = ' + vBbox);
-                    console.log("quantity = " + q);
-                    console.log("infill = " + i);
-                    console.log("density = " + d);
-                    console.log("price = " + p);
                     return Number.NEGATIVE_INFINITY;
                 }
 
-                console.log("dimensions = " + item.modelDimensions?.x + " " + item.modelDimensions?.y + " " + item.modelDimensions?.z);
-                console.log("volume = " + v);
-                console.log('bounding box volume = ' + vBbox);
-                console.log("quantity = " + q);
-                console.log("infill = " + i);
-                console.log("density = " + d);
-                console.log("price = " + p);
-
                 const vAvg = (v + vBbox) / 2;
 
-                return (vAvg / 1000 * d) * p * q * i * PRICE_MARGIN_FACTOR + acc;
+                return vAvg * d * p * q * i * PRICE_MARGIN_FACTOR + acc;
             }, 0), 10);
         },
         getETASeconds: (state) => {
@@ -149,17 +126,13 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const filamentSpoolStore = useFilamentSpoolStore()
                 const filamentInfillStore = useFilamentInfillStore()
 
-                const objVolume = item.modelVolume;
+                const objVolume = item.model_volume;
 
-                let vBbox = 0.0;
-                if (item.modelDimensions?.x && item.modelDimensions?.y && item.modelDimensions?.z) {
-                    vBbox = item.modelDimensions?.x * item.modelDimensions?.y * item.modelDimensions?.z;
-                }
+                let model_dimensions = vector3Parse(item.model_dimensions)
+                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
 
                 const q = item.quantity;
                 const i = item.infill.percentage;
-                // const d = item.material ? filamentMaterialStore.getDensityById(item.material) : undefined;
-                // const p = item.material ? filamentMaterialStore.getPriceById(item.material) : undefined;
                 const vPrint = item.spool.material.printing_speed;
 
                 if (!objVolume || !q || !i || !vPrint || !vBbox) {
@@ -221,16 +194,16 @@ export const usePrintOrderStore = defineStore('print-order', {
 
         async postOrderUnit(unit: IPrintOrderUnit, orderId: number): Promise<IPrintOrderUnit> {
 
-            const globalsStore = useGlobalsStore();
-
             var formData = new FormData();
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
-            formData.append('length_unit', DimensionUnit[globalsStore.getDimensionUnit])
+            formData.append('length_unit', unit.length_unit)
             formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2).toString());
+            formData.append('model_volume', unit.model_volume.toString());
+            formData.append('model_dimensions', unit.model_dimensions)
 
             // todo what to do with this
             formData.append("order", orderId.toString());
@@ -281,7 +254,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
 
             const localUrl = URL.createObjectURL(file);
-            const { modelVolume, modelDimensions } = await preprocess3dObject(localUrl);
+            const { model_volume, model_dimensions } = await preprocess3dObject(localUrl);
 
             create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
                 this.units.push(<IPrintOrderUnit>{
@@ -296,8 +269,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     attachmentFiles: [],
                     attachmentImages: [],
                     order: undefined,
-                    modelDimensions: modelDimensions,
-                    modelVolume: modelVolume,
+                    model_dimensions: vector3ToString(model_dimensions),
+                    model_volume: model_volume,
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
                     screenshotURL: URL.createObjectURL(blob),
                 });

@@ -11,8 +11,8 @@
         <div class="flex justify-between">
           <div class="flex flex-col gap-3">
             <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ extractFilenameFileStringUnion(unit.file) }}</div>
-            <ServicesPrintingDimensionInfo :data="unit.modelDimensions" />
-            <ServicesPrintingVolumeInfo :data="unit.modelVolume" />
+            <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
+            <ServicesPrintingVolumeInfo :data="unit.model_volume"/>
           </div>
           <div class="flex flex-col gap-1 justify-end items-end">
             <ListboxSpool
