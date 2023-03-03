@@ -240,6 +240,7 @@ export interface IPrintOrderUnit {
     length_unit: string,
     screenshotURL: string,
     estimated_price: number,
+    estimated_time: number,
 }
 
 export interface IPrintOrder {
@@ -258,6 +259,7 @@ export interface IPrintOrder {
     shipping_method: IShippingMethod,
     payment_method: string,
     estimated_price: number,
+    estimated_time: number,
     status: string,
 }
 

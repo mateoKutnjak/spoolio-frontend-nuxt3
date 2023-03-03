@@ -242,6 +242,7 @@ function duplicateUnit() {
       model_volume: unit.model_volume,
       screenshotURL: unit.screenshotURL,
       length_unit: unit.length_unit,
+      estimated_time: unit.estimated_time,
     });
   } else {
     throw createError(

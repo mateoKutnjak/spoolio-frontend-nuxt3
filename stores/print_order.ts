@@ -120,11 +120,45 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return vAvg * d * p * q * i * PRICE_MARGIN_FACTOR + acc;
             }, 0), 10);
         },
+        getETASecondsByLocalUrl: (state) => {
+            return (localUrl: string) => {
+
+                const item = state.units.find(el => el.localUrl === localUrl)
+
+                if (!item) {
+                    throw createError(`Cannot calculate unit price. Unit with localUrl ${localUrl} not found`);
+                }
+
+                const objVolume = item.model_volume;
+
+                let model_dimensions = vector3Parse(item.model_dimensions)
+                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
+
+                const q = item.quantity;
+                const i = item.infill.percentage;
+                const vPrint = item.spool.material.printing_speed;
+
+                if (!objVolume || !q || !i || !vPrint || !vBbox) {
+                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
+                    console.log("volume = " + objVolume);
+                    console.log('bounding box volume = ' + vBbox);
+                    console.log("quantity = " + q);
+                    console.log("infill = " + i);
+                    console.log("printing speed = " + vPrint);
+                    // console.log("price = " + p);
+                    return Number.NEGATIVE_INFINITY;
+                }
+
+                const vAvg = (objVolume + vBbox) / 2;
+                const V = i * vAvg;
+                const vVolume = vPrint * LAYER_AREA;
+                const t = V / vVolume;
+
+                return q * t;
+            }
+        },
         getETASeconds: (state) => {
             return state.units.reduce((acc, item) => {
-
-                const filamentSpoolStore = useFilamentSpoolStore()
-                const filamentInfillStore = useFilamentInfillStore()
 
                 const objVolume = item.model_volume;
 
@@ -176,6 +210,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 payment_method: this.print_order?.payment_method || '',
                 user_profile: authStore.getUser?.profile?.id,
                 estimated_price: this.getTotalPrice.toFixed(2) || 99999,
+                estimated_time: this.getETASeconds.toFixed(0)
             }
 
             return promiseWithTimeout<IPrintOrder>(new Promise<IPrintOrder>((resolve, reject) => {
@@ -202,6 +237,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2).toString());
+            formData.append('estimated_time', this.getETASecondsByLocalUrl(unit.localUrl).toFixed(0).toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
 
@@ -263,6 +299,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     spool: filamentSpoolStore.getAll[0],
                     infill: filamentInfillStore.getFilamentInfills[0],
                     estimated_price: 0,
+                    estimated_time: 0,
                     file: file,
                     comment: "TODO",
                     localUrl: localUrl,
