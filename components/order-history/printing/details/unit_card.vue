@@ -8,8 +8,16 @@
       />
       <div class="absolute bottom-2 right-2 font-bold text-stone-500 text-xl">x{{ unit.quantity }}</div>
     </div>
-    <div class="card-body gap-5 justify-between lg:pr-0 pb-5">
-      <h2 class="card-title font-medium text-gray-700">{{ urlExtractFilename(unit.file.toString()) }}</h2>
+    <div class="card-body gap-5 justify-between">
+      <div class="flex gap-5 items-center">
+        <h2 class="card-title font-medium text-gray-700">{{ urlExtractFilename(unit.file.toString()) }}</h2>
+        <a
+          class="link link-info"
+          :href="extractFilenameFileStringUnion(unit.file)"
+        >
+          Download
+        </a>
+      </div>
       <div class="flex flex-col md:flex-row gap-5">
 
         <OrderHistoryPrintingDetailsDimensionInfo
@@ -44,15 +52,7 @@
             <div class="btn btn-sm btn-ghost bg-stone-200 text-gray-600 rounded-full">{{ unit.spool.material.name }}</div>
           </div>
         </div>
-        <a
-          class="btn btn-circle btn-ghost text-gray-500"
-          :href="extractFilenameFileStringUnion(unit.file)"
-        >
-          <Icon
-            name="mdi:file-download-outline"
-            size="25"
-          />
-        </a>
+        <div class="text-xl text-gray-600">{{ unit.estimated_price }} €</div>
       </div>
     </div>
   </div>
