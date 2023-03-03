@@ -8,7 +8,7 @@
       />
       <div class="absolute bottom-2 right-2 font-bold text-stone-500 text-xl">x{{ unit.quantity }}</div>
     </div>
-    <div class="card-body gap-5 justify-between">
+    <div class="card-body gap-5 justify-between lg:pr-0 pb-5">
       <h2 class="card-title font-medium text-gray-700">{{ urlExtractFilename(unit.file.toString()) }}</h2>
       <div class="flex flex-col md:flex-row gap-5">
 
