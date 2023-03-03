@@ -92,7 +92,7 @@
         v-else
         class="flex-1 text-center"
       >
-        <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-600">Order is empty</div>
+        <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-400">Order is empty</div>
       </div>
       <div class="hidden md:flex gap-5">
         <div
