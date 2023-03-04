@@ -1,23 +1,10 @@
 <template>
-  <div class="container p-12 mx-auto">
+  <div class="container p-12 mx-auto max-w-5xl">
     <div class="flex flex-col gap-8">
-      <div class="flex flex-col gap-8 lg:flex-row justify-between lg:items-end">
-        <div class="flex flex-col gap-4 justify-between items-start">
-          <div class="text-3xl font-light">Store order #{{ order.id }}</div>
-          <div class="text-xl font-light text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
-          <OrderStatusView :raw-status="order.status" />
-        </div>
-        <div class="flex flex-col sm:flex-row gap-8">
-          <CommonAddressShipping
-            :shipping-address="order.shipping_address"
-            class="flex-1"
-          />
-          <CommonAddressBilling
-            :billing-address="order.billing_address"
-            class="flex-1"
-          />
-
-        </div>
+      <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
+        <div class="text-3xl font-light">Store order #{{ order.id }}</div>
+        <div class="text-xl font-light text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
+        <OrderStatusView :raw-status="order.status" />
       </div>
       <div
         v-if="data && data.items"
@@ -33,13 +20,14 @@
           :store-order-unit="item"
         />
       </div>
-      <div v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment">
-        <NuxtLink
-          :to="`/payment/store/${order.id}`"
-          class="btn btn-primary btn-block btn-lg"
-        >
-          Pay Now ({{total_price}} €)
-        </NuxtLink>
+      <div class="flex flex-col md:flex-row gap-8">
+        <CommonAddressShipping :shipping-address="order.shipping_address" />
+        <CommonAddressBilling :billing-address="order.billing_address" />
+        <OrderHistoryStoreDetailsCheckoutCard
+          v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment"
+          class="flex-1"
+          :order="order"
+        />
       </div>
     </div>
   </div>

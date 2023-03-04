@@ -15,7 +15,7 @@
         <div class="flex flex-col flex-1 gap-4 justify-between">
           <div class="flex">
             <div class="flex-1 text-lg text-gray-900 font-light dark:text-white line-clamp-1 m">
-              {{ extractFilenameFileStringUnion(unit.file) }}
+              {{ extractUrlFileStringUnion(unit.file) }}
             </div>
             <div>
               <button
@@ -81,7 +81,7 @@
                 <div
                   v-if="totalPrice >= 0"
                   class="flex gap-1 items-center"
-                >${{totalPrice.toFixed(2)}}
+                >${{ floor2Decimals(totalPrice).toFixed(2)}}
                 </div>
                 <div v-else>
                   <Icon

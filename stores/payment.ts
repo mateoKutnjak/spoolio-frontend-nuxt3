@@ -11,9 +11,9 @@ export const usePaymentStore = defineStore('payment', {
     },
 
     actions: {
-        async createPaymentIntent(service: ServiceType, order_id: number, amountCents: number, currency: string = 'EUR') {
+        async createPaymentIntent(serviceType: string, order_id: number, amountCents: number, currency: string = 'EUR') {
             const body = {
-                service: service.name,
+                service: serviceType,
                 id: order_id,
                 amount: amountCents,
                 currency: currency,

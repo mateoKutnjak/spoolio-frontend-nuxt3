@@ -29,7 +29,7 @@
         @on-increase-value="increaseQuantity"
         @on-value-set="(q) => setQuantity(q) "
       />
-      <div class="text-xl font-bold mt-2">${{(combination.price * quantity).toFixed(2)}}</div>
+      <div class="text-xl font-bold mt-2">${{floor2Decimals(combination.price * quantity).toFixed(2) }}</div>
     </div>
   </div>
 </template>

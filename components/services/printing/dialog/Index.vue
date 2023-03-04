@@ -10,9 +10,9 @@
       <div class="absolute top-0 left-0 right-0 py-4 px-6">
         <div class="flex justify-between">
           <div class="flex flex-col gap-3">
-            <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ extractFilenameFileStringUnion(unit.file) }}</div>
+            <div class="text-2xl font-light text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
             <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
-            <ServicesPrintingVolumeInfo :data="unit.model_volume"/>
+            <ServicesPrintingVolumeInfo :data="unit.model_volume" />
           </div>
           <div class="flex flex-col gap-1 justify-end items-end">
             <ListboxSpool
@@ -37,7 +37,7 @@
             @on-increase-value="increaseQuantity"
             @on-value-set="(q) => setQuantity(q)"
           />
-          <div class="text-4xl font-light text-gray-700">${{ price.toFixed(2) }}</div>
+          <div class="text-4xl font-light text-gray-700">${{ floor2Decimals(price).toFixed(2) }}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { IAttachmentFile, IAttachmentImage, IModelingOrder, IPaginatedResponse } from '~~/constants/data'
+import { useAuthStore } from './auth'
 
 export const useModelingOrderHistoryStore = defineStore('order-history-modeling', {
     state: () => ({
@@ -101,6 +102,35 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
+
+        async updateOrderStatusById(id: number, status: string) {
+            const authStore = useAuthStore();
+
+            return promiseWithTimeout<IModelingOrder>(new Promise((resolve, reject) => {
+                customFetch<IModelingOrder>(`http://localhost:8000/api/modeling-orders/${id}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`
+                    },
+                    body: {
+                        status: status,
+                    },
+                }).then((response: IModelingOrder) => {
+                    const index = this.modeling_orders.findIndex(el => el.id === id);
+
+                    if (index != -1) {
+                        this.modeling_orders[index] = response;
+                    } else {
+                        console.error("Store order with id cannot be find locally. Refresh please");
+                        reject("Store order with id cannot be find locally. Refresh please")
+                    }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        }
     },
 })
 

@@ -27,7 +27,7 @@
           </div>
           <div v-else-if="totalPrice >= 0">
             <div class="text-lg font-medium text-gray-700 ">
-              ${{totalPrice.toFixed(2)}}
+              ${{ floor2Decimals(totalPrice)}}
             </div>
           </div>
           <div v-else>
@@ -159,7 +159,7 @@
                       />
 
                     </div>
-                    <div v-else-if="totalPrice >= 0">${{totalPrice.toFixed(2)}}</div>
+                    <div v-else-if="totalPrice >= 0">${{ floor2Decimals(totalPrice).toFixed(2) }}</div>
                     <div v-else>
                       <Icon
                         class="text-gray-500"

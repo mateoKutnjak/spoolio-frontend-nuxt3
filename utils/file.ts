@@ -59,7 +59,7 @@ export function urlExtractFileSuffix(url: string): string {
     return splitted[splitted.length - 1]
 }
 
-export function extractFilenameFileStringUnion(obj: File | string) {
+export function extractUrlFileStringUnion(obj: File | string) {
     if (typeof obj === 'string') {
         return obj;
     } else if (obj instanceof File) {

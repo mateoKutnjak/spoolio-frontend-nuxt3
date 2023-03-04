@@ -13,7 +13,7 @@
         <h2 class="card-title font-medium text-gray-700">{{ urlExtractFilename(unit.file.toString()) }}</h2>
         <a
           class="link link-info"
-          :href="extractFilenameFileStringUnion(unit.file)"
+          :href="extractUrlFileStringUnion(unit.file)"
         >
           Download
         </a>

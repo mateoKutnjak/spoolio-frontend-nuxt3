@@ -35,6 +35,11 @@ export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;
 
 export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
 
+// * Payment
+
+export const PAYMENT_ORDER_NAMES = ['printing', 'modeling', 'store'];
+export const TAX_FRACTION = 0.25;
+
 export class ServiceType {
     public static readonly printing = new ServiceType('printing', 'Printing');
     public static readonly modeling = new ServiceType('modeling', 'Modeling');

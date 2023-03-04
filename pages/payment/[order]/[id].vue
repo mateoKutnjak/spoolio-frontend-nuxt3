@@ -15,7 +15,7 @@
 
     <div class="text-gray-500 font-base">
       You are paying for print order amount of
-      <strong>{{ printOrder?.estimated_price }} EUR </strong>
+      <strong>{{ amountToPay }} EUR </strong>
     </div>
 
     <form
@@ -44,22 +44,37 @@
 </template>
 
 <script lang="ts" setup>
-import { order } from "@formkit/i18n";
 import { loadStripe, StripeCardElement } from "@stripe/stripe-js";
-import { ServiceType } from "~~/constants/constants";
+import {
+  PAYMENT_ORDER_NAMES,
+  ServiceType,
+  TAX_FRACTION,
+} from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
+import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
+import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 import { usePaymentStore } from "~~/stores/payment";
 
 definePageMeta({
   layout: false,
 });
 
-const { id } = useRoute().params;
+const { order, id } = useRoute().params;
 
 if (!id) {
   console.error("In url /payment/service/id/ id part is null");
   throw createError("In url /payment/service/id/ id part is null");
+}
+
+if (!order) {
+  console.error("In url /payment/service/id/ service part is null");
+  throw createError("In url /payment/service/id/ service part is null");
+}
+
+if (typeof order !== "string") {
+  console.error("In url /payment/service/id/ service part is not string");
+  throw createError("In url /payment/service/id/ service part is not string");
 }
 
 console.log(
@@ -76,7 +91,6 @@ const config = useRuntimeConfig();
 
 const notificationStore = useNotificationStore();
 const paymentStore = usePaymentStore();
-const printOrderHistoryStore = usePrintOrderHistoryStore();
 
 const paymentProcessing = ref<boolean>(false);
 
@@ -90,12 +104,31 @@ if (!stripe) {
   );
 }
 
-let printOrder = printOrderHistoryStore.getPrintOrderById(numericId);
+if (PAYMENT_ORDER_NAMES.indexOf(order) < 0) {
+  console.error(`Cannot proceed with payment for order name ${order}`);
+  throw createError(`Cannot proceed with payment for order name ${order}`);
+}
 
-if (!printOrder) {
-  console.error(
-    `Print order with id ${numericId} not found locally. Trying to fetch from server`
-  );
+let amountToPay = 0;
+
+if (order === "printing") {
+  const printOrderHistoryStore = usePrintOrderHistoryStore();
+  let printOrder = printOrderHistoryStore.getPrintOrderById(numericId);
+
+  if (!printOrder) {
+    console.error(
+      `Print order with id ${numericId} not found locally. Trying to fetch from server`
+    );
+
+    printOrder = await printOrderHistoryStore.fetchPrintOrderById(numericId);
+
+    if (!printOrder) {
+      console.error(`Fetching print order with id ${numericId} failed.`);
+      throw createError(
+        `Your order does not exist. Please create order again.`
+      );
+    }
+  }
 
   printOrder = await printOrderHistoryStore.fetchPrintOrderById(numericId);
 
@@ -103,15 +136,71 @@ if (!printOrder) {
     console.error(`Fetching print order with id ${numericId} failed.`);
     throw createError(`Your order does not exist. Please create order again.`);
   }
+
+  amountToPay = floor2Decimals(
+    Number(printOrder.estimated_price) * (1 + TAX_FRACTION) +
+      Number(printOrder.shipping_method.price)
+  );
+} else if (order === "modeling") {
+  const modelingOrderHistoryStore = useModelingOrderHistoryStore();
+  let modelingOrder = modelingOrderHistoryStore.getOrderById(numericId);
+
+  if (!modelingOrder) {
+    console.error(
+      `Print order with id ${numericId} not found locally. Trying to fetch from server`
+    );
+
+    modelingOrder = await modelingOrderHistoryStore.fetchById(numericId);
+
+    if (!modelingOrder) {
+      console.error(`Fetching modeling order with id ${numericId} failed.`);
+      throw createError(
+        `Your order does not exist. Please create order again.`
+      );
+    }
+  }
+
+  amountToPay = floor2Decimals(
+    Number(modelingOrder.estimated_price) * (1 + TAX_FRACTION)
+  );
+} else if (order === "store") {
+  const storeOrderHistoryStore = useStoreOrderHistoryStore();
+  let storeOrder = storeOrderHistoryStore.getOrderById(numericId);
+
+  if (!storeOrder) {
+    console.error(
+      `Store order with id ${numericId} not found locally. Trying to fetch from server`
+    );
+
+    storeOrder = await storeOrderHistoryStore.fetchById(numericId);
+
+    if (!storeOrder) {
+      console.error(`Fetching store order with id ${numericId} failed.`);
+      throw createError(
+        `Your order does not exist. Please create order again.`
+      );
+    }
+  }
+
+  const items_price = storeOrder.items.reduce((acc, el) => {
+    return acc + el.quantity * el.item.price;
+  }, 0);
+
+  amountToPay = floor2Decimals(
+    Number(items_price) * (1 + TAX_FRACTION) +
+      Number(storeOrder.shipping_method.price)
+  );
+} else {
+  throw createError(`Cannot proceed with checkout for order type ${order}`);
 }
 
 const { data, pending, error, refresh } = await useAsyncData(
   "payment_intent",
   () =>
     paymentStore.createPaymentIntent(
-      ServiceType.printing,
-      printOrder!.id,
-      Math.round(printOrder!.estimated_price * 100) // Stripe has cents format for amount
+      order,
+      numericId,
+      amountToPay // Stripe has cents format for amount
     )
 );
 
@@ -176,21 +265,66 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          printOrderHistoryStore
-            .updatePrintOrderStatusById(numericId, "in_progress")
-            .then(() => {
-              navigateTo("/");
-              notificationStore.show(
-                "Payment successful. Check your email. [TODO]",
-                ToastLevel.success()
-              );
-            });
+          updateOrderStatus(order as string, numericId);
         }
       }
     })
     .finally(() => {
       paymentProcessing.value = false;
     });
+}
+
+function updateOrderStatus(orderType: string, id: number) {
+  if (orderType === "printing") {
+
+    const printOrderHistoryStore = usePrintOrderHistoryStore();
+
+    printOrderHistoryStore
+      .updatePrintOrderStatusById(numericId, "in_progress")
+      .then(() => {
+        navigateTo("/");
+        notificationStore.show(
+          "Payment successful. Check your email. [TODO]",
+          ToastLevel.success()
+        );
+      });
+  } else if (orderType === "modeling") {
+
+    const modelingOrderHistoryStore = useModelingOrderHistoryStore();
+    
+    modelingOrderHistoryStore
+      .updateOrderStatusById(numericId, "in_progress")
+      .then(() => {
+        navigateTo("/");
+        notificationStore.show(
+          "Payment successful. Check your email. [TODO]",
+          ToastLevel.success()
+        );
+      });
+
+  } else if (orderType === "store") {
+
+    const storeOrderHistoryStore = useStoreOrderHistoryStore();
+    
+    storeOrderHistoryStore
+      .updateOrderStatusById(numericId, "in_progress")
+      .then(() => {
+        navigateTo("/");
+        notificationStore.show(
+          "Payment successful. Check your email. [TODO]",
+          ToastLevel.success()
+        );
+      });
+  } else {
+    throw createError(
+      `Cannot update order status. Unknown order type ${orderType}`
+    );
+  }
+  // if (orderType === 'printing') {
+  //   return printOrderHistoryStore
+  //         .updatePrintOrderStatusById(numericId, "in_progress")
+  // }
+  // throw createError('Cannot update order ')
 }
 </script>
 

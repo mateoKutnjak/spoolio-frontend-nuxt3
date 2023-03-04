@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { IAddressShipping } from '~~/constants/data';
+import { IAddressShipping } from "~~/constants/data";
 
 const { shippingAddress } = defineProps<{
   shippingAddress: IAddressShipping;

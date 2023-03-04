@@ -44,7 +44,7 @@
     <div class="flex flex-col gap-1 p-4">
       <div class="flex gap-1 justify-end">
         <div class="py-2 text-lg">Total: </div>
-        <strong class="py-2 text-xl text-end">${{totalSum.toFixed(2)}}</strong>
+        <strong class="py-2 text-xl text-end">${{floor2Decimals(totalSum).toFixed(2)}}</strong>
 
       </div>
       <div class="justify-center items-end gap-2 text-2xl font-bold">
@@ -84,10 +84,7 @@ watch(cartItems, (value) => {
   let tmpTotalValue = 0;
 
   cartItems.value.forEach(
-    (
-      value: [IProductVariationOptionCombination, number],
-      key: number
-    ) => {
+    (value: [IProductVariationOptionCombination, number], key: number) => {
       tmpTotalValue += value[1] * value[0].price;
     }
   );

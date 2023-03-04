@@ -209,8 +209,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 shipping_method: this.print_order?.shipping_method.id || '',
                 payment_method: this.print_order?.payment_method || '',
                 user_profile: authStore.getUser?.profile?.id,
-                estimated_price: this.getTotalPrice.toFixed(2) || 99999,
-                estimated_time: this.getETASeconds.toFixed(0)
+                estimated_price: floor2Decimals(this.getTotalPrice).toString(),
+                estimated_time: Math.round(this.getETASeconds).toString()
             }
 
             return promiseWithTimeout<IPrintOrder>(new Promise<IPrintOrder>((resolve, reject) => {
@@ -236,8 +236,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
-            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2).toString());
-            formData.append('estimated_time', this.getETASecondsByLocalUrl(unit.localUrl).toFixed(0).toString())
+            formData.append("estimated_price", floor2Decimals(this.getPriceByLocalUrl(unit.localUrl)).toString());
+            formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
 

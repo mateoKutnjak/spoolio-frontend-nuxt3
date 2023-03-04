@@ -15,7 +15,7 @@
     <td class="py-4">
       <div class="h-36 max-w-xs flex flex-col gap-3 justify-center">
         <div class="text-lg text-gray-900 font-light dark:text-white line-clamp-1">
-          {{ extractFilenameFileStringUnion(unit.file) }}
+          {{ extractUrlFileStringUnion(unit.file) }}
         </div>
         <div class="flex items-start justify-start">
           <div
@@ -44,7 +44,7 @@
     <td class="py-4">
       <div class="flex flex-col gap-2 pb-2">
         <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
-        <ServicesPrintingVolumeInfo :data="unit.model_volume"/>
+        <ServicesPrintingVolumeInfo :data="unit.model_volume" />
       </div>
     </td>
     <td class="py-4">
@@ -64,7 +64,7 @@
         <div
           v-if="totalPrice >= 0"
           class="flex gap-1 items-center"
-        >${{totalPrice.toFixed(2)}}
+        >${{ floor2Decimals(totalPrice).toFixed(2)}}
         </div>
         <div v-else>
           <Icon
@@ -101,15 +101,16 @@
   <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
-import { IAttachmentFile, IAttachmentImage, IFilamentInfill, IPrintOrderUnit } from "~~/constants/data";
+import {
+  IAttachmentFile,
+  IAttachmentImage,
+  IFilamentInfill,
+  IPrintOrderUnit,
+} from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
-import {
-  useFilamentInfillStore,
-} from "~~/stores/filament_infill";
+import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useGlobalsStore } from "~~/stores/globals";
-import {
-  usePrintOrderStore,
-} from "~~/stores/print_order";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { unit } = defineProps<{
   unit: IPrintOrderUnit;
