@@ -6,7 +6,7 @@
           name="material-symbols:credit-card"
           size="22"
         />
-        <div>Shipping address</div>
+        <div>Billing address</div>
       </div>
       <div class="flex flex-col gap-1 text-start text-base text-gray-600">
         <p class="font-medium">{{billingAddress.first_name}} {{billingAddress.last_name}}</p>
