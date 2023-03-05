@@ -52,7 +52,7 @@
       </div>
     </td>
 
-    <td class="px-4 pt-4 pb-3 text-sm font-bold ">{{ order?.items.reduce ? `$${order.total_price}` : '-'}}</td>
+    <td class="px-4 pt-4 pb-3 text-sm font-bold ">€{{ total_price }}</td>
     <td class="px-4 pt-4 pb-3 text-end">
       <OrderStatusView :raw-status="order?.status" />
     </td>
@@ -60,6 +60,7 @@
 </template>
 
 <script lang="ts" setup>
+import { TAX_FRACTION } from "~~/constants/constants";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 
 const { orderId } = defineProps(["orderId"]);
@@ -67,6 +68,16 @@ const { orderId } = defineProps(["orderId"]);
 const storeOrderHistoryStore = useStoreOrderHistoryStore();
 
 const order = storeOrderHistoryStore.getOrderById(orderId);
+
+const total_price = computed(() => {
+  if (!order?.total_price || !order?.shipping_method?.price) {
+    return "-";
+  }
+  return (
+    Number(order?.total_price) * (1 + TAX_FRACTION) +
+    Number(order?.shipping_method.price)
+  ).toFixed(2);
+});
 </script>
 
 <style>

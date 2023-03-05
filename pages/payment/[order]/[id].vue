@@ -15,7 +15,7 @@
 
     <div class="text-gray-500 font-base">
       You are paying for print order amount of
-      <strong>{{ amountToPay }} EUR </strong>
+      <strong>{{ amountToPay.toFixed(2) }} EUR </strong>
     </div>
 
     <form
@@ -47,7 +47,6 @@
 import { loadStripe, StripeCardElement } from "@stripe/stripe-js";
 import {
   PAYMENT_ORDER_NAMES,
-  ServiceType,
   TAX_FRACTION,
 } from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
@@ -137,10 +136,9 @@ if (order === "printing") {
     throw createError(`Your order does not exist. Please create order again.`);
   }
 
-  amountToPay = floor2Decimals(
+  amountToPay =
     Number(printOrder.estimated_price) * (1 + TAX_FRACTION) +
-      Number(printOrder.shipping_method.price)
-  );
+    Number(printOrder.shipping_method.price);
 } else if (order === "modeling") {
   const modelingOrderHistoryStore = useModelingOrderHistoryStore();
   let modelingOrder = modelingOrderHistoryStore.getOrderById(numericId);
@@ -160,9 +158,7 @@ if (order === "printing") {
     }
   }
 
-  amountToPay = floor2Decimals(
-    Number(modelingOrder.estimated_price) * (1 + TAX_FRACTION)
-  );
+  amountToPay = Number(modelingOrder.estimated_price) * (1 + TAX_FRACTION);
 } else if (order === "store") {
   const storeOrderHistoryStore = useStoreOrderHistoryStore();
   let storeOrder = storeOrderHistoryStore.getOrderById(numericId);
@@ -186,10 +182,9 @@ if (order === "printing") {
     return acc + el.quantity * el.item.price;
   }, 0);
 
-  amountToPay = floor2Decimals(
+  amountToPay =
     Number(items_price) * (1 + TAX_FRACTION) +
-      Number(storeOrder.shipping_method.price)
-  );
+    Number(storeOrder.shipping_method.price);
 } else {
   throw createError(`Cannot proceed with checkout for order type ${order}`);
 }
@@ -276,7 +271,6 @@ function submitPayment() {
 
 function updateOrderStatus(orderType: string, id: number) {
   if (orderType === "printing") {
-
     const printOrderHistoryStore = usePrintOrderHistoryStore();
 
     printOrderHistoryStore
@@ -289,9 +283,8 @@ function updateOrderStatus(orderType: string, id: number) {
         );
       });
   } else if (orderType === "modeling") {
-
     const modelingOrderHistoryStore = useModelingOrderHistoryStore();
-    
+
     modelingOrderHistoryStore
       .updateOrderStatusById(numericId, "in_progress")
       .then(() => {
@@ -301,11 +294,9 @@ function updateOrderStatus(orderType: string, id: number) {
           ToastLevel.success()
         );
       });
-
   } else if (orderType === "store") {
-
     const storeOrderHistoryStore = useStoreOrderHistoryStore();
-    
+
     storeOrderHistoryStore
       .updateOrderStatusById(numericId, "in_progress")
       .then(() => {
@@ -320,11 +311,6 @@ function updateOrderStatus(orderType: string, id: number) {
       `Cannot update order status. Unknown order type ${orderType}`
     );
   }
-  // if (orderType === 'printing') {
-  //   return printOrderHistoryStore
-  //         .updatePrintOrderStatusById(numericId, "in_progress")
-  // }
-  // throw createError('Cannot update order ')
 }
 </script>
 

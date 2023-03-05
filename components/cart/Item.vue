@@ -13,11 +13,11 @@
 
     </div>
     <div class="flex gap-2 justify-start">
-      <div
-        class="btn btn-outline btn-sm no-animation"
+      <AttributeItem
         v-for="option in combination.options"
         :key="option.id"
-      > {{ option.title }}</div>
+        :title="option.title"
+      />
     </div>
     <div class="w-full flex justify-between items-start">
       <IncreaseDecreaseQuantityButtons
@@ -29,7 +29,7 @@
         @on-increase-value="increaseQuantity"
         @on-value-set="(q) => setQuantity(q) "
       />
-      <div class="text-xl font-bold mt-2">${{floor2Decimals(combination.price * quantity).toFixed(2) }}</div>
+      <div class="text-xl font-bold mt-2">${{(combination.price * quantity).toFixed(2) }}</div>
     </div>
   </div>
 </template>
@@ -38,8 +38,6 @@
 import { useDrawerStore } from "~~/stores/drawer";
 import { useCartStore } from "~~/stores/cart";
 
-import { storeToRefs } from "pinia";
-import { useNotificationStore } from "~~/stores/notification";
 import { MAX_CART_ITEMS } from "~~/constants/constants";
 import { IProductVariationOptionCombination } from "~~/constants/data";
 

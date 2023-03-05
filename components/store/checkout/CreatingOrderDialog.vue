@@ -75,6 +75,8 @@ const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
+const { store_order } = storeToRefs(cartStore);
+
 enum OrderStatus {
   initial,
   progress,
@@ -120,6 +122,25 @@ function onOkPressed() {
 function onReturnPressed() {
   dialogStore.close();
 }
+
+watch(orderStatus, async (value) => {
+  if (value === OrderStatus.success) {
+    await new Promise((r) => setTimeout(r, 2500));
+
+    if (!store_order.value.id) {
+      console.error(
+        "Store order ID is null when trying to redirect to payment"
+      );
+      notificationStore.show(
+        "Please proceed with payment through order history."
+      );
+      return;
+    }
+
+    dialogStore.close();
+    navigateTo(`/payment/store/${store_order.value.id}`);
+  }
+});
 </script>
   
   <style>

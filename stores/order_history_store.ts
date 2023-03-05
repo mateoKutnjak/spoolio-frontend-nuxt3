@@ -103,6 +103,10 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
                     reject(err)
                 })
             }), HTTP_REQUEST_TIMEOUT);
+        },
+        
+        add(order: IStoreOrder) {
+            this.orders.unshift(order);
         }
     },
 })

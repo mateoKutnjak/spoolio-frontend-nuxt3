@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IProductVariationOptionCombination, IShippingMethod, IStoreOrder, IStoreOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
+import { useStoreOrderHistoryStore } from './order_history_store';
 
 function reformatItems(cartItems: Map<number, [IProductVariationOptionCombination, number]>): any[] {
     let items = [] as any[];
@@ -140,7 +141,11 @@ export const useCartStore = defineStore('cart', {
                     method: 'POST',
                     body: body,
                 }).then((response: IStoreOrder) => {
-                    console.log(response);
+                    const storeOrderHistoryStore = useStoreOrderHistoryStore();
+
+                    this.store_order = response;
+                    storeOrderHistoryStore.add(response);
+
                     resolve(response)
                 }).catch(err => {
                     console.log(err);

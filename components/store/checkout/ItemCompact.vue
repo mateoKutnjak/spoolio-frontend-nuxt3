@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-10 items-center">
     <div
-      class="flex-none"
+      class="relative flex-none"
       v-if="cartItem?.product.productimage_set.length || 0 > 0"
     >
       <nuxt-img
@@ -9,6 +9,7 @@
         :src="cartItem?.product.productimage_set[0].image"
         fit="contain"
       />
+      <div class="absolute bottom-2 right-2 btn btn-xs btn-outline bg-white hover:bg-white text-gray-600 hover:text-gray-600 no-animation">x{{ cartItemQuantity }}</div>
     </div>
     <div
       v-else
@@ -16,18 +17,13 @@
     >
     </div>
     <div class="flex-auto flex flex-col gap-2 justify-center">
-      <div class="flex gap-1 items-center">
-        <div class="text-lg font-medium">{{cartItem?.product.title}}</div>
-        <Icon name="ci:dot-02-s" />
-        <div class="text-md text-gray-500 mr-1">Quantity: </div>
-        <div class="text-lg font-bold text-info">{{ (cartItemQuantity || 0) }}</div>
-      </div>
+      <div class="text-lg font-medium">{{cartItem?.product.title}}</div>
       <div class="flex gap-2 flex-wrap">
-        <div
+        <AttributeItem
           v-for="option in cartItem?.options"
           :key="option.id"
-          class="btn btn-outline btn-xs no-animation"
-        >{{ option.type.name }}: {{ option.title }}</div>
+          :title="option.title"
+        />
       </div>
     </div>
     <div class="text-xl font-medium">${{ (cartItem?.price || 0) * (cartItemQuantity || 0) }}.00</div>

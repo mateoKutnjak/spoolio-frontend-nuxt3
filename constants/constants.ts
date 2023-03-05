@@ -40,15 +40,6 @@ export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
 export const PAYMENT_ORDER_NAMES = ['printing', 'modeling', 'store'];
 export const TAX_FRACTION = 0.25;
 
-export class ServiceType {
-    public static readonly printing = new ServiceType('printing', 'Printing');
-    public static readonly modeling = new ServiceType('modeling', 'Modeling');
-    public static readonly store = new ServiceType('store', 'Store');
-
-    private constructor(public readonly name: string, public readonly display_name: string) {
-    }
-}
-
 // ! IMPORTANT ! For every change in server side (django choices) 
 // ! IMPORTANT ! adjust frontend enums (constants.vue)
 export class OrderStatus {

@@ -52,7 +52,7 @@
       </div>
     </td>
 
-    <td class="px-4 pt-4 pb-3 text-sm font-bold ">{{ printOrder?.estimated_price ? `$${printOrder.estimated_price}` : '-'}}</td>
+    <td class="px-4 pt-4 pb-3 text-sm font-bold ">€{{ total_price }}</td>
     <td class="px-4 pt-4 pb-3 text-end">
       <OrderStatusView :raw-status="printOrder?.status" />
     </td>
@@ -60,6 +60,7 @@
 </template>
 
 <script lang="ts" setup>
+import { TAX_FRACTION } from "~~/constants/constants";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
 
 const { printOrderId } = defineProps(["printOrderId"]);
@@ -67,6 +68,16 @@ const { printOrderId } = defineProps(["printOrderId"]);
 const printOrderHistoryStore = usePrintOrderHistoryStore();
 
 const printOrder = printOrderHistoryStore.getPrintOrderById(printOrderId);
+
+const total_price = computed(() => {
+  if (!printOrder?.estimated_price || !printOrder?.shipping_method?.price) {
+    return "-";
+  }
+  return (
+    Number(printOrder?.estimated_price) * (1 + TAX_FRACTION) +
+    Number(printOrder?.shipping_method.price)
+  ).toFixed(2);
+});
 </script>
 
 <style>

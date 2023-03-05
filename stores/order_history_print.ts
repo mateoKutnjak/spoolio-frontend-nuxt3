@@ -111,6 +111,10 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
+
+        add(order: IPrintOrder) {
+            this.print_orders.unshift(order);
+        }
     },
 })
 

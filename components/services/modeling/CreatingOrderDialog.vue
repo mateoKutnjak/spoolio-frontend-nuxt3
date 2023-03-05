@@ -115,7 +115,7 @@
     <div
       v-show="everythingSuccessful"
       class="text-lg text-center text-gray-600"
-    >Your modeling request has been sent. We will contact you as soon as possible.</div>
+    >Your modeling order has been created. We will contact you as soon as possible.</div>
     <div
       v-show="everythingSuccessful"
       class="

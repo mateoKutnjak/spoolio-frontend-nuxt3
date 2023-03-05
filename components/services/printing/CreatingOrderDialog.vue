@@ -106,7 +106,7 @@
     <div
       v-show="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success"
       class="text-lg text-center text-gray-600"
-    >Your order has been placed. Redirecting to payment service...</div>
+    >Your order has been created. Redirecting to payment service...</div>
     <div
       v-show="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success"
       class="
@@ -133,15 +133,13 @@ import { storeToRefs } from "pinia";
 import { IPrintOrder, IPrintOrderUnit } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
-import {
-  usePrintOrderStore,
-} from "~~/stores/print_order";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
-const { attachmentFiles, units } = storeToRefs(printOrderStore);
+const { print_order, units } = storeToRefs(printOrderStore);
 
 enum OrderStatus {
   initial,
@@ -188,7 +186,6 @@ onMounted(async () => {
   // ------------------------------------------------
   unitsStatus.value = OrderStatus.progress;
   for (let index = 0; index < printOrderStore.getUnits.length; index++) {
-
     await new Promise((r) => setTimeout(r, 500));
 
     const unit = printOrderStore.getUnits[index];
@@ -227,6 +224,25 @@ function onOkPressed() {
 function onReturnPressed() {
   dialogStore.close();
 }
+
+watch([orderStatus, unitsStatus], async ([newA, newB], [prevA, prevB]) => {
+  if (newA === OrderStatus.success && newB === OrderStatus.success) {
+    await new Promise((r) => setTimeout(r, 2500));
+
+    if (!print_order.value.id) {
+      console.error(
+        "Print order ID is null when trying to redirect to payment"
+      );
+      notificationStore.show(
+        "Please proceed with payment through order history."
+      );
+      return;
+    }
+
+    dialogStore.close();
+    navigateTo(`/payment/printing/${print_order.value.id}`);
+  }
+});
 </script>
   
   <style>

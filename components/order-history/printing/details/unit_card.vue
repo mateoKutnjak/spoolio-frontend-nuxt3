@@ -31,26 +31,18 @@
       </div>
       <div class="card-actions justify-end justify-between items-center">
         <div class="flex gap-2">
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Filament material"
-          >
-            <div class="btn btn-sm btn-ghost bg-stone-200 text-gray-600 rounded-full">
-              {{ unit.spool.color.name }}
-            </div>
-          </div>
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Infill percentage"
-          >
-            <div class="btn btn-sm btn-ghost bg-stone-200 text-gray-600 rounded-full"> {{ unit.infill.percentage * 100 }}%</div>
-          </div>
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Material color"
-          >
-            <div class="btn btn-sm btn-ghost bg-stone-200 text-gray-600 rounded-full">{{ unit.spool.material.name }}</div>
-          </div>
+          <AttributeItem
+            :title="unit.spool.material.name"
+            tooltip="Material color"
+          />
+          <AttributeItem
+            :title="unit.spool.color.name"
+            tooltip="Filament material"
+          />
+          <AttributeItem
+            :title="`${unit.infill.percentage * 100}$`"
+            tooltip="Infill percentage"
+          />
         </div>
         <div class="text-xl text-gray-600">{{ unit.estimated_price }} €</div>
       </div>

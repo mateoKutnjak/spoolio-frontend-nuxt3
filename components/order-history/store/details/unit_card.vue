@@ -23,12 +23,13 @@
         <div class="text-sm font-base text-gray-700">{{ storeOrderUnit.item.product.description }}</div>
       </div>
       <div class="card-actions gap-4 justify-between items-center">
-        <div class="flex gap-3">
-          <div
+        <div class="flex gap-2">
+          <AttributeItem
             v-for="option in storeOrderUnit.item.options"
             :key="option.id"
-            class="btn btn-sm no-animation bg-gray-200 hover:bg-gray-200 text-gray-700 hover:text-gray-700 border-none hover:border-none rounded-full"
-          >{{ option.title }}</div>
+            :title="option.title"
+            :tooltip="option.description"
+          />
         </div>
         <div class="flex gap-3 items-center">
           <div class="text-gray-600">QTY</div>
@@ -46,7 +47,8 @@
   </div>
 </template>
 
-<script lang="ts" setup>import { IStoreOrderUnit } from '~~/constants/data';
+<script lang="ts" setup>
+import { IStoreOrderUnit } from "~~/constants/data";
 
 const { storeOrderUnit } = defineProps<{
   storeOrderUnit: IStoreOrderUnit;

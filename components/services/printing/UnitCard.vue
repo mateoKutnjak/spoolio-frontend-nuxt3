@@ -81,7 +81,7 @@
                 <div
                   v-if="totalPrice >= 0"
                   class="flex gap-1 items-center"
-                >${{ floor2Decimals(totalPrice).toFixed(2)}}
+                >${{ (totalPrice).toFixed(2)}}
                 </div>
                 <div v-else>
                   <Icon

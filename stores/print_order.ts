@@ -5,6 +5,7 @@ import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
+import { usePrintOrderHistoryStore } from './order_history_print';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -209,7 +210,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 shipping_method: this.print_order?.shipping_method.id || '',
                 payment_method: this.print_order?.payment_method || '',
                 user_profile: authStore.getUser?.profile?.id,
-                estimated_price: floor2Decimals(this.getTotalPrice).toString(),
+                estimated_price: this.getTotalPrice.toFixed(2),
                 estimated_time: Math.round(this.getETASeconds).toString()
             }
 
@@ -218,7 +219,11 @@ export const usePrintOrderStore = defineStore('print-order', {
                     method: 'POST',
                     body: body,
                 }).then((response: IPrintOrder) => {
-                    // this.createdPrintOrder = response;
+                    const printOrderHistoryStore = usePrintOrderHistoryStore();
+                    
+                    this.print_order = response;
+                    printOrderHistoryStore.add(response);
+                    
                     resolve(response)
                 }).catch(err => {
                     console.log(err);
@@ -236,7 +241,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
-            formData.append("estimated_price", floor2Decimals(this.getPriceByLocalUrl(unit.localUrl)).toString());
+            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2));
             formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
