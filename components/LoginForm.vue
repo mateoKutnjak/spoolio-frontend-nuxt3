@@ -51,10 +51,10 @@
       </div>
     </FormKit>
     <!-- <GoogleAuthButton /> -->
-    <GoogleSignInButton
+    <!-- <GoogleSignInButton
       @success="handleLoginSuccess"
       @error="handleLoginError"
-    ></GoogleSignInButton>
+    ></GoogleSignInButton> -->
   </div>
 </template>
 
