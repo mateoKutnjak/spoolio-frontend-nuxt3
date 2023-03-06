@@ -10,9 +10,9 @@ export default defineNuxtConfig({
         '@nuxt/image-edge',
         'nuxt-vue3-google-signin'
     ],
-    // googleSignIn: {
-    //     clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-    // },
+    googleSignIn: {
+        clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    },
     formkit: {
         configFile: './formkit.config.js',
     },
