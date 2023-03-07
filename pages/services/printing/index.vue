@@ -21,7 +21,7 @@
           >
             <DropdownWarning
               dropdown-message="Minimum price we charge is 10$"
-              :text="`$${totalPrice}`"
+              :text="`$${totalPrice.toFixed(2)}`"
             />
 
           </div>

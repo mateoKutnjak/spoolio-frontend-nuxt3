@@ -50,9 +50,13 @@ onMounted(() => {
   context.node.input(print_order.value?.contact_email || "");
 });
 
-watch(print_order, (value) => {
-  context.node.input(value?.contact_email);
-});
+watch(
+  print_order,
+  (value) => {
+    context.node.input(value?.contact_email);
+  },
+  { deep: true }
+);
 
 function openDialog() {
   dialogStore.open("ServicesPrintingCheckoutDialogContactEmail", []);
