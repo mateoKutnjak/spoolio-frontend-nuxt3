@@ -10,7 +10,7 @@
     </div>
     <div class="card-body gap-5 justify-between">
       <div class="flex gap-5 justify-between items-start">
-        <h2 class="card-title font-medium text-gray-700 break-all max-w-sm">{{ urlExtractFilename(unit.file.toString()) }}</h2>
+        <h2 class="card-title font-medium text-gray-700 break-all max-w-md">{{ urlExtractFilename(unit.file.toString()) }}</h2>
         <a
           class="link link-info"
           :href="extractUrlFileStringUnion(unit.file)"
