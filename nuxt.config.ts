@@ -59,7 +59,7 @@ export default defineNuxtConfig({
         stripeSecretKeyTest: process.env.STRIPE_SECRET_KEY_TEST,
         public: {
             stripePublishableKeyTest: process.env.STRIPE_PUBLISHABLE_KEY_TEST,
-            baseURL: process.env.BASE_URL || 'http://localhost:8000/',
+            baseURL: process.env.PRODUCTION === "0" ? 'http://localhost:8000/' : process.env.BASE_URL,
         }
     },
 })
