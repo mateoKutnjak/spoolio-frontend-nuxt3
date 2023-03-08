@@ -51,7 +51,9 @@ export function fileSizeFormatted(file: File): string {
 
 export function urlExtractFilename(url: string): string {
     const splitted = url.split('/');
-    return splitted[splitted.length - 1]
+    const last = splitted[splitted.length - 1]
+    const last2 = last.split('?')
+    return last2[0]
 }
 
 export function urlExtractFileSuffix(url: string): string {
