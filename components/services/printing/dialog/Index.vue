@@ -37,7 +37,7 @@
             @on-increase-value="increaseQuantity"
             @on-value-set="(q) => setQuantity(q)"
           />
-          <div class="text-4xl font-light text-gray-700">${{ (price).toFixed(2) }}</div>
+          <div class="text-4xl font-light text-gray-700">€{{ (price).toFixed(2) }}</div>
         </div>
       </div>
     </div>

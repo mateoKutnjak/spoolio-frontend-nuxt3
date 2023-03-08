@@ -26,7 +26,7 @@
         />
       </div>
     </div>
-    <div class="text-xl font-medium">${{ (cartItem?.price || 0) * (cartItemQuantity || 0) }}.00</div>
+    <div class="text-xl font-medium">€{{ (cartItem?.price || 0) * (cartItemQuantity || 0) }}.00</div>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
           </div>
         </div>
         <div>
-          ${{print_order.shipping_method.price}}
+          €{{print_order.shipping_method.price}}
         </div>
       </div>
     </div>

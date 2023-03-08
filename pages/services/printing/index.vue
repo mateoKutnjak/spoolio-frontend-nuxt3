@@ -20,14 +20,14 @@
             class="flex gap-1 items-center justify-end"
           >
             <DropdownWarning
-              dropdown-message="Minimum price we charge is 10$"
-              :text="`$${totalPrice.toFixed(2)}`"
+              dropdown-message="Minimum price we charge is 10€"
+              :text="`€${totalPrice.toFixed(2)}`"
             />
 
           </div>
           <div v-else-if="totalPrice >= 0">
             <div class="text-lg font-medium text-gray-700 ">
-              ${{ (totalPrice).toFixed(2) }}
+              €{{ (totalPrice).toFixed(2) }}
             </div>
           </div>
           <div v-else>
@@ -154,12 +154,12 @@
                       class="flex gap-1 items-center justify-end"
                     >
                       <DropdownWarning
-                        dropdown-message="Minimum price we charge is 10$"
-                        :text="`$${totalPrice}`"
+                        dropdown-message="Minimum price we charge is 10€"
+                        :text="`€${totalPrice}`"
                       />
 
                     </div>
-                    <div v-else-if="totalPrice >= 0">${{ (totalPrice).toFixed(2) }}</div>
+                    <div v-else-if="totalPrice >= 0">€{{ (totalPrice).toFixed(2) }}</div>
                     <div v-else>
                       <Icon
                         class="text-gray-500"

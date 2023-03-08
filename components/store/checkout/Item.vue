@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="flex flex-col gap-2 justify-end items-end">
-      <div class="text-3xl font-bold">${{ (cartItem?.price || 0) * (cartItemQuantity || 0) }}</div>
+      <div class="text-3xl font-bold">€{{ (cartItem?.price || 0) * (cartItemQuantity || 0) }}</div>
     </div>
   </div>
 </template>

@@ -118,7 +118,7 @@
             <div class="card-actions gap-12 justify-between items-center">
               <div v-if="activeOptionsCombination?.price">
                 <div class="text-3xl font-light text-xl text-gray-800 dark:text-white">
-                  {{`$${activeOptionsCombination?.price}`}}
+                  {{`€${activeOptionsCombination?.price}`}}
                 </div>
               </div>
               <div v-else>

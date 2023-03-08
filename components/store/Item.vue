@@ -40,7 +40,7 @@
             class="flex gap-0.5 justify-end items-start"
           >
             <div class="font-light text-lg text-gray-500 mt-1 mr-2">From</div>
-            <div class="font-light text-2xl text-gray-800 dark:text-white">${{product.starting_price}}</div>
+            <div class="font-light text-2xl text-gray-800 dark:text-white">€{{product.starting_price}}</div>
             <div class="font-light text-gray-800">00</div>
           </div>
         </div>
