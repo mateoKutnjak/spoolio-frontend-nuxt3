@@ -15,7 +15,7 @@
         class=" flex flex-col gap-4"
       >
         <div class="px-6 md:px-0 flex gap-8 justify-between">
-          <div class="text-lg font-light text-gray-700">Total price: <strong>{{ order.estimated_price }} €</strong></div>
+          <div class="text-lg font-light text-gray-700">Total price: <strong>{{ order.estimated_price.toFixed(2) }} €</strong></div>
           <div class="text-lg font-light text-gray-700">Number of files: <strong>{{ data.length }}</strong></div>
         </div>
         <OrderHistoryPrintingDetailsUnitCard

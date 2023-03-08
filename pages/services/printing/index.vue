@@ -27,7 +27,7 @@
           </div>
           <div v-else-if="totalPrice >= 0">
             <div class="text-lg font-medium text-gray-700 ">
-              ${{ (totalPrice)}}
+              ${{ (totalPrice).toFixed(2) }}
             </div>
           </div>
           <div v-else>
@@ -114,7 +114,7 @@
               />
             </div>
             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">STL (MAX. 800x400px)</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">STL (max 150 MB)</p>
             <input
               id="dropzone-file"
               type="file"
