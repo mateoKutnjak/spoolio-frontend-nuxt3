@@ -16,8 +16,12 @@ export const useProductListStore = defineStore('product-list', {
 
     actions: {
         async fetchPaginatedProducts(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IPaginatedResponse<IProduct>>(new Promise<IPaginatedResponse<IProduct>>((resolve, reject) => {
-                customFetch<IPaginatedResponse<IProduct>>(`http://localhost:8000/api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IProduct>>(`api/products/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET'
                 }
                 ).then((response: IPaginatedResponse<IProduct>) => {

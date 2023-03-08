@@ -12,6 +12,9 @@ export const usePaymentStore = defineStore('payment', {
 
     actions: {
         async createPaymentIntent(serviceType: string, order_id: number, amountCents: number, currency: string = 'EUR') {
+
+            const config = useRuntimeConfig();
+
             const body = {
                 service: serviceType,
                 id: order_id,
@@ -20,7 +23,8 @@ export const usePaymentStore = defineStore('payment', {
             };
 
             return promiseWithTimeout(new Promise<IPaymenIntent>((resolve, reject) => {
-                ofetch<IPaymenIntent>('http://localhost:8000/api/create-payment-intent/', {
+                ofetch<IPaymenIntent>('api/create-payment-intent/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: body,
                 }).then((response: IPaymenIntent) => {

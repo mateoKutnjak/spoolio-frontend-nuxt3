@@ -19,9 +19,13 @@ export const useRatingStore = defineStore('rating', {
 
     actions: {
         async fetchRatings(objectId: number, contentType: string, limit: number = PAGE_SIZE, offset: number = 0, append: boolean = false) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IPaginatedResponse<IRating>>(
                 new Promise<IPaginatedResponse<IRating>>((resolve, reject) => {
-                    customFetch<IPaginatedResponse<IRating>>(`http://localhost:8000/api/ratings/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<IPaginatedResponse<IRating>>(`api/ratings/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                        baseURL: config.public.baseURL,
                         method: 'GET',
                     }
                     ).then((response: IPaginatedResponse<IRating>) => {
@@ -47,6 +51,8 @@ export const useRatingStore = defineStore('rating', {
         },
 
         async postRating(user: number, content: string, value: number, objectId: number, contentType: string) {
+
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             var body: { [name: string]: any } = {
@@ -58,7 +64,8 @@ export const useRatingStore = defineStore('rating', {
             };
 
             return promiseWithTimeout(new Promise<IRating>((resolve, reject) => {
-                customFetch<IRating>(`http://localhost:8000/api/ratings/`, {
+                customFetch<IRating>(`api/ratings/`, {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`

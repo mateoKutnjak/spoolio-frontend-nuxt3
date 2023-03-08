@@ -18,6 +18,8 @@ export const customFetch = ofetch.create({
         // * If token is not valid, token refreshing request is performed
         // * After successfull token refreshing, original request should be performed
 
+        const config = useRuntimeConfig()
+
         const controller = new AbortController();
 
         const authStore = useAuthStore();
@@ -31,7 +33,8 @@ export const customFetch = ofetch.create({
             return;
         };
 
-        await ofetch('http://localhost:8000/auth/token/verify/', {
+        await ofetch('auth/token/verify/', {
+            baseURL: config.public.baseURL,
             method: 'POST',
             body: {
                 token: authStore.accessToken
@@ -48,7 +51,8 @@ export const customFetch = ofetch.create({
                 // * Send token refresh request only when status 
                 // * code 401 is returned for token verification
 
-                await ofetch<IRefreshTokenResponse>('http://localhost:8000/auth/token/refresh/', {
+                await ofetch<IRefreshTokenResponse>('auth/token/refresh/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: {
                         refresh: authStore.refreshToken

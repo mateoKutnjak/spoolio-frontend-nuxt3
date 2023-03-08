@@ -17,8 +17,12 @@ export const useFilamentInfillStore = defineStore('filament-infill', {
 
     actions: {
         async fetchFilamentInfills() {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                ofetch<IFilamentInfill[]>('http://localhost:8000/api/filament/infills/?available=true', {
+                ofetch<IFilamentInfill[]>('api/filament/infills/?available=true', {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IFilamentInfill[]) => {
                     this.filamentInfills = response;

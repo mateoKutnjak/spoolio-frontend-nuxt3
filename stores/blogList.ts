@@ -17,8 +17,12 @@ export const useBlogListStore = defineStore('blog-list', {
 
     actions: {
         async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IPaginatedResponse<IBlog>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IBlog>>(`http://localhost:8000/api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IBlog>>(`api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IBlog>) => {
                     this.count = response.count;
@@ -39,6 +43,8 @@ export const useBlogListStore = defineStore('blog-list', {
         },
 
         async toggleLike(accessToken: string, blogId: number) {
+
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             // todo check if user data exists
@@ -51,7 +57,8 @@ export const useBlogListStore = defineStore('blog-list', {
                         user: authStore.getUser?.id
                     };
 
-                    customFetch<ILike>(`http://localhost:8000/api/likes/toggle/?content_type=blog&object_id=${blogId}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<ILike>(`api/likes/toggle/?content_type=blog&object_id=${blogId}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                        baseURL: config.public.baseURL,
                         method: 'POST',
                         body: body,
                     }

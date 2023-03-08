@@ -19,9 +19,14 @@ export const useCommentListStore = defineStore('comment-list', {
 
     actions: {
         async fetchComments(objectId: number, contentType: string, limit: number = PAGE_SIZE, offset: number = 0, append: boolean = false) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IPaginatedResponse<IComment>>(
                 new Promise<IPaginatedResponse<IComment>>((resolve, reject) => {
-                    customFetch<IPaginatedResponse<IComment>>(`http://localhost:8000/api/comments/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                    customFetch<IPaginatedResponse<IComment>>(`api/comments/?content_type=${contentType}&object_id=${objectId}&limit=${limit}&offset=${offset}`, { // ~ Don't end url with / (slash) before simple error is resolved in django
+                        baseURL: config.public.baseURL,
                         method: 'GET',
                     }
                     ).then((response: IPaginatedResponse<IComment>) => {
@@ -47,6 +52,9 @@ export const useCommentListStore = defineStore('comment-list', {
         },
 
         async postComment(user: number, content: string, objectId: number, contentType: string) {
+
+            const config = useRuntimeConfig();
+            
             const authStore = useAuthStore();
 
             var body: { [name: string]: any } = {
@@ -57,7 +65,8 @@ export const useCommentListStore = defineStore('comment-list', {
             };
 
             return promiseWithTimeout(new Promise<IComment>((resolve, reject) => {
-                customFetch<IComment>(`http://localhost:8000/api/comments/`, {
+                customFetch<IComment>(`api/comments/`, {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`

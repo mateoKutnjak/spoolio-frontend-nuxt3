@@ -20,8 +20,12 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
     actions: {
         async fetchPrintOrderHistoryPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IPaginatedResponse<IPrintOrder>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IPrintOrder>>(`http://localhost:8000/api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IPrintOrder>>(`api/print-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IPrintOrder>) => {
                     this.count = response.count;
@@ -42,8 +46,13 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
         },
 
         async fetchPrintOrderById(id: number) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IPrintOrder>(new Promise(async (resolve, reject) => {
-                customFetch<IPrintOrder>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+                customFetch<IPrintOrder>(`api/print-orders/orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPrintOrder) => {
                     const index = this.print_orders.findIndex(el => el.id === id);
@@ -62,8 +71,13 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
         },
 
         async fetchPrintOrderUnitNamesById(id: number) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IPrintOrderUnit[]>(new Promise(async (resolve, reject) => {
-                customFetch<IPrintOrderUnit[]>(`http://localhost:8000/api/print-orders/units/?order=${id}`, {
+                customFetch<IPrintOrderUnit[]>(`api/print-orders/units/?order=${id}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPrintOrderUnit[]) => {
                     const index = this.print_orders.findIndex(el => el.id === id);
@@ -84,10 +98,12 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
 
         async updatePrintOrderStatusById(id: number, status: string) {
 
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             return promiseWithTimeout<IPrintOrder>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrder>(`http://localhost:8000/api/print-orders/orders/${id}/`, {
+                customFetch<IPrintOrder>(`api/print-orders/orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`

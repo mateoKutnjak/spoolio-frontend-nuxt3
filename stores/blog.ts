@@ -13,8 +13,12 @@ export const useBlogStore = defineStore('blog', {
 
     actions: {
         async fetchBlog(id: number) {
+            
+            const config = useRuntimeConfig();
+
             return new Promise<IBlog>((resolve, reject) => {
-                customFetch<IBlog>(`http://localhost:8000/api/blogs/${id}/`, {
+                customFetch<IBlog>(`api/blogs/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET'
                 }
                 ).then((response: IBlog) => {
@@ -28,6 +32,8 @@ export const useBlogStore = defineStore('blog', {
 
         async patchBlog(accessToken: string, title: string, subtitle: string, content: string) {
 
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IBlog>(new Promise<IBlog>((resolve, reject) => {
                 var body: { [name: string]: any } = {
                     title: title,
@@ -36,7 +42,8 @@ export const useBlogStore = defineStore('blog', {
                 };
 
                 // todo check user? nullable
-                customFetch<IBlog>(`http://localhost:8000/api/blogs/${this.blog?.id}/`, {
+                customFetch<IBlog>(`api/blogs/${this.blog?.id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${accessToken}`

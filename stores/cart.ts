@@ -124,6 +124,7 @@ export const useCartStore = defineStore('cart', {
         },
         async postOrder(): Promise<IStoreOrder> {
 
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             const body = {
@@ -137,7 +138,8 @@ export const useCartStore = defineStore('cart', {
             }
 
             return promiseWithTimeout<IStoreOrder>(new Promise<IStoreOrder>((resolve, reject) => {
-                customFetch<IStoreOrder>('http://localhost:8000/api/store-orders/', {
+                customFetch<IStoreOrder>('api/store-orders/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: body,
                 }).then((response: IStoreOrder) => {

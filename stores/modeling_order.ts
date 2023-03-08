@@ -30,6 +30,9 @@ export const useModelingOrderStore = defineStore('modeling-order', {
         },
 
         async postOrder(): Promise<IModelingOrder> {
+
+            const config = useRuntimeConfig();
+            
             const authStore = useAuthStore();
 
             const body = {
@@ -39,7 +42,8 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             }
 
             return promiseWithTimeout<IModelingOrder>(new Promise<IModelingOrder>((resolve, reject) => {
-                customFetch<IModelingOrder>('http://localhost:8000/api/modeling-orders/', {
+                customFetch<IModelingOrder>('api/modeling-orders/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: body,
                 }).then((response: IModelingOrder) => {
@@ -52,15 +56,17 @@ export const useModelingOrderStore = defineStore('modeling-order', {
         },
 
         async postAttachmentFile(item: IAttachmentFile, orderId: number): Promise<IAttachmentFile> {
+
+            const config = useRuntimeConfig();
+
             var formData = new FormData();
-
             formData.append("file", item.file);
-
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
             return promiseWithTimeout<IAttachmentFile>(new Promise((resolve, reject) => {
-                customFetch<IAttachmentFile>('http://localhost:8000/api/attachment-files/', {
+                customFetch<IAttachmentFile>('api/attachment-files/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: formData,
                 }).then((response: IAttachmentFile) => {
@@ -73,15 +79,18 @@ export const useModelingOrderStore = defineStore('modeling-order', {
         },
 
         async postAttachmentImage(item: IAttachmentImage, orderId: number): Promise<IAttachmentImage> {
+
+            const config = useRuntimeConfig();
+            
+
             var formData = new FormData();
-
             formData.append("image", item.image);
-
             formData.append("content_type", CONTENT_TYPE_MODELING_ORDER)
             formData.append("object_id", orderId.toString());
 
             return promiseWithTimeout<IAttachmentImage>(new Promise((resolve, reject) => {
-                customFetch<IAttachmentImage>('http://localhost:8000/api/attachment-images/', {
+                customFetch<IAttachmentImage>('api/attachment-images/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: formData,
                 }).then((response: IAttachmentImage) => {

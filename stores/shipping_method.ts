@@ -14,8 +14,12 @@ export const useShippingMethodStore = defineStore('shipping-method', {
 
     actions: {
         async fetchShippingMethods(): Promise<IShippingMethod[]> {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IShippingMethod[]>(new Promise<IShippingMethod[]>((resolve, reject) => {
-                ofetch<IShippingMethod[]>('http://localhost:8000/api/shipping-methods/?available=true', {
+                ofetch<IShippingMethod[]>('api/shipping-methods/?available=true', {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IShippingMethod[]) => {
                     this.shippingMethods = response;

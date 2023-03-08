@@ -13,6 +13,9 @@ export const useCommentStore = defineStore('comment', {
 
     actions: {
         async postComment(accessToken: string, author: number, blog: number, content: string) {
+
+            const config = useRuntimeConfig();
+
             var body: { [name: string]: any } = {
                 author: author,
                 blog: blog,
@@ -20,7 +23,8 @@ export const useCommentStore = defineStore('comment', {
             };
 
             return promiseWithTimeout<IComment>(new Promise<IComment>((resolve, reject) => {
-                customFetch<IComment>(`http://localhost:8000/api/comments/`, {
+                customFetch<IComment>(`api/comments/`, {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`

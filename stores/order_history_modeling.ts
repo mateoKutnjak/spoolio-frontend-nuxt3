@@ -20,8 +20,13 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
 
     actions: {
         async fetchPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IPaginatedResponse<IModelingOrder>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IModelingOrder>>(`http://localhost:8000/api/modeling-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IModelingOrder>>(`api/modeling-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IModelingOrder>) => {
                     this.count = response.count;
@@ -42,8 +47,12 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
         },
 
         async fetchById(id: number) {
+
+            const config = useRuntimeConfig();
+            
             return promiseWithTimeout<IModelingOrder>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrder>(`http://localhost:8000/api/modeling-orders/${id}/`, {
+                customFetch<IModelingOrder>(`api/modeling-orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IModelingOrder) => {
                     const index = this.modeling_orders.findIndex(el => el.id === id);
@@ -62,8 +71,12 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
         },
 
         async fetchAttachmentFilesById(id: number, contentType: string = 'modelingorder') {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IAttachmentFile[]>(new Promise((resolve, reject) => {
-                customFetch<IAttachmentFile[]>(`http://localhost:8000/api/attachment-files/?content_type=${contentType}&object_id=${id}`, {
+                customFetch<IAttachmentFile[]>(`api/attachment-files/?content_type=${contentType}&object_id=${id}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IAttachmentFile[]) => {
                     const index = this.modeling_orders.findIndex(el => el.id === id);
@@ -83,8 +96,12 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
         },
 
         async fetchAttachmentImagesById(id: number, contentType: string = 'modelingorder') {
+
+            const config = useRuntimeConfig();
+            
             return promiseWithTimeout<IAttachmentImage[]>(new Promise((resolve, reject) => {
-                customFetch<IAttachmentImage[]>(`http://localhost:8000/api/attachment-images/?content_type=${contentType}&object_id=${id}`, {
+                customFetch<IAttachmentImage[]>(`api/attachment-images/?content_type=${contentType}&object_id=${id}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IAttachmentImage[]) => {
                     const index = this.modeling_orders.findIndex(el => el.id === id);
@@ -104,10 +121,13 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
         },
 
         async updateOrderStatusById(id: number, status: string) {
+
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             return promiseWithTimeout<IModelingOrder>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrder>(`http://localhost:8000/api/modeling-orders/${id}/`, {
+                customFetch<IModelingOrder>(`api/modeling-orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`

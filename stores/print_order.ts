@@ -9,16 +9,17 @@ import { usePrintOrderHistoryStore } from './order_history_print';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
-    var formData = new FormData();
+    const config = useRuntimeConfig();
 
+    var formData = new FormData();
     formData.append("file", item.file);
     formData.append("comment", item.comment);
-
     formData.append("content_type", contentType)
     formData.append("object_id", objectId.toString());
 
     return new Promise((resolve, reject) => {
-        customFetch<IAttachmentFile>('http://localhost:8000/api/print-orders/attachment-files/', {
+        customFetch<IAttachmentFile>('api/print-orders/attachment-files/', {
+            baseURL: config.public.baseURL,
             method: 'POST',
             body: formData,
         }).then((response: IAttachmentFile) => {
@@ -201,6 +202,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
         async postOrder(): Promise<IPrintOrder> {
 
+            const config = useRuntimeConfig();
             const authStore = useAuthStore();
 
             const body = {
@@ -215,15 +217,16 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
 
             return promiseWithTimeout<IPrintOrder>(new Promise<IPrintOrder>((resolve, reject) => {
-                customFetch<IPrintOrder>('http://localhost:8000/api/print-orders/orders/', {
+                customFetch<IPrintOrder>('api/print-orders/orders/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: body,
                 }).then((response: IPrintOrder) => {
                     const printOrderHistoryStore = usePrintOrderHistoryStore();
-                    
+
                     this.print_order = response;
                     printOrderHistoryStore.add(response);
-                    
+
                     resolve(response)
                 }).catch(err => {
                     console.log(err);
@@ -233,6 +236,8 @@ export const usePrintOrderStore = defineStore('print-order', {
         },
 
         async postOrderUnit(unit: IPrintOrderUnit, orderId: number): Promise<IPrintOrderUnit> {
+
+            const config = useRuntimeConfig();
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
@@ -250,7 +255,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("order", orderId.toString());
 
             return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
-                customFetch<IPrintOrderUnit>('http://localhost:8000/api/print-orders/units/', {
+                customFetch<IPrintOrderUnit>('api/print-orders/units/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST',
                     body: formData,
                 }).then((response: IPrintOrderUnit) => {

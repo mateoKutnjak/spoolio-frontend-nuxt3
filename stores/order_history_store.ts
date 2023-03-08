@@ -35,8 +35,13 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
 
     actions: {
         async fetchOrderHistoryPaginated(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IPaginatedResponse<IStoreOrder>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IStoreOrder>>(`http://localhost:8000/api/store-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IStoreOrder>>(`api/store-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IStoreOrder>) => {
                     this.count = response.count;
@@ -57,8 +62,13 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
         },
 
         async fetchById(id: number) {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout<IStoreOrder>(new Promise((resolve, reject) => {
-                customFetch<IStoreOrder>(`http://localhost:8000/api/store-orders/${id}/`, {
+                customFetch<IStoreOrder>(`api/store-orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IStoreOrder) => {
                     const index = this.orders.findIndex(el => el.id === id);
@@ -77,10 +87,14 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
         },
 
         async updateOrderStatusById(id: number, status: string) {
+
+            const config = useRuntimeConfig();
+            
             const authStore = useAuthStore();
 
             return promiseWithTimeout<IStoreOrder>(new Promise((resolve, reject) => {
-                customFetch<IStoreOrder>(`http://localhost:8000/api/store-orders/${id}/`, {
+                customFetch<IStoreOrder>(`api/store-orders/${id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${authStore.accessToken}`

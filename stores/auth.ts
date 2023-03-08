@@ -23,12 +23,17 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         async login(email: string | undefined, password: string | undefined) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
-                ofetch<IUserLogin>('http://localhost:8000/auth/login/', {
-                    method: 'POST', body: {
+                ofetch<IUserLogin>('auth/login/', {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    body: {
                         email: email,
                         password: password,
-                    }
+                    },
                 }
                 ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
@@ -42,14 +47,16 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
-                ofetch<IUserLogin>('http://localhost:8000/auth/registration/', {
+                ofetch<IUserLogin>('auth/registration/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST', body: {
                         email: email,
                         password1: password,
                         password2: confirmPassword,
-
-                    }
+                    },
                 }
                 ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
@@ -63,8 +70,10 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async registerGoogle(googleAccessToken: String) {
+            const config = useRuntimeConfig();
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
-                ofetch<IUserLogin>('http://localhost:8000/auth/registration/google/', {
+                ofetch<IUserLogin>('auth/registration/google/', {
+                    baseURL: config.public.baseURL,
                     method: 'POST', body: {
                         access_token: googleAccessToken,
 
@@ -83,6 +92,8 @@ export const useAuthStore = defineStore('auth', {
 
         async patchUserProfile(body: IProfile) {
 
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IProfile>(new Promise((resolve, reject) => {
 
                 if (!this.user || !this.accessToken) {
@@ -90,7 +101,8 @@ export const useAuthStore = defineStore('auth', {
                 }
 
                 // todo check user? nullable
-                customFetch<IProfile>(`http://localhost:8000/api/user-profile/${this.user?.profile?.id}/`, {
+                customFetch<IProfile>(`api/user-profile/${this.user?.profile?.id}/`, {
+                    baseURL: config.public.baseURL,
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`

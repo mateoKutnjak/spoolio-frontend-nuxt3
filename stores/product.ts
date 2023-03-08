@@ -15,9 +15,13 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         async fetchProduct(id: number) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IProduct>(new Promise<IProduct>((resolve, reject) => {
-                customFetch<IProduct>(`http://localhost:8000/api/products/${id}/`, {
-                    method: 'GET'
+                customFetch<IProduct>(`api/products/${id}/`, {
+                     baseURL: config.public.baseURL,
+                     method: 'GET'
                 }).then((response: IProduct) => {
                     this.product = response;
                     resolve(response);
@@ -27,8 +31,12 @@ export const useProductStore = defineStore('product', {
             }), HTTP_REQUEST_TIMEOUT);
         },
         async fetchProductVariationOptionCombination(optionIds: number[], productId: number) {
+
+            const config = useRuntimeConfig();
+
             return promiseWithTimeout<IProductVariationOptionCombination[]>(new Promise<IProductVariationOptionCombination[]>((resolve, reject) => {
-                customFetch<IProductVariationOptionCombination[]>(`http://localhost:8000/api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
+                customFetch<IProductVariationOptionCombination[]>(`api/product-variation-option-combinations/?${optionIds.map(el => `options=${el}&`).join('')}product=${productId}`, {
+                    baseURL: config.public.baseURL,
                     method: 'GET'
                 }).then((response: IProductVariationOptionCombination[]) => {
                     if (response.length > 0) {

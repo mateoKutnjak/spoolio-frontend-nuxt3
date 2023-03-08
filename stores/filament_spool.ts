@@ -36,8 +36,13 @@ export const useFilamentSpoolStore = defineStore('filament-spool', {
 
     actions: {
         async fetchFilamentSpools() {
+
+            const config = useRuntimeConfig();
+            
+
             return promiseWithTimeout(new Promise((resolve, reject) => {
-                ofetch<IFilamentSpool[]>('http://localhost:8000/api/filament/spools/?available=true', {
+                ofetch<IFilamentSpool[]>('api/filament/spools/?available=true', {
+                    baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IFilamentSpool[]) => {
                     this.filamentSpools = response;
