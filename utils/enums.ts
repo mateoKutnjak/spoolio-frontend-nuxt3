@@ -3,7 +3,6 @@ export enum ToastLevelType {
 }
 
 export class ToastLevel {
-
     constructor(public type: ToastLevelType, public backgroundColor: string, public iconColor: string, public iconName: string) {
         this.type = type;
         this.backgroundColor = backgroundColor;
