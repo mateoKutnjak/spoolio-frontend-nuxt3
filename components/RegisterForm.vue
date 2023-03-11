@@ -56,6 +56,24 @@
                   message: 'px-5 pt-1 mb-0'
                 }"
           />
+          <FormKit
+            type="text"
+            name="invitation_token"
+            placeholder="Invitation token"
+            v-model="invitationToken"
+            validation="required"
+            validation-visibility="blur"
+            :validation-messages="{
+              required: 'Invitation token is required',
+            }"
+            :classes="{
+                  input: 'rounded-xl px-2',
+                  wrapper: 'shadow-xs rounded-xl',
+                  inner: 'rounded-xl',
+                  outer: 'rounded-xl mb-3',
+                  message: 'px-5 pt-1 mb-0'
+                }"
+          />
         </div>
         <FormKit
           type="submit"
@@ -70,10 +88,10 @@
       </div>
     </FormKit>
 
-    <GoogleSignInButton
+    <!-- <GoogleSignInButton
       @success="handleLoginSuccess"
       @error="handleLoginError"
-    ></GoogleSignInButton>
+    ></GoogleSignInButton> -->
   </div>
 </template>
 
@@ -92,6 +110,7 @@ const notificationStore = useNotificationStore();
 const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const invitationToken = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
 const loading = ref(false);
 
@@ -102,7 +121,12 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
   loading.value = true;
 
   authStore
-    .register(email.value, password.value, confirmPassword.value)
+    .register(
+      email.value,
+      password.value,
+      confirmPassword.value,
+      invitationToken.value
+    )
     .then((loginRequestState) => {
       dialogStore.close();
       navigateTo("/");

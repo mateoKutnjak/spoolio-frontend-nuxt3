@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined) {
+        async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined, invitationToken: string) {
             const config = useRuntimeConfig();
 
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
@@ -56,6 +56,7 @@ export const useAuthStore = defineStore('auth', {
                         email: email,
                         password1: password,
                         password2: confirmPassword,
+                        invitation_token: invitationToken,
                     },
                 }
                 ).then((response: IUserLogin) => {

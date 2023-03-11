@@ -132,9 +132,6 @@
 </template>
 
 <script lang="ts" setup>
-const config = useRuntimeConfig();
-
-console.log(config.public.baseURL);
 </script>
 
 <style>
