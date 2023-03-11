@@ -1,4 +1,3 @@
-import { ofetch } from "ofetch";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
 import { IFilamentSpool } from "~~/constants/data";
@@ -19,18 +18,24 @@ export const useFilamentSpoolStore = defineStore('filament-spool', {
         getByMaterialId: (state) => {
             return (id: number) => state.filamentSpools.filter((item) => item.material.id === id);
         },
-        getColorsForCurrentMaterial: (state) => {
-            return (spoolId: number) => {
-                const spool = state.filamentSpools.find((item) => item.id === spoolId);
-                if (!spool) {
-                    console.error(`No colors found. Spool with id={spoolId} does not exist.`)
-                    return [];
-                }
-                return state.filamentSpools.filter(el => el.material.id == spool.material.id).map(el => el.color)
+        getSpoolsWithSameMaterialAs: (state) => {
+            return (spool: IFilamentSpool) => {
+                return state.filamentSpools.filter((item) => item.material.id === spool.material.id);
             }
         },
-        getMaterials: (state) => {
-            return state.filamentSpools.map(el => el.material);
+        getSpoolsUniqueMaterials: (state) => {
+            return state.filamentSpools.reduce((unique: IFilamentSpool[], item: IFilamentSpool) => {
+
+                // * Checking if accumulation list of spools already contains
+                // * spool with current spools material. If not, we add current spool
+                // * to accumulation list of spools. If spool with this material already
+                // * exists in accumulation list, we skip adding this spool.
+
+                if (unique.findIndex((el) => el.material.id === item.material.id) === -1) {
+                    return [...unique, item]
+                }
+                return unique;
+            }, [] as IFilamentSpool[])
         }
     },
 

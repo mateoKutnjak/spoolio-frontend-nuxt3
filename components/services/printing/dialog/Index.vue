@@ -15,8 +15,14 @@
             <ServicesPrintingVolumeInfo :data="unit.model_volume" />
           </div>
           <div class="flex flex-col gap-1 justify-end items-end">
-            <ListboxSpool
+            <ListboxMaterial
               class="w-full"
+              :file-url="unit.localUrl"
+            />
+            <!-- ? :key binding is added to refresh component ListboxColor when material id changes -->
+            <ListboxColor
+              class="w-full"
+              :key="unit.spool.material.id"
               :file-url="unit.localUrl"
             />
             <ListboxInfill
