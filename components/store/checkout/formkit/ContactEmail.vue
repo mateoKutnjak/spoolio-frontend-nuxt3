@@ -51,9 +51,13 @@ onMounted(() => {
   context.node.input(store_order.value?.contact_email || "");
 });
 
-watch(store_order, (value) => {
-  context.node.input(value.contact_email);
-});
+watch(
+  store_order,
+  (value) => {
+    context.node.input(value.contact_email);
+  },
+  { deep: true }
+);
 
 function openDialog() {
   dialogStore.open("StoreCheckoutDialogContactEmail", []);
