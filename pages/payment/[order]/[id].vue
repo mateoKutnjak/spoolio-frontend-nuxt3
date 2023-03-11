@@ -45,10 +45,7 @@
 
 <script lang="ts" setup>
 import { loadStripe, StripeCardElement } from "@stripe/stripe-js";
-import {
-  PAYMENT_ORDER_NAMES,
-  TAX_FRACTION,
-} from "~~/constants/constants";
+import { PAYMENT_ORDER_NAMES, TAX_FRACTION } from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
@@ -92,6 +89,9 @@ const notificationStore = useNotificationStore();
 const paymentStore = usePaymentStore();
 
 const paymentProcessing = ref<boolean>(false);
+
+console.log(config.stripeApiKey);
+console.log(config.public.stripeApiKey);
 
 const stripe = await loadStripe(config.stripeApiKey, {
   apiVersion: "2022-11-15",
