@@ -58,7 +58,7 @@ export default defineNuxtConfig({
         googleOAuthClientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
         // stripeSecretKeyTest: process.env.STRIPE_SECRET_KEY_TEST,
         public: {
-            stripePublishableKeyTest: process.env.PRODUCTION === "0" ? process.env.STRIPE_PUBLISHABLE_KEY_TEST : process.env.STRIPE_PUBLISHABLE_KEY_LIVE,
+            stripeApiKey: process.env.PRODUCTION === "0" ? process.env.STRIPE_PUBLISHABLE_KEY_TEST : process.env.STRIPE_SECRET_KEY_LIVE,
             baseURL: process.env.PRODUCTION === "0" ? process.env.BASE_URL_DEV : process.env.BASE_URL,
         }
     },

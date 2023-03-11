@@ -93,7 +93,7 @@ const paymentStore = usePaymentStore();
 
 const paymentProcessing = ref<boolean>(false);
 
-const stripe = await loadStripe(config.stripePublishableKeyTest, {
+const stripe = await loadStripe(config.stripeApiKey, {
   apiVersion: "2022-11-15",
 });
 
