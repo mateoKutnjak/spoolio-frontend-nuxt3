@@ -90,10 +90,7 @@ const paymentStore = usePaymentStore();
 
 const paymentProcessing = ref<boolean>(false);
 
-console.log(config.stripeApiKey);
-console.log(config.public.stripeApiKey);
-
-const stripe = await loadStripe(config.stripeApiKey, {
+const stripe = await loadStripe(config.stripePublishableApiKey, {
   apiVersion: "2022-11-15",
 });
 
