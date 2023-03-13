@@ -8,8 +8,14 @@ export default defineNuxtConfig({
         'nuxt-icon',
         '@formkit/auto-animate',
         '@nuxt/image-edge',
-        'nuxt-vue3-google-signin'
+        'nuxt-vue3-google-signin',
+        '@nuxtjs/color-mode'
     ],
+    colorMode: {
+        preference: 'light',
+        fallback: 'light',
+        classSuffix: ''
+    },
     googleSignIn: {
         clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
     },

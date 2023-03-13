@@ -26,4 +26,5 @@ module.exports = {
         base: false,
         themes: ['bumblebee']
     },
+    darkMode: 'class'
 }
