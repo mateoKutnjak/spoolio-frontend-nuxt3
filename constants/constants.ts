@@ -35,6 +35,16 @@ export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;
 
 export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
 
+// * Billing address types
+
+export const BILLING_ADDRESS_TYPE_INDIVIDUAL = 'individual';
+export const BILLING_ADDRESS_TYPE_COMPANY = 'company';
+
+export const BILLING_ADDRESS_TYPES = [
+    { value: BILLING_ADDRESS_TYPE_INDIVIDUAL, label: capitalizeOnlyFirstLetter(BILLING_ADDRESS_TYPE_INDIVIDUAL) },
+    { value: BILLING_ADDRESS_TYPE_COMPANY, label: capitalizeOnlyFirstLetter(BILLING_ADDRESS_TYPE_COMPANY) },
+]
+
 // * Payment
 
 export const PAYMENT_ORDER_NAMES = ['printing', 'modeling', 'store'];

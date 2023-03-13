@@ -37,14 +37,22 @@ export interface IAddressShipping {
 }
 
 export interface IAddressBilling {
-    first_name: string,
-    last_name: string,
-    address: string,
-    country: string,
-    state: string | undefined,
-    locality: string,
-    postal_code: string,
-    phone_number: string,
+    type: string, // * 'company' or 'individual'
+
+    first_name: string | undefined, // * Used only if type === 'individual'
+    last_name: string | undefined, // * Used only if type === 'individual'
+
+    address: string, // * Used for both
+    country: string, // * Used for both
+    state: string | undefined, // * Used for both
+    locality: string, // * Used for both
+    postal_code: string, // * Used for both
+    phone_number: string, // * Used for both
+
+    contact_first_name: string | undefined, // * Used only if type === 'company'
+    contact_last_name: string | undefined, // * Used only if type === 'company'
+    company_name: string | undefined, // * Used only if type === 'company'
+    vat_id: string | undefined, // * Used only if type === 'company'
 }
 
 // **************** //

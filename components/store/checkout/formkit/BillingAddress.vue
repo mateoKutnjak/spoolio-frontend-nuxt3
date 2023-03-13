@@ -18,7 +18,8 @@
     >
       <div v-if="store_order?.billing_address && Object.keys(store_order.billing_address).length">
         <div class="flex flex-col text-start text-base text-gray-800">
-          <strong>{{store_order.billing_address.first_name}} {{store_order.billing_address.last_name}}</strong>
+          <strong v-if="store_order.billing_address.type == BILLING_ADDRESS_TYPE_INDIVIDUAL">{{store_order.billing_address.first_name}} {{store_order.billing_address.last_name}}</strong>
+          <strong v-else>{{store_order.billing_address.company_name}}</strong>
           <p class="font-normal">{{store_order.billing_address.address}}</p>
           <p class="font-normal">{{store_order.billing_address.locality}} {{store_order.billing_address.postal_code}}</p>
           <p class="font-normal">{{store_order.billing_address.country}}</p>
@@ -36,6 +37,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { BILLING_ADDRESS_TYPE_INDIVIDUAL } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
@@ -61,7 +63,7 @@ onMounted(() => {
     }
   }
 
-  if (isValidShippingAddress(store_order.value!.shipping_address)) {
+  if (isValidBillingAddress(store_order.value!.billing_address)) {
     context.node.input("1");
   } else {
     context.node.input("");

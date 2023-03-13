@@ -13,12 +13,14 @@ const selectClassification = {
     input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
 }
 const boxClassification = {
-    fieldset: 'max-w-md border border-gray-400 rounded-md px-2 pb-1',
+    fieldset: 'max-w-md rounded-md px-2 pb-1',
     legend: 'font-bold text-sm',
     wrapper: 'flex gap-3 items-center cursor-pointer',
     input: 'checkbox',
     label: 'label-text',
-    inner: 'p-0 m-0'
+    inner: 'p-0 m-0',
+    option: 'm-0',
+    options: 'flex gap-6'
 }
 const buttonClassification = {
     input: 'btn btn-primary'
