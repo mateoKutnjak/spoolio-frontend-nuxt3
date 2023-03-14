@@ -144,106 +144,12 @@
 
         </div>
 
-        <div class="card card-bordered bg-white shadow-md max-w-2xl mx-auto">
-          <FormKit
-            type="form"
-            id="billing-address-form"
-            :form-class="submitted ? 'hide' : 'show'"
-            submit-label="Update"
-            @submit="submitBillingAddressHandler"
-            :actions="false"
-          >
-            <div class="card-body justify-center gap-6">
-              <h2 class="card-title justify-start">Billing address</h2>
-              <div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
-                  <FormKit
-                    type="select"
-                    name="billing_address_country"
-                    label="Country"
-                    v-model="billingAddressCountry"
-                    :options="COUNTRIES"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
-                  <FormKit
-                    type="text"
-                    name="billing_address_first_name"
-                    label="First name"
-                    v-model="billingAddressFirstName"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                  <FormKit
-                    type="text"
-                    name="billing_address_last_name"
-                    label="Last name"
-                    v-model="billingAddressLastName"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                </div>
-                <FormKit
-                  type="text"
-                  name="billing_address_address"
-                  label="Street address"
-                  v-model="billingAddressStreetAddress"
-                  validation=""
-                  validation-visibility="blur"
-                />
-                <div class="grid grid-cols-1 md:grid-cols-3 md:gap-5">
-                  <FormKit
-                    type="text"
-                    name="billing_address_city"
-                    label="City/Locality"
-                    v-model="billingAddressCity"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                  <FormKit
-                    type="text"
-                    name="billing_address_state"
-                    label="State/Province"
-                    v-model="billingAddressState"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                  <FormKit
-                    type="number"
-                    name="billing_address_postal_code"
-                    label="ZIP code"
-                    v-model="billingAddressPostalCode"
-                    validation=""
-                    validation-visibility="blur"
-                  />
-                </div>
-                <FormKit
-                  type="tel"
-                  label="Phone number"
-                  v-model="billingAddressPhoneNumber"
-                  placeholder="+123456789"
-                  :validation="[['matches', /^\+\d{9,15}$/]]"
-                  :validation-messages="{
-                  matches: 'Phone number must be in the format +xxx...x [max 15]',
-                }"
-                  validation-visibility="dirty"
-                />
-              </div>
-
-              <div>
-                <FormKit
-                  type="submit"
-                  label="Save"
-                  :classes="{
-                input: 'btn btn-primary btn-block text-lg'
-              }"
-                />
-              </div>
-            </div>
-          </FormKit>
+        <div class="card bg-white shadow-md max-w-2xl">
+          <FormBillingAddress
+            :billing_address="billing_address_ref"
+            :enable-use-default="false"
+            @on-saved="onBillingAddressSaved"
+          />
         </div>
 
       </div>
@@ -257,9 +163,7 @@ import { COUNTRIES } from "~~/constants/countries";
 
 import { storeToRefs } from "pinia";
 
-import {
-  useAuthStore,
-} from "~~/stores/auth";
+import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { IAddressBilling, IAddressShipping, IProfile } from "~~/constants/data";
 
@@ -267,6 +171,9 @@ const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
+
+const billing_address_ref =
+  user.value?.profile?.billing_address || <IAddressBilling>{};
 
 const generalInfoEmail = ref(user.value?.email || "");
 
@@ -405,6 +312,16 @@ const submitShippingAddressHandler = async () => {
       console.log(err);
     });
 };
+
+function onBillingAddressSaved(billingAddress: IAddressBilling) {
+  if (authStore.user?.profile?.billing_address) {
+    debugger;
+    authStore.user.profile.billing_address = billingAddress;
+    notificationStore.show("Billing address updated", ToastLevel.success());
+  } else {
+    notificationStore.show("Cannot do that", ToastLevel.error());
+  }
+}
 
 const submitBillingAddressHandler = async () => {
   // This delay is here only because of progress indicator button
