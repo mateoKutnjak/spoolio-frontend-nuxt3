@@ -48,7 +48,8 @@
       </div>
     </td>
     <td class="py-4">
-      <div class="flex items-center justify-center">
+      <div class="mb-4 flex flex-col gap-1 items-center justify-center">
+        <div class="text-sm text-gray-400">Quantity</div>
         <input
           type="number"
           class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -60,7 +61,7 @@
       </div>
     </td>
     <td class="py-4 px-8 font-semibold text-lg text-gray-900 dark:text-white text-end">
-      <div class="flex justify-center font-light text-xl text-gray-900 dark:text-white">
+      <div class="flex justify-center font-light text-2xl text-gray-900 dark:text-white">
         <div
           v-if="totalPrice >= 0"
           class="flex gap-1 items-center"
