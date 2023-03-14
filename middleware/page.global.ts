@@ -1,4 +1,4 @@
-import { RESTRICTED_PAGES_STARTS_WITH } from "~~/constants/constants";
+import { RESTRICTED_PAGES_STARTS_WITH, RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -11,11 +11,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
         let redirectToHome = false;
 
-        RESTRICTED_PAGES_STARTS_WITH.forEach(element => {
-            if (to.path.startsWith(element)) {
+        if (RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS) {
+            if (to.path !== '/') {
                 redirectToHome = true;
             }
-        });
+        } else {
+            RESTRICTED_PAGES_STARTS_WITH.forEach(element => {
+                if (to.path.startsWith(element)) {
+                    redirectToHome = true;
+                }
+            });
+        }
 
         if (redirectToHome) {
             console.log("Redirecting to home screen because user is not logged in");

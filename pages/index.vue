@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <div class="fixed top-0 right-0 left-0 h-[calc(100vh-4rem)] top-[4rem]">
+    <div
+      v-if="authStore.loggedIn"
+      class="fixed top-0 right-0 left-0 h-[calc(100vh-4rem)] top-[4rem]"
+    >
       <div class="carousel carousel-vertical h-full">
         <div
           id="item1"
@@ -118,20 +121,76 @@
         ></a>
       </div>
     </div>
-    <!-- <div class="hero h-[calc(100vh-4rem)] bg-base-200">
+
+    <div
+      v-else
+      class="hero min-h-screen bg-base-200"
+    >
       <div class="hero-content text-center">
+
+        <div class="flex flex-col gap-6 items-center">
+          <div class="pb-8 text-4xl font-medium text-primary">Welcome to Spoolio</div>
+          <TabGroup>
+            <TabList class="flex space-x-4">
+              <Tab
+                v-for="key in Object.keys(categories)"
+                :key="key"
+                v-slot="{selected}"
+              >
+                <div
+                  class="btn btn-sm"
+                  :class="selected ? '' : 'btn-ghost'"
+                >{{ categories[key] }}</div>
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <RegisterForm />
+              </TabPanel>
+              <TabPanel>
+                <LoginForm />
+              </TabPanel>
+            </TabPanels>
+          </TabGroup>
+          <!-- 
         <div class="max-w-md">
           <h1 class="text-5xl font-bold">Hello there</h1>
           <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
           <button class="btn btn-primary">Get Started</button>
+        </div> -->
         </div>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
 
 <script lang="ts" setup>
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { storeToRefs } from "pinia";
+import { RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS } from "~~/constants/constants";
+import { useAuthStore } from "~~/stores/auth";
+
+const authStore = useAuthStore();
+
+const { user } = storeToRefs(authStore);
+
+definePageMeta({
+  layout: false,
+});
+
+const categories: { [key: string]: string } = {
+  register: "Sign up",
+  login: "Sign in",
+};
+
+watch(user, (value) => {
+  if (value) {
+    setPageLayout("default");
+  } else {
+    setPageLayout("");
+  }
+});
 </script>
 
 <style>

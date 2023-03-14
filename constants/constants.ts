@@ -1,3 +1,6 @@
+// * Restrict non-auth user to access anything but index page => /
+export const RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS = true;
+
 export const RESTRICTED_PAGES_STARTS_WITH = [
     '/profile',
 ]
