@@ -65,12 +65,13 @@ onMounted(() => {
 });
 
 function onUseDefaultClicked() {
-  if (!user.value?.profile?.email) {
+  if (user.value?.profile?.email) {
+    email.value = user.value?.profile?.email;
+  } else if (user.value?.email) {
+    email.value = user.value.email;
+  } else {
     notificationStore.show("Cannot do that", ToastLevel.error());
-    return;
   }
-
-  email.value = user.value?.profile?.email ?? "";
 }
 
 function submitHandler() {
