@@ -128,7 +128,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     )
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo("/");
+      navigateTo("/services");
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

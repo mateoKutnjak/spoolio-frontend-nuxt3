@@ -87,7 +87,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     .then((loginRequestState) => {
       dialogStore.close();
       notificationStore.show("Welcome", ToastLevel.info());
-      navigateTo("/");
+      navigateTo("/services");
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

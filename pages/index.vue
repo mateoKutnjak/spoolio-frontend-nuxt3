@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div
+    <!-- <div
       v-if="authStore.loggedIn"
       class="fixed top-0 right-0 left-0 h-[calc(100vh-4rem)] top-[4rem]"
     >
@@ -120,12 +120,9 @@
           class="btn btn-circle btn-outline btn-sm border-2 border-gray-700 hover:border-gray-700"
         ></a>
       </div>
-    </div>
+    </div> -->
 
-    <div
-      v-else
-      class="hero w-screen h-screen bg-base-200"
-    >
+    <div class="hero w-screen h-screen bg-base-200">
       <div class="hero-content text-center">
 
         <div class="flex flex-col gap-6 items-center">
@@ -171,10 +168,6 @@ import { storeToRefs } from "pinia";
 import { RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 
-const authStore = useAuthStore();
-
-const { user } = storeToRefs(authStore);
-
 definePageMeta({
   layout: false,
 });
@@ -183,14 +176,6 @@ const categories: { [key: string]: string } = {
   register: "Sign up",
   login: "Sign in",
 };
-
-watch(user, (value) => {
-  if (value) {
-    setPageLayout("default");
-  } else {
-    setPageLayout("");
-  }
-});
 </script>
 
 <style>

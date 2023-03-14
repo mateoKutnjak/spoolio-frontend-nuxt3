@@ -5,10 +5,7 @@
         class="lg:hidden"
         :navigation="navigation"
       />
-      <NuxtLink
-        to="/"
-        class="btn btn-ghost"
-      >
+      <NuxtLink class="btn btn-ghost">
         <nuxt-img
           width="112px"
           src="/img/logo-primary.svg"
