@@ -281,7 +281,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         },
 
         async add3dModelFile(file: File) {
-            if (PRINT_ORDER_FILES_TYPES.indexOf(file.type) < 0 && PRINT_ORDER_FILES_SUFFIXES.indexOf(urlExtractFileSuffix(file.name)) < 0) {
+            if (PRINT_ORDER_FILES_TYPES.indexOf(file.type) < 0 && PRINT_ORDER_FILES_SUFFIXES.indexOf(urlExtractFileSuffix(file.name.toLowerCase())) < 0) {
                 console.error(`Cannot add file type ${file.type} as 3d model. Supported models are ${PRINT_ORDER_FILES_TYPES}`);
                 return;
             }

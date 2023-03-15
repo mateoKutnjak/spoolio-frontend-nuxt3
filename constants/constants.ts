@@ -37,6 +37,9 @@ export const LAYER_WIDTH = 0.45; // millimeters
 export const LAYER_AREA = LAYER_HEIGHT * LAYER_WIDTH;
 
 export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
+
+// * Use lowercase suffixes because all
+// * file suffixes are turned in lowercase
 export const PRINT_ORDER_FILES_SUFFIXES = ['stl'];
 
 // * Billing address types
