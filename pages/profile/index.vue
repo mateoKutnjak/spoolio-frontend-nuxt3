@@ -313,14 +313,15 @@ const submitShippingAddressHandler = async () => {
     });
 };
 
-function onBillingAddressSaved(billingAddress: IAddressBilling) {
-  if (authStore.user?.profile?.billing_address) {
-    debugger;
-    authStore.user.profile.billing_address = billingAddress;
-    notificationStore.show("Billing address updated", ToastLevel.success());
-  } else {
-    notificationStore.show("Cannot do that", ToastLevel.error());
-  }
+function onBillingAddressSaved(billing_address: IAddressBilling) {
+  authStore
+    .patchUserProfile(<IProfile>{
+      billing_address: billing_address,
+    })
+    .then(() => {
+      notificationStore.show("Information saved", ToastLevel.success());
+    })
+    .catch((err) => notificationStore.showFetchError(err));
 }
 
 const submitBillingAddressHandler = async () => {
