@@ -126,12 +126,12 @@
                 }"
         validation-visibility="blur"
       />
-      <div class="pt-2">
+      <div class="pt-8">
         <FormKit
           type="submit"
           label="Save"
           :classes="{
-                  input: 'btn btn-primary btn-block btn-lg'
+                  input: 'btn btn-primary btn-block'
               }"
         />
       </div>
