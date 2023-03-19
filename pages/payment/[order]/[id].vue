@@ -241,7 +241,7 @@ function submitPayment() {
         // Show error to your customer (for example, insufficient funds)
         console.log(`Payment error = ${result.error.message}`);
 
-        navigateTo("/");
+        navigateTo("/services");
         notificationStore.show(
           result.error.message?.toString() || "Error occurred",
           ToastLevel.error()
@@ -273,7 +273,7 @@ function updateOrderStatus(orderType: string, id: number) {
     printOrderHistoryStore
       .updatePrintOrderStatusById(numericId, "in_progress")
       .then(() => {
-        navigateTo("/");
+        navigateTo("/services");
         notificationStore.show(
           "Payment successful. Check your email. [TODO]",
           ToastLevel.success()
@@ -285,7 +285,7 @@ function updateOrderStatus(orderType: string, id: number) {
     modelingOrderHistoryStore
       .updateOrderStatusById(numericId, "in_progress")
       .then(() => {
-        navigateTo("/");
+        navigateTo("/services");
         notificationStore.show(
           "Payment successful. Check your email. [TODO]",
           ToastLevel.success()
@@ -297,7 +297,7 @@ function updateOrderStatus(orderType: string, id: number) {
     storeOrderHistoryStore
       .updateOrderStatusById(numericId, "in_progress")
       .then(() => {
-        navigateTo("/");
+        navigateTo("/services");
         notificationStore.show(
           "Payment successful. Check your email. [TODO]",
           ToastLevel.success()

@@ -135,6 +135,6 @@ const { user } = storeToRefs(authStore);
 
 function logout() {
   authStore.logout();
-  navigateTo("/");
+  navigateTo("/services");
 }
 </script>
