@@ -257,57 +257,19 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          updateOrderStatus(order as string, numericId);
+          navigateTo("/services");
+          notificationStore.show(
+            "Payment successful. Check your email. [TODO]",
+            ToastLevel.success()
+          );
+
+          // Order update happens with stripe webhooks on server
         }
       }
     })
     .finally(() => {
       paymentProcessing.value = false;
     });
-}
-
-function updateOrderStatus(orderType: string, id: number) {
-  if (orderType === "printing") {
-    const printOrderHistoryStore = usePrintOrderHistoryStore();
-
-    printOrderHistoryStore
-      .updatePrintOrderStatusById(numericId, "in_progress")
-      .then(() => {
-        navigateTo("/services");
-        notificationStore.show(
-          "Payment successful. Check your email. [TODO]",
-          ToastLevel.success()
-        );
-      });
-  } else if (orderType === "modeling") {
-    const modelingOrderHistoryStore = useModelingOrderHistoryStore();
-
-    modelingOrderHistoryStore
-      .updateOrderStatusById(numericId, "in_progress")
-      .then(() => {
-        navigateTo("/services");
-        notificationStore.show(
-          "Payment successful. Check your email. [TODO]",
-          ToastLevel.success()
-        );
-      });
-  } else if (orderType === "store") {
-    const storeOrderHistoryStore = useStoreOrderHistoryStore();
-
-    storeOrderHistoryStore
-      .updateOrderStatusById(numericId, "in_progress")
-      .then(() => {
-        navigateTo("/services");
-        notificationStore.show(
-          "Payment successful. Check your email. [TODO]",
-          ToastLevel.success()
-        );
-      });
-  } else {
-    throw createError(
-      `Cannot update order status. Unknown order type ${orderType}`
-    );
-  }
 }
 </script>
 
