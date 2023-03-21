@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
         <div class="text-3xl font-light">Printing order</div>
         <div class="flex gap-4 items-end">
-          <DimensionUnitDropdown class="self-end" />
+          <ListboxDimensionUnit class="self-end" />
           <div
             class="btn btn-error"
             :class="units.length ? '' : 'btn-disabled'"
