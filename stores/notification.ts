@@ -4,29 +4,24 @@ export const useNotificationStore = defineStore('notification', {
     state: () => ({
         isOpened: false,
         message: "",
-        iconName: "",
-        iconColor: "",
-        backgroundColor: ''
+        type: ToastLevelType.debug
     }),
 
     getters: {
         getState: (state) => state,
-        getIsOpened: (state) => state.isOpened
+        getIsOpened: (state) => state.isOpened,
+        getType: (state) => state.type,
     },
 
     actions: {
-        show(message: string, type = ToastLevel.debug()) {
+        show(message: string, type = ToastLevelType.debug) {
             this.isOpened = true;
             this.message = message;
-            this.iconName = type.iconName;
-            this.backgroundColor = type.backgroundColor;
-            this.iconColor = type.iconColor;
+            this.type = type;
         },
-        showFetchError(err: any, type = ToastLevel.error()) {
+        showFetchError(err: any, type = ToastLevelType.error) {
             this.isOpened = true;
-            this.iconName = type.iconName;
-            this.backgroundColor = type.backgroundColor;
-            this.iconColor = type.iconColor;
+            this.type = type;
 
             if (!err.statusMessage) {
                 this.message = "Could not reach server. Please try again later"

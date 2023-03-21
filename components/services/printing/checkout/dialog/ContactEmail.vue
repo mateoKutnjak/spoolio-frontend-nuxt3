@@ -71,7 +71,7 @@ function onUseDefaultClicked() {
   } else if (user.value?.email) {
     email.value = user.value.email;
   } else {
-    notificationStore.show("Cannot do that", ToastLevel.error());
+    notificationStore.show("Cannot do that", ToastLevelType.error);
   }
 }
 

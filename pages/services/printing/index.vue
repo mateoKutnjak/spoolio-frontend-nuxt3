@@ -368,7 +368,7 @@ function change(e: any) {
           " exceeds the limit of " +
           MAX_FILE_SIZE_STL / 1024 / 1024 +
           " MBs",
-        ToastLevel.info()
+          ToastLevelType.info
       );
       return;
     }

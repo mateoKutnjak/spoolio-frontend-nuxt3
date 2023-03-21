@@ -271,7 +271,7 @@ function addToCart() {
     activeOptionsCombination.value
   );
 
-  notificationStore.show("Added to cart", ToastLevel.success());
+  notificationStore.show("Added to cart", ToastLevelType.success);
 }
 
 function extractProductVariations(): Map<

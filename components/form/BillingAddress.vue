@@ -187,7 +187,7 @@ const billing_address_ref = ref<AddressBilling>(new AddressBilling());
 
 function onFillUserProfileBillingAddress() {
   if (!user.value?.profile?.billing_address) {
-    notificationStore.show("Cannot do that", ToastLevel.error());
+    notificationStore.show("Cannot do that", ToastLevelType.error);
     return;
   }
 

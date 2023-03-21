@@ -166,7 +166,7 @@ onMounted(() => {
 
 function onUseDefaultClicked() {
   if (!user.value?.profile?.shipping_address) {
-    notificationStore.show("Cannot do that", ToastLevel.error());
+    notificationStore.show("Cannot do that", ToastLevelType.error);
     return;
   }
 

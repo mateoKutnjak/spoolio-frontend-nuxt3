@@ -200,7 +200,7 @@ function onFilesAdded(files: File[]) {
         "File type " +
           filenameExtension(element.name).toUpperCase() +
           " is not supported",
-        ToastLevel.error()
+          ToastLevelType.error
       );
       console.log("File type not supported yet TODO");
     }

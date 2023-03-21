@@ -111,14 +111,14 @@ const hasAnyName = computed(() => {
 
 function toggleLike() {
   if (!authStore.accessToken) {
-    notificationStore.show("Log in to like", ToastLevel.info());
+    notificationStore.show("Log in to like", ToastLevelType.info);
     return;
   }
 
   blogStore
     .toggleLike(authStore.accessToken!, blog.id)
     .then((res) => {
-      notificationStore.show("Content liked", ToastLevel.info());
+      notificationStore.show("Content liked", ToastLevelType.info);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }

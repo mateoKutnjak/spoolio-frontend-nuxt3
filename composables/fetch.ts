@@ -75,7 +75,7 @@ export const customFetch = ofetch.create({
 
                         controller.abort();
                         dialogStore.close()
-                        notificationStore.show('Cannot perform request. Session expired. Please login again', ToastLevel.info());
+                        notificationStore.show('Cannot perform request. Session expired. Please login again', ToastLevelType.info);
                     }
 
                     // * Abort request if refreshing token has failed

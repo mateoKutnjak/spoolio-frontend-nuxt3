@@ -50,7 +50,7 @@ function onShippingAddressSaved(shipping_address: IAddressShipping) {
       shipping_address: shipping_address,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevel.success());
+      notificationStore.show("Information saved", ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -61,7 +61,7 @@ function onBillingAddressSaved(billing_address: IAddressBilling) {
       billing_address: billing_address,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevel.success());
+      notificationStore.show("Information saved", ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -72,7 +72,7 @@ function onGeneralInfoSaved(contact_email: string) {
       email: contact_email,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevel.success());
+      notificationStore.show("Information saved", ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }

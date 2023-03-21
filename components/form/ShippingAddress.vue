@@ -131,7 +131,7 @@ const shipping_address_ref = ref<AddressShipping>(new AddressShipping());
 
 function onFillUserProfileShippingAddress() {
   if (!user.value?.profile?.shipping_address) {
-    notificationStore.show("Cannot do that", ToastLevel.error());
+    notificationStore.show("Cannot do that", ToastLevelType.error);
     return;
   }
 

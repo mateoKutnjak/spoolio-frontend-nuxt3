@@ -244,7 +244,7 @@ function submitPayment() {
         navigateTo("/services");
         notificationStore.show(
           result.error.message?.toString() || "Error occurred",
-          ToastLevel.error()
+          ToastLevelType.error
         );
       } else {
         console.log(`PaymentIntent status = ${result.paymentIntent.status}`);
@@ -260,7 +260,7 @@ function submitPayment() {
           navigateTo("/services");
           notificationStore.show(
             "Payment successful. Check your email. [TODO]",
-            ToastLevel.success()
+            ToastLevelType.success
           );
 
           // Order update happens with stripe webhooks on server

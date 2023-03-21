@@ -88,7 +88,7 @@ onMounted(() => {
       blogContent.value = blog.content;
     })
     .catch((err) => {
-      notificationStore.show(err, ToastLevel.error());
+      notificationStore.show(err, ToastLevelType.error);
     });
 });
 
@@ -137,7 +137,7 @@ const submitHandler = async () => {
       blogContent.value
     )
     .then(() => {
-      notificationStore.show("Update saved", ToastLevel.info());
+      notificationStore.show("Update saved", ToastLevelType.info);
     })
     .catch((err) => notificationStore.showFetchError(err));
 };

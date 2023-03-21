@@ -236,7 +236,7 @@ onMounted(() => {
 
 function onUseDefaultClicked() {
   if (!user.value?.profile?.billing_address) {
-    notificationStore.show("Cannot do that", ToastLevel.error());
+    notificationStore.show("Cannot do that", ToastLevelType.error);
     return;
   }
 

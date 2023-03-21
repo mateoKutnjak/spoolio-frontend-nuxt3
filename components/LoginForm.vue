@@ -86,7 +86,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     .login(email.value, password.value)
     .then((loginRequestState) => {
       dialogStore.close();
-      notificationStore.show("Welcome", ToastLevel.info());
+      notificationStore.show("Welcome", ToastLevelType.info);
       navigateTo("/services");
     })
     .catch((err) => {

@@ -44,7 +44,7 @@ onMounted(() => {
 function onClicked() {
   notificationStore.show(
     "No other options available currently",
-    ToastLevel.info()
+    ToastLevelType.info
   );
 }
 </script>
