@@ -1,9 +1,11 @@
 <template>
-  <div
-    v-if="rawStatus"
-    class="btn btn-ghost btn-sm no-animation px-5 text-gray-600 border-gray-400 hover:border-gray-400 shadow"
-    :style="`background-color: ${ OrderStatus.all[rawStatus].colorHex}`"
-  >{{ OrderStatus.all[rawStatus].display_name }}</div>
+  <div class="flex justify-end">
+    <div
+      v-if="rawStatus"
+      class="w-fit whitespace-nowrap px-4 py-1.5 text-white text-sm font-bold rounded-full"
+      :style="`background-color: ${ OrderStatus.all[rawStatus].colorHex}`"
+    >{{ OrderStatus.all[rawStatus].display_name }}</div>
+  </div>
 </template>
 
 <script lang="ts" setup>

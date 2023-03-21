@@ -61,13 +61,13 @@ export const TAX_FRACTION = 0.25;
 // ! IMPORTANT ! adjust frontend enums (constants.vue)
 export class OrderStatus {
 
-    public static readonly reviewing = new OrderStatus('reviewing', 'Reviewing', '#ced4da');
+    public static readonly reviewing = new OrderStatus('reviewing', 'Reviewing', '#219ebc');
     public static readonly estimatingPrice = new OrderStatus('estimating_price', 'Estimating price', '#eae4e9');
     public static readonly rejected = new OrderStatus('rejected', 'Rejected', '#f28482');
-    public static readonly awaitingPayment = new OrderStatus('awaiting_payment', 'Awaiting payment', '#FFE19C')
-    public static readonly inProgress = new OrderStatus('in_progress', 'In progress', '#90e0ef');
-    public static readonly shipped = new OrderStatus('shipped', 'Shipped', '#e7bc91');
-    public static readonly delivered = new OrderStatus('delivered', 'Delivered', '#99e2b4');
+    public static readonly awaitingPayment = new OrderStatus('awaiting_payment', 'Awaiting payment', '#ee9b00')
+    public static readonly inProgress = new OrderStatus('in_progress', 'In progress', '#277da1');
+    public static readonly shipped = new OrderStatus('shipped', 'Shipped', '#d4a373');
+    public static readonly delivered = new OrderStatus('delivered', 'Delivered', '#415a77');
 
     public static readonly all: { [key: string]: OrderStatus } = {
         'reviewing':
