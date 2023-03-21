@@ -3,7 +3,6 @@
     <FormKit
       type="form"
       id="login-form"
-      :form-class="submitted ? 'hide' : 'show'"
       submit-label="Sign In"
       @submit="submitHandler"
       :actions="false"
@@ -15,26 +14,12 @@
             name="email"
             placeholder="E-mail"
             v-model="email"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
           <FormKit
             type="password"
             name="password"
             placeholder="Password"
             v-model="password"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
         </div>
         <FormKit
@@ -72,14 +57,12 @@ const notificationStore = useNotificationStore();
 const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
 
-const submitted = ref(false);
 const loading = ref(false);
 
 async function submitHandler(data: any, node: FormKitNode | undefined) {
   // This delay is here only because of progress indicator button
   // await new Promise((r) => setTimeout(r, 1000));
 
-  submitted.value = true;
   loading.value = true;
 
   authStore
