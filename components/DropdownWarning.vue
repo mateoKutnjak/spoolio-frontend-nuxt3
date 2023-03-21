@@ -16,7 +16,7 @@
     </label>
     <div
       tabindex="0"
-      class="card compact dropdown-content shadow-md bg-base-100 rounded-box border"
+      class="card compact dropdown-content shadow-md bg-base-100 rounded-md border border-gray-400 mt-1"
     >
       <div class="card-body">
         <div class="flex flex-row gap-2 items-center">
@@ -25,7 +25,7 @@
             size="20"
             name="material-symbols:warning-rounded"
           />
-          <p class="font-light text-base">{{ dropdownMessage }}</p>
+          <div class="font-light text-base whitespace-nowrap">{{ dropdownMessage }}</div>
         </div>
       </div>
     </div>
