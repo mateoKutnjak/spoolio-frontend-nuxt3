@@ -77,7 +77,7 @@ const handleOnSuccess = async (response: ImplicitFlowSuccessResponse) => {
   console.log("Code: ", response.code);
 
   authStore.registerGoogle(response.code).catch((err) => {
-    notificationStore.show("Login failed: " + err, ToastLevel.error());
+    notificationStore.show("Login failed: " + err, ToastLevelType.error);
     console.error(err);
   });
 
