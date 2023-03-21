@@ -1,35 +1,68 @@
 <template>
-  <div>
-    <div class="btn-group grid grid-flow-col auto-cols-max bg-white rounded-xl shadow border border-gray-300">
-      <button
-        v-if="currentPage-2 >= 0"
-        class="btn btn-ghost"
-        @click="$emit('onPageSelected', 0)"
-      >1</button>
+  <div class="flex flex-col gap-5 items-center">
+    <div class="grid grid-flow-col auto-cols-max gap-1">
       <button
         v-if="currentPage-3 >= 0"
-        class="btn btn-ghost btn-disabled bg-gray-200 text-gray-500"
-      >...</button>
+        class="btn  btn-ghost btn-square rounded-md text-gray-500"
+        @click="$emit('onPageSelected', 0)"
+      >
+        <Icon
+          name="material-symbols:first-page"
+          size="25"
+        />
+      </button>
+      <button
+        v-if="currentPage-3 >= 0"
+        class="btn btn-ghost btn-square btn-disabled rounded-md bg-transparent text-gray-600"
+      >
+        <Icon
+          name="ph:dots-three"
+          size="25"
+        />
+      </button>
+      <button
+        v-if="currentPage-2 >= 0"
+        class="btn btn-ghost btn-square rounded-md text-gray-600"
+        @click="$emit('onPageSelected', currentPage-2)"
+      >{{currentPage-1}}</button>
       <button
         v-if="currentPage-1 >= 0"
-        class="btn btn-ghost"
+        class="btn btn-ghost btn-square rounded-md text-gray-600"
         @click="$emit('onPageSelected', currentPage-1)"
       >{{currentPage}}</button>
-      <button class="btn btn-ghost bg-primary shadow-md">{{currentPage+1}}</button>
+      <button class="btn btn-ghost bg-primary/80 btn-square rounded-md text-gray-600">{{currentPage+1}}</button>
       <button
         v-if="currentPage+1 < maxPages"
-        class="btn btn-ghost"
+        class="btn btn-ghost btn-square rounded-md text-gray-600"
         @click="$emit('onPageSelected', currentPage+1)"
       >{{currentPage+2}}</button>
       <button
-        v-if="currentPage+3 < maxPages"
-        class="btn btn-ghost btn-disabled bg-gray-200 text-gray-500"
-      >...</button>
+        v-if="currentPage+2 < maxPages"
+        class="btn btn-ghost btn-square rounded-md text-gray-600"
+        @click="$emit('onPageSelected', currentPage+2)"
+      >{{currentPage+3}}</button>
       <button
-        v-if="currentPage+3 <= maxPages"
-        class="btn btn-ghost"
+        v-if="currentPage+3 < maxPages"
+        class="btn btn-ghost btn-square btn-disabled bg-transparent rounded-md text-gray-600"
+      >
+        <Icon
+          name="ph:dots-three"
+          size="25"
+        />
+      </button>
+      <button
+        v-if="currentPage+4 <= maxPages"
+        class="btn btn-ghost btn-square rounded-md text-gray-500"
         @click="$emit('onPageSelected', maxPages-1)"
-      >{{maxPages}}</button>
+      >
+        <Icon
+          name="material-symbols:last-page"
+          size="25"
+        />
+      </button>
+    </div>
+    <div class="text-gray-500 text-sm font-light">
+      Showing results {{ currentPage * PAGE_SIZE + 1 }}-{{ Math.min((currentPage+1) * PAGE_SIZE, count) }} of {{ count }}
     </div>
   </div>
 </template>
