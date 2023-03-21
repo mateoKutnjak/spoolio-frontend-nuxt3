@@ -34,7 +34,7 @@
           >
             <DialogPanel
               :class="`w-full max-w-${widthClass}`"
-              class="transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              class="transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
               <component
                 :is="component"
