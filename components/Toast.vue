@@ -5,15 +5,16 @@
         v-show="isOpened"
         class="toast toast-bottom toast-end px-12 py-8 z-50 text-base text-white"
       >
+
         <div
-          v-if="type === ToastLevelType.error"
-          class="flex gap-2 items-stretch py-1.5 px-2.5 w-full max-w-md rounded shadow-lg bg-error text-white"
+          class="py-4 px-5 w-full max-w-md rounded shadow-xl text-white"
+          :class="toastBgColor"
           role="alert"
         >
-          <div class="flex gap-3 justify-between items-center px-2 py-2">
+          <div class="flex gap-5 justify-between items-center">
             <div class="justify-center items-center rounded-lg">
               <Icon
-                name="material-symbols:error"
+                :name="toastIconName"
                 size="28"
               />
               <span class="sr-only">Check icon</span>
@@ -33,90 +34,7 @@
             </button>
           </div>
         </div>
-        <div
-          v-else-if="type === ToastLevelType.success"
-          class="flex gap-2 items-stretch py-1.5 px-2.5 w-full max-w-md rounded shadow-lg bg-success text-white"
-          role="alert"
-        >
-          <div class="flex gap-3 justify-between items-center px-2 py-2">
-            <div class="justify-center items-center rounded-lg">
-              <Icon
-                name="material-symbols:check-circle-rounded"
-                size="28"
-              />
-              <span class="sr-only">Check icon</span>
-            </div>
-            <div class="font-normal">{{message || ''}}</div>
-            <button
-              type="button"
-              class="btn btn-ghost btn-sm btn-square"
-              data-dismiss-target="#toast-success"
-              aria-label="Close"
-              @click="onCloseClicked"
-            >
-              <Icon
-                name="material-symbols:close"
-                size="23"
-              />
-            </button>
-          </div>
-        </div>
-        <div
-          v-if="type === ToastLevelType.info"
-          class="flex gap-2 items-stretch py-1.5 px-2.5 w-full max-w-md rounded shadow-lg bg-info text-white"
-          role="alert"
-        >
-          <div class="flex gap-3 justify-between items-center px-2 py-2">
-            <div class="justify-center items-center rounded-lg">
-              <Icon
-                name="material-symbols:info-rounded"
-                size="28"
-              />
-              <span class="sr-only">Check icon</span>
-            </div>
-            <div class="font-normal">{{message || ''}}</div>
-            <button
-              type="button"
-              class="btn btn-ghost btn-sm btn-square"
-              data-dismiss-target="#toast-success"
-              aria-label="Close"
-              @click="onCloseClicked"
-            >
-              <Icon
-                name="material-symbols:close"
-                size="23"
-              />
-            </button>
-          </div>
-        </div>
-        <div
-          v-if="type === ToastLevelType.debug"
-          class="flex gap-2 items-stretch py-1.5 px-2.5 w-full max-w-md rounded shadow-lg bg-warning text-white"
-          role="alert"
-        >
-          <div class="flex gap-3 justify-between items-center px-2 py-2">
-            <div class="justify-center items-center rounded-lg">
-              <Icon
-                name="material-symbols:warning"
-                size="28"
-              />
-              <span class="sr-only">Check icon</span>
-            </div>
-            <div class="font-normal">{{message || ''}}</div>
-            <button
-              type="button"
-              class="btn btn-ghost btn-sm btn-square"
-              data-dismiss-target="#toast-success"
-              aria-label="Close"
-              @click="onCloseClicked"
-            >
-              <Icon
-                name="material-symbols:close"
-                size="23"
-              />
-            </button>
-          </div>
-        </div>
+
       </div>
     </Transition>
   </div>
@@ -130,6 +48,36 @@ import { useNotificationStore } from "~~/stores/notification";
 const notificationStore = useNotificationStore();
 
 const { isOpened, message, type } = storeToRefs(notificationStore);
+
+const toastBgColor = computed(() => {
+  switch (type.value) {
+    case ToastLevelType.debug:
+      return "bg-warning";
+    case ToastLevelType.error:
+      return "bg-error";
+    case ToastLevelType.success:
+      return "bg-success";
+    case ToastLevelType.info:
+      return "bg-info";
+    default:
+      return "bg-gray-700";
+  }
+});
+
+const toastIconName = computed(() => {
+  switch (type.value) {
+    case ToastLevelType.debug:
+      return "material-symbols:warning";
+    case ToastLevelType.error:
+      return "material-symbols:error";
+    case ToastLevelType.success:
+      return "material-symbols:check-circle-rounded";
+    case ToastLevelType.info:
+      return "material-symbols:info-rounded";
+    default:
+      return "bg-gray-700";
+  }
+});
 
 watch(isOpened, (value) => {
   if (value) {
