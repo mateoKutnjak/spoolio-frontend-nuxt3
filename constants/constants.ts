@@ -13,7 +13,7 @@ export const CONTENT_TYPE_MODELING_ORDER = 'modelingorder';
 export const CONTENT_TYPE_BLOG = 'blog';
 export const CONTENT_TYPE_PRODUCT = 'product';
 
-export const TOAST_DURATION_MEDIUM = 50000;
+export const TOAST_DURATION_MEDIUM = 5000;
 
 export const MODELING_ORDER_ATTACHMENT_FILE_TYPES = [
     'application/pdf', 'text/plain',

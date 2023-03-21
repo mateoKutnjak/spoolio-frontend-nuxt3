@@ -16,13 +16,6 @@
             v-model="email"
             validation="required|email"
             validation-visibility="blur"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
           <FormKit
             type="password"
@@ -31,13 +24,6 @@
             v-model="password"
             validation="required|length:5,15|matches:/[0-9]/"
             validation-visibility="blur"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
           <FormKit
             type="password"
@@ -47,13 +33,6 @@
             validation="required|confirm"
             validation-label="Password confirmation"
             validation-visibility="blur"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
           <FormKit
             type="text"
@@ -65,13 +44,6 @@
             :validation-messages="{
               required: 'Invitation token is required',
             }"
-            :classes="{
-                  input: 'rounded-xl px-2',
-                  wrapper: 'shadow-xs rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-3',
-                  message: 'px-5 pt-1 mb-0'
-                }"
           />
         </div>
         <FormKit
