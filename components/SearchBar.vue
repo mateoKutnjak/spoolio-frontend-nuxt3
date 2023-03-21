@@ -1,13 +1,13 @@
 <template>
   <div class="form-control">
-    <div class="input-group">
+    <div class="flex border border-gray-400 bg-white">
       <input
         type="text"
         placeholder="Search…"
-        class="input input-bordered btn-block"
+        class="input btn-block !outline-none bg-transparent"
         v-model="input"
       />
-      <button class="btn btn-primary">
+      <button class="btn btn-ghost rounded-none">
         <Icon
           name="ion:ios-search"
           size="25"
@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const emit = defineEmits(["submit-search-phrase"]);
 
 const { placeholder } = defineProps(["placeholder"]);
