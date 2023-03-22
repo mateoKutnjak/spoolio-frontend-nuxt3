@@ -5,15 +5,13 @@
       type="checkbox"
       class="drawer-toggle"
     />
-    <div
-      class="drawer-content"
-      style="background-color: #ECECEC"
-    >
+    <div class="drawer-content bg-base-200/60">
       <div>
         <Navbar />
         <Toast />
-        <div class="container mx-auto">
-          <Breadcrumbs class="p-12 pb-0" />
+        <div class="container mx-auto max-w-5xl">
+          <div class="py-4"></div>
+          <Breadcrumbs class="" />
           <slot />
         </div>
       </div>

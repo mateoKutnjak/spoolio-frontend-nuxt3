@@ -1,5 +1,5 @@
 <template>
-  <div class="breadcrumbs text-gray-800">
+  <div class="breadcrumbs text-gray-600 text-sm font-medium">
     <ul>
       <li
         v-for="crumb in crumbs"
