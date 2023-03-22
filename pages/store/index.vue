@@ -16,7 +16,11 @@
           <StoreItem :product="product" />
         </div>
       </div>
-      <CircularLoadingIndicator :show="showPageLoading" />
+      <div
+        v-if="getPaginatedProducts.count && getPaginatedProducts.count > getPaginatedProducts.products.length"
+        class="btn btn-outline"
+        @click="loadMoreItems"
+      >Load more</div>
     </div>
     <div v-else-if="showInitLoading">
       <div class="grid justify-center h-56">
@@ -66,38 +70,6 @@ const getUser = computed(() => {
   return authStore.getUser;
 });
 
-onMounted(() => {
-  // Function listener which detects
-  // when page is scrolled to the bottom
-  window.onscroll = () => {
-    let bottomOfWindow =
-      Math.max(
-        window.pageYOffset,
-        document.documentElement.scrollTop,
-        document.body.scrollTop
-      ) +
-        window.innerHeight ===
-      document.documentElement.offsetHeight;
-
-    if (bottomOfWindow) {
-      console.log("bottomOfWindow");
-      console.log(getPaginatedProducts);
-      if (
-        getPaginatedProducts.value.next &&
-        getPaginatedProducts.value.count &&
-        getPaginatedProducts.value.count > offset
-      ) {
-        showPageLoading.value = true;
-        offset = offset + limit;
-        productListStore
-          .fetchPaginatedProducts(limit, offset, "", true)
-          .then(() => (showPageLoading.value = false))
-          .catch((err) => notificationStore.showFetchError(err));
-      }
-    }
-  };
-});
-
 function onSearch(searchPhrase: string) {
   console.debug(`New search phrase: ${searchPhrase}`);
 
@@ -109,6 +81,21 @@ function onSearch(searchPhrase: string) {
     .fetchPaginatedProducts(limit, offset, searchPhrase, false)
     .then(() => (showPageLoading.value = false))
     .catch((err) => notificationStore.showFetchError(err));
+}
+
+function loadMoreItems() {
+  if (
+    getPaginatedProducts.value.next &&
+    getPaginatedProducts.value.count &&
+    getPaginatedProducts.value.count > offset
+  ) {
+    showPageLoading.value = true;
+    offset = offset + limit;
+    productListStore
+      .fetchPaginatedProducts(limit, offset, "", true)
+      .then(() => (showPageLoading.value = false))
+      .catch((err) => notificationStore.showFetchError(err));
+  }
 }
 </script>
   

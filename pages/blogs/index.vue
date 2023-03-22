@@ -22,7 +22,10 @@
 
       </div>
     </div>
-    <div v-if="getPaginatedBlogs.count || 0 > 0">
+    <div
+      v-if="getPaginatedBlogs.count || 0 > 0"
+      class="flex flex-col gap-8 items-center"
+    >
       <div class="flex flex-col gap-10">
         <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
         <div class="grid lg:grid-cols-2 gap-10">
@@ -34,7 +37,11 @@
           </div>
         </div>
       </div>
-      <CircularLoadingIndicator :show="showPageLoading" />
+      <div
+        v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
+        class="btn btn-outline"
+        @click="loadMoreItems"
+      >Load more</div>
     </div>
     <div v-else-if="showInitLoading">
       <div class="flex flex-col gap-12">
@@ -97,38 +104,6 @@ watch(getUser, (value, old, invalidate) => {
   user.value = value;
 });
 
-onMounted(() => {
-  // Function listener which detects
-  // when page is scrolled to the bottom
-  window.onscroll = () => {
-    let bottomOfWindow =
-      Math.max(
-        window.pageYOffset,
-        document.documentElement.scrollTop,
-        document.body.scrollTop
-      ) +
-        window.innerHeight ===
-      document.documentElement.offsetHeight;
-
-    if (bottomOfWindow) {
-      console.log("bottomOfWindow");
-      console.log(getPaginatedBlogs);
-      if (
-        getPaginatedBlogs.value.next &&
-        getPaginatedBlogs.value.count &&
-        getPaginatedBlogs.value.count > offset
-      ) {
-        showPageLoading.value = true;
-        offset = offset + limit;
-        blogListStore
-          .fetchPaginatedBlogs(limit, offset, "", true)
-          .then(() => (showPageLoading.value = false))
-          .catch((err) => notificationStore.showFetchError(err));
-      }
-    }
-  };
-});
-
 function onSearch(searchPhrase: string) {
   console.debug(`New search phrase: ${searchPhrase}`);
 
@@ -140,6 +115,21 @@ function onSearch(searchPhrase: string) {
     .fetchPaginatedBlogs(limit, offset, searchPhrase, false)
     .then(() => (showPageLoading.value = false))
     .catch((err) => notificationStore.showFetchError(err));
+}
+
+function loadMoreItems() {
+  if (
+    getPaginatedBlogs.value.next &&
+    getPaginatedBlogs.value.count &&
+    getPaginatedBlogs.value.count > offset
+  ) {
+    showPageLoading.value = true;
+    offset = offset + limit;
+    blogListStore
+      .fetchPaginatedBlogs(limit, offset, "", true)
+      .then(() => (showPageLoading.value = false))
+      .catch((err) => notificationStore.showFetchError(err));
+  }
 }
 </script>
 
