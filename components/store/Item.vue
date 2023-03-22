@@ -1,16 +1,15 @@
 <template>
   <div class="h-full">
     <NuxtLink :to="`/store/${product.id}/`">
-      <div class="card bg-base-100 border-1 rounded-md shadow-md h-full">
+      <div class="card bg-base-100 border-1 rounded-sm shadow h-full">
 
         <div
           v-if="product?.productimage_set?.length"
-          class="h-44 flex justify-center bg-gray-100"
+          class="h-72 flex justify-center bg-gray-100"
         >
           <nuxt-img
-            class="h-full"
             :src="product?.productimage_set[0].image"
-            fit="inside"
+            style="object-fit: cover;"
           />
         </div>
         <div class="card-body gap-5">
@@ -51,7 +50,6 @@
 </template>
     
     <script lang="ts" setup>
-
 const { product } = defineProps(["product"]); // props
 </script>
     

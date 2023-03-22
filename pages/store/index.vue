@@ -1,6 +1,7 @@
 <template>
   <div class="container px-0 md:p-12">
-    <div class="pb-12 pt-3 flex justify-center">
+    <div class="pb-12 pt-3 flex justify-between items-center">
+      <div class="text-3xl font-light">Products</div>
       <SearchBar
         placeholder="Search products"
         @submit-search-phrase="onSearch"

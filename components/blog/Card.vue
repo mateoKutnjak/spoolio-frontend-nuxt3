@@ -4,11 +4,11 @@
 
       <div
         v-if="item?.picture"
-        class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
+        class="h-56 flex bg-gray-300"
       >
         <nuxt-img
           :src="item.picture"
-          fit="contain"
+          style="object-fit: cover;"
         />
       </div>
       <div class="card-body flex flex-col justify-between">

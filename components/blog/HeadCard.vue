@@ -3,11 +3,11 @@
     <div class="card lg:card-side rounded-sm shadow-md bg-white">
       <div
         v-if="blog?.picture"
-        class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
+        class="w-96 flex flex-col gap-3 items-center mx-auto bg-gray-300"
       >
         <nuxt-img
           :src="blog.picture"
-          fit="contain"
+          style="object-fit: cover;"
         />
       </div>
       <div class="card-body flex flex-col justify-between">

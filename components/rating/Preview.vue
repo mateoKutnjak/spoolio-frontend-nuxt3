@@ -58,7 +58,7 @@
         :checked="ratingValue >= 4.75"
       />
     </div>
-    <div class="text-sm font-medium text-gray-700">({{ ratingCount }})</div>
+    <div class="text-sm font-normal text-gray-700">({{ ratingCount }})</div>
   </div>
 </template>
 

@@ -4,15 +4,17 @@
       <div class="flex-1 flex flex-col gap-8 items-start">
         <div
           v-if="product?.productimage_set?.length"
-          class="flex flex-col gap-3 items-center mx-auto"
+          class="w-full flex flex-col gap-3 text-center"
         >
-          <nuxt-img
-            class="rounded-2xl h-96 shadow-md"
-            :src="product?.productimage_set[currentImageIndex].image"
-            fit="cover"
-          />
+          <div class="flex">
+            <nuxt-img
+              class="rounded-2xl h-96 w-full shadow-md"
+              :src="product?.productimage_set[currentImageIndex].image"
+              style="object-fit: cover;"
+            />
+          </div>
           <div class="text-gray-700 italic">{{product?.productimage_set[currentImageIndex].comment}}</div>
-          <div class="flex gap-3 items-center">
+          <div class="flex gap-3 justify-center items-center">
             <div
               class="btn btn-ghost btn-square"
               @click="onPreviousImage"
@@ -143,9 +145,7 @@
 </template>
   
 <script lang="ts" setup>
-import {
-  useProductStore,
-} from "~~/stores/product";
+import { useProductStore } from "~~/stores/product";
 import { useCartStore } from "~~/stores/cart";
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
@@ -210,9 +210,7 @@ function onNextImage() {
   }
 }
 
-function setDefaultCombination(
-  opts: Map<string, IProductVariationOption[]>
-) {
+function setDefaultCombination(opts: Map<string, IProductVariationOption[]>) {
   opts.forEach((value: IProductVariationOption[], key: string) => {
     if (value.length > 0) {
       productVariationOptionSelections.value.set(value[0].type.name, 0);
@@ -274,10 +272,7 @@ function addToCart() {
   notificationStore.show("Added to cart", ToastLevelType.success);
 }
 
-function extractProductVariations(): Map<
-  string,
-  IProductVariationOption[]
-> {
+function extractProductVariations(): Map<string, IProductVariationOption[]> {
   let options = new Map<string, IProductVariationOption[]>();
 
   if (!product.value?.productvariationoption_set) {

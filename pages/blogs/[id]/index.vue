@@ -35,11 +35,11 @@
         </div>
         <div
           v-if="blog?.picture"
-          class="flex flex-col gap-3 items-center mx-auto bg-gray-300"
+          class="flex flex-col gap-3 items-center mx-auto bg-gray-300 "
         >
           <nuxt-img
             :src="blog.picture"
-            fit="contain"
+            style="object-fit: cover;"
           />
         </div>
 
@@ -63,7 +63,7 @@
     <script lang="ts" setup>
 import { useBlogStore } from "~/stores/blog";
 import { CONTENT_TYPE_BLOG } from "~~/constants/constants";
-import { IBlog, IComment, IUser } from "~~/constants/data";
+import { IBlog, IUser } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 

@@ -9,7 +9,7 @@
       <div>
         <Navbar />
         <Toast />
-        <div class="container mx-auto max-w-5xl">
+        <div class="container mx-auto">
           <div class="py-4"></div>
           <Breadcrumbs class="" />
           <slot />
