@@ -6534,6 +6534,11 @@ vue-bundle-renderer@^1.0.2:
   dependencies:
     ufo "^1.1.0"
 
+vue-content-loader@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/vue-content-loader/-/vue-content-loader-2.0.1.tgz"
+  integrity sha512-pkof4+q2xmzNEdhqelxtJejeP/vQUJtLle4/v2ueG+HURqM9Q/GIGC8GJ2bVVWeLfTDET51jqimwQdmxJTlu0g==
+
 vue-demi@*:
   version "0.13.11"
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.13.11.tgz"

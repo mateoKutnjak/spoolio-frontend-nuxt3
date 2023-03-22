@@ -42,7 +42,8 @@
     "ofetch": "^1.0.0",
     "pinia": "^2.0.24",
     "stripe": "^11.11.0",
-    "three": "^0.134.0"
+    "three": "^0.134.0",
+    "vue-content-loader": "^2.0.1"
   },
   "rules": {
     "vue/multi-word-component-names": "off"

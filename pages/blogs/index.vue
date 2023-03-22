@@ -37,14 +37,18 @@
       <CircularLoadingIndicator :show="showPageLoading" />
     </div>
     <div v-else-if="showInitLoading">
-      <div class="grid justify-center h-56">
-        <progress class="progress w-56"></progress>
+      <div class="flex flex-col gap-12">
+        <FacebookLoader
+          v-for="index in 10"
+          :key="index"
+          primary-color="#dddddd"
+          secondary-color="#e5e5e5"
+        ></FacebookLoader>
       </div>
     </div>
     <div v-else>
       <div class="grid justify-center h-56 h-56">
         Nothing to show
-
       </div>
     </div>
   </div>
@@ -55,6 +59,7 @@ import { storeToRefs } from "pinia";
 import { useBlogListStore } from "~/stores/blogList";
 import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
+import { FacebookLoader } from "vue-content-loader";
 
 const authStore = useAuthStore();
 const blogListStore = useBlogListStore();
