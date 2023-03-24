@@ -60,7 +60,7 @@ watch(
 );
 
 function openDialog() {
-  dialogStore.open("StoreCheckoutDialogContactEmail", []);
+  dialogStore.open("StoreCheckoutDialogContactEmail", {});
 }
 </script>
   

@@ -423,11 +423,11 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  dialogStore.open("ServicesPrintingDialog", [unit.value], "2xl");
+  dialogStore.open("ServicesPrintingDialog", {unit: unit.value}, "2xl");
 }
 
 function onClearOrder() {
-  dialogStore.open("DialogConfirmClearPrintOrder", []);
+  dialogStore.open("DialogConfirmClearPrintOrder", {});
 }
 </script>
 

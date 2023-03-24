@@ -38,12 +38,12 @@ const { contact_email } = defineProps<{
   contact_email: string;
 }>();
 
-const emitObject = defineEmits(["onSaved"]);
+const emit = defineEmits(["onSaved"]);
 
 const contact_email_ref = ref<string>(contact_email);
 
 function submitHandler() {
-  emitObject("onSaved", contact_email_ref.value);
+  emit("onSaved", contact_email_ref.value);
 }
 </script>
       

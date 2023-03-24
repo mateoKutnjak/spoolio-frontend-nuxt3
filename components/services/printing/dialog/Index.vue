@@ -61,9 +61,9 @@ import {
 } from "~~/constants/data";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
-const { props } = defineProps(["props"]);
-
-const unit = props[0] as IPrintOrderUnit; // todo error check
+const { unit } = defineProps<{
+  unit: IPrintOrderUnit
+}>()
 
 const printOrderStore = usePrintOrderStore();
 

@@ -83,7 +83,7 @@ watch(
 );
 
 function openDialog() {
-  dialogStore.open("StoreCheckoutDialogBillingAddress", []);
+  dialogStore.open("StoreCheckoutDialogBillingAddress", {});
 }
 </script>
 

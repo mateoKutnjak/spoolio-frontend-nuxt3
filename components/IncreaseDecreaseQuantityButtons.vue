@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-const emit2 = defineEmits(["onIncreaseValue", "onDecreaseValue", "onValueSet"]);
+const emit = defineEmits(["onIncreaseValue", "onDecreaseValue", "onValueSet"]);
 
 const { max, min, initialValue } = defineProps<{
   max: number;
@@ -55,7 +55,7 @@ function increaseValue() {
   }
 
   value.value += 1;
-  emit2("onIncreaseValue", value.value);
+  emit("onIncreaseValue", value.value);
 }
 
 function decreaseValue() {
@@ -65,7 +65,7 @@ function decreaseValue() {
   }
 
   value.value -= 1;
-  emit2("onDecreaseValue", value.value);
+  emit("onDecreaseValue", value.value);
 }
 
 watch(value, (v) => {
@@ -73,18 +73,18 @@ watch(value, (v) => {
 
   if (numberValue < min) {
     value.value = min;
-    emit2("onValueSet", min);
+    emit("onValueSet", min);
     return;
   }
 
   if (numberValue > max) {
     value.value = max;
-    emit2("onValueSet", max);
+    emit("onValueSet", max);
     return;
   }
 
   value.value = numberValue;
-  emit2("onValueSet", numberValue);
+  emit("onValueSet", numberValue);
 });
 </script>
 

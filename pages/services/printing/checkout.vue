@@ -22,23 +22,29 @@
               />
             </div>
           </div>
-          <div class="card shadow-md border bg-white">
+          <div class="card compact px-5 pt-5 shadow-md border bg-base-100 rounded-none">
             <div class="card-body gap-5">
-              <div class="card-title">
+              <div class="card-title font-normal text-gray-700">
                 2. Addresses
               </div>
-              <div class="grid grid-cols-2 gap-5">
+              <div class="flex flex-col">
                 <FormKit
                   :type="shippingAddressInput"
                   name="Shipping address"
+                  v-model="shipping_address_ref"
+                  dialogComponent="FormShippingAddress"
                   validation="required"
                   validation-visibility="submit"
+                  @input="(value) => print_order.shipping_address = value"
                 />
                 <FormKit
                   :type="billingAddressInput"
                   name="Billing address"
+                  v-model="billing_address_ref"
+                  dialogComponent="FormBillingAddress"
                   validation="required"
                   validation-visibility="submit"
+                  @input="(value) => print_order.billing_address = value"
                 />
               </div>
             </div>
@@ -145,26 +151,50 @@ import { storeToRefs } from "pinia";
 import { createInput } from "@formkit/vue";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
-import FormkitShippingAddress from "~~/components/services/printing/checkout/formkit_input/ShippingAddress.vue";
-import FormkitBillingAddress from "~~/components/services/printing/checkout/formkit_input/BillingAddress.vue";
+import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
+import BillingAddress from "~~/components/form/input/BillingAddress.vue";
 import FormkitContactEmail from "~~/components/services/printing/checkout/formkit_input/ContactEmail.vue";
 import FormkitShippingMethod from "~~/components/services/printing/checkout/formkit_input/ShippingMethod.vue";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
+import { useAuthStore } from "~~/stores/auth";
+import { IAddressShipping } from "~~/constants/data";
 
-const shippingAddressInput = createInput(FormkitShippingAddress);
-const billingAddressInput = createInput(FormkitBillingAddress);
+const shippingAddressInput = createInput(ShippingAddress, {
+  props: ["dialogComponent"],
+});
+const billingAddressInput = createInput(BillingAddress, {
+  props: ["dialogComponent"],
+});
 const contactEmailInput = createInput(FormkitContactEmail);
 const shippingMethodInput = createInput(FormkitShippingMethod);
 
 const taxPercentage = 0.25;
 
+const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
 
+const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
+
+const shipping_address_ref = computed(() => {
+  return Object.keys(print_order.value.shipping_address).length
+    ? print_order.value.shipping_address
+    : Object.keys(user.value?.profile?.shipping_address || {}).length
+    ? user.value?.profile?.shipping_address
+    : <IAddressShipping>{};
+});
+
+const billing_address_ref = computed(() => {
+  return Object.keys(print_order.value.billing_address).length
+    ? print_order.value.billing_address
+    : Object.keys(user.value?.profile?.billing_address || {}).length
+    ? user.value?.profile?.billing_address
+    : <IAddressShipping>{};
+});
 
 onMounted(async () => {
   await shippingMethodStore
@@ -180,7 +210,7 @@ onMounted(async () => {
 const totalPrice = ref<number>(printOrderStore.getTotalPrice);
 
 function submitHandler() {
-  dialogStore.open("ServicesPrintingCreatingOrderDialog", [], "2xl", false);
+  dialogStore.open("ServicesPrintingCreatingOrderDialog", {}, "2xl", false);
 }
 </script>
 

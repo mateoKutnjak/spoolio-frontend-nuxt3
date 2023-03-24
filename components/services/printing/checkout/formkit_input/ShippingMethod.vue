@@ -64,7 +64,7 @@ watch(
 );
 
 function openDialog() {
-  dialogStore.open("ServicesPrintingCheckoutDialogShippingMethod", []);
+  dialogStore.open("ServicesPrintingCheckoutDialogShippingMethod", {});
 }
 </script>
   

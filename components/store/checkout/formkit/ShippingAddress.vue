@@ -81,7 +81,7 @@ watch(
 );
 
 function openDialog() {
-  dialogStore.open("StoreCheckoutDialogShippingAddress", []);
+  dialogStore.open("StoreCheckoutDialogShippingAddress", {});
 }
 </script>
 

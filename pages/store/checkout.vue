@@ -178,7 +178,7 @@ onMounted(async () => {
 });
 
 function submitHandler() {
-  dialogStore.open("StoreCheckoutCreatingOrderDialog", [], "2xl", true);
+  dialogStore.open("StoreCheckoutCreatingOrderDialog", {}, "2xl", true);
 }
 </script>
 

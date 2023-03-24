@@ -254,7 +254,7 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  dialogStore.open("DialogConfirmDeletePrintOrderUnit", [unit.localUrl]);
+  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {localUrl: unit.localUrl});
 }
 </script>
   

@@ -59,7 +59,7 @@ watch(
 );
 
 function openDialog() {
-  dialogStore.open("ServicesPrintingCheckoutDialogContactEmail", []);
+  dialogStore.open("ServicesPrintingCheckoutDialogContactEmail", {});
 }
 </script>
   

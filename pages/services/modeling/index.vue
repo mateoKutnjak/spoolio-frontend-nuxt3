@@ -208,7 +208,7 @@ function onFilesAdded(files: File[]) {
 }
 
 async function submitHandler() {
-  dialogStore.open("ServicesModelingCreatingOrderDialog", [], "2xl", false);
+  dialogStore.open("ServicesModelingCreatingOrderDialog", {}, "2xl", false);
 }
 
 function onUseDefaultContactEmail() {

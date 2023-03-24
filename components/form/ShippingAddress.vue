@@ -10,7 +10,7 @@
     </div>
     <FormKit
       type="form"
-      id="profile-form2"
+      id="profile-form"
       submit-label="Save"
       @submit="submitHandler"
       :actions="false"
@@ -78,8 +78,8 @@
         placeholder="+123456789"
         :validation="[['matches', /^\+\d{9,15}$/]]"
         :validation-messages="{
-                      matches: 'Phone number must be in the format +xxx...x [max 15]',
-                    }"
+          matches: 'Phone number must be in the format +xxx...x [max 15]',
+        }"
         validation-visibility="dirty"
       />
       <div class="pt-8">
@@ -87,33 +87,34 @@
           type="submit"
           label="Save"
           :classes="{
-                    input: 'btn btn-primary btn-block'
-                }"
+            input: 'btn btn-primary btn-block'
+          }"
         />
       </div>
 
     </FormKit>
   </div>
 </template>
-    
-    <script lang="ts" setup>
+  
+<script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { COUNTRIES } from "~~/constants/countries";
 import { IAddressShipping } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
+import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
 
-const { shipping_address, enableUseDefault } = defineProps<{
+const { shipping_address, enableUseDefault, onSaved } = defineProps<{
   shipping_address: IAddressShipping;
   enableUseDefault: boolean;
+  onSaved: Function;
 }>();
-
-const emitObject = defineEmits(["onSaved"]);
 
 class AddressShipping implements IAddressShipping {
   address = shipping_address.address || "";
@@ -140,9 +141,10 @@ function onFillUserProfileShippingAddress() {
 }
 
 function submitHandler() {
-  emitObject("onSaved", { ...shipping_address_ref.value });
+  onSaved({ ...shipping_address_ref.value });
+  dialogStore.close();
 }
 </script>
-    
-    <style>
+  
+  <style>
 </style>

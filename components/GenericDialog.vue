@@ -38,7 +38,7 @@
             >
               <component
                 :is="component"
-                :props="componentProps"
+                v-bind="componentProps"
               ></component>
               <!-- <slot></slot> -->
             </DialogPanel>

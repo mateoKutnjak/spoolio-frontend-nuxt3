@@ -131,8 +131,8 @@
           type="submit"
           label="Save"
           :classes="{
-                  input: 'btn btn-primary btn-block'
-              }"
+            input: 'btn btn-primary btn-block'
+          }"
         />
       </div>
 
@@ -150,19 +150,20 @@ import {
 import { COUNTRIES } from "~~/constants/countries";
 import { IAddressBilling } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
+import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
+const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
 
-const { billing_address, enableUseDefault } = defineProps<{
+const { billing_address, enableUseDefault, onSaved } = defineProps<{
   billing_address: IAddressBilling;
   enableUseDefault: boolean;
+  onSaved: Function;
 }>();
-
-const emitObject = defineEmits(["onSaved"]);
 
 class AddressBilling implements IAddressBilling {
   type = billing_address.type || BILLING_ADDRESS_TYPE_INDIVIDUAL;
@@ -196,7 +197,8 @@ function onFillUserProfileBillingAddress() {
 }
 
 function submitHandler() {
-  emitObject("onSaved", { ...billing_address_ref.value });
+  onSaved({ ...billing_address_ref.value });
+  dialogStore.close();
 }
 </script>
   

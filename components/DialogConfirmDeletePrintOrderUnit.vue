@@ -34,9 +34,9 @@ import { usePrintOrderStore } from "~~/stores/print_order";
 const dialogStore = useDialogStore();
 const printOrderStore = usePrintOrderStore();
 
-const { props } = defineProps(["props"]);
-
-const localUrl = props[0];
+const { localUrl } = defineProps<{
+  localUrl: string
+}>();
 
 function onConfirm() {
   printOrderStore.removeUnitByFileLocalUrl(localUrl);
