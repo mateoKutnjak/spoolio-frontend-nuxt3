@@ -10,7 +10,10 @@ const textClassification = {
     message: 'flex px-5 pt-1 mb-0'
 }
 const selectClassification = {
-    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5 focus:outline-none overflow-hidden',
+    label: 'w-full lock mb-2 text-sm font-medium text-gray-800',
+    selectIcon: 'bg-green-500',
+    suffixIcon: 'mx-5',
 }
 const boxClassification = {
     fieldset: 'max-w-md rounded-md px-2 pb-1',

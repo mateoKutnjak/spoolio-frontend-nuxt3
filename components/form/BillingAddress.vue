@@ -1,6 +1,6 @@
 <template>
   <div class="card-body gap-8">
-    <div class="card-title flex justify-between">
+    <div class="card-title flex justify-between font-normal">
       Billing address
       <div
         v-if="enableUseDefault"
