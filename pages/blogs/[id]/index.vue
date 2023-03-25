@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12 max-w-4xl mx-auto">
+  <div class="container">
     <div class="flex flex-col items-stretch justify-between gap-4 p-8">
       <div class="flex flex-col gap-4 justify-between ">
         <div class="flex gap-4 justify-between">

@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12 max-w-4xl mx-auto">
+  <div class="container">
     <div class="flex flex-col gap-5">
       <FormProfileGeneralInfo
         :contact_email="contact_email_ref"
@@ -11,7 +11,7 @@
       <FormShippingAddress
         :shipping_address="shipping_address_ref"
         :enable-use-default="false"
-        @on-saved="onShippingAddressSaved"
+        :on-saved="onShippingAddressSaved"
       />
 
       <div class="divider"></div>
@@ -19,7 +19,7 @@
       <FormBillingAddress
         :billing_address="billing_address_ref"
         :enable-use-default="false"
-        @on-saved="onBillingAddressSaved"
+        :on-saved="onBillingAddressSaved"
       />
     </div>
 

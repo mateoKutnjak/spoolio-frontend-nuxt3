@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12">
+  <div class="container">
     <p>Add form here</p>
     <br>
     <p>Title</p>
@@ -18,12 +18,11 @@ import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
 
-const getUser = computed(() => authStore.getUser)
+const getUser = computed(() => authStore.getUser);
 
 if (!getUser.value) {
-  throw createError('Cannot access this site if you are not authenticated')
+  throw createError("Cannot access this site if you are not authenticated");
 }
-
 </script>
 
 <style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12 mx-auto max-w-5xl">
+  <div class="container">
     <div class="flex flex-col gap-8">
       <div class="flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
         <div class="text-3xl font-light">Print order #{{ order.id }}</div>

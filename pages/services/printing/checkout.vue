@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-12">
+  <div class="container">
     <FormKit
       type="form"
       id="print-order-checkout-form"
@@ -66,9 +66,9 @@
               />
             </div>
           </div>
-          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
+          <div class="card compact px-5 py-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-4">
-              <div class="card-title">4. Payment method</div>
+              <div class="card-title font-normal text-gray-700">4. Payment method</div>
               <FormInputPaymentMethod />
             </div>
           </div>
