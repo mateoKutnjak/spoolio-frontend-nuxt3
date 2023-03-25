@@ -80,6 +80,7 @@ const toastIconName = computed(() => {
 });
 
 watch(isOpened, (value) => {
+  debugger;
   if (value) {
     new Promise((resolve, reject) => {
       setTimeout(() => {
