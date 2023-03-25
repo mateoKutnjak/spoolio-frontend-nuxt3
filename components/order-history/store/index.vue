@@ -50,10 +50,10 @@
             name="file-icons:3d-model"
             size="50"
           />
-          <p class="text-2xl pt-4 py-8 font-light">You have not created any purchasing orders yet</p>
+          <p class="text-2xl pt-4 py-8">You have not created any purchasing orders yet</p>
           <NuxtLink to="/store/">
             <div class="btn btn-outline bg-white gap-2 border-gray-500">
-              <div class="text-lg font-light"> Go to store </div>
+              <div class="text-lg"> Go to store </div>
             </div>
           </NuxtLink>
         </div>

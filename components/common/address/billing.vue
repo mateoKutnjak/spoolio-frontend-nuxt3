@@ -9,11 +9,11 @@
         <div>Billing address</div>
       </div>
       <div class="flex flex-col gap-1 text-start text-base text-gray-600">
-        <p class="font-medium">{{billingAddress.first_name}} {{billingAddress.last_name}}</p>
-        <p class="font-light">{{billingAddress.address}} </p>
-        <p class="font-light">{{billingAddress.locality}} {{billingAddress.postal_code}}</p>
-        <p class="font-light">{{billingAddress.country}}</p>
-        <p class="font-light">{{billingAddress.phone_number}}</p>
+        <p class="font-bold">{{billingAddress.first_name}} {{billingAddress.last_name}}</p>
+        <p>{{billingAddress.address}} </p>
+        <p>{{billingAddress.locality}} {{billingAddress.postal_code}}</p>
+        <p>{{billingAddress.country}}</p>
+        <p>{{billingAddress.phone_number}}</p>
       </div>
     </div>
   </div>

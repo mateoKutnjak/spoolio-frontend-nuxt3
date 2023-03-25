@@ -5,7 +5,7 @@
       name="gis:cube-3d"
       size="25"
     />
-    <strong>{{ data.toFixed(3) }}</strong>
+    <strong>{{ data.toFixed(0) }}</strong>
     <div class="flex gap-0.5">
       <div class="text-sm">{{ DimensionUnit[dimensionUnit] }}</div>
       <sup class="pt-2.5">3</sup>

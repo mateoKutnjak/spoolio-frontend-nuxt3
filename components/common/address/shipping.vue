@@ -9,11 +9,11 @@
         <div>Shipping address</div>
       </div>
       <div class="flex flex-col gap-1 text-start text-base text-gray-600">
-        <p class="font-medium">{{shippingAddress.first_name}} {{shippingAddress.last_name}}</p>
-        <p class="font-light">{{shippingAddress.address}} </p>
-        <p class="font-light">{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
-        <p class="font-light">{{shippingAddress.country}}</p>
-        <p class="font-light">{{shippingAddress.phone_number}}</p>
+        <p class="font-bold">{{shippingAddress.first_name}} {{shippingAddress.last_name}}</p>
+        <p>{{shippingAddress.address}} </p>
+        <p>{{shippingAddress.locality}} {{shippingAddress.postal_code}}</p>
+        <p>{{shippingAddress.country}}</p>
+        <p>{{shippingAddress.phone_number}}</p>
       </div>
     </div>
   </div>

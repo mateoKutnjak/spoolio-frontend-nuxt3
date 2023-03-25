@@ -2,8 +2,8 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-8">
       <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
-        <div class="text-3xl font-light">Modeling order #{{ order.id }}</div>
-        <div class="text-xl font-light text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
+        <div class="text-3xl">Modeling order #{{ order.id }}</div>
+        <div class="text-xl text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
         <OrderStatusView :raw-status="order.status" />
       </div>
       <div class="px-6 lg:px-0">

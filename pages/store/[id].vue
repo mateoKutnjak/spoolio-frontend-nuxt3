@@ -8,12 +8,12 @@
         >
           <div class="flex">
             <nuxt-img
-              class="rounded-2xl h-96 w-full shadow-md"
+              class="rounded-md h-96 w-full shadow-md"
               :src="product?.productimage_set[currentImageIndex].image"
               style="object-fit: cover;"
             />
           </div>
-          <div class="text-gray-700 italic">{{product?.productimage_set[currentImageIndex].comment}}</div>
+          <div class="text-gray-700 italic font-semibold">{{product?.productimage_set[currentImageIndex].comment}}</div>
           <div class="flex gap-3 justify-center items-center">
             <div
               class="btn btn-ghost btn-square"
@@ -49,22 +49,24 @@
         />
       </div>
       <aside class="md:sticky order-first md:order-last top-8 col-span-3 h-full">
-        <div class="card border border-gray-300 rounded-2xl shadow-md bg-white">
+        <div class="card border border-gray-300 rounded-sm shadow-md bg-white">
           <div class="card-body">
             <div class="card-title items-center mb-6">
-              <div class="flex-1 font-light text-xl text-gray-800 dark:text-white">{{product?.title}}</div>
+              <div class="flex-1 text-lg text-gray-700">{{product?.title}}</div>
               <RatingPreview
                 :rating-value="product?.average_rating || 0"
                 :rating-count="product?.rating_count || 0"
               />
             </div>
-            <div class="flex-1 flex flex-col gap-3">
+            <div class="divider mt-0 mb-6 h-0"></div>
+
+            <div class="mb-3 flex-1 flex flex-col gap-3">
               <div
                 v-for="[variationName, variations] in productVariationOptions"
                 :key="variationName"
               >
                 <div class="flex gap-4 items-center">
-                  <div class="text-gray-700 font-light text-lg text-gray-800 dark:text-white">{{ variationName }}</div>
+                  <div class="text-gray-700 font-base text-lg text-gray-800 dark:text-white">{{ variationName }}</div>
                   <!-- <div class="dropdown dropdown-end">
                     <label
                       tabindex="0"
@@ -95,7 +97,7 @@
               </div>
               <div
                 v-if="activeOptionsCombination?.sku"
-                class="flex gap-2 items-center text-center mt-6 font-normal text-lg text-gray-700 dark:text-white"
+                class="flex gap-2 items-center text-center mt-3 font-normal text-lg text-gray-700 dark:text-white"
               >
                 <Icon
                   class="text-success"
@@ -105,7 +107,7 @@
               </div>
               <div
                 v-else
-                class="flex gap-2 items-center text-center mt-6 font-normal text-lg text-gray-700 dark:text-white"
+                class="flex gap-2 items-center text-center mt-3 font-normal text-lg text-gray-700 dark:text-white"
               >
                 <Icon
                   class="text-error"
@@ -115,11 +117,10 @@
                 Out of stock
               </div>
             </div>
-            <div class="divider m-3"></div>
 
             <div class="card-actions gap-12 justify-between items-center">
               <div v-if="activeOptionsCombination?.price">
-                <div class="text-3xl font-light text-xl text-gray-800 dark:text-white">
+                <div class="text-3xl text-xl text-gray-800 dark:text-white">
                   {{`€${activeOptionsCombination?.price}`}}
                 </div>
               </div>

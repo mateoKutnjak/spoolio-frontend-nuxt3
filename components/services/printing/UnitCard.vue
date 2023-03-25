@@ -14,7 +14,7 @@
       <div class="flex flex-col flex-1">
         <div class="flex flex-col flex-1 gap-4 justify-between">
           <div class="flex">
-            <div class="flex-1 text-lg text-gray-900 font-light dark:text-white line-clamp-1 m">
+            <div class="flex-1 text-lg text-gray-900 dark:text-white line-clamp-1 m">
               {{ extractUrlFileStringUnion(unit.file) }}
             </div>
             <div>
@@ -41,27 +41,19 @@
           <div class="flex justify-between items-end">
             <div class="flex flex-col gap-2 justify-between">
               <div class="text-sm text-left text-gray-500 dark:text-white mb-2">
-                <div class="flex items-start justify-start">
-                  <div
-                    class="tooltip tooltip-bottom"
-                    data-tip="Filament material"
-                  >{{ getMaterialName() }}</div>
-                  <Icon
-                    name="bi:dot"
-                    size="20"
+                <div class="flex gap-2 items-start justify-start">
+                  <AttributeItem
+                    :title="getMaterialName()"
+                    tooltip="Filament material"
                   />
-                  <div
-                    class="tooltip tooltip-bottom"
-                    data-tip="Infill percentage"
-                  >{{ getInfillPercentage() * 100 }}%</div>
-                  <Icon
-                    name="bi:dot"
-                    size="20"
+                  <AttributeItem
+                    :title="(getInfillPercentage() * 100).toString() + '%'"
+                    tooltip="Infill percentage"
                   />
-                  <div
-                    class="tooltip tooltip-bottom"
-                    data-tip="Material color"
-                  >{{ getColorName() }}</div>
+                  <AttributeItem
+                    :title="getColorName()"
+                    tooltip="Material color"
+                  />
                 </div>
               </div>
               <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
@@ -79,7 +71,7 @@
                   @click.stop.prevent
                 />
               </div>
-              <div class="flex justify-center font-light text-2xl text-gray-900 dark:text-white">
+              <div class="flex justify-center text-xl text-gray-700 dark:text-white">
                 <div
                   v-if="totalPrice >= 0"
                   class="flex gap-1 items-center"
@@ -271,7 +263,9 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  dialogStore.open("DialogConfirmDeletePrintOrderUnit", { localUrl: unit.localUrl });
+  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {
+    localUrl: unit.localUrl,
+  });
 }
 
 function onAttachmentFilesChange(e: any) {

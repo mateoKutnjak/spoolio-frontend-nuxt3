@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-5">
         <div class="flex gap-4 justify-between items-center">
           <div class="flex gap-3 items-center">
-            <div class="text-xl font-light text-gray-700">{{ storeOrderUnit.item.product.title }}</div>
+            <div class="text-xl text-gray-700">{{ storeOrderUnit.item.product.title }}</div>
             <div class="text-sm">
               [ <NuxtLink
                 to="/store"
@@ -40,7 +40,7 @@
             readonly
             disabled
           />
-          <div class="ml-5 text-2xl font-light">{{ storeOrderUnit.item.price * storeOrderUnit.quantity }} €</div>
+          <div class="ml-5 text-2xl">{{ storeOrderUnit.item.price * storeOrderUnit.quantity }} €</div>
         </div>
       </div>
     </div>

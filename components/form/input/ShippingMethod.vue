@@ -5,16 +5,16 @@
   >
     <div class="card-body">
       <div class="flex gap-2 justify-between items-center">
-        <div class="flex flex-col">
-          <div>
+        <div class="flex flex-col gap-1">
+          <strong>
             {{shipping_method.provider}}
-          </div>
-          <div class="font-light">
+          </strong>
+          <div>
             {{shipping_method.description}}
           </div>
         </div>
         <div class="flex-1"></div>
-        <div>
+        <div class="text-lg">
           €{{shipping_method.price}}
         </div>
         <div

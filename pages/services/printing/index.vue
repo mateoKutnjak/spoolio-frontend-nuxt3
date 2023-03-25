@@ -14,15 +14,22 @@
       </div>
       <div class="mx-4 mt-8 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
         <div class="flex items-center">
-          <div class="text-base text-gray-700 font-light mr-2"> Total price: </div>
+          <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
           <div
             v-if="totalPrice == 10"
             class="flex gap-1 items-center justify-end"
           >
-            <DropdownWarning
-              dropdown-message="Minimum price we charge is 10€"
-              :text="`€${totalPrice.toFixed(2)}`"
-            />
+            <div
+              class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
+              @click="notificationStore.show('Minimum price we charge is 10€')"
+            >
+              <Icon
+                class="text-warning"
+                name="material-symbols:warning-rounded"
+                size="20"
+              />
+              €{{totalPrice.toFixed(2) }}
+            </div>
 
           </div>
           <div v-else-if="totalPrice >= 0">
@@ -39,7 +46,7 @@
         </div>
         <div class="px-1"></div>
         <div class="flex gap-2 items-center">
-          <div class="text-base text-gray-700 font-light"> ETA: </div>
+          <div class="text-base text-gray-700 font-normal"> ETA: </div>
 
           <strong
             class="text-md font-medium"
@@ -92,7 +99,7 @@
         v-else
         class="flex-1 text-center"
       >
-        <div class="h-44 w-full flex justify-center items-center text-3xl font-light italic text-gray-400">Order is empty</div>
+        <div class="h-44 w-full flex justify-center items-center text-3xl font-normal italic text-gray-400">Order is empty</div>
       </div>
       <div class="hidden md:flex gap-5">
         <div
@@ -129,7 +136,7 @@
             <table class="table table-compact w-full">
               <tbody class="">
                 <tr>
-                  <td class="pl-0 py-1 text-base border-transparent text-start font-light">ETA</td>
+                  <td class="pl-0 py-1 text-base border-transparent text-start font-normal">ETA</td>
                   <td class="pl-0 py-1 text-lg border-transparent text-end font-medium">
                     <div>
                       <strong
@@ -147,16 +154,24 @@
                   </td>
                 </tr>
                 <tr>
-                  <th class="pl-0 py-1 text-base text-start font-light">Price</th>
+                  <th class="pl-0 py-1 text-base text-start font-normal">Price</th>
                   <th class="pl-0 py-1 text-lg text-end font-medium">
                     <div
                       v-if="totalPrice == 10"
                       class="flex gap-1 items-center justify-end"
                     >
-                      <DropdownWarning
-                        dropdown-message="Minimum price we charge is 10€"
-                        :text="`€${totalPrice}`"
-                      />
+
+                      <div
+                        class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
+                        @click="notificationStore.show('Minimum price we charge is 10€')"
+                      >
+                        <Icon
+                          class="text-warning"
+                          name="material-symbols:warning-rounded"
+                          size="20"
+                        />
+                        €{{totalPrice.toFixed(2) }}
+                      </div>
 
                     </div>
                     <div v-else-if="totalPrice >= 0">€{{ (totalPrice).toFixed(2) }}</div>

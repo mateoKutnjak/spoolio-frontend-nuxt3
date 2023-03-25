@@ -13,39 +13,31 @@
       </div>
     </td>
     <td class="py-4">
-      <div class="h-36 max-w-xs flex flex-col gap-3 justify-center">
-        <div class="text-lg text-gray-900 font-light dark:text-white line-clamp-1">
+      <div class="h-36 max-w-xs flex flex-col gap-4 justify-center">
+        <div class="text-lg text-gray-900 dark:text-white line-clamp-1">
           {{ extractUrlFileStringUnion(unit.file) }}
         </div>
-        <div class="flex items-start justify-start">
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Filament material"
-          >{{ getMaterialName() }}</div>
-          <Icon
-            name="bi:dot"
-            size="20"
+        <div class="flex gap-5">
+          <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
+          <ServicesPrintingVolumeInfo :data="unit.model_volume" />
+        </div>
+        <div class="flex gap-2 items-start justify-start">
+          <AttributeItem
+            :title="getMaterialName()"
+            tooltip="Filament material"
           />
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Infill percentage"
-          >{{ getInfillPercentage() * 100 }}%</div>
-          <Icon
-            name="bi:dot"
-            size="20"
+          <AttributeItem
+            :title="(getInfillPercentage() * 100).toString() + '%'"
+            tooltip="Infill percentage"
           />
-          <div
-            class="tooltip tooltip-bottom"
-            data-tip="Material color"
-          >{{ getColorName() }}</div>
+          <AttributeItem
+            :title="getColorName()"
+            tooltip="Material color"
+          />
         </div>
       </div>
     </td>
     <td class="py-4">
-      <div class="flex flex-col gap-2 pb-2">
-        <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
-        <ServicesPrintingVolumeInfo :data="unit.model_volume" />
-      </div>
     </td>
     <td class="py-4">
       <div class="mb-4 flex flex-col gap-1 items-center justify-center">
@@ -61,7 +53,7 @@
       </div>
     </td>
     <td class="py-4 px-8 font-semibold text-lg text-gray-900 dark:text-white text-end">
-      <div class="flex justify-center font-light text-2xl text-gray-900 dark:text-white">
+      <div class="flex justify-center text-xl text-gray-700 dark:text-white">
         <div
           v-if="totalPrice >= 0"
           class="flex gap-1 items-center"
@@ -254,7 +246,9 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {localUrl: unit.localUrl});
+  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {
+    localUrl: unit.localUrl,
+  });
 }
 </script>
   
