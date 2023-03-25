@@ -4,7 +4,7 @@
     class="card compact px-3 bg-base-100 rounded-none border border-gray-400"
   >
     <div class="card-body">
-      <div class="card-title text-base text-gray-400 font-normal justify-start items-center">
+      <div class="card-title text-base text-gray-400 font-normal justify-between items-center">
         <div class="text font-medium">Billing address</div>
         <div
           class="btn btn-ghost btn-circle btn-sm text-primary"

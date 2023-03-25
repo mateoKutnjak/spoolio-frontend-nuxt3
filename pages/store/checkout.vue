@@ -10,55 +10,67 @@
     >
       <div class="relative flex flex-col lg:flex-row gap-6">
         <div class="flex-1 flex flex-col gap-4">
-          <div class="card shadow-md border bg-white">
+          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-5">
-              <div class="card-title">1. Email<div class="pt-1">
+              <div class="card-title font-normal text-gray-700">1. Contact email<div class="pt-1">
                 </div>
               </div>
               <FormKit
                 :type="contactEmailInput"
                 name="Contact email"
-                validation="required"
+                v-model="contact_email_ref"
+                dialogComponent="FormContactEmail"
+                validation="required|email"
                 validation-visibility="submit"
+                @input="(value) => store_order.contact_email = value"
               />
             </div>
           </div>
-          <div class="card shadow-md border bg-white">
+          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-5">
               <div class="card-title">
                 2. Addresses
               </div>
-              <div class="grid grid-cols-2 gap-5">
+              <div class="flex flex-col">
                 <FormKit
                   :type="shippingAddressInput"
                   name="Shipping address"
+                  v-model="shipping_address_ref"
+                  dialogComponent="FormShippingAddress"
                   validation="required"
                   validation-visibility="submit"
+                  @input="(value) => store_order.shipping_address = value"
                 />
                 <FormKit
                   :type="billingAddressInput"
                   name="Billing address"
+                  v-model="billing_address_ref"
+                  dialogComponent="FormBillingAddress"
                   validation="required"
                   validation-visibility="submit"
+                  @input="(value) => store_order.billing_address = value"
                 />
               </div>
             </div>
           </div>
-          <div class="card shadow-md border bg-white">
+          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-4">
-              <div class="card-title">3. Shipping method</div>
+              <div class="card-title font-normal text-gray-700">3. Shipping method</div>
               <FormKit
                 :type="shippingMethodInput"
                 name="Shipping method"
+                v-model="shipping_method_ref"
+                dialogComponent="FormShippingMethod"
                 validation="required"
                 validation-visibility="submit"
+                @input="(value) => store_order.shipping_method = value"
               />
             </div>
           </div>
-          <div class="card shadow-md border bg-white">
+          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-4">
               <div class="card-title">4. Payment method</div>
-              <StoreCheckoutFormViewPaymentMethod />
+              <FormInputPaymentMethod />
             </div>
           </div>
         </div>
@@ -142,14 +154,15 @@
 import { storeToRefs } from "pinia";
 import { useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
-
-import FormkitShippingAddress from "~~/components/store/checkout/formkit/ShippingAddress.vue";
-import FormkitBillingAddress from "~~/components/store/checkout/formkit/BillingAddress.vue";
-import FormkitContactEmail from "~~/components/store/checkout/formkit/ContactEmail.vue";
-import FormkitShippingMethod from "~~/components/store/checkout/formkit/ShippingMethod.vue";
+import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
+import BillingAddress from "~~/components/form/input/BillingAddress.vue";
+import ContactEmail from "~~/components/form/input/ContactEmail.vue";
+import ShippingMethod from "~~/components/form/input/ShippingMethod.vue";
 import { createInput } from "@formkit/vue";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 import { useNotificationStore } from "~~/stores/notification";
+import { useAuthStore } from "~~/stores/auth";
+import { IAddressBilling, IAddressShipping, IShippingMethod } from "~~/constants/data";
 
 const taxPercentage = 0.25;
 
@@ -157,14 +170,53 @@ const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 
-const shippingAddressInput = createInput(FormkitShippingAddress);
-const billingAddressInput = createInput(FormkitBillingAddress);
-const contactEmailInput = createInput(FormkitContactEmail);
-const shippingMethodInput = createInput(FormkitShippingMethod);
+const shippingAddressInput = createInput(ShippingAddress, {
+  props: ["dialogComponent"],
+});
+const billingAddressInput = createInput(BillingAddress, {
+  props: ["dialogComponent"],
+});
+const contactEmailInput = createInput(ContactEmail, {
+  props: ["dialogComponent"],
+});
+const shippingMethodInput = createInput(ShippingMethod, {
+  props: ["dialogComponent"],
+});
 
+const authStore = useAuthStore();
 const cartStore = useCartStore();
 
+const { user } = storeToRefs(authStore)
 const { cartItems, store_order } = storeToRefs(cartStore);
+
+const contact_email_ref = computed(() => {
+  return (
+    store_order.value.contact_email ||
+    user.value?.profile?.email ||
+    user.value?.email ||
+    ""
+  );
+});
+
+const shipping_address_ref = computed(() => {
+  return Object.keys(store_order.value.shipping_address).length
+    ? store_order.value.shipping_address
+    : Object.keys(user.value?.profile?.shipping_address || {}).length
+    ? user.value?.profile?.shipping_address
+    : <IAddressShipping>{};
+});
+
+const billing_address_ref = computed(() => {
+  return Object.keys(store_order.value.billing_address).length
+    ? store_order.value.billing_address
+    : Object.keys(user.value?.profile?.billing_address || {}).length
+    ? user.value?.profile?.billing_address
+    : <IAddressBilling>{};
+});
+
+const shipping_method_ref = computed(() => {
+  return store_order.value.shipping_method || <IShippingMethod>{};
+});
 
 onMounted(async () => {
   await shippingMethodStore

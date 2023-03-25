@@ -1,18 +1,25 @@
 <template>
-  <div
-    class="btn btn-ghost border-gray-300 text-start text-base justify-start px-7 pl-4 rounded-md text-gray-800 hover:bg-gray-200 hover:text-gray-800"
-    @click="onClicked"
-  >
+  <div class="card compact px-2 bg-base-100 rounded-none border border-gray-400">
     <div
-      class="w-full"
+      class="card-body"
       v-if="print_order?.payment_method && Object.keys(print_order.payment_method).length"
     >
-      <div class="flex gap-3 font-normal">
+      <div class="flex gap-3 font-normal items-center">
         <Icon
           name="noto-v1:credit-card"
           size="26"
         />
         <div>{{print_order.payment_method}}</div>
+        <div class="flex-1"></div>
+        <div
+          class="btn btn-ghost btn-circle btn-sm text-primary"
+          @click="onEdit"
+        >
+          <Icon
+            name="material-symbols:edit"
+            size="18"
+          />
+        </div>
       </div>
     </div>
     <div v-else>
@@ -26,8 +33,8 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
+  
+  <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
@@ -41,13 +48,13 @@ onMounted(() => {
   print_order.value!.payment_method = "Credit card";
 });
 
-function onClicked() {
+function onEdit() {
   notificationStore.show(
     "No other options available currently",
     ToastLevelType.info
   );
 }
 </script>
-
-<style>
+  
+  <style>
 </style>

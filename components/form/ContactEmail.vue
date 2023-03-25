@@ -13,14 +13,9 @@
         <FormKit
           type="text"
           name="Contact email"
-          v-model="email"
+          v-model="email_ref"
           validation="required|email"
           validation-visibility="blur"
-          :classes="{
-            outer: 'w-full',
-            input: 'w-full',
-            wrapper: 'w-full'
-          }"
         />
         <div
           v-if="user"
@@ -32,58 +27,48 @@
         <FormKit
           type="submit"
           label="Save"
-          :classes="{
-                  input: 'btn btn-primary btn-block text-base'
-              }"
         />
       </div>
 
     </FormKit>
   </div>
 </template>
-  
-  <script lang="ts" setup>
+    
+    <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
-import { usePrintOrderStore } from "~~/stores/print_order";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
-const printOrderStore = usePrintOrderStore();
 
 const { user } = storeToRefs(authStore);
-const { print_order } = storeToRefs(printOrderStore);
 
-const email = ref("");
+const { contact_email, enableUseDefault, onSaved } = defineProps<{
+  contact_email: string;
+  enableUseDefault: boolean;
+  onSaved: Function;
+}>();
 
-onMounted(() => {
-  email.value =
-    print_order.value?.contact_email || user.value?.profile?.email || "";
-});
+const email_ref = ref(contact_email);
 
 function onUseDefaultClicked() {
-
   if (user.value?.profile?.email) {
-    email.value = user.value?.profile?.email;
+    email_ref.value = user.value?.profile?.email;
   } else if (user.value?.email) {
-    email.value = user.value.email;
+    email_ref.value = user.value.email;
   } else {
     notificationStore.show("Cannot do that", ToastLevelType.error);
   }
 }
 
 function submitHandler() {
-  if (!print_order.value) {
-    throw createError("Print order for this id is undefined");
-  }
-
-  print_order.value.contact_email = email.value;
+  onSaved(email_ref.value);
   dialogStore.close();
 }
 </script>
-  
-  <style>
+    
+    <style>
 </style>

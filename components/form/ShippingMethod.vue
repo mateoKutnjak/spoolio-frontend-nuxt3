@@ -16,8 +16,8 @@
           >
             <div
               :class="[
-                checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
-              ]"
+                  checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
+                ]"
               class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md border-2 border-gray-300 focus:outline-none"
             >
               <div class="flex w-full items-center justify-between">
@@ -78,8 +78,8 @@
     >Save</div>
   </div>
 </template>
-
-<script lang="ts" setup>
+  
+  <script lang="ts" setup>
 import {
   RadioGroup,
   RadioGroupLabel,
@@ -87,28 +87,28 @@ import {
   RadioGroupOption,
 } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
-import { useCartStore } from "~~/stores/cart";
+import { IShippingMethod } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 
-const cartStore = useCartStore();
 const dialogStore = useDialogStore();
 const shippingMethodStore = useShippingMethodStore();
 
-const { store_order } = storeToRefs(cartStore);
 const { shippingMethods } = storeToRefs(shippingMethodStore);
 
-const selected = ref(store_order.value?.shipping_method || shippingMethods.value[0]); // todo check index error
+const { shipping_method, enableUseDefault, onSaved } = defineProps<{
+  shipping_method: IShippingMethod;
+  enableUseDefault: boolean;
+  onSaved: Function;
+}>();
+
+const selected = ref(shipping_method || shippingMethods.value[0]); // todo check index error
 
 function onSubmit() {
-  if (!store_order.value) {
-    throw createError('Print order for this id is undefined');
-  }
-
-  store_order.value.shipping_method = selected.value;
+  onSaved(selected.value);
   dialogStore.close();
 }
 </script>
-
-<style>
+  
+  <style>
 </style>
