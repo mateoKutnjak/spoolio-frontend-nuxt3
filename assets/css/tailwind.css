@@ -16,4 +16,8 @@
   .btn{
     text-transform: none;
   }
+
+  body {
+    font-family: "Raleway" ;
+  }
 }

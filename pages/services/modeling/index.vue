@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="flex flex-col gap-8">
-      <div class="text-4xl">3d modeling</div>
+      <div class="text-4xl">Describe what you want created</div>
       <FormKit
         type="form"
         id="modeling-order-form"
@@ -142,9 +142,7 @@ import {
 import { IAttachmentFile, IAttachmentImage } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
-import {
-  useModelingOrderStore,
-} from "~~/stores/modeling_order";
+import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
 
 const authStore = useAuthStore();
@@ -178,9 +176,7 @@ function onFilesAdded(files: File[]) {
     const element = files[index];
 
     if (MODELING_ORDER_ATTACHMENT_FILE_TYPES.indexOf(element.type) > -1) {
-      modelingOrderStore.addAttachmentFile(<
-        IAttachmentFile
-      >{
+      modelingOrderStore.addAttachmentFile(<IAttachmentFile>{
         file: element,
         comment: "",
         localUrl: URL.createObjectURL(element),
@@ -188,9 +184,7 @@ function onFilesAdded(files: File[]) {
     } else if (
       MODELING_ORDER_ATTACHMENT_IMAGE_TYPES.indexOf(element.type) > -1
     ) {
-      modelingOrderStore.addAttachmentImage(<
-        IAttachmentImage
-      >{
+      modelingOrderStore.addAttachmentImage(<IAttachmentImage>{
         image: element,
         comment: "",
         localUrl: URL.createObjectURL(element),
@@ -200,7 +194,7 @@ function onFilesAdded(files: File[]) {
         "File type " +
           filenameExtension(element.name).toUpperCase() +
           " is not supported",
-          ToastLevelType.error
+        ToastLevelType.error
       );
       console.log("File type not supported yet TODO");
     }

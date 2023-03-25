@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="flex flex-col gap-12">
-      <div class="text-4xl font-light">Services</div>
+      <div class="text-4xl">Services</div>
       <div class="flex flex-wrap gap-10 justify-center">
         <div class="flex flex-col gap-3 text-center w-52">
           <NuxtLink to="/services/printing">
@@ -15,7 +15,7 @@
               </div>
             </div>
           </NuxtLink>
-          <h1 class="text-md italic font-medium text-gray-500">"Print some 3D files for me"</h1>
+          <h1 class="text-md italic font-semibold text-gray-600">"Print some 3D files for me"</h1>
         </div>
         <div class="flex flex-col gap-3 text-center w-52">
           <NuxtLink to="/services/modeling">
@@ -29,7 +29,7 @@
               </div>
             </div>
           </NuxtLink>
-          <h1 class="text-md italic font-medium text-gray-500">"Help me create my 3D idea"</h1>
+          <h1 class="text-md italic font-semibold text-gray-600">"Help me create my 3D idea"</h1>
         </div>
         <div class="flex flex-col gap-3 text-center w-52">
           <NuxtLink to="/store">
@@ -43,7 +43,7 @@
               </div>
             </div>
           </NuxtLink>
-          <h1 class="text-md italic font-medium text-gray-500">"I want to buy your 3D printer products"</h1>
+          <h1 class="text-md italic font-semibold text-gray-600">"I want to buy your 3D printer products"</h1>
         </div>
       </div>
     </div>

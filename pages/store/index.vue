@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
-    <div class="pb-12 pt-3 flex justify-between items-center">
-      <div class="text-3xl font-light">Products</div>
+    <div class="pb-12 flex justify-between items-center">
+      <div class="text-4xl">Products</div>
       <SearchBar
         placeholder="Search products"
         @submit-search-phrase="onSearch"
@@ -9,7 +9,7 @@
     </div>
     <div v-if="getPaginatedProducts.count || 0 > 0">
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div
           :key="product.id"
           v-for="product in getPaginatedProducts.products"

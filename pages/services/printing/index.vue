@@ -2,7 +2,7 @@
   <div class="container mx-auto">
     <div class="max-w-5xl mx-auto flex flex-col gap-5 justify-between pt-4">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
-        <div class="text-3xl font-light">Printing order</div>
+        <div class="text-4xl">Create your printing order</div>
         <div class="flex gap-4 items-end">
           <ListboxDimensionUnit class="self-end" />
           <div

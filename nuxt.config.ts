@@ -9,7 +9,8 @@ export default defineNuxtConfig({
         '@formkit/auto-animate',
         '@nuxt/image-edge',
         'nuxt-vue3-google-signin',
-        '@nuxtjs/color-mode'
+        '@nuxtjs/color-mode',
+        '@nuxtjs/google-fonts'
     ],
     colorMode: {
         preference: 'light',
@@ -18,6 +19,17 @@ export default defineNuxtConfig({
     },
     googleSignIn: {
         clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    },
+    googleFonts: {
+        families: {
+            Roboto: true,
+            'Josefin+Sans': true,
+            Lato: [100, 300],
+            Raleway: {
+                wght: [100, 400],
+                ital: [100]
+            },
+        }
     },
     formkit: {
         configFile: './formkit.config.js',
@@ -61,7 +73,7 @@ export default defineNuxtConfig({
         },
         pageTransition: {
             name: 'page',
-            mode: 'out-in'  
+            mode: 'out-in'
         }
     },
     runtimeConfig: {

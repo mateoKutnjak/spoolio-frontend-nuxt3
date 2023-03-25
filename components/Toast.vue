@@ -3,11 +3,11 @@
     <Transition>
       <div
         v-show="isOpened"
-        class="toast toast-bottom toast-end px-12 py-8 z-50 text-base text-white"
+        class="toast toast-bottom toast-end px-12 py-8 z-50 text-base"
       >
 
         <div
-          class="py-4 px-5 w-full max-w-md rounded shadow-xl text-white"
+          class="py-4 px-5 w-full max-w-md rounded shadow-lg text-white font-bold"
           :class="toastBgColor"
           role="alert"
         >
@@ -19,7 +19,7 @@
               />
               <span class="sr-only">Check icon</span>
             </div>
-            <div class="font-normal">{{message || ''}}</div>
+            <div>{{message || ''}}</div>
             <button
               type="button"
               class="btn btn-ghost btn-sm btn-square"
@@ -80,7 +80,6 @@ const toastIconName = computed(() => {
 });
 
 watch(isOpened, (value) => {
-  debugger;
   if (value) {
     new Promise((resolve, reject) => {
       setTimeout(() => {
