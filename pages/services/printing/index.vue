@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <div class="max-w-5xl mx-auto flex flex-col gap-5 justify-between pt-4">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
         <div class="text-3xl font-light">Printing order</div>

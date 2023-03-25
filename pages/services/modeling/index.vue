@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <div class="flex flex-col gap-8">
       <div class="text-4xl">3d modeling</div>
       <FormKit

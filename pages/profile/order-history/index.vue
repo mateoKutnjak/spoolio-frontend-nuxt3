@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <TabGroup>
       <TabList class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow-md rounded-lg">
         <Tab

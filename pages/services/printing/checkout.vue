@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <FormKit
       type="form"
       id="print-order-checkout-form"

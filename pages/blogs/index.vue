@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="pb-12 pt-3 flex flex-col md:flex-row gap-6 justify-between">
+  <div class="container mx-auto">
+    <div class="px-12 md:px-0 pb-12 pt-3 flex flex-col md:flex-row gap-6 justify-between">
       <div class="text-4xl text-gray-700 font-light">Projects</div>
       <SearchBar
         placeholder="Search projects"
@@ -26,7 +26,7 @@
       v-if="getPaginatedBlogs.count || 0 > 0"
       class="flex flex-col gap-8 items-center"
     >
-      <div class="flex flex-col gap-10">
+      <div class="w-full flex flex-col gap-10">
         <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
         <div class="grid lg:grid-cols-2 gap-10">
           <div

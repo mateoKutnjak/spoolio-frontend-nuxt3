@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <div class="pb-12 pt-3 flex justify-between items-center">
       <div class="text-3xl font-light">Products</div>
       <SearchBar

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <div class="relative flex flex-col md:flex-row gap-6">
       <div class="flex-1 flex flex-col gap-8 items-start">
         <div

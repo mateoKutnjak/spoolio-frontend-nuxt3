@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <!-- <div
       v-if="authStore.loggedIn"
       class="fixed top-0 right-0 left-0 h-[calc(100vh-4rem)] top-[4rem]"

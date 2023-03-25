@@ -1,20 +1,17 @@
 <template>
-  <div class="container">
-    <div class="flex flex-col gap-5">
+  <div class="container mx-auto">
+    <div class="flex flex-col gap-5 justify-center items-center">
       <FormProfileGeneralInfo
         :contact_email="contact_email_ref"
         :enable-use-default="false"
         @on-saved="onGeneralInfoSaved"
       />
 
-      <div class="divider"></div>
       <FormShippingAddress
         :shipping_address="shipping_address_ref"
         :enable-use-default="false"
         :on-saved="onShippingAddressSaved"
       />
-
-      <div class="divider"></div>
 
       <FormBillingAddress
         :billing_address="billing_address_ref"
