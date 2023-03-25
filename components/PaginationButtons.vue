@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5 items-center">
+  <div class="flex flex-col gap-3 items-center">
     <div class="grid grid-flow-col auto-cols-max gap-1">
       <button
         v-if="currentPage-3 >= 0"

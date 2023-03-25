@@ -2,9 +2,6 @@ import { RESTRICTED_PAGES_STARTS_WITH, RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS }
 import { useAuthStore } from "~~/stores/auth";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    to.meta.pageTransition = { name: 'page-to' };
-    from.meta.pageTransition = { name: 'page-from' };
-
     const authStore = useAuthStore();
 
     if (!authStore.loggedIn) {

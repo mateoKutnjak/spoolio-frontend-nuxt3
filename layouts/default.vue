@@ -11,8 +11,10 @@
         <Toast />
         <div class="container mx-auto">
           <div class="py-4"></div>
-          <Breadcrumbs class="" />
-          <slot />
+          <Breadcrumbs class="px-12" />
+          <div class="max-w-6xl mx-auto">
+            <slot />
+          </div>
         </div>
       </div>
 
@@ -60,19 +62,13 @@ watch([isDrawerOpened], (value, oldValue, onInvalidate) => {
 </script>
   
 <style>
-.page-to-enter-active,
-.page-from-leave-active {
-  position: fixed;
-  transition: opacity 0.3s ease-in-out;
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.2s;
 }
 
-.page-from-leave-from,
-.page-to-enter-to {
-  opacity: 1;
-}
-
-.page-to-enter-from,
-.page-from-leave-to {
+.page-enter-from,
+.page-leave-to {
   opacity: 0;
 }
 
