@@ -14,7 +14,11 @@
       </div>
       <div v-if="units.length > 0">
         <div class="flex flex-col gap-8">
-          <div class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
+          <div class="p-2 flex flex-col sm:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
+            <div class="px-3 py-2 flex items-center">
+              <div class="text-base text-gray-700 font-normal mr-2"> Number of different items: </div>
+              <div class="text-md font-bold">{{ units.length }}</div>
+            </div>
             <div class="px-3 py-2 flex items-center">
               <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
               <div
@@ -35,7 +39,7 @@
 
               </div>
               <div v-else-if="totalPrice >= 0">
-                <div class="text-lg font-medium text-gray-700 ">
+                <div class="text-lg font-bold text-gray-700 ">
                   €{{ (totalPrice).toFixed(2) }}
                 </div>
               </div>
