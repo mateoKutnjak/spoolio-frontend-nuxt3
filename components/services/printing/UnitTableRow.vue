@@ -1,6 +1,6 @@
 <template>
   <tr
-    class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48 shadow"
+    class="bg-white cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
     <td class="px-6 pr-16 py-6 w-36">
@@ -17,7 +17,7 @@
         <div class="text-lg text-gray-900 dark:text-white line-clamp-1">
           {{ extractUrlFileStringUnion(unit.file) }}
         </div>
-        <div class="flex gap-5">
+        <div class="flex flex-col gap-1">
           <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
           <ServicesPrintingVolumeInfo :data="unit.model_volume" />
         </div>
@@ -38,10 +38,7 @@
       </div>
     </td>
     <td class="py-4">
-    </td>
-    <td class="py-4">
       <div class="mb-4 flex flex-col gap-1 items-center justify-center">
-        <div class="text-sm text-gray-400">Quantity</div>
         <input
           type="number"
           class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

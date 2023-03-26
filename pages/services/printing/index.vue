@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div class="max-w-5xl mx-auto flex flex-col gap-5 justify-between pt-4">
+    <div class="flex flex-col gap-10 justify-between pt-4">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
         <div class="text-4xl">Create your printing order</div>
         <div class="flex gap-4 items-end">
@@ -12,179 +12,154 @@
           >Clear order</div>
         </div>
       </div>
-      <div class="mx-4 mt-8 sm:mx-0 flex flex-col sm:flex-row gap-2 items-center px-4  py-3 rounded-lg bg-base-100 shadow border-2 border-gray-400">
-        <div class="flex items-center">
-          <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
-          <div
-            v-if="totalPrice == 10"
-            class="flex gap-1 items-center justify-end"
-          >
-            <div
-              class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
-              @click="notificationStore.show('Minimum price we charge is 10€')"
-            >
-              <Icon
-                class="text-warning"
-                name="material-symbols:warning-rounded"
-                size="20"
-              />
-              €{{totalPrice.toFixed(2) }}
+      <div v-if="units.length > 0">
+        <div class="flex flex-col gap-8">
+          <div class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
+            <div class="px-3 py-2 flex items-center">
+              <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
+              <div
+                v-if="totalPrice == 10"
+                class="flex gap-1 items-center justify-end"
+              >
+                <div
+                  class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
+                  @click="notificationStore.show('Minimum price we charge is 10€')"
+                >
+                  <Icon
+                    class="text-warning"
+                    name="material-symbols:warning-rounded"
+                    size="20"
+                  />
+                  €{{totalPrice.toFixed(2) }}
+                </div>
+
+              </div>
+              <div v-else-if="totalPrice >= 0">
+                <div class="text-lg font-medium text-gray-700 ">
+                  €{{ (totalPrice).toFixed(2) }}
+                </div>
+              </div>
+              <div v-else>
+                <Icon
+                  class="text-gray-500"
+                  name="eos-icons:three-dots-loading"
+                />
+              </div>
             </div>
+            <div class="px-3 py-2 flex gap-2 items-center">
+              <div class="text-base text-gray-700 font-normal"> ETA: </div>
 
-          </div>
-          <div v-else-if="totalPrice >= 0">
-            <div class="text-lg font-medium text-gray-700 ">
-              €{{ (totalPrice).toFixed(2) }}
+              <strong
+                class="text-md font-bold"
+                v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+              >{{reformatSeconds(etaSeconds)}}</strong>
+              <div v-else>
+                <Icon
+                  class="text-gray-900 pt-1.5"
+                  name="eos-icons:three-dots-loading"
+                  size="30"
+                />
+              </div>
             </div>
           </div>
-          <div v-else>
-            <Icon
-              class="text-gray-500"
-              name="eos-icons:three-dots-loading"
-            />
-          </div>
-        </div>
-        <div class="px-1"></div>
-        <div class="flex gap-2 items-center">
-          <div class="text-base text-gray-700 font-normal"> ETA: </div>
-
-          <strong
-            class="text-md font-medium"
-            v-if="etaSeconds > Number.NEGATIVE_INFINITY"
-          >{{reformatSeconds(etaSeconds)}}</strong>
-          <div v-else>
-            <Icon
-              class="text-gray-900 pt-1.5"
-              name="eos-icons:three-dots-loading"
-              size="30"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="divider my-0"></div>
-      <div class="block lg:hidden">
-        <div
-          class="flex flex-col gap-5"
-          v-for="item in units"
-          :key="item.localUrl"
-        >
-          <ServicesPrintingUnitCard
-            class="mb-3"
-            :unit="item"
-            @on-item-clicked="onItemClicked"
-          />
-        </div>
-
-      </div>
-      <table
-        v-if="units.length"
-        class="hidden lg:inline-table table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400"
-      >
-
-        <tbody
-          name="slide-fade"
-          is="vue:transition-group"
-          tag="tbody"
-        >
-
-          <ServicesPrintingUnitTableRow
-            v-for="item in units"
-            :key="item.localUrl"
-            :unit="item"
-            @on-item-clicked="onItemClicked"
-          />
-        </tbody>
-      </table>
-      <div
-        v-else
-        class="flex-1 text-center"
-      >
-        <div class="h-44 w-full flex justify-center items-center text-3xl font-normal italic text-gray-400">Order is empty</div>
-      </div>
-      <div class="hidden md:flex gap-5">
-        <div
-          class="flex-1 flex w-full mx-auto "
-          @dragover.prevent
-          @drop.prevent
-        >
-          <label
-            for="dropzone-file"
-            class="flex-1 flex flex-col items-center justify-center w-full border-4 border-gray-300 border-dashed cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-            @drop="drop"
-          >
-            <div class="mb-2">
-              <Icon
-                color="gray"
-                name="ic:outline-cloud-upload"
-                size="30"
-                aria-hidden="true"
-              />
-            </div>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">STL (max 150 MB)</p>
-            <input
-              id="dropzone-file"
-              type="file"
-              name="fff"
-              class="hidden"
-              @change="change"
-            />
-          </label>
-        </div>
-        <div class="flex-none card rounded-lg shadow-md bg-white">
-          <div class="card-body flex gap-5">
-            <table class="table table-compact w-full">
-              <tbody class="">
-                <tr>
-                  <td class="pl-0 py-1 text-base border-transparent text-start font-normal">ETA</td>
-                  <td class="pl-0 py-1 text-lg border-transparent text-end font-medium">
-                    <div>
-                      <strong
-                        class="text-lg font-medium"
-                        v-if="etaSeconds > Number.NEGATIVE_INFINITY"
-                      >{{reformatSeconds(etaSeconds)}}</strong>
-                      <div v-else>
-                        <Icon
-                          class="text-gray-900 pt-1.5"
-                          name="eos-icons:three-dots-loading"
-                          size="30"
-                        />
-                      </div>
-                    </div>
-                  </td>
+          <div class="w-full hidden lg:block rounded-xl bg-white p-3 shadow-md rounded-lg">
+            <table class="table-auto w-full">
+              <thead class="rounded-lg">
+                <tr class="bg-base-200">
+                  <th class="px-4 pt-4 pb-3 text-start text-xs uppercase"></th>
+                  <th class="pt-4 pb-3 text-start text-xs uppercase">Unit details</th>
+                  <th class="px-4 pt-4 pb-3 text-center text-xs uppercase">Quantity</th>
+                  <th class="px-4 pt-4 pb-3 text-center text-xs uppercase">Price</th>
+                  <th class="px-8 pt-4 pb-3 text-end text-xs uppercase"></th>
                 </tr>
-                <tr>
-                  <th class="pl-0 py-1 text-base text-start font-normal">Price</th>
-                  <th class="pl-0 py-1 text-lg text-end font-medium">
-                    <div
-                      v-if="totalPrice == 10"
-                      class="flex gap-1 items-center justify-end"
-                    >
-
-                      <div
-                        class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
-                        @click="notificationStore.show('Minimum price we charge is 10€')"
-                      >
-                        <Icon
-                          class="text-warning"
-                          name="material-symbols:warning-rounded"
-                          size="20"
-                        />
-                        €{{totalPrice.toFixed(2) }}
-                      </div>
-
-                    </div>
-                    <div v-else-if="totalPrice >= 0">€{{ (totalPrice).toFixed(2) }}</div>
-                    <div v-else>
-                      <Icon
-                        class="text-gray-500"
-                        name="eos-icons:three-dots-loading"
-                      />
-                    </div>
-                  </th>
-                </tr>
+              </thead>
+              <tbody>
+                <ServicesPrintingUnitTableRow
+                  v-for="item in units"
+                  :key="item.localUrl"
+                  :unit="item"
+                  @on-item-clicked="onItemClicked"
+                />
               </tbody>
             </table>
+            <div class="py-2"></div>
+            <div
+              @dragover.prevent
+              @drop.prevent
+            >
+              <label
+                for="dropzone-file"
+                class="h-44 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                @drop="drop"
+              >
+                <div class="mb-2">
+                  <Icon
+                    class="text-stone-400/70"
+                    name="carbon:3d-mpr-toggle"
+                    size="50"
+                    aria-hidden="true"
+                  />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
+                  <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
+                </div>
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  name="fff"
+                  class="hidden"
+                  @change="change"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="block lg:hidden">
+            <div
+              class="flex flex-col gap-5"
+              v-for="item in units"
+              :key="item.localUrl"
+            >
+              <ServicesPrintingUnitCard
+                :unit="item"
+                @on-item-clicked="onItemClicked"
+              />
+            </div>
+            <div
+              class="mt-8"
+              @dragover.prevent
+              @drop.prevent
+            >
+              <label
+                for="dropzone-file"
+                class="py-12 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                @drop="drop"
+              >
+                <div class="mb-2">
+                  <Icon
+                    class="text-stone-400/70"
+                    name="carbon:3d-mpr-toggle"
+                    size="50"
+                    aria-hidden="true"
+                  />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
+                  <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
+                </div>
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  name="fff"
+                  class="hidden"
+                  @change="change"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="hidden md:flex gap-5 justify-end">
             <NuxtLink
               class="btn btn-primary btn-lg gap-1"
               :class="units.length ? '' : 'btn-disabled'"
@@ -196,6 +171,38 @@
               </ClientOnly>
             </NuxtLink>
           </div>
+        </div>
+      </div>
+      <div v-else>
+        <div
+          @dragover.prevent
+          @drop.prevent
+        >
+          <label
+            for="dropzone-file"
+            class="my-12 py-24 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            @drop="drop"
+          >
+            <div class="mb-2">
+              <Icon
+                class="text-stone-400/70"
+                name="carbon:3d-mpr-toggle"
+                size="50"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
+              <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              name="fff"
+              class="hidden"
+              @change="change"
+            />
+          </label>
         </div>
       </div>
     </div>
