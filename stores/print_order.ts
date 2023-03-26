@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
@@ -120,7 +120,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const vAvg = (v + vBbox) / 2;
 
                 return vAvg * d * p * q * i * PRICE_MARGIN_FACTOR + acc;
-            }, 0), 10);
+            }, 0), PRINT_ORDER_MIN_PRICE);
         },
         getETASecondsByLocalUrl: (state) => {
             return (localUrl: string) => {

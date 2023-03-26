@@ -41,6 +41,7 @@ export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
 // * Use lowercase suffixes because all
 // * file suffixes are turned in lowercase
 export const PRINT_ORDER_FILES_SUFFIXES = ['stl'];
+export const PRINT_ORDER_MIN_PRICE = 1;
 
 // * Billing address types
 

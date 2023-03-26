@@ -22,12 +22,12 @@
             <div class="px-3 py-2 flex items-center">
               <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
               <div
-                v-if="totalPrice == 10"
+                v-if="totalPrice == PRINT_ORDER_MIN_PRICE"
                 class="flex gap-1 items-center justify-end"
               >
                 <div
                   class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
-                  @click="notificationStore.show('Minimum price we charge is 10€')"
+                  @click="notificationStore.show(`Minimum price we charge is ${PRINT_ORDER_MIN_PRICE}€`)"
                 >
                   <Icon
                     class="text-warning"
@@ -261,7 +261,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
+import { MAX_FILE_SIZE_STL, PRINT_ORDER_MIN_PRICE } from "~~/constants/constants";
 import {
   IAttachmentFile,
   IAttachmentImage,
