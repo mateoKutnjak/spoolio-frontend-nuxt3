@@ -259,7 +259,7 @@ function submitPayment() {
 
           navigateTo("/services");
           notificationStore.show(
-            "Payment successful. Check your email. [TODO]",
+            "Payment successful. We sent you an email.",
             ToastLevelType.success
           );
 
