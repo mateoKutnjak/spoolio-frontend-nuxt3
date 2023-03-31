@@ -35,23 +35,26 @@
       <p class="mt-1">obrt za proizvodnju i usluge <br /></p>
     </div>
     <div class="md:place-self-center md:justify-self-end">
-      <div class="grid grid-flow-col gap-4">
+      <div class="grid grid-flow-col">
         <a>
           <Icon
-            name="logos:youtube-icon"
+            class="text-[#888888] mr-4 pb-0.5"
+            name="lucide:youtube"
+            size="34"
+          />
+        </a>
+        <a>
+          <Icon
+            class="text-[#888888] mr-2.5"
+            name="lucide:twitter"
             size="30"
           />
         </a>
         <a>
           <Icon
-            name="logos:twitter"
+            class="text-[#888888] pb-0.5"
+            name="lucide:facebook"
             size="30"
-          />
-        </a>
-        <a>
-          <Icon
-            name="logos:facebook"
-            size="28"
           />
         </a>
       </div>

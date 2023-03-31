@@ -12,8 +12,8 @@
           class="btn btn-circle btn-ghost btn-sm text-info"
         >
           <Icon
-            name="material-symbols:info-outline"
-            size="18"
+            name="lucide:info"
+            size="20"
           />
         </label>
         <div

@@ -6,7 +6,7 @@
     >
       <Icon
         class="text-gray-500"
-        name="ic:round-minus"
+        name="lucide:minus"
         size="24"
       />
     </button>
@@ -30,7 +30,7 @@
     >
       <Icon
         class="text-gray-500"
-        name="ic:round-plus"
+        name="lucide:plus"
         size="24"
       />
     </button>

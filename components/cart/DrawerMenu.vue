@@ -5,7 +5,7 @@
         <div v-if="cartItems.size > 0">
           <div class="p-4 pb-12 flex gap-2 items-center">
             <Icon
-              name="material-symbols:shopping-cart-rounded"
+              name="lucide:shopping-cart"
               class="block h-6 w-6"
               aria-hidden="true"
             />
@@ -30,13 +30,8 @@
           </li>
         </div>
         <div v-else>
-          <div class="flex flex-col h-screen justify-center items-center gap-1">
-            <Icon
-              name="ph:shopping-cart"
-              size="30"
-              aria-hidden="true"
-            />
-            <p>Your cart is empty</p>
+          <div class="flex flex-col gap-2 italic h-screen justify-center items-center">
+            <p class="font-bold text-gray-500 text-lg">Your cart is empty</p>
           </div>
         </div>
       </ul>

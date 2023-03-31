@@ -2,7 +2,7 @@
   <div class="flex gap-1 items-end text-gray-500">
     <Icon
       class="mr-2"
-      name="gis:coord-system-3d-alt"
+      name="lucide:move-diagonal"
       size="25"
     />
     <strong v-if="data">{{ data.x.toFixed(0)}}

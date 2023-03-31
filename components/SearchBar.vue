@@ -9,7 +9,8 @@
       />
       <button class="btn btn-ghost rounded-none">
         <Icon
-          name="ion:ios-search"
+          class="text-[#888888]"
+          name="lucide:search"
           size="25"
         />
       </button>

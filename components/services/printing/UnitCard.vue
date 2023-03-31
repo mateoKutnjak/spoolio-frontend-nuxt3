@@ -23,7 +23,7 @@
                 @click.stop="duplicateUnit"
               >
                 <Icon
-                  name="majesticons:duplicate"
+                  name="lucide:copy"
                   size="24"
                 />
               </button>
@@ -32,7 +32,7 @@
                 @click.stop="removeUnit"
               >
                 <Icon
-                  name="material-symbols:delete"
+                  name="lucide:trash-2"
                   size="24"
                 />
               </button>

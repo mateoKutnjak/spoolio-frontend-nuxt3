@@ -3,7 +3,7 @@
     <div class="card-body gap-4">
       <div class="card-title text-base text-gray-400 font-normal items-start">
         <Icon
-          name="material-symbols:location-on"
+          name="lucide:map-pin"
           size="22"
         />
         <div>Shipping address</div>

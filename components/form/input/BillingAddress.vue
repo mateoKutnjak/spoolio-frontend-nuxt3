@@ -11,7 +11,7 @@
           @click="openDialog"
         >
           <Icon
-            name="material-symbols:edit"
+            name="lucide:edit-2"
             size="18"
           />
         </div>
@@ -30,12 +30,12 @@
   </div>
   <div
     v-else
-    class="btn btn-outline rounded-none flex gap-2 items-bottom italic font-normal text-gray-500"
+    class="btn btn-outline rounded-none flex gap-2 items-bottom italic font-bold text-gray-500"
     @click="openDialog"
   >
     <Icon
       class="text-info mb-0.5"
-      name="material-symbols:add-box"
+      name="lucide:plus-square"
       size="18"
     />
     Add billing address

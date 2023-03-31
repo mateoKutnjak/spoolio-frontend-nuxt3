@@ -21,7 +21,7 @@
                 class="btn btn-outline gap-1"
               >
                 <Icon
-                  name="material-symbols:edit-outline"
+                  name="lucide:edit"
                   size="20"
                   aria-hidden="true"
                 />Edit

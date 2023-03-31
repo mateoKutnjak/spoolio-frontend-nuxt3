@@ -11,7 +11,7 @@
           @click="openDialog"
         >
           <Icon
-            name="material-symbols:edit"
+            name="lucide:edit-2"
             size="18"
           />
         </div>
@@ -33,7 +33,7 @@
   >
     <Icon
       class="text-info mb-0.5"
-      name="material-symbols:add-box"
+      name="lucide:plus-square"
       size="18"
     />
     Add shipping address

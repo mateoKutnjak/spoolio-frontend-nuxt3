@@ -52,9 +52,9 @@
           />
           <p class="text-2xl pt-4 py-8">You have not created any printing orders yet</p>
           <NuxtLink to="/services/printing">
-            <div class="btn btn-outline bg-white gap-2 border-gray-500">
+            <div class="btn btn-outline bg-white gap-2 border-gray-500 text-gray-500">
               <Icon
-                name="material-symbols:add"
+                name="lucide:plus"
                 size="22"
               />
               <div class="text-lg"> New printing order </div>

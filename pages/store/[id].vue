@@ -21,7 +21,7 @@
             >
               <Icon
                 class="text-gray-700"
-                name="material-symbols:arrow-back-ios-new-rounded"
+                name="lucide:chevron-left"
                 size="25"
                 aria-hidden="true"
               />
@@ -33,7 +33,7 @@
             >
               <Icon
                 class="text-gray-700"
-                name="material-symbols:arrow-forward-ios-rounded"
+                name="lucide:chevron-right"
                 size="25"
                 aria-hidden="true"
               />
@@ -101,7 +101,7 @@
               >
                 <Icon
                   class="text-success"
-                  name="material-symbols:check-circle-rounded"
+                  name="lucide:check-circle"
                   size="25"
                 />{{ activeOptionsCombination?.sku }} available in stock
               </div>
@@ -111,7 +111,7 @@
               >
                 <Icon
                   class="text-error"
-                  name="material-symbols:cancel-rounded"
+                  name="lucide:x-circle"
                   size="25"
                 />
                 Out of stock
@@ -127,13 +127,13 @@
               <div v-else>
               </div>
               <button
-                class="btn btn-success gap-1"
+                class="btn btn-success gap-3"
                 :class="activeOptionsCombination?.price ? '' : 'btn-disabled' "
                 @click="addToCart"
               >
                 <Icon
-                  name="material-symbols:shopping-cart-outline-rounded"
-                  size="27"
+                  name="lucide:shopping-cart"
+                  size="22"
                   aria-hidden="true"
                 />Add to cart
               </button>

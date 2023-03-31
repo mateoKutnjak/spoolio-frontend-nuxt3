@@ -15,7 +15,7 @@
             <div class="justify-center items-center rounded-lg">
               <Icon
                 :name="toastIconName"
-                size="28"
+                size="25"
               />
               <span class="sr-only">Check icon</span>
             </div>
@@ -28,7 +28,7 @@
               @click="onCloseClicked"
             >
               <Icon
-                name="material-symbols:close"
+                name="lucide:x"
                 size="23"
               />
             </button>
@@ -67,13 +67,13 @@ const toastBgColor = computed(() => {
 const toastIconName = computed(() => {
   switch (type.value) {
     case ToastLevelType.debug:
-      return "material-symbols:warning";
+      return "lucide:alert-triangle";
     case ToastLevelType.error:
-      return "material-symbols:error";
+      return "lucide:alert-circle";
     case ToastLevelType.success:
-      return "material-symbols:check-circle-rounded";
+      return "lucide:check-circle";
     case ToastLevelType.info:
-      return "material-symbols:info-rounded";
+      return "lucide:info";
     default:
       return "bg-gray-700";
   }

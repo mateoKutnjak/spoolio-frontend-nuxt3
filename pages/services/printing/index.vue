@@ -31,7 +31,7 @@
                 >
                   <Icon
                     class="text-warning"
-                    name="material-symbols:warning-rounded"
+                    name="lucide:alert-triangle"
                     size="20"
                   />
                   €{{totalPrice.toFixed(2) }}
@@ -99,7 +99,7 @@
                 <div class="mb-2">
                   <Icon
                     class="text-stone-400/70"
-                    name="carbon:3d-mpr-toggle"
+                    name="lucide:file-box"
                     size="50"
                     aria-hidden="true"
                   />
@@ -143,7 +143,7 @@
                 <div class="mb-2">
                   <Icon
                     class="text-stone-400/70"
-                    name="carbon:3d-mpr-toggle"
+                    name="lucide:file-box"
                     size="50"
                     aria-hidden="true"
                   />
@@ -190,7 +190,7 @@
             <div class="mb-2">
               <Icon
                 class="text-stone-400/70"
-                name="carbon:3d-mpr-toggle"
+                name="lucide:file-box"
                 size="50"
                 aria-hidden="true"
               />
@@ -223,8 +223,8 @@
             @drop="drop"
           >
             <Icon
-              name="ic:outline-cloud-upload"
-              size="30"
+              name="lucide:upload-cloud"
+              size="27"
               aria-hidden="true"
             />
             <input
@@ -248,8 +248,8 @@
             to="/services/printing/checkout/"
           >
             <Icon
-              name="ph:shopping-cart-duotone"
-              size="30"
+              name="lucide:shopping-cart"
+              size="27"
               aria-hidden="true"
             />
           </NuxtLink>
@@ -261,7 +261,10 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { MAX_FILE_SIZE_STL, PRINT_ORDER_MIN_PRICE } from "~~/constants/constants";
+import {
+  MAX_FILE_SIZE_STL,
+  PRINT_ORDER_MIN_PRICE,
+} from "~~/constants/constants";
 import {
   IAttachmentFile,
   IAttachmentImage,

@@ -68,7 +68,7 @@
                 >
                   <div class="text-blue-500">
                     <Icon
-                      name="material-symbols:upload-file"
+                      name="lucide:upload-cloud"
                       size="55"
                       aria-hidden="true"
                     />
@@ -115,7 +115,8 @@
             @drop="drop"
           >
             <Icon
-              name="ic:outline-cloud-upload"
+              class="text-gray-500"
+              name="lucide:upload-cloud"
               size="30"
               aria-hidden="true"
             />

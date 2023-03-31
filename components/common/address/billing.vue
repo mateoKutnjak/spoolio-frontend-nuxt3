@@ -3,7 +3,7 @@
     <div class="card-body gap-4">
       <div class="card-title text-base text-gray-400 font-normal items-start">
         <Icon
-          name="material-symbols:credit-card"
+          name="lucide:credit-card"
           size="22"
         />
         <div>Billing address</div>

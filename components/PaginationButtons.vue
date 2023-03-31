@@ -7,8 +7,8 @@
         @click="$emit('onPageSelected', 0)"
       >
         <Icon
-          name="material-symbols:first-page"
-          size="25"
+          name="lucide:chevron-first"
+          size="20"
         />
       </button>
       <button
@@ -16,8 +16,8 @@
         class="btn btn-ghost btn-square btn-disabled rounded-md bg-transparent text-gray-600"
       >
         <Icon
-          name="ph:dots-three"
-          size="25"
+          name="lucide:more-horizontal"
+          size="20"
         />
       </button>
       <button
@@ -46,8 +46,8 @@
         class="btn btn-ghost btn-square btn-disabled bg-transparent rounded-md text-gray-600"
       >
         <Icon
-          name="ph:dots-three"
-          size="25"
+          name="lucide:more-horizontal"
+          size="20"
         />
       </button>
       <button
@@ -56,7 +56,7 @@
         @click="$emit('onPageSelected', maxPages-1)"
       >
         <Icon
-          name="material-symbols:last-page"
+          name="lucide:chevron-last"
           size="25"
         />
       </button>

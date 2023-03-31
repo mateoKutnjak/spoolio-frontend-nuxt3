@@ -60,8 +60,9 @@
             >{{cartStore.getCartTotalQuantity}}</span>
 
             <Icon
-              name="ph:shopping-cart-duotone"
-              size="30"
+              class="text-stone-700"
+              name="lucide:shopping-cart"
+              size="27"
               aria-hidden="true"
             />
           </div>

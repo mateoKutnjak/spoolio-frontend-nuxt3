@@ -1,7 +1,7 @@
 <template>
   <div class="text-base flex gap-3 justify-start items-start">
     <Icon
-      name="material-symbols:info-rounded"
+      name="lucide:info"
       class="text-info"
       size="25"
     />

@@ -16,16 +16,16 @@
           @click="onEdit"
         >
           <Icon
-            name="material-symbols:edit"
+            name="lucide:edit-2"
             size="18"
           />
         </div>
       </div>
     </div>
     <div v-else>
-      <div class="flex gap-2 items-center italic font-normal text-gray-500">
+      <div class="flex gap-2 items-center italic font-bold text-gray-500">
         <Icon
-          name="material-symbols:add"
+          name="lucide:plus-square"
           size="20"
         />
         Add payment method

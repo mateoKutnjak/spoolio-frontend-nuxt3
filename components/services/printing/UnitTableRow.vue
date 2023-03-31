@@ -71,7 +71,7 @@
         @click.stop.prevent="duplicateUnit"
       >
         <Icon
-          name="majesticons:duplicate"
+          name="lucide:copy"
           size="24"
         />
       </div>
@@ -80,7 +80,7 @@
         @click.stop.prevent="removeUnit"
       >
         <Icon
-          name="material-symbols:delete"
+          name="lucide:trash-2"
           size="24"
         />
       </div>

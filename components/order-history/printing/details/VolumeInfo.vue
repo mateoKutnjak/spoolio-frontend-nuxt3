@@ -2,7 +2,7 @@
   <div class="flex gap-1 items-end text-gray-500">
     <Icon
       class="mr-2"
-      name="gis:cube-3d"
+      name="lucide:box"
       size="25"
     />
     <strong>{{ data.toFixed(3) }}</strong>

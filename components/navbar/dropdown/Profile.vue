@@ -14,14 +14,15 @@
           :key="user?.id"
         >
           <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
-          <ClientOnly> 
+          <ClientOnly>
             <div v-if="authStore.loggedIn">
               <nuxt-img src="https://placeimg.com/192/192/people" />
             </div>
             <div v-else>
               <Icon
-                name="ph:user-duotone"
-                size="30"
+                class="text-stone-700 mt-1"
+                name="lucide:user"
+                size="27"
                 aria-hidden="true"
               />
             </div>
@@ -45,11 +46,11 @@
           >
             <MenuItem
               as="div"
-              @click="dialogStore.open('LoginForm')"
+              @click="dialogStore.open('LoginForm', {})"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="material-symbols:person-outline"
+                name="lucide:user"
                 size="20"
                 aria-hidden="true"
               />Login
@@ -57,11 +58,11 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="dialogStore.open('RegisterForm')"
+              @click="dialogStore.open('RegisterForm', {})"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="material-symbols:logout"
+                name="lucide:log-out"
                 size="20"
                 aria-hidden="true"
               />Sign Up
@@ -77,7 +78,7 @@
               <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
                 <Icon
-                  name="material-symbols:receipt-long"
+                  name="lucide:clipboard-list"
                   size="20"
                   aria-hidden="true"
                 />Order history
@@ -90,7 +91,7 @@
               <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
                 <Icon
-                  name="material-symbols:person-outline"
+                  name="lucide:user"
                   size="20"
                   aria-hidden="true"
                 />Profile
@@ -104,7 +105,7 @@
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="material-symbols:logout"
+                name="lucide:log-out"
                 size="20"
                 aria-hidden="true"
               />Logout
@@ -117,11 +118,8 @@
   </div>
 </template>
     
-  <script setup>
+  <script lang="ts" setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
-
-import LoginForm from "@/components/LoginForm.vue";
-import RegisterForm from "@/components/RegisterForm.vue";
 
 import { storeToRefs } from "pinia";
 

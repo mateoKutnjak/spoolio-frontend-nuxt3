@@ -31,20 +31,6 @@
           </NuxtLink>
           <h1 class="text-md italic font-semibold text-gray-600">"Help me create my 3D idea"</h1>
         </div>
-        <div class="flex flex-col gap-3 text-center w-52">
-          <NuxtLink to="/store">
-            <div class="btn btn-warning h-44 w-52 shadow-md rounded-3xl">
-              <div class="flex flex-col gap-3 items-center text-gray-800">
-                <Icon
-                  name="mdi:chip"
-                  size="50"
-                />
-                Web shop
-              </div>
-            </div>
-          </NuxtLink>
-          <h1 class="text-md italic font-semibold text-gray-600">"I want to buy your 3D printer products"</h1>
-        </div>
       </div>
     </div>
   </div>

@@ -13,7 +13,7 @@
         <NuxtLink to="/blogs/create">
           <button class="btn btn-outline btn-accent btn-block gap-2">
             <Icon
-              name="material-symbols:add"
+              name="lucide:plus"
               size="20"
               aria-hidden="true"
             />New blog

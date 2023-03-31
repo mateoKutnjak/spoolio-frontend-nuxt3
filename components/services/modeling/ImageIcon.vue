@@ -6,7 +6,7 @@
         @click="onRemoveFile"
       >
         <Icon
-          name="material-symbols:close"
+          name="lucide:x"
           size="22"
         />
       </button>
