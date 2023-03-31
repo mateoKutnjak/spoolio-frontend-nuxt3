@@ -5,7 +5,7 @@
   >
     <div class="sm:m-6 h-44 w-full sm:w-44 bg-[#EAEAEA] flex justify-center">
       <nuxt-img
-        class="h-44 w-44 p-0 m-0 sm:border sm:border-gray-300 sm:shadow-md"
+        class="h-44 w-44 p-0 m-0 sm:border sm:border-gray-300"
         :src="unit.screenshotURL"
       >
       </nuxt-img>

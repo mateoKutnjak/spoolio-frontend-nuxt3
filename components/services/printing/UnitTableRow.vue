@@ -6,7 +6,7 @@
     <td class="px-6 pr-16 py-6 w-36">
       <div class="w-36 h-36">
         <nuxt-img
-          class="w-36 h-36 p-0 m-0 border border-gray-300 shadow-md"
+          class="w-36 h-36 p-0 m-0 border border-gray-300"
           :src="unit.screenshotURL"
         >
         </nuxt-img>
