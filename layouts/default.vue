@@ -5,7 +5,10 @@
       type="checkbox"
       class="drawer-toggle"
     />
-    <div class="drawer-content bg-base-200/60">
+    <div
+      class="drawer-content"
+      :class="`bg-[${globalsStore.getBackgroundColor}]`"
+    >
       <div class="flex flex-col h-screen">
         <Navbar />
         <Toast />
@@ -39,10 +42,12 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useDialogStore } from "~~/stores/dialog";
+import { useGlobalsStore } from "~~/stores/globals";
 import { useDrawerStore } from "../stores/drawer";
 
 const dialogStore = useDialogStore();
 const drawerStore = useDrawerStore();
+const globalsStore = useGlobalsStore();
 
 const { isDialogOpened, componentName } = storeToRefs(dialogStore);
 

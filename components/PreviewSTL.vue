@@ -35,7 +35,6 @@ const { stlFileUrl } = defineProps<{
   stlFileUrl: string;
 }>();
 
-const filamentSpoolStore = useFilamentSpoolStore();
 const printOrderStore = usePrintOrderStore();
 
 const printOrderUnit = printOrderStore.getUnitByLocalUrl(stlFileUrl);
