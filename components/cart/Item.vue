@@ -22,9 +22,8 @@
     <div class="w-full flex justify-between items-start">
       <IncreaseDecreaseQuantityButtons
         :max="MAX_CART_ITEMS"
-        :min="0"
+        :min="1"
         :initialValue="quantity"
-        :key="quantity"
         @on-decrease-value="decreaseQuantity"
         @on-increase-value="increaseQuantity"
         @on-value-set="(q) => setQuantity(q) "

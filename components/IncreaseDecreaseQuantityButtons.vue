@@ -1,35 +1,26 @@
 <template>
-  <div class="flex gap-2 justify-start items-start">
-    <button
-      class="btn btn-sm btn-circle btn-ghost mt-2"
-      @click="decreaseValue"
+  <div class="flex gap-2 justify-start items-center">
+    <div
+      class="btn btn-sm btn-circle btn-ghost"
+      :class="value <= min ? 'text-gray-300' : 'text-gray-500'"
+      @click="value <= min ? () => null : decreaseValue()"
     >
       <Icon
-        class="text-gray-500"
         name="lucide:minus"
         size="24"
       />
-    </button>
-    <FormKit
+    </div>
+    <input
       type="number"
-      name="value"
-      :min="min"
-      :max="max"
       v-model="value"
-      step="1"
-      :validation="`between:${min},${max}`"
-      validation-visibility="live"
-      :classes="{
-        inner: 'w-14',
-        input: 'text-center',
-      }"
+      class="input input-bordered w-20 !outline-none"
     />
     <button
-      class="btn btn-sm btn-circle btn-ghost mt-2"
-      @click="increaseValue"
+      class="btn btn-sm btn-circle btn-ghost"
+      :class="value >= max ? 'text-gray-300' : 'text-gray-500'"
+      @click="value >= max ? () => null : increaseValue()"
     >
       <Icon
-        class="text-gray-500"
         name="lucide:plus"
         size="24"
       />
@@ -70,21 +61,18 @@ function decreaseValue() {
 
 watch(value, (v) => {
   const numberValue = Number(v);
-
   if (numberValue < min) {
     value.value = min;
     emit("onValueSet", min);
     return;
   }
-
   if (numberValue > max) {
     value.value = max;
     emit("onValueSet", max);
     return;
   }
-
   value.value = numberValue;
-  emit("onValueSet", numberValue);
+  emit("onValueSet", Number(v));
 });
 </script>
 
