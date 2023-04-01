@@ -56,8 +56,19 @@
                   />
                 </div>
               </div>
-              <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
-              <ServicesPrintingVolumeInfo :data="unit.model_volume" />
+              <ServicesPrintingDimensionInfo
+                :data="vector3Parse(unit.model_dimensions)"
+                :unit="unit.length_unit"
+              />
+              <ServicesPrintingVolumeInfo
+                :data="unit.model_volume"
+                :unit="unit.length_unit"
+              />
+              <ServicesPrintingRotationPreview
+                :key="unit.model_rotation"
+                :data="unit.model_rotation"
+                :unit="unit.rotation_unit"
+              />
             </div>
             <div class="flex flex-wrap gap-8 justify-end items-end">
               <div class="flex flex-col gap-1 items-center justify-center">
@@ -250,8 +261,12 @@ function duplicateUnit() {
       order: unit.order,
       model_dimensions: unit.model_dimensions,
       model_volume: unit.model_volume,
+      model_rotation: unit.model_rotation,
+      optimal_rotation: unit.optimal_rotation,
+      use_optimal_rotation: unit.use_optimal_rotation,
       screenshotURL: unit.screenshotURL,
       length_unit: unit.length_unit,
+      rotation_unit: unit.rotation_unit,
       estimated_price: unit.estimated_price,
       estimated_time: unit.estimated_time,
     });

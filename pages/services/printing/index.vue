@@ -5,6 +5,7 @@
         <div class="text-4xl">Create your printing order</div>
         <div class="flex gap-4 items-end">
           <ListboxDimensionUnit class="self-end" />
+          <ListboxRotationUnit class="self-end" />
           <div
             class="btn btn-error"
             :class="units.length ? '' : 'btn-disabled'"
@@ -70,11 +71,11 @@
             <table class="table-auto w-full">
               <thead class="rounded-lg">
                 <tr class="bg-base-200">
-                  <th class="px-4 pt-4 pb-3 text-start text-xs uppercase"></th>
+                  <th class="pt-4 pb-3 text-start text-xs uppercase"></th>
                   <th class="pt-4 pb-3 text-start text-xs uppercase">Unit details</th>
-                  <th class="px-4 pt-4 pb-3 text-center text-xs uppercase">Quantity</th>
-                  <th class="px-4 pt-4 pb-3 text-center text-xs uppercase">Price</th>
-                  <th class="px-8 pt-4 pb-3 text-end text-xs uppercase"></th>
+                  <th class="pt-4 pb-3 text-center text-xs uppercase">Quantity</th>
+                  <th class="pt-4 pb-3 text-center text-xs uppercase">Price</th>
+                  <th class="pt-4 pb-3 text-end text-xs uppercase"></th>
                 </tr>
               </thead>
               <tbody>
@@ -286,7 +287,7 @@ const globalsStore = useGlobalsStore();
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
-const { dimensionUnit } = storeToRefs(globalsStore);
+const { dimensionUnit, rotationUnit } = storeToRefs(globalsStore);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
@@ -379,6 +380,14 @@ watch(dimensionUnit, (value) => {
   printOrderStore.units.forEach((el) => {
     printOrderStore.updateUnit(el.localUrl, {
       length_unit: DimensionUnit[value],
+    });
+  });
+});
+
+watch(rotationUnit, (value) => {
+  printOrderStore.units.forEach((el) => {
+    printOrderStore.updateUnit(el.localUrl, {
+      rotation_unit: RotationUnit[value],
     });
   });
 });

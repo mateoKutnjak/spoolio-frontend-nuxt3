@@ -10,21 +10,16 @@
       {{ data.y.toFixed(0)}}
       x
       {{ data.z.toFixed(0)}}</strong>
-    <div class="text-sm">{{ DimensionUnit[dimensionUnit] }}</div>
+    <div class="text-sm">{{ unit }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
 import { Vector3 } from "three";
-import { useGlobalsStore } from "~~/stores/globals";
 
-const globalsStore = useGlobalsStore();
-
-const { dimensionUnit } = storeToRefs(globalsStore);
-
-const { data } = defineProps<{
+const { data, unit } = defineProps<{
   data: Vector3 | undefined;
+  unit: string,
 }>();
 </script>
 

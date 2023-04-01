@@ -246,10 +246,14 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
+            formData.append('rotation_unit', unit.rotation_unit)
             formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2));
             formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
+            formData.append('model_rotation', unit.model_rotation)
+            formData.append('optimal_rotation', unit.optimal_rotation);
+            formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
 
             // todo what to do with this
             formData.append("order", orderId.toString());
@@ -301,7 +305,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
 
             const localUrl = URL.createObjectURL(file);
-            const { model_volume, model_dimensions } = await preprocess3dObject(localUrl);
+            const { model_volume, model_dimensions, optimal_rotation, model_rotation } = await preprocess3dObject(localUrl);
 
             create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
                 this.units.push(<IPrintOrderUnit>{
@@ -319,7 +323,11 @@ export const usePrintOrderStore = defineStore('print-order', {
                     order: undefined,
                     model_dimensions: vector3ToString(model_dimensions),
                     model_volume: model_volume,
+                    model_rotation: vector3ToString(model_rotation),
+                    optimal_rotation: vector3ToString(optimal_rotation),
+                    use_optimal_rotation: true,
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
+                    rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
                 });
             })

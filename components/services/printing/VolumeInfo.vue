@@ -7,22 +7,16 @@
     />
     <strong>{{ data.toFixed(0) }}</strong>
     <div class="flex gap-0.5">
-      <div class="text-sm">{{ DimensionUnit[dimensionUnit] }}</div>
+      <div class="text-sm">{{ unit }}</div>
       <sup class="pt-2.5">3</sup>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useGlobalsStore } from "~~/stores/globals";
-
-const globalsStore = useGlobalsStore();
-
-const { dimensionUnit } = storeToRefs(globalsStore);
-
-const { data } = defineProps<{
+const { data, unit } = defineProps<{
   data: number;
+  unit: string,
 }>();
 </script>
 

@@ -7,6 +7,38 @@
           :stlFileUrl="unit.localUrl"
         />
       </client-only>
+      <div class="absolute top-4 left-6 max-w-fit">
+        <div class="flex flex-col gap-3">
+          <div class="text-2xl text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
+          <ServicesPrintingDimensionInfo
+            :data="vector3Parse(unit.model_dimensions)"
+            :unit="unit.length_unit"
+          />
+          <ServicesPrintingVolumeInfo
+            :data="unit.model_volume"
+            :unit="unit.length_unit"
+          />
+          <ServicesPrintingRotationInfo :localUrl="unit.localUrl" />
+        </div>
+      </div>
+      <div class="absolute top-4 right-6 max-w-fit">
+        <div class="flex flex-col gap-1 justify-end items-end">
+          <ListboxMaterial
+            class="w-full"
+            :file-url="unit.localUrl"
+          />
+          <!-- ? :key binding is added to refresh component ListboxColor when material id changes -->
+          <ListboxColor
+            class="w-full"
+            :key="unit.spool.material.id"
+            :file-url="unit.localUrl"
+          />
+          <ListboxInfill
+            class="w-full"
+            :file-url="unit.localUrl"
+          />
+        </div>
+      </div>
       <div class="absolute bottom-4 left-6">
         <div class="flex justify-between items-start">
           <IncreaseDecreaseQuantityButtons
@@ -18,6 +50,9 @@
             @on-value-set="(q) => setQuantity(q)"
           />
         </div>
+      </div>
+      <div class="absolute bottom-4 right-6">
+        <div class="text-4xl text-gray-700">€{{ (price).toFixed(2) }}</div>
       </div>
     </div>
   </div>
@@ -40,8 +75,6 @@ const quantity = ref(unit.quantity);
 const comment = ref(unit.comment);
 const attachmentFiles = ref(unit.attachmentFiles || []);
 const attachmentImages = ref(unit.attachmentImages || []);
-
-const optimalRotation = ref(true);
 
 const price = computed(() => printOrderStore.getPriceByLocalUrl(unit.localUrl));
 

@@ -5,3 +5,7 @@ export enum ToastLevelType {
 export enum DimensionUnit {
     mms, inches
 }
+
+export enum RotationUnit {
+    degrees = 'degrees', radians = 'radians',
+}

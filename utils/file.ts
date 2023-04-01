@@ -31,9 +31,12 @@ export function toIconNameByExtension(fileExtension: string): string {
     }
 }
 
-export function toIconNameSafe(file: File | undefined): string {
+export function toIconNameSafe(file: File | string | undefined): string {
     if (!file) {
         return "material-symbols:error-circle-rounded-outline";
+    }
+    if (typeof file === "string") {
+        return toIconNameByExtension(urlExtractFileSuffix(file));
     }
     return toIconName(file);
 }

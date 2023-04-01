@@ -3,25 +3,36 @@
     class="bg-white cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
-    <td class="px-6 pr-16 py-6 w-36">
-      <div class="w-36 h-36">
+    <td class="px-6 pr-16 py-6 w-48">
+      <div class="w-48 h-48">
         <nuxt-img
-          class="w-36 h-36 p-0 m-0 border border-gray-300"
+          class="w-48 h-48 p-0 m-0 border border-gray-300"
           :src="unit.screenshotURL"
         >
         </nuxt-img>
       </div>
     </td>
     <td class="py-4">
-      <div class="h-36 max-w-xs flex flex-col gap-4 justify-center">
+      <div class="h-48 max-w-xs flex flex-col gap-4 justify-center">
         <div class="text-lg text-gray-900 dark:text-white line-clamp-1">
           {{ extractUrlFileStringUnion(unit.file) }}
         </div>
         <div class="flex flex-col gap-1">
-          <ServicesPrintingDimensionInfo :data="vector3Parse(unit.model_dimensions)" />
-          <ServicesPrintingVolumeInfo :data="unit.model_volume" />
+          <ServicesPrintingDimensionInfo
+            :data="vector3Parse(unit.model_dimensions)"
+            :unit="unit.length_unit"
+          />
+          <ServicesPrintingVolumeInfo
+            :data="unit.model_volume"
+            :unit="unit.length_unit"
+          />
+          <ServicesPrintingRotationPreview
+            :key="unit.model_rotation"
+            :data="unit.model_rotation"
+            :unit="unit.rotation_unit"
+          />
         </div>
-        <div class="flex gap-2 items-start justify-start">
+        <div class="flex gap-2 items-center justify-start">
           <AttributeItem
             :title="getMaterialName()"
             tooltip="Filament material"
@@ -231,8 +242,12 @@ function duplicateUnit() {
       order: unit.order,
       model_dimensions: unit.model_dimensions,
       model_volume: unit.model_volume,
+      model_rotation: unit.model_rotation,
+      optimal_rotation: unit.optimal_rotation,
+      use_optimal_rotation: unit.use_optimal_rotation,
       screenshotURL: unit.screenshotURL,
       length_unit: unit.length_unit,
+      rotation_unit: unit.rotation_unit,
       estimated_time: unit.estimated_time,
     });
   } else {

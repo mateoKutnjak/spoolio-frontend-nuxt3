@@ -68,7 +68,7 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
     });
 }
 
-export async function preprocess3dObject(stlFileUrl: string): Promise<{ model_volume: number, model_dimensions: Vector3 }> {
+export async function preprocess3dObject(stlFileUrl: string): Promise<{ model_volume: number, model_dimensions: Vector3, optimal_rotation: Vector3, model_rotation: Vector3 }> {
     const { load } = useSTLModel();
     const geometry = await load(stlFileUrl);
 
@@ -85,7 +85,11 @@ export async function preprocess3dObject(stlFileUrl: string): Promise<{ model_vo
         Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
     );
 
-    return { model_volume, model_dimensions }
+    // TODO this will be calculated by Bojan algorithm
+    const optimal_rotation = new Vector3(0, 0, 0);
+    const model_rotation = new Vector3(0, 0, 0);
+
+    return { model_volume, model_dimensions, optimal_rotation, model_rotation }
 }
 
 function calculateVolume(geometry: BufferGeometry) {

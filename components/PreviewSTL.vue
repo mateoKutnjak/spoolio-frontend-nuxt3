@@ -29,12 +29,13 @@ import {
 import { useElementSize } from "@vueuse/core";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { usePrintOrderStore } from "~~/stores/print_order";
-import { useFilamentSpoolStore } from "~~/stores/filament_spool";
+import { useGlobalsStore } from "~~/stores/globals";
 
 const { stlFileUrl } = defineProps<{
   stlFileUrl: string;
 }>();
 
+const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
 
 const printOrderUnit = printOrderStore.getUnitByLocalUrl(stlFileUrl);
@@ -118,6 +119,22 @@ if (mesh.geometry.boundingBox) {
   positionCameraOnObject(camera, mesh.geometry.boundingBox);
 }
 
+// *** OBJECT ROTATION *** //
+
+const model_rotation = vector3Parse(printOrderUnit.model_rotation);
+
+if (printOrderUnit.rotation_unit === RotationUnit.radians) {
+  // Do nothing
+} else if (printOrderUnit.rotation_unit === RotationUnit.degrees) {
+  model_rotation.x = (model_rotation.x * Math.PI) / 180;
+  model_rotation.y = (model_rotation.y * Math.PI) / 180;
+  model_rotation.z = (model_rotation.z * Math.PI) / 180;
+}
+
+mesh.rotation.set(model_rotation.x, model_rotation.y, model_rotation.z);
+
+// *** ADD OBJECT TO SCENE *** //
+
 scene.add(mesh);
 
 // ** OBJECT INFORMATION ** //
@@ -162,6 +179,19 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   const parsed = parseInt(colorStringValueTrimmed, 16);
 
   mesh.material.color.setHex(parsed);
+
+  const rotation = vector3Parse(item.model_rotation);
+  const rotationUnit = item.rotation_unit;
+
+  if (rotationUnit === RotationUnit.radians) {
+    // Do nothing
+  } else if (rotationUnit === RotationUnit.degrees) {
+    rotation.y = (rotation.y * Math.PI) / 180;
+    rotation.z = (rotation.z * Math.PI) / 180;
+    rotation.x = (rotation.x * Math.PI) / 180;
+  }
+
+  mesh.rotation.set(rotation.x, rotation.y, rotation.z);
 });
 
 onMounted(() => {

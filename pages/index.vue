@@ -3,7 +3,7 @@
     <client-only class="flex-1">
       <PreviewIndex
         class="w-92 h-[55vh] p-0"
-        :backgroundColor="globalsStore.getBackgroundColor"
+        :backgroundColor="BACKGROUND_COLOR"
         stlFileUrl="/3d/complete.stl"
       />
     </client-only>
@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+import { BACKGROUND_COLOR } from "~~/constants/constants";
 import { useGlobalsStore } from "~~/stores/globals";
 
 const globalsStore = useGlobalsStore();

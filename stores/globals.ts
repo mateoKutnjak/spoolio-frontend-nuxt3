@@ -1,21 +1,24 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { DimensionUnit } from '~~/utils/enums';
+import { DimensionUnit, RotationUnit } from '~~/utils/enums';
 
 export const useGlobalsStore = defineStore('globals', {
     state: () => ({
         dimensionUnit: DimensionUnit.mms,
-        backgroundColor: "#f8f9fa"
+        rotationUnit: RotationUnit.degrees,
     }),
 
     getters: {
         getDimensionUnit: (state) => state.dimensionUnit,
-        getBackgroundColor: (state) => state.backgroundColor,
+        getRotationUnit: (state) => state.rotationUnit,
     },
 
     actions: {
         setDimensionUnit(dimensionUnit: DimensionUnit) {
             this.dimensionUnit = dimensionUnit;
         },
+        setRotationUnit(rotationUnit: RotationUnit) {
+            this.rotationUnit = rotationUnit;
+        }
     },
 })
 
