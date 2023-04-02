@@ -12,6 +12,7 @@ import {
   BufferAttribute,
   BufferGeometry,
   Color,
+  Euler,
   HemisphereLight,
   InterleavedBufferAttribute,
   Line,
@@ -21,6 +22,8 @@ import {
   Mesh,
   MeshStandardMaterial,
   PerspectiveCamera,
+  Plane,
+  PlaneHelper,
   Scene,
   SpotLight,
   Vector3,
@@ -30,6 +33,7 @@ import { useElementSize } from "@vueuse/core";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useGlobalsStore } from "~~/stores/globals";
+import { DimensionUnit, RotationUnit } from "~~/utils/enums";
 
 const { stlFileUrl } = defineProps<{
   stlFileUrl: string;
@@ -73,6 +77,9 @@ function setRenderer() {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
+    controls.autoRotate = true;
+    controls.update();
+
     updateRenderer();
   }
 }
@@ -90,7 +97,7 @@ function updateCamera() {
 // ** CAMERA ** //
 
 const camera = new PerspectiveCamera(75, aspectRatio.value, 0.1, 1000);
-camera.position.set(0, 0, 4);
+camera.up = new Vector3(0, 0, 1);
 scene.add(camera);
 
 // ** LIGHTS ** //
@@ -117,6 +124,22 @@ geometry.computeBoundingBox();
 if (mesh.geometry.boundingBox) {
   centerObject(mesh, mesh.geometry.boundingBox);
   positionCameraOnObject(camera, mesh.geometry.boundingBox);
+
+  const bbox = mesh.geometry.boundingBox;
+  const rotationVector = vector3Parse(printOrderUnit.model_rotation);
+  const rotationUnit = printOrderUnit.rotation_unit;
+  const dimensionUnit = printOrderUnit.length_unit;
+
+  if (bbox) {
+    drawPlane(
+      bbox,
+      rotationVector,
+      rotationUnit as RotationUnit,
+      dimensionUnit as DimensionUnit
+    );
+  } else {
+    console.error("Bounding box not calculated after rotation changes");
+  }
 }
 
 // *** OBJECT ROTATION *** //
@@ -136,24 +159,6 @@ mesh.rotation.set(model_rotation.x, model_rotation.y, model_rotation.z);
 // *** ADD OBJECT TO SCENE *** //
 
 scene.add(mesh);
-
-// ** OBJECT INFORMATION ** //
-
-printOrderStore.updateUnit(stlFileUrl, {
-  model_volume: calculateVolume(mesh.geometry),
-});
-
-if (geometry.boundingBox) {
-  printOrderStore.updateUnit(stlFileUrl, {
-    model_dimensions: vector3ToString(
-      new Vector3(
-        Math.abs(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
-        Math.abs(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
-        Math.abs(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
-      )
-    ),
-  });
-}
 
 // ********************** //
 
@@ -180,18 +185,24 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
 
   mesh.material.color.setHex(parsed);
 
-  const rotation = vector3Parse(item.model_rotation);
+  mesh.geometry.computeBoundingBox();
+  const bbox = mesh.geometry.boundingBox;
+  const rotationVector = vector3Parse(item.model_rotation);
   const rotationUnit = item.rotation_unit;
+  const dimensionUnit = item.length_unit;
 
-  if (rotationUnit === RotationUnit.radians) {
-    // Do nothing
-  } else if (rotationUnit === RotationUnit.degrees) {
-    rotation.y = (rotation.y * Math.PI) / 180;
-    rotation.z = (rotation.z * Math.PI) / 180;
-    rotation.x = (rotation.x * Math.PI) / 180;
+  if (bbox) {
+    drawPlane(
+      bbox,
+      rotationVector,
+      rotationUnit as RotationUnit,
+      dimensionUnit as DimensionUnit
+    );
+  } else {
+    console.error("Bounding box not calculated after rotation changes");
   }
 
-  mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+  mesh.rotation.set(rotationVector.x, rotationVector.y, rotationVector.z);
 });
 
 onMounted(() => {
@@ -292,6 +303,48 @@ function calculateVolume(geometry: BufferGeometry) {
 
 function signedVolumeOfTriangle(p1: Vector3, p2: Vector3, p3: Vector3) {
   return p1.dot(p2.cross(p3)) / 6.0;
+}
+
+function drawPlane(
+  bbox: Box3,
+  rotationVector: Vector3,
+  rotationUnit: RotationUnit,
+  dimensionUnit: DimensionUnit
+) {
+  if (rotationUnit === RotationUnit.radians) {
+    // Do nothing
+  } else if (rotationUnit === RotationUnit.degrees) {
+    rotationVector.y = (rotationVector.y * Math.PI) / 180;
+    rotationVector.z = (rotationVector.z * Math.PI) / 180;
+    rotationVector.x = (rotationVector.x * Math.PI) / 180;
+  }
+
+  const rotationMatrix = new Matrix4();
+  rotationMatrix.makeRotationFromEuler(
+    new Euler(rotationVector.x, rotationVector.y, rotationVector.z)
+  );
+  bbox?.applyMatrix4(rotationMatrix);
+
+  removeObjectFromSceneByName("plane_helper");
+
+  const plane = new Plane(new Vector3(0, 0, 1), bbox.max.z);
+  const planeSize = dimensionUnit === DimensionUnit.mms ? 210 : 8.27;
+  const helper = new PlaneHelper(plane, planeSize, 0xffff00);
+  helper.name = "plane_helper";
+
+  scene.add(helper);
+}
+
+function removeObjectFromSceneByName(name: string) {
+  var selectedObject = scene.getObjectByName(name);
+
+  if (selectedObject) {
+    scene.remove(selectedObject);
+  } else {
+    console.error(
+      `Cannot remove object ${name} from scene. It does not exist in scene.`
+    );
+  }
 }
 </script>
 

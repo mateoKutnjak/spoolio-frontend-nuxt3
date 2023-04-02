@@ -3,7 +3,7 @@ export enum ToastLevelType {
 }
 
 export enum DimensionUnit {
-    mms, inches
+    mms = 'mms', inches = 'inches'
 }
 
 export enum RotationUnit {

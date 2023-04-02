@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-          <div class="w-full hidden lg:block rounded-xl bg-white p-3 shadow-md rounded-lg">
+          <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
             <table class="table-auto w-full">
               <thead class="rounded-lg">
                 <tr class="bg-base-200">

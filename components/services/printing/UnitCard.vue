@@ -105,7 +105,6 @@
 </template>
   
   <script lang="ts" setup>
-import { storeToRefs } from "pinia";
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import {
   IAttachmentFile,
@@ -115,7 +114,6 @@ import {
 } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
-import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
@@ -125,11 +123,8 @@ const { unit } = defineProps<{
 
 const dialogStore = useDialogStore();
 const globalsStore = useGlobalsStore();
-const filamentSpoolStore = useFilamentSpoolStore();
 const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
-
-const { dimensionUnit } = storeToRefs(globalsStore);
 
 const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
