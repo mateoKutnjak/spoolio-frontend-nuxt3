@@ -329,7 +329,7 @@ function drawPlane(
 
   const plane = new Plane(new Vector3(0, 0, 1), bbox.max.z);
   const planeSize = dimensionUnit === DimensionUnit.mms ? 210 : 8.27;
-  const helper = new PlaneHelper(plane, planeSize, 0xffff00);
+  const helper = new PlaneHelper(plane, planeSize, 0x888888);
   helper.name = "plane_helper";
 
   scene.add(helper);
