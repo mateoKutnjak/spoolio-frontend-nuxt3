@@ -187,7 +187,7 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
 
   mesh.geometry.computeBoundingBox();
   const bbox = mesh.geometry.boundingBox;
-  const rotationVector = vector3Parse(item.model_rotation);
+  const rotationVector = vector3Parse(item.model_rotation_display);
   const rotationUnit = item.rotation_unit;
   const dimensionUnit = item.length_unit;
 

@@ -8,11 +8,11 @@
       />
 
     </div>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 items-start">
 
       <div class="flex gap-2 items-center">
         <div class="text-sm">
-          {{ useOptimalRotation ? 'Optimal orientation' : 'Suboptimal orientation' }}
+          {{ useOptimalRotation ? 'Optimal orientation' : 'Custom orientation' }}
         </div>
         <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate">
           <input
@@ -31,43 +31,69 @@
           />
         </label>
       </div>
-      <div class="ml-2 flex flex-col gap-1">
-        <div class="flex gap-2 items-center">
-          <strong class="text-xs"> X </strong>
-          <input
-            type="number"
-            v-model="rotationX"
-            :disabled="useOptimalRotation"
-            class="input input-bordered w-20 input-sm !outline-none"
-          />
-          <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
-        </div>
 
-        <div class="flex gap-2 items-center">
-          <strong class="text-xs"> Y </strong>
-          <input
-            type="number"
-            v-model="rotationY"
-            :disabled="useOptimalRotation"
-            class="input input-bordered w-20 input-sm !outline-none"
+      <FormKit
+        type="form"
+        id="rotation-form"
+        submit-label="Save"
+        @submit="submitHandler"
+        :actions="false"
+      >
+        <div class="flex flex-col gap-1 border border-gray-400 p-4 rounded -ml-2">
+          <div class="flex gap-2 items-center">
+            <strong class="text-xs"> X </strong>
+            <FormKit
+              type="number"
+              v-model="rotationX"
+              :disabled="useOptimalRotation"
+              :classes="{
+                input: 'input input-bordered w-20 input-sm !outline-none bg-white',
+                inner: 'p-0 m-0 border-none bg-transparent',
+                outer: '!m-0',
+              }"
+            />
+            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+          </div>
+          <div class="flex gap-2 items-center">
+            <strong class="text-xs"> Y </strong>
+            <FormKit
+              type="number"
+              v-model="rotationY"
+              :disabled="useOptimalRotation"
+              :classes="{
+                input: 'input input-bordered w-20 input-sm !outline-none bg-white',
+                inner: 'p-0 m-0 border-none bg-transparent',
+                outer: '!m-0',
+              }"
+            />
+            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+          </div>
+          <div class="flex gap-2 items-center">
+            <strong class="text-xs"> Z </strong>
+            <FormKit
+              type="number"
+              v-model="rotationZ"
+              :disabled="useOptimalRotation"
+              :classes="{
+                input: 'input input-bordered w-20 input-sm !outline-none bg-white',
+                inner: 'p-0 m-0 border-none bg-transparent',
+                outer: '!m-0',
+              }"
+            />
+            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+          </div>
+          <FormKit
+            v-if="!useOptimalRotation"
+            type="submit"
+            label="Save"
+            :classes="{input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs', outer: '!m-0', }"
+            :input-class="{
+              'loading': calculatingPrice
+            }"
           />
-          <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
         </div>
-
-        <div class="flex gap-2 items-center">
-          <strong class="text-xs"> Z </strong>
-          <input
-            type="number"
-            v-model="rotationZ"
-            :disabled="useOptimalRotation"
-            class="input input-bordered w-20 input-sm !outline-none"
-          />
-          <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
-        </div>
-
-      </div>
+      </FormKit>
     </div>
-
   </div>
 </template>
 
@@ -97,10 +123,27 @@ if (!unit) {
 const rotations = vector3Parse(unit.model_rotation);
 
 const useOptimalRotation = ref(unit.use_optimal_rotation);
+const calculatingPrice = ref(false);
 
 const rotationX = ref(rotations.x);
 const rotationY = ref(rotations.y);
 const rotationZ = ref(rotations.z);
+
+async function submitHandler() {
+  console.log("Now save all rotations to model");
+
+  calculatingPrice.value = true;
+
+  await new Promise((r) => setTimeout(r, 1000));
+  // TODO calculate price by calling Slicer CLI
+  printOrderStore.updateUnit(localUrl, {
+    model_rotation: vector3ToString(
+      new Vector3(rotationX.value, rotationY.value, rotationZ.value)
+    ),
+  });
+
+  calculatingPrice.value = false;
+}
 
 watch(useOptimalRotation, (value) => {
   if (value) {
@@ -118,7 +161,7 @@ watch(useOptimalRotation, (value) => {
 
 watch(rotationX, (value) => {
   printOrderStore.updateUnit(localUrl, {
-    model_rotation: vector3ToString(
+    model_rotation_display: vector3ToString(
       new Vector3(value, rotationY.value, rotationZ.value)
     ),
   });
@@ -126,7 +169,7 @@ watch(rotationX, (value) => {
 
 watch(rotationY, (value) => {
   printOrderStore.updateUnit(localUrl, {
-    model_rotation: vector3ToString(
+    model_rotation_display: vector3ToString(
       new Vector3(rotationX.value, value, rotationZ.value)
     ),
   });
@@ -134,7 +177,7 @@ watch(rotationY, (value) => {
 
 watch(rotationZ, (value) => {
   printOrderStore.updateUnit(localUrl, {
-    model_rotation: vector3ToString(
+    model_rotation_display: vector3ToString(
       new Vector3(rotationX.value, rotationY.value, value)
     ),
   });

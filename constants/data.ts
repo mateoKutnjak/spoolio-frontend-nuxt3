@@ -246,6 +246,7 @@ export interface IPrintOrderUnit {
     model_dimensions: string,
     model_volume: number,
     model_rotation: string,
+    model_rotation_display: string,
     optimal_rotation: string,
     use_optimal_rotation: boolean,
     length_unit: string,

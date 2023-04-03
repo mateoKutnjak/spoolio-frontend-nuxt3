@@ -238,6 +238,7 @@ function duplicateUnit() {
       model_dimensions: unit.model_dimensions,
       model_volume: unit.model_volume,
       model_rotation: unit.model_rotation,
+      model_rotation_display: unit.model_rotation_display,
       optimal_rotation: unit.optimal_rotation,
       use_optimal_rotation: unit.use_optimal_rotation,
       screenshotURL: unit.screenshotURL,

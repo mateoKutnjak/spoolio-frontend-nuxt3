@@ -324,6 +324,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     model_dimensions: vector3ToString(model_dimensions),
                     model_volume: model_volume,
                     model_rotation: vector3ToString(model_rotation),
+                    model_rotation_display: vector3ToString(model_rotation),
                     optimal_rotation: vector3ToString(optimal_rotation),
                     use_optimal_rotation: true,
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
