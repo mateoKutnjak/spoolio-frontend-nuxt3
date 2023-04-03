@@ -1,7 +1,7 @@
 export const BACKGROUND_COLOR = "#f8f9fa";
 
 // * Restrict non-auth user to access anything but index page => /
-export const RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS = true;
+export const RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS = false;
 
 export const RESTRICTED_PAGES_STARTS_WITH = [
     '/profile',

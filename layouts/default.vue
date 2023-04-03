@@ -5,7 +5,10 @@
       type="checkbox"
       class="drawer-toggle"
     />
-    <div :class="`drawer-content bg-[${BACKGROUND_COLOR}]`">
+    <div
+      class="drawer-content"
+      :style="`background-color: ${BACKGROUND_COLOR};`"
+    >
       <div class="flex flex-col h-screen">
         <Navbar />
         <Toast />
