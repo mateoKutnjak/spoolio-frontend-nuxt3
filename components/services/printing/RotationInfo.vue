@@ -1,36 +1,33 @@
 <template>
-  <div class="flex gap-3 items-start text-gray-500">
-    <div class="flex flex-col justify-between mt-0.5">
+  <div class="flex flex-col gap-3 items-start text-gray-500">
+    <div class="flex justify-between mt-0.5 gap-1">
       <Icon
         name="lucide:rotate-3d"
         size="25"
         class="text-gray-500"
       />
+      <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate -mt-0.5">
+        <input
+          type="checkbox"
+          v-model="useOptimalRotation"
+        />
+        <Icon
+          name="lucide:lock"
+          class="swap-on text-gray-400"
+          size="20"
+        />
+        <Icon
+          name="lucide:unlock"
+          class="swap-off text-gray-400"
+          size="20"
+        />
+      </label>
+      <div class="mt-1.5 text-sm">
+        {{ useOptimalRotation ? 'Optimal orientation' : 'Custom orientation' }}
+      </div>
 
     </div>
     <div class="flex flex-col gap-2 items-start">
-
-      <div class="flex gap-2 items-center">
-        <div class="text-sm">
-          {{ useOptimalRotation ? 'Optimal orientation' : 'Custom orientation' }}
-        </div>
-        <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate">
-          <input
-            type="checkbox"
-            v-model="useOptimalRotation"
-          />
-          <Icon
-            name="lucide:lock"
-            class="swap-on text-gray-400"
-            size="20"
-          />
-          <Icon
-            name="lucide:unlock"
-            class="swap-off text-gray-400"
-            size="20"
-          />
-        </label>
-      </div>
 
       <FormKit
         type="form"
@@ -39,7 +36,7 @@
         @submit="submitHandler"
         :actions="false"
       >
-        <div class="flex flex-col gap-1 border border-gray-400 p-4 rounded -ml-2">
+        <div class="flex flex-col gap-1 border border-gray-400 p-4 rounded">
           <div class="flex gap-2 items-center">
             <strong class="text-xs"> X </strong>
             <FormKit
