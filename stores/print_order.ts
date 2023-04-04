@@ -6,6 +6,7 @@ import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { usePrintOrderHistoryStore } from './order_history_print';
+import { ofetch } from 'ofetch';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -264,6 +265,44 @@ export const usePrintOrderStore = defineStore('print-order', {
                     method: 'POST',
                     body: formData,
                 }).then((response: IPrintOrderUnit) => {
+                    resolve(response)
+                }).catch(err => {
+                    console.log(err);
+                    reject(err)
+                });
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async slicerEstimate(unit: IPrintOrderUnit): Promise<IPrintOrderUnit> {
+            const config = useRuntimeConfig();
+
+            var formData = new FormData();
+            formData.append("comment", unit.comment);
+            formData.append("spool", unit.spool.id.toString());
+            formData.append("infill", unit.infill.id.toString());
+            formData.append("file", unit.file);
+            formData.append('quantity', unit.quantity.toString());
+            formData.append('length_unit', unit.length_unit)
+            formData.append('rotation_unit', unit.rotation_unit)
+            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2));
+            formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
+            formData.append('model_volume', unit.model_volume.toString());
+            formData.append('model_dimensions', unit.model_dimensions)
+            formData.append('model_rotation', unit.model_rotation)
+            formData.append('optimal_rotation', unit.optimal_rotation);
+            formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
+
+            return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
+                ofetch<IPrintOrderUnit>('api/slicer-estimation/', {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    body: formData,
+                }).then((response: IPrintOrderUnit) => {
+                    this.updateUnit(unit.localUrl, {
+                        estimated_time: response.estimated_time,
+                        estimated_price: response.estimated_price,
+                    })
+                    console.log(response)
                     resolve(response)
                 }).catch(err => {
                     console.log(err);

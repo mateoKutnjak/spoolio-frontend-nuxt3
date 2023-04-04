@@ -27,8 +27,7 @@
       </div>
 
     </div>
-    <div class="flex flex-col gap-2 items-start">
-
+    <div class="flex flex-col gap-2 items-start rounded-lg shadow bg-white">
       <FormKit
         type="form"
         id="rotation-form"
@@ -36,7 +35,7 @@
         @submit="submitHandler"
         :actions="false"
       >
-        <div class="flex flex-col gap-1 border border-gray-400 p-4 rounded">
+        <div class="flex flex-col gap-1 p-4">
           <div class="flex gap-2 items-center">
             <strong class="text-xs"> X </strong>
             <FormKit
@@ -85,7 +84,7 @@
             label="Save"
             :classes="{input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs', outer: '!m-0', }"
             :input-class="{
-              'loading': calculatingPrice
+              'loading': slicerEstimationPending
             }"
           />
         </div>
@@ -120,26 +119,27 @@ if (!unit) {
 const rotations = vector3Parse(unit.model_rotation);
 
 const useOptimalRotation = ref(unit.use_optimal_rotation);
-const calculatingPrice = ref(false);
+const slicerEstimationPending = ref(false);
 
 const rotationX = ref(rotations.x);
 const rotationY = ref(rotations.y);
 const rotationZ = ref(rotations.z);
 
 async function submitHandler() {
-  console.log("Now save all rotations to model");
+  slicerEstimationPending.value = true;
 
-  calculatingPrice.value = true;
-
-  await new Promise((r) => setTimeout(r, 1000));
-  // TODO calculate price by calling Slicer CLI
   printOrderStore.updateUnit(localUrl, {
     model_rotation: vector3ToString(
       new Vector3(rotationX.value, rotationY.value, rotationZ.value)
     ),
   });
 
-  calculatingPrice.value = false;
+  const { data, pending, error, refresh } = await useAsyncData(
+    "estimate-slicer",
+    () => printOrderStore.slicerEstimate(unit!)
+  );
+
+  slicerEstimationPending.value = false;
 }
 
 watch(useOptimalRotation, (value) => {
