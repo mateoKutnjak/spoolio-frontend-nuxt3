@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PROFIT_MARGIN_MULTIPLIER } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
@@ -32,6 +32,22 @@ async function postAttachmentFile(item: IAttachmentFile, contentType: string, ob
     });
 }
 
+function adjustPrice(item: IPrintOrderUnit) {
+    if (!item.estimated_price) {
+        console.error(`Cannot calculate adjusted price. Estimated price is not defined for localUrl=${item.localUrl}`);
+        return Number.NEGATIVE_INFINITY;
+    }
+
+    if (!item.estimated_time) {
+        console.error(`Cannot calculate adjusted price. Estimated time is not defined for localUrl=${item.localUrl}`);
+        return Number.NEGATIVE_INFINITY;
+    }
+
+    const estimated_time_hours = item.estimated_time / 60 / 60;
+
+    return (item.estimated_price + estimated_time_hours * HOURLY_RATE_EUR) * PROFIT_MARGIN_MULTIPLIER
+}
+
 export const usePrintOrderStore = defineStore('print-order', {
     state: () => ({
         print_order: <IPrintOrder>{
@@ -57,139 +73,37 @@ export const usePrintOrderStore = defineStore('print-order', {
         getContactEmail: (state) => state.print_order?.contact_email || '',
         getPriceByLocalUrl: (state) => {
             return (localUrl: string) => {
-                const unit = state.units.find(el => el.localUrl === localUrl)
-
-                if (!unit) {
-                    throw createError(`Cannot calculate unit price. Unit with localUrl ${localUrl} not found`);
-                }
-
-                // * Model volume
-                const v = unit.model_volume;
-
-                // * Model bounding box volume
-                let model_dimensions = vector3Parse(unit.model_dimensions)
-                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
-
-                // * Infill percentage
-                const I = unit.infill.percentage;
-
-                // * Density of material
-                // ! Divide by 1000 because of conversion g/cm3 => g/mm3
-                const D = unit.spool.material.density / 1000;
-
-                // * Price of material per gram
-                const G = unit.spool.material.price;
-
-                // * Quantity
-                const q = unit.quantity;
-
-
-                if (!v || !q || !I || !D || !G || !vBbox) {
-                    console.log("[SEE BELLOW] Some variables are not set and price for unit cannot be determined");
-                    console.log("volume = " + v);
-                    console.log("bbox volume = " + vBbox);
-                    console.log("quantity = " + q);
-                    console.log("infill = " + I);
-                    console.log("density = " + D);
-                    console.log("price = " + G);
-                    return Number.NEGATIVE_INFINITY;
-                }
-
-                const vAvg = (v + vBbox) / 2;
-
-                return vAvg * D * G * q * I * PRICE_MARGIN_FACTOR;
-            }
-        },
-        getTotalPrice: (state) => {
-            return Math.max(state.units.reduce((acc, item) => {
-                const v = item.model_volume;
-
-                let model_dimensions = vector3Parse(item.model_dimensions)
-                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
-
-                const q = item.quantity;
-                const i = item.infill.percentage;
-
-                // ! Divide by 1000 because of conversion g/cm3 => g/mm3
-                const d = item.spool.material.density / 1000;
-                const p = item.spool.material.price;
-
-                if (!v || !q || !i || !d || !p || !vBbox) {
-                    return Number.NEGATIVE_INFINITY;
-                }
-
-                const vAvg = (v + vBbox) / 2;
-
-                return vAvg * d * p * q * i * PRICE_MARGIN_FACTOR + acc;
-            }, 0), PRINT_ORDER_MIN_PRICE);
-        },
-        getETASecondsByLocalUrl: (state) => {
-            return (localUrl: string) => {
-
                 const item = state.units.find(el => el.localUrl === localUrl)
 
                 if (!item) {
                     throw createError(`Cannot calculate unit price. Unit with localUrl ${localUrl} not found`);
                 }
-
-                const objVolume = item.model_volume;
-
-                let model_dimensions = vector3Parse(item.model_dimensions)
-                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
-
-                const q = item.quantity;
-                const i = item.infill.percentage;
-                const vPrint = item.spool.material.printing_speed;
-
-                if (!objVolume || !q || !i || !vPrint || !vBbox) {
-                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
-                    console.log("volume = " + objVolume);
-                    console.log('bounding box volume = ' + vBbox);
-                    console.log("quantity = " + q);
-                    console.log("infill = " + i);
-                    console.log("printing speed = " + vPrint);
-                    // console.log("price = " + p);
-                    return Number.NEGATIVE_INFINITY;
-                }
-
-                const vAvg = (objVolume + vBbox) / 2;
-                const V = i * vAvg;
-                const vVolume = vPrint * LAYER_AREA;
-                const t = V / vVolume;
-
-                return q * t;
+                return item.quantity * adjustPrice(item);
             }
         },
-        getETASeconds: (state) => {
-            return state.units.reduce((acc, item) => {
-
-                const objVolume = item.model_volume;
-
-                let model_dimensions = vector3Parse(item.model_dimensions)
-                let vBbox = model_dimensions.x * model_dimensions.y * model_dimensions.z;
-
-                const q = item.quantity;
-                const i = item.infill.percentage;
-                const vPrint = item.spool.material.printing_speed;
-
-                if (!objVolume || !q || !i || !vPrint || !vBbox) {
-                    console.log("[SEE BELLOW] [localUrl=" + item.localUrl + "] Some variables are not set and price for unit cannot be determined");
-                    console.log("volume = " + objVolume);
-                    console.log('bounding box volume = ' + vBbox);
-                    console.log("quantity = " + q);
-                    console.log("infill = " + i);
-                    console.log("printing speed = " + vPrint);
-                    // console.log("price = " + p);
+        getTotalPrice: (state) => {
+            const priceSum = state.units.reduce((acc, item) => {
+                if (!item.estimated_price) {
                     return Number.NEGATIVE_INFINITY;
                 }
 
-                const vAvg = (objVolume + vBbox) / 2;
-                const V = i * vAvg;
-                const vVolume = vPrint * LAYER_AREA;
-                const t = V / vVolume;
-
-                return q * t + acc;
+                const adjustedPrice = adjustPrice(item);
+                return acc + item.quantity * adjustedPrice;
             }, 0);
+
+            if (priceSum !== Number.NEGATIVE_INFINITY) {
+                return Math.max(priceSum, PRINT_ORDER_MIN_PRICE)
+            }
+            return priceSum;
+        },
+        getETASeconds: (state) => {
+
+            return state.units.reduce((acc, item) => {
+                if (!item.estimated_time) {
+                    return Number.NEGATIVE_INFINITY;
+                }
+                return acc + item.quantity * item.estimated_time;
+            }, 0)
         },
     },
 
@@ -248,8 +162,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append('rotation_unit', unit.rotation_unit)
-            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2));
-            formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
+            formData.append("estimated_price", unit.estimated_price.toFixed(2));
+            formData.append('estimated_time', unit.estimated_time.toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
             formData.append('model_rotation', unit.model_rotation)
@@ -284,8 +198,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append('rotation_unit', unit.rotation_unit)
-            formData.append("estimated_price", this.getPriceByLocalUrl(unit.localUrl).toFixed(2));
-            formData.append('estimated_time', Math.round(this.getETASecondsByLocalUrl(unit.localUrl)).toString())
+            formData.append("estimated_price", unit.estimated_price.toFixed(2));
+            formData.append('estimated_time', unit.estimated_time.toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
             formData.append('model_rotation', unit.model_rotation)
@@ -308,7 +222,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     console.log(err);
                     reject(err)
                 });
-            }), HTTP_REQUEST_TIMEOUT);
+            }), HTTP_REQUEST_TIMEOUT * 3);
         },
 
         async postPrintOrderAttachmentFile(item: IAttachmentFile, orderId: number): Promise<IAttachmentFile> {
@@ -347,7 +261,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             const { model_volume, model_dimensions, optimal_rotation, model_rotation } = await preprocess3dObject(localUrl);
 
             create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
-                this.units.push(<IPrintOrderUnit>{
+
+                const unit = <IPrintOrderUnit>{
                     id: undefined,
                     quantity: 1,
                     spool: filamentSpoolStore.getAll[0],
@@ -369,7 +284,10 @@ export const usePrintOrderStore = defineStore('print-order', {
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
                     rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
-                });
+                };
+
+                this.slicerEstimate(unit);
+                this.units.push(unit);
             })
         },
 

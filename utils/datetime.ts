@@ -44,6 +44,10 @@ export function reformatDateTime(rawDate: string | undefined): string {
 }
 
 export function reformatSeconds(seconds: number): string {
+
+    // * Add one day to every duration as buffer
+    seconds += 24 * 60 * 60;
+
     if (seconds < 60) {
         const result = Math.floor(seconds);
         const suffix = result % 10 == 1 ? 'second' : 'seconds';

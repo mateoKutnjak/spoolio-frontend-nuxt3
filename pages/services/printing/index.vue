@@ -39,15 +39,16 @@
                 </div>
 
               </div>
-              <div v-else-if="totalPrice >= 0">
+              <div v-else-if="totalPrice > 0">
                 <div class="text-lg font-bold text-gray-700 ">
                   €{{ (totalPrice).toFixed(2) }}
                 </div>
               </div>
               <div v-else>
                 <Icon
-                  class="text-gray-500"
+                  class="text-gray-500 -my-10"
                   name="eos-icons:three-dots-loading"
+                  size="50"
                 />
               </div>
             </div>
@@ -56,13 +57,13 @@
 
               <strong
                 class="text-md font-bold"
-                v-if="etaSeconds > Number.NEGATIVE_INFINITY"
+                v-if="etaSeconds > 0"
               >{{reformatSeconds(etaSeconds)}}</strong>
               <div v-else>
                 <Icon
-                  class="text-gray-900 pt-1.5"
+                  class="text-gray-500 -my-10"
                   name="eos-icons:three-dots-loading"
-                  size="30"
+                  size="50"
                 />
               </div>
             </div>

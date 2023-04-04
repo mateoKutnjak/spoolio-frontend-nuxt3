@@ -55,6 +55,11 @@ export const BILLING_ADDRESS_TYPES = [
     { value: BILLING_ADDRESS_TYPE_COMPANY, label: capitalizeOnlyFirstLetter(BILLING_ADDRESS_TYPE_COMPANY) },
 ]
 
+// * Pricing
+
+export const PROFIT_MARGIN_MULTIPLIER = 3;
+export const HOURLY_RATE_EUR = 0.3;
+
 // * Payment
 
 export const PAYMENT_ORDER_NAMES = ['printing', 'modeling', 'store'];

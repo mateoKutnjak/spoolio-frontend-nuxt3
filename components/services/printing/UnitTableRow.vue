@@ -60,17 +60,18 @@
         />
       </div>
     </td>
-    <td class="py-4 px-8 font-semibold text-lg text-gray-900 dark:text-white text-end">
-      <div class="flex justify-center text-xl text-gray-700 dark:text-white">
+    <td class="py-4 px-4 text-end">
+      <div class="flex justify-center text-xl text-gray-700 font-semibold">
         <div
-          v-if="totalPrice >= 0"
+          v-if="totalPrice > 0"
           class="flex gap-1 items-center"
         >€{{ (totalPrice).toFixed(2)}}
         </div>
         <div v-else>
           <Icon
-            class="text-gray-500"
+            class="text-gray-500 -my-10"
             name="eos-icons:three-dots-loading"
+            size="50"
           />
         </div>
 

@@ -82,7 +82,7 @@
                   @click.stop.prevent
                 />
               </div>
-              <div class="flex justify-center text-xl text-gray-700 dark:text-white">
+              <div class="flex justify-center text-xl text-gray-700 font-semibold">
                 <div
                   v-if="totalPrice >= 0"
                   class="flex gap-1 items-center"
@@ -90,8 +90,9 @@
                 </div>
                 <div v-else>
                   <Icon
-                    class="text-gray-500"
+                    class="text-gray-500 -my-10"
                     name="eos-icons:three-dots-loading"
+                    size="50"
                   />
                 </div>
               </div>
