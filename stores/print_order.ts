@@ -197,6 +197,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
+            formData.append('local_url', unit.localUrl);
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
