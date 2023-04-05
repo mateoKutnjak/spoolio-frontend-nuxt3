@@ -156,8 +156,6 @@ export interface IFilamentMaterial {
     name: string,
     description: string,
     density: number,
-    price: number,
-    printing_speed: number,
 }
 
 export interface IFilamentInfill {
