@@ -5,7 +5,7 @@
         <div class="text-4xl">Create your printing order</div>
         <div class="flex gap-4 items-end">
           <ListboxDimensionUnit class="self-end" />
-          <ListboxRotationUnit class="self-end" />
+          <!-- <ListboxRotationUnit class="self-end" /> -->
           <div
             class="btn btn-error"
             :class="units.length ? '' : 'btn-disabled'"

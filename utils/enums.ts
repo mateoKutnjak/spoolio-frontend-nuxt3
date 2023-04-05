@@ -7,5 +7,5 @@ export enum DimensionUnit {
 }
 
 export enum RotationUnit {
-    degrees = 'degrees', radians = 'radians',
+    degrees = 'degrees'
 }

@@ -146,14 +146,6 @@ if (mesh.geometry.boundingBox) {
 
 const model_rotation = vector3Parse(printOrderUnit.model_rotation);
 
-if (printOrderUnit.rotation_unit === RotationUnit.radians) {
-  // Do nothing
-} else if (printOrderUnit.rotation_unit === RotationUnit.degrees) {
-  model_rotation.x = (model_rotation.x * Math.PI) / 180;
-  model_rotation.y = (model_rotation.y * Math.PI) / 180;
-  model_rotation.z = (model_rotation.z * Math.PI) / 180;
-}
-
 mesh.rotation.set(model_rotation.x, model_rotation.y, model_rotation.z);
 
 // *** ADD OBJECT TO SCENE *** //
@@ -311,13 +303,6 @@ function drawPlane(
   rotationUnit: RotationUnit,
   dimensionUnit: DimensionUnit
 ) {
-  if (rotationUnit === RotationUnit.radians) {
-    // Do nothing
-  } else if (rotationUnit === RotationUnit.degrees) {
-    rotationVector.y = (rotationVector.y * Math.PI) / 180;
-    rotationVector.z = (rotationVector.z * Math.PI) / 180;
-    rotationVector.x = (rotationVector.x * Math.PI) / 180;
-  }
 
   const rotationMatrix = new Matrix4();
   rotationMatrix.makeRotationFromEuler(
