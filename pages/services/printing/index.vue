@@ -88,8 +88,8 @@
                 />
               </tbody>
             </table>
-            <div class="py-2"></div>
             <div
+              class="p-6 py-3"
               @dragover.prevent
               @drop.prevent
             >

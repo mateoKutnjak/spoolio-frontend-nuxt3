@@ -7,6 +7,7 @@ import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { usePrintOrderHistoryStore } from './order_history_print';
 import { ofetch } from 'ofetch';
+import { useNotificationStore } from './notification';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -190,6 +191,8 @@ export const usePrintOrderStore = defineStore('print-order', {
         async slicerEstimate(unit: IPrintOrderUnit): Promise<IPrintOrderUnit> {
             const config = useRuntimeConfig();
 
+            const notificationStore = useNotificationStore();
+
             var formData = new FormData();
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
@@ -216,10 +219,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                         estimated_time: response.estimated_time,
                         estimated_price: response.estimated_price,
                     })
-                    console.log(response)
                     resolve(response)
                 }).catch(err => {
-                    console.log(err);
+                    notificationStore.show(err.data?.message || 'Error occurred', ToastLevelType.error)
                     reject(err)
                 });
             }), HTTP_REQUEST_TIMEOUT * 3);
