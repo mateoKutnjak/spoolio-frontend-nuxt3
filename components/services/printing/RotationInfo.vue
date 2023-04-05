@@ -151,6 +151,8 @@ watch(useOptimalRotation, (value) => {
     rotationX.value = optimal_rotation.x;
     rotationY.value = optimal_rotation.y;
     rotationZ.value = optimal_rotation.z;
+
+    printOrderStore.slicerEstimate(unit);
   }
 
   printOrderStore.updateUnit(localUrl, { use_optimal_rotation: value });
