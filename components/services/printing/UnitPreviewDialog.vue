@@ -52,7 +52,28 @@
         </div>
       </div>
       <div class="absolute bottom-4 right-6">
-        <div class="text-4xl text-gray-700">€{{ (price).toFixed(2) }}</div>
+
+        <div v-if="price === Number.NEGATIVE_INFINITY">
+          <Icon
+            class="text-gray-500 -my-6"
+            name="eos-icons:three-dots-loading"
+            size="70"
+          />
+        </div>
+        <div
+          v-else-if="price === Number.POSITIVE_INFINITY"
+          class="btn btn-error gap-2 shadow text-white"
+          :class="unit ? '' : 'btn-disabled'"
+          @click.stop="unit ? printOrderStore.slicerEstimate(unit) : () => null"
+        >
+          <Icon name="lucide:refresh-cw" />
+          Retry
+        </div>
+        <div
+          v-else
+          class="text-4xl text-gray-700"
+        >€{{ (price).toFixed(2)}}
+        </div>
       </div>
     </div>
   </div>
