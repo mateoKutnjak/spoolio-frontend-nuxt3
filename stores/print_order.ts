@@ -201,13 +201,19 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append('rotation_unit', unit.rotation_unit)
-            formData.append("estimated_price", unit.estimated_price.toFixed(2));
-            formData.append('estimated_time', unit.estimated_time.toString())
+            formData.append("estimated_price", Number(0).toString());
+            formData.append('estimated_time', Number(0).toString())
             formData.append('model_volume', unit.model_volume.toString());
             formData.append('model_dimensions', unit.model_dimensions)
             formData.append('model_rotation', unit.model_rotation)
             formData.append('optimal_rotation', unit.optimal_rotation);
             formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
+
+            // * Negative infinity indicates loading
+            this.updateUnit(unit.localUrl, {
+                estimated_time: Number.NEGATIVE_INFINITY,
+                estimated_price: Number.NEGATIVE_INFINITY
+            })
 
             return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
                 ofetch<IPrintOrderUnit>('api/slicer-estimation/', {
@@ -222,6 +228,12 @@ export const usePrintOrderStore = defineStore('print-order', {
                     resolve(response)
                 }).catch(err => {
                     notificationStore.show(err.data?.message || 'Error occurred', ToastLevelType.error)
+                    
+                    // * Positive infinity indicates error
+                    this.updateUnit(unit.localUrl, {
+                        estimated_time: Number.POSITIVE_INFINITY,
+                        estimated_price: Number.POSITIVE_INFINITY
+                    })
                     reject(err)
                 });
             }), HTTP_REQUEST_TIMEOUT * 3);

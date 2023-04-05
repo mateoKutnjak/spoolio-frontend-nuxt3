@@ -22,8 +22,22 @@
             </div>
             <div class="px-3 py-2 flex items-center">
               <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
+
+              <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
+                <Icon
+                  class="text-gray-500 -my-10"
+                  name="eos-icons:three-dots-loading"
+                  size="50"
+                />
+              </div>
               <div
-                v-if="totalPrice == PRINT_ORDER_MIN_PRICE"
+                v-else-if="totalPrice === Number.POSITIVE_INFINITY"
+                class="px-3 py-0.5 bg-error rounded-md shadow text-sm text-white font-semibold"
+              >
+                Error
+              </div>
+              <div
+                v-else-if="totalPrice <= PRINT_ORDER_MIN_PRICE"
                 class="flex gap-1 items-center justify-end"
               >
                 <div
@@ -39,33 +53,31 @@
                 </div>
 
               </div>
-              <div v-else-if="totalPrice > 0">
-                <div class="text-lg font-bold text-gray-700 ">
-                  €{{ (totalPrice).toFixed(2) }}
-                </div>
-              </div>
-              <div v-else>
-                <Icon
-                  class="text-gray-500 -my-10"
-                  name="eos-icons:three-dots-loading"
-                  size="50"
-                />
-              </div>
+              <strong
+                class="text-lg font-bold text-gray-700 "
+                v-else
+              >{{reformatSeconds(totalPrice)}}</strong>
             </div>
             <div class="px-3 py-2 flex gap-2 items-center">
               <div class="text-base text-gray-700 font-normal"> ETA: </div>
 
-              <strong
-                class="text-md font-bold"
-                v-if="etaSeconds > 0"
-              >{{reformatSeconds(etaSeconds)}}</strong>
-              <div v-else>
+              <div v-if="etaSeconds === Number.NEGATIVE_INFINITY">
                 <Icon
                   class="text-gray-500 -my-10"
                   name="eos-icons:three-dots-loading"
                   size="50"
                 />
               </div>
+              <div
+                v-else-if="etaSeconds === Number.POSITIVE_INFINITY"
+                class="px-3 py-0.5 bg-error rounded-md shadow text-sm text-white font-semibold"
+              >
+                Error
+              </div>
+              <strong
+                class="text-md font-bold"
+                v-else
+              >{{reformatSeconds(etaSeconds)}}</strong>
             </div>
           </div>
           <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
@@ -168,7 +180,7 @@
           <div class="hidden md:flex gap-5 justify-end">
             <NuxtLink
               class="btn btn-primary btn-lg gap-1"
-              :class="units.length && totalPrice > 0 && etaSeconds > 0 ? '' : 'btn-disabled'"
+              :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && etaSeconds !== Number.NEGATIVE_INFINITY && etaSeconds !== Number.POSITIVE_INFINITY ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
               <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->

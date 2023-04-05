@@ -62,19 +62,27 @@
     </td>
     <td class="py-4 px-4 text-end">
       <div class="flex justify-center text-xl text-gray-700 font-semibold">
-        <div
-          v-if="totalPrice > 0"
-          class="flex gap-1 items-center"
-        >€{{ (totalPrice).toFixed(2)}}
-        </div>
-        <div v-else>
+        <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
           <Icon
             class="text-gray-500 -my-10"
             name="eos-icons:three-dots-loading"
             size="50"
           />
         </div>
-
+        <div
+          v-else-if="totalPrice === Number.POSITIVE_INFINITY"
+          class="btn btn-sm btn-error gap-2 shadow text-white"
+          :class="printOrderUnit ? '' : 'btn-disabled'"
+          @click.stop="printOrderUnit ? printOrderStore.slicerEstimate(printOrderUnit) : () => null"
+        >
+          <Icon name="lucide:refresh-cw" />
+          Retry
+        </div>
+        <div
+          v-else
+          class="flex gap-1 items-center"
+        >€{{ (totalPrice).toFixed(2)}}
+        </div>
       </div>
     </td>
     <td class="py-4 text-center">
