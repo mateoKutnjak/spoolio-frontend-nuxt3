@@ -168,7 +168,7 @@
           <div class="hidden md:flex gap-5 justify-end">
             <NuxtLink
               class="btn btn-primary btn-lg gap-1"
-              :class="units.length ? '' : 'btn-disabled'"
+              :class="units.length && totalPrice > 0 && etaSeconds > 0 ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
               <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
