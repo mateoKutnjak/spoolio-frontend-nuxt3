@@ -6,7 +6,6 @@ import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { usePrintOrderHistoryStore } from './order_history_print';
-import { ofetch } from 'ofetch';
 import { useNotificationStore } from './notification';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
@@ -188,10 +187,16 @@ export const usePrintOrderStore = defineStore('print-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async slicerEstimate(unit: IPrintOrderUnit): Promise<IPrintOrderUnit> {
+        async slicerEstimate(unit: IPrintOrderUnit) {
             const config = useRuntimeConfig();
 
+            const authStore = useAuthStore();
             const notificationStore = useNotificationStore();
+
+            if (!authStore.loggedIn) {
+                notificationStore.show('Please log in to use this feature', ToastLevelType.info);
+                return;
+            }
 
             var formData = new FormData();
             formData.append("comment", unit.comment);
@@ -216,28 +221,105 @@ export const usePrintOrderStore = defineStore('print-order', {
                 estimated_price: Number.NEGATIVE_INFINITY
             })
 
-            return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
-                ofetch<IPrintOrderUnit>('api/slicer-estimation/', {
-                    baseURL: config.public.baseURL,
-                    method: 'POST',
-                    body: formData,
-                }).then((response: IPrintOrderUnit) => {
-                    this.updateUnit(unit.localUrl, {
-                        estimated_time: response.estimated_time,
-                        estimated_price: response.estimated_price,
-                    })
-                    resolve(response)
-                }).catch(err => {
-                    notificationStore.show(err.data?.message || 'Error occurred', ToastLevelType.error)
-                    
-                    // * Positive infinity indicates error
-                    this.updateUnit(unit.localUrl, {
-                        estimated_time: Number.POSITIVE_INFINITY,
-                        estimated_price: Number.POSITIVE_INFINITY
-                    })
-                    reject(err)
-                });
-            }), HTTP_REQUEST_TIMEOUT * 3);
+            console.debug("Websockets: Opening...")
+
+            // * First we connect to websocket
+            const {
+                supported,
+                ws,
+                send,
+                close,
+                messageEvent,
+                errorEvent,
+                data,
+                isOpen,
+                isClosed,
+                errored,
+            } = useWebSocket("ws://localhost:8000/ws/slicer-estimation/");
+
+            watch(data, value => {
+                console.debug(`Websockets message = ${value}`)
+                let parsedData = JSON.parse(value);
+
+                switch (parsedData.type) {
+                    case 'init':
+                        const channel_group_name = parsedData.data?.channel_group_name;
+
+                        if (!channel_group_name) {
+                            console.debug('Websocket of message type "init" should have key named "channel_group_name". Requesting websocket connection close...')
+                            close();
+                        }
+
+                        promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
+                            customFetch<IPrintOrderUnit>(`api/slicer-estimation/?channel_group_name=${channel_group_name}`, {
+                                baseURL: config.public.baseURL,
+                                method: 'POST',
+                                body: formData,
+                            }).then((response: IPrintOrderUnit) => {
+                                resolve(response)
+                            }).catch(err => {
+                                reject(err)
+                            });
+                        }), HTTP_REQUEST_TIMEOUT);
+                        break;
+                    case 'data':
+                        const estimated_time = parsedData.data?.estimated_time;
+                        const estimated_price = parsedData.data?.estimated_price;
+
+                        if (!estimated_time || !estimated_price) {
+                            console.debug(`Websockets: Incomplete data message. Estimated time = ${estimated_time}. Estimated price = ${estimated_price}`)
+
+                            this.updateUnit(unit.localUrl, {
+                                estimated_time: Number.POSITIVE_INFINITY,
+                                estimated_price: Number.POSITIVE_INFINITY
+                            })
+
+                            return;
+                        }
+
+                        this.updateUnit(unit.localUrl, {
+                            estimated_time: estimated_time,
+                            estimated_price: estimated_price,
+                        })
+                        break;
+                    case 'error':
+                        const errorMessage = parsedData.error;
+                        console.error(`Websocker error: ${errorMessage}`)
+
+                        // * Positive infinity indicates ERROR
+                        this.updateUnit(unit.localUrl, {
+                            estimated_time: Number.POSITIVE_INFINITY,
+                            estimated_price: Number.POSITIVE_INFINITY
+                        })
+
+                        break;
+                    case 'close':
+                        const reason = parsedData.data?.reason;
+                        console.debug(`Websockets: close signal ${reason} received. Closing...`)
+                        close();
+                        console.debug('Websockets: Closed')
+
+                        break;
+                    default:
+                        console.debug('Unknown Websocket message type. Requesting websocket connection close...')
+                        close();
+                        console.debug('Websockets: Closed')
+                        break;
+                }
+
+                console.debug('Websockets: Message received')
+                console.debug(value)
+            })
+
+            watch(isOpen, value => {
+                console.debug("Websockets: Opened")
+            })
+
+            watch(isClosed, value => {
+                console.debug("Websockets: Closing...")
+                close()
+                console.debug("Websockets: Closed")
+            })
         },
 
         async postPrintOrderAttachmentFile(item: IAttachmentFile, orderId: number): Promise<IAttachmentFile> {
