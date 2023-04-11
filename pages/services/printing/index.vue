@@ -56,7 +56,7 @@
               <strong
                 class="text-lg font-bold text-gray-700 "
                 v-else
-              >{{reformatSeconds(totalPrice)}}</strong>
+              >€{{totalPrice.toFixed(2) }}</strong>
             </div>
             <div class="px-3 py-2 flex gap-2 items-center">
               <div class="text-base text-gray-700 font-normal"> ETA: </div>
@@ -86,7 +86,7 @@
                 <tr class="bg-base-200">
                   <th class="pt-4 pb-3 text-start text-xs uppercase"></th>
                   <th class="pt-4 pb-3 text-start text-xs uppercase">Unit details</th>
-                  <th class="pt-4 pb-3 text-center text-xs uppercase">Quantity</th>
+                  <th class="pt-4 pb-3 text-center text-xs uppercase">Attributes</th>
                   <th class="pt-4 pb-3 text-center text-xs uppercase">Price</th>
                   <th class="pt-4 pb-3 text-end text-xs uppercase"></th>
                 </tr>

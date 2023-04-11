@@ -1,23 +1,36 @@
 <template>
   <tr
-    class="bg-white cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 h-48"
+    class="cursor-pointer hover:bg-stone-100/70"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
-    <td class="px-6 pr-16 py-6 w-48">
-      <div class="w-48 h-48">
-        <nuxt-img
-          class="w-48 h-48 p-0 m-0 border border-gray-300"
-          :src="unit.screenshotURL"
-        >
-        </nuxt-img>
+    <td class="px-6 pr-16 py-6 w-36">
+      <div class="w-36 flex flex-col gap-4">
+        <div class="w-36 h-36">
+          <nuxt-img
+            class="w-36 h-36 p-0 m-0 border border-gray-400"
+            :src="unit.screenshotURL"
+          >
+          </nuxt-img>
+        </div>
+        <div class="w-36 flex gap-4 justify-between items-center text-gray-500 text-sm">
+          Quantity:
+          <LimitedNumberInput
+            class="w-full"
+            :max="MAX_PRINT_QUANTITY"
+            :min="1"
+            :initial-value="unit.quantity"
+            @on-value-set="(q) => printOrderStore.updateUnit(unit.localUrl, { quantity: q })"
+            @click.stop
+          />
+        </div>
       </div>
     </td>
     <td class="py-4">
-      <div class="h-48 max-w-xs flex flex-col gap-4 justify-center">
-        <div class="text-lg text-gray-900 dark:text-white line-clamp-1">
+      <div class="h-48 max-w-xs flex flex-col gap-8 justify-center">
+        <div class="text-lg font-semibold text-gray-700 dark:text-white line-clamp-1">
           {{ extractUrlFileStringUnion(unit.file) }}
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1.5">
           <ServicesPrintingDimensionInfo
             :data="vector3Parse(unit.model_dimensions)"
             :unit="unit.length_unit"
@@ -32,31 +45,21 @@
             :unit="unit.rotation_unit"
           />
         </div>
-        <div class="flex gap-2 items-center justify-start">
-          <AttributeItem
-            :title="getMaterialName()"
-            tooltip="Filament material"
-          />
-          <AttributeItem
-            :title="(getInfillPercentage() * 100).toString() + '%'"
-            tooltip="Infill percentage"
-          />
-          <AttributeItem
-            :title="getColorName()"
-            tooltip="Material color"
-          />
-        </div>
       </div>
     </td>
     <td class="py-4">
-      <div class="mb-4 flex flex-col gap-1 items-center justify-center">
-        <input
-          type="number"
-          class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          v-model="unit.quantity"
-          @input="updateValue"
-          @blur="handleBlur"
-          @click.stop.prevent
+      <div class="flex gap-2 items-center justify-center">
+        <AttributeItem
+          :title="getMaterialName()"
+          tooltip="Filament material"
+        />
+        <AttributeItem
+          :title="(getInfillPercentage() * 100).toString() + '%'"
+          tooltip="Infill percentage"
+        />
+        <AttributeItem
+          :title="getColorName()"
+          tooltip="Material color"
         />
       </div>
     </td>
