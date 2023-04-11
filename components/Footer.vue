@@ -1,5 +1,8 @@
 <template>
-  <footer class="footer p-10 bg-base-100 text-base-content shadow">
+  <footer
+    class="footer p-10 bg-base-100 text-base-content"
+    style="box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);"
+  >
     <div>
       <span class="footer-title">Services</span>
       <NuxtLink
