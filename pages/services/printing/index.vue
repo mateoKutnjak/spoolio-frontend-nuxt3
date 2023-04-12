@@ -13,7 +13,7 @@
           >Clear order</div>
         </div>
       </div>
-      <div v-if="units.length > 0">
+      <div v-if="units.length > 0 || itemInsertedLoading">
         <div class="flex flex-col gap-8">
           <div class="p-2 flex flex-col sm:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
             <div class="px-3 py-2 flex items-center">
@@ -100,6 +100,11 @@
                 />
               </tbody>
             </table>
+            <ContentLoader
+              v-if="itemInsertedLoading"
+              class="pb-6"
+              viewBox="0 0 800 150"
+            ></ContentLoader>
             <div
               class="p-6 py-3"
               @dragover.prevent
@@ -291,6 +296,7 @@ import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
+import { ContentLoader } from "vue-content-loader";
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -314,6 +320,7 @@ const files = ref<any>([]);
 const formkitFiles = ref<any>([]);
 
 const isDetailsDialogShown = ref(false);
+const itemInsertedLoading = ref(false);
 
 const getUser = computed(() => {
   return authStore.getUser;
@@ -409,6 +416,8 @@ function change(e: any) {
   // * Gets triggered when user selects
   // * files after CLICKING on container
 
+  itemInsertedLoading.value = true;
+
   var files = Array.from<File>(e.target.files);
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
@@ -430,6 +439,8 @@ function change(e: any) {
 function drop(e: any) {
   // * Gets triggered when user selects
   // * files after DRAG AND DROP on container
+
+  itemInsertedLoading.value = true;
 
   var files = Array.from<File>(e.dataTransfer.files);
   for (let index = 0; index < files.length; index++) {
@@ -465,7 +476,10 @@ function onFilesAdded(files: File[]) {
         localUrl: URL.createObjectURL(element),
       });
     } else {
-      printOrderStore.add3dModelFile(element);
+      printOrderStore.add3dModelFile(
+        element,
+        () => (itemInsertedLoading.value = false)
+      );
     }
   }
 }
