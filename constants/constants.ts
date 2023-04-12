@@ -1,4 +1,4 @@
-export const BACKGROUND_COLOR = "#f8f9fa";
+export const BACKGROUND_COLOR = "#f6f8fa";
 
 // * Restrict non-auth user to access anything but index page => /
 export const RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS = false;

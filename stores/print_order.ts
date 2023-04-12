@@ -334,7 +334,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             this.units.push(unit);
         },
 
-        async add3dModelFile(file: File) {
+        async add3dModelFile(file: File, onFinishedCallback: () => {}) {
             if (PRINT_ORDER_FILES_TYPES.indexOf(file.type) < 0 && PRINT_ORDER_FILES_SUFFIXES.indexOf(urlExtractFileSuffix(file.name.toLowerCase())) < 0) {
                 console.error(`Cannot add file type ${file.type} as 3d model. Supported models are ${PRINT_ORDER_FILES_TYPES}`);
                 return;
@@ -382,6 +382,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
                 };
+
+                onFinishedCallback();
 
                 this.slicerEstimate(unit);
                 this.units.push(unit);
