@@ -419,6 +419,12 @@ function change(e: any) {
   itemInsertedLoading.value = true;
 
   var files = Array.from<File>(e.target.files);
+
+  if (!files.length) {
+    itemInsertedLoading.value = false;
+    return;
+  }
+
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
 
@@ -443,6 +449,12 @@ function drop(e: any) {
   itemInsertedLoading.value = true;
 
   var files = Array.from<File>(e.dataTransfer.files);
+
+  if (!files.length) {
+    itemInsertedLoading.value = false;
+    return;
+  }
+
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
 
