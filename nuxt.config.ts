@@ -82,6 +82,7 @@ export default defineNuxtConfig({
         public: {
             stripePublishableApiKey: process.env.PRODUCTION === "0" ? process.env.STRIPE_PUBLISHABLE_KEY_TEST : process.env.STRIPE_PUBLISHABLE_KEY_LIVE,
             baseURL: process.env.PRODUCTION === "0" ? process.env.BASE_URL_DEV : process.env.BASE_URL,
+            baseWsURL: process.env.PRODUCTION === "0" ? process.env.BASE_WS_URL_DEV : process.env.BASE_WS_URL,
         }
     },
 })

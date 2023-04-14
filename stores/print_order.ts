@@ -235,7 +235,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 isOpen,
                 isClosed,
                 errored,
-            } = useWebSocket("ws://localhost:8000/ws/slicer-estimation/");
+            } = useWebSocket(`${config.public.baseWsURL}ws/slicer-estimation/`);
 
             watch(data, value => {
                 console.debug(`Websockets message = ${value}`)
