@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PROFIT_MARGIN_MULTIPLIER } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PROFIT_MARGIN_MULTIPLIER, TIMEOUT_WS_DATA_MESSAGE, TIMEOUT_WS_INIT_MESSAGE } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
@@ -35,12 +35,12 @@ async function postAttachmentFile(item: IAttachmentFile, contentType: string, ob
 function adjustPrice(item: IPrintOrderUnit) {
     if (!item.estimated_price) {
         console.error(`Cannot calculate adjusted price. Estimated price is not defined for localUrl=${item.localUrl}`);
-        return Number.NEGATIVE_INFINITY;
+        return Number.POSITIVE_INFINITY;
     }
 
     if (!item.estimated_time) {
         console.error(`Cannot calculate adjusted price. Estimated time is not defined for localUrl=${item.localUrl}`);
-        return Number.NEGATIVE_INFINITY;
+        return Number.POSITIVE_INFINITY;
     }
 
     const estimated_time_hours = item.estimated_time / 60 / 60;
@@ -195,6 +195,12 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             if (!authStore.loggedIn) {
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
+
+                this.updateUnit(unit.localUrl, {
+                    estimated_time: Number.POSITIVE_INFINITY,
+                    estimated_price: Number.POSITIVE_INFINITY
+                })
+
                 return;
             }
 
@@ -237,6 +243,25 @@ export const usePrintOrderStore = defineStore('print-order', {
                 errored,
             } = useWebSocket(`${config.public.baseWsURL}ws/slicer-estimation/`);
 
+            let isInitWebsocketMessageReceived = false;
+            let isDataWebsocketMessageReceived = false;
+
+            // * Set initial wait for Websocket to get 'init' message from server
+            new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_INIT_MESSAGE)).then(() => {
+                if (!isInitWebsocketMessageReceived) {
+                    console.debug('Timeout on websocket waiting to receive init message. Closing websocket')
+
+                    this.updateUnit(unit.localUrl, {
+                        estimated_time: Number.POSITIVE_INFINITY,
+                        estimated_price: Number.POSITIVE_INFINITY
+                    })
+
+                    close();
+                } else {
+                    // * Init message is received, no need for closing of the websocket connection
+                }
+            });
+
             watch(data, value => {
                 console.debug(`Websockets message = ${value}`)
                 let parsedData = JSON.parse(value);
@@ -250,6 +275,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                             close();
                         }
 
+                        isInitWebsocketMessageReceived = true;
+
                         promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
                             customFetch<IPrintOrderUnit>(`api/slicer-estimation/?channel_group_name=${channel_group_name}`, {
                                 baseURL: config.public.baseURL,
@@ -261,6 +288,23 @@ export const usePrintOrderStore = defineStore('print-order', {
                                 reject(err)
                             });
                         }), HTTP_REQUEST_TIMEOUT);
+
+                        // * Set initial wait for Websocket to get 'data' message from server
+                        new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_DATA_MESSAGE)).then(() => {
+                            if (!isDataWebsocketMessageReceived) {
+                                console.debug('Timeout on websocket waiting to receive data message. Closing websocket')
+
+                                this.updateUnit(unit.localUrl, {
+                                    estimated_time: Number.POSITIVE_INFINITY,
+                                    estimated_price: Number.POSITIVE_INFINITY
+                                })
+
+                                close();
+                            } else {
+                                // * Init message is received, no need for closing of the websocket connection
+                            }
+                        });
+
                         break;
                     case 'data':
                         const estimated_time = parsedData.data?.estimated_time;
@@ -274,8 +318,11 @@ export const usePrintOrderStore = defineStore('print-order', {
                                 estimated_price: Number.POSITIVE_INFINITY
                             })
 
+                            close();
                             return;
                         }
+
+                        isDataWebsocketMessageReceived = true;
 
                         this.updateUnit(unit.localUrl, {
                             estimated_time: estimated_time,
@@ -364,8 +411,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     quantity: 1,
                     spool: filamentSpoolStore.getAll[0],
                     infill: filamentInfillStore.getFilamentInfills[0],
-                    estimated_price: 0,
-                    estimated_time: 0,
+                    estimated_price: Number.NEGATIVE_INFINITY,
+                    estimated_time: Number.NEGATIVE_INFINITY,
                     file: file,
                     comment: "TODO",
                     localUrl: localUrl,
@@ -385,8 +432,10 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 onFinishedCallback();
 
-                this.slicerEstimate(unit);
+                // ! First add unit to pinia state, then call slicer because slicer 
+                // ! manipulates some  data of pinia state regarding this particular unit
                 this.units.push(unit);
+                this.slicerEstimate(unit);
             })
         },
 

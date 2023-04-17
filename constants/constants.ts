@@ -8,6 +8,8 @@ export const RESTRICTED_PAGES_STARTS_WITH = [
 ]
 
 export const HTTP_REQUEST_TIMEOUT = 15000;
+export const TIMEOUT_WS_INIT_MESSAGE = 5000;
+export const TIMEOUT_WS_DATA_MESSAGE = 30000;
 
 export const CONTENT_TYPE_ORDER_UNIT = 'orderunit';
 export const CONTENT_TYPE_ORDER = 'printorder';
