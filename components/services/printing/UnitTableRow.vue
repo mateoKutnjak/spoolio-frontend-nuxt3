@@ -15,6 +15,7 @@
         <div class="w-36 flex gap-4 justify-between items-center text-gray-500 text-sm">
           Quantity:
           <LimitedNumberInput
+            :key="unit.quantity"
             class="w-full"
             :max="MAX_PRINT_QUANTITY"
             :min="1"
