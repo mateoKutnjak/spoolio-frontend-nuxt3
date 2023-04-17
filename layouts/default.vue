@@ -37,6 +37,16 @@
     >
     </GenericDialog>
   </div>
+  <div
+    v-if="isLoadingOverlayVisible"
+    class="absolute z-50 top-0 bottom-0 right-0 left-0 bg-gray-400/60 flex flex-col justify-center items-center"
+  >
+    <Icon
+      class="grow text-gray-500 text-primary"
+      name="eos-icons:three-dots-loading"
+      size="150"
+    />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -44,9 +54,11 @@ import { storeToRefs } from "pinia";
 import { BACKGROUND_COLOR } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
 import { useDrawerStore } from "../stores/drawer";
+import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
 
 const dialogStore = useDialogStore();
 const drawerStore = useDrawerStore();
+const loadingOverlayStore = useLoadingOverlayStore();
 
 const { isDialogOpened, componentName } = storeToRefs(dialogStore);
 
@@ -54,6 +66,10 @@ var drawerInput: HTMLElement | null = null;
 
 const isDrawerOpened = computed(() => {
   return drawerStore.isDrawerOpened;
+});
+
+const isLoadingOverlayVisible = computed(() => {
+  return loadingOverlayStore.isVisible;
 });
 
 onMounted(() => {
