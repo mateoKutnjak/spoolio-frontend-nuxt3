@@ -154,6 +154,8 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             const config = useRuntimeConfig();
 
+            const screenshotFile = new File([await (await fetch(unit.screenshotURL)).blob()], 'screenshot.jpg', { type: "image/jpg" });
+
             var formData = new FormData();
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
@@ -169,6 +171,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('model_rotation', unit.model_rotation)
             formData.append('optimal_rotation', unit.optimal_rotation);
             formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
+            formData.append('screenshot', screenshotFile)
 
             // todo what to do with this
             formData.append("order", orderId.toString());
