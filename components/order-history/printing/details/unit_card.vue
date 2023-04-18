@@ -1,7 +1,13 @@
 <template>
   <div class="card lg:card-side bg-base-100 rounded-sm shadow">
     <div class="relative lg:m-4 lg:w-48 h-48 lg:order-last bg-stone-300 flex justify-center items-center">
+      <nuxt-img
+        v-if="unit.screenshot"
+        :src="unit.screenshot"
+        style="object-fit: cover;"
+      />
       <Icon
+        v-else
         class="text-stone-500"
         name="file-icons:3d-model"
         size="75"

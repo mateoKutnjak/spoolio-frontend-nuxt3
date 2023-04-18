@@ -252,6 +252,7 @@ export interface IPrintOrderUnit {
     screenshotURL: string,
     estimated_price: number,
     estimated_time: number,
+    screenshot: string,
 }
 
 export interface IPrintOrder {
