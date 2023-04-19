@@ -13,7 +13,7 @@
       </div>
       <div class="card-body justify-between px-0 py-4">
         <div class="flex justify-between items-center text-gray-800">
-          <div class="flex gap-1 items-center text-lg">
+          <div class="flex gap-1 items-center">
             <div v-if="!hasAnyName">Anonymous</div>
             <div v-else>{{(item.user?.profile?.first_name || '')}} {{item.user?.profile?.last_name || ''}}</div>
             <Icon
