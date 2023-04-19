@@ -2,7 +2,7 @@ function parseDate(rawDate: string): Date {
     return new Date(rawDate)
 }
 
-function formatDate(date: Date): string {
+function prettyFormatDate(date: Date): string {
     var dateNow = new Date();
     var rawFormatted = date.toDateString().split(' ');
 
@@ -11,10 +11,10 @@ function formatDate(date: Date): string {
     }
 
     if (isSameYear(dateNow, date)) {
-        return rawFormatted[1] + " " + rawFormatted[2]
+        return `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}`
     }
 
-    return rawFormatted[1] + " " + rawFormatted[2] + ", " + rawFormatted[3]
+    return `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()}`
 }
 
 function isSameDay(date1: Date, date2: Date): boolean {
@@ -29,18 +29,13 @@ function isSameYear(date1: Date, date2: Date): boolean {
 
 export function reformatDate(rawDate: string | undefined): string {
     if (!rawDate) return "NULL ERROR"
-    return formatDate(parseDate(rawDate));
+    return prettyFormatDate(parseDate(rawDate));
 }
 
 export function reformatDateTime(rawDate: string | undefined): string {
     if (!rawDate) return "NULL ERROR"
-
-    const [datePart, timePart] = rawDate.replaceAll('Z', '').split('T');
-    const [year, month, day] = datePart.split('-')
-    const [hour, minute, secondDecimal] = timePart.split(':')
-    const [second, _] = secondDecimal.split('.')
-
-    return `${day}/${month}/${year} at ${hour}:${minute}:${second}`
+    const date = parseDate(rawDate);
+    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 }
 
 export function reformatSeconds(seconds: number): string {
