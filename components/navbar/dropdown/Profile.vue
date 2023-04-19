@@ -133,6 +133,6 @@ const { user } = storeToRefs(authStore);
 
 function logout() {
   authStore.logout();
-  navigateTo("/services");
+  navigateTo("/blogs");
 }
 </script>

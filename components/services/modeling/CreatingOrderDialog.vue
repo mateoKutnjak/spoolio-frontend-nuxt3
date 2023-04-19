@@ -283,7 +283,7 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   modelingOrderStore.clear();
-  navigateTo("/services");
+  navigateTo("/blogs");
 }
 
 function onReturnPressed() {

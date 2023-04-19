@@ -241,7 +241,7 @@ function submitPayment() {
         // Show error to your customer (for example, insufficient funds)
         console.log(`Payment error = ${result.error.message}`);
 
-        navigateTo("/services");
+        navigateTo("/blogs");
         notificationStore.show(
           result.error.message?.toString() || "Error occurred",
           ToastLevelType.error
@@ -257,7 +257,7 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          navigateTo("/services");
+          navigateTo("/blogs");
           notificationStore.show(
             "Payment successful. We sent you an email.",
             ToastLevelType.success

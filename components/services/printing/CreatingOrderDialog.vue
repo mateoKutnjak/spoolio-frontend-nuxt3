@@ -218,7 +218,7 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   printOrderStore.clear();
-  navigateTo("/services");
+  navigateTo("/blogs");
 }
 
 function onReturnPressed() {

@@ -116,7 +116,7 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   cartStore.clear();
-  navigateTo("/services");
+  navigateTo("/blogs");
 }
 
 function onReturnPressed() {

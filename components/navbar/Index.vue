@@ -14,12 +14,15 @@
       </NuxtLink>
     </div>
     <div class="navbar-center hidden lg:flex">
-      <NuxtLink
-        v-for="item in navigation"
-        :key="item.name"
-        :to="`${item.to}`"
-      >
-        <button class="btn btn-ghost text-gray-700">{{ item.name }}</button>
+      <NuxtLink to="/blogs">
+        <button class="btn btn-ghost text-gray-700">projects</button>
+      </NuxtLink>
+      <NavbarDropdownServices :navigation="servicesNavigation" />
+      <NuxtLink to="/store">
+        <button class="btn btn-ghost text-gray-700">store</button>
+      </NuxtLink>
+      <NuxtLink to="/about">
+        <button class="btn btn-ghost text-gray-700">about</button>
       </NuxtLink>
     </div>
     <div class="navbar-end">
@@ -111,9 +114,15 @@ const getCartItems = computed(() => {
 
 const navigation = [
   { name: "projects", to: "/blogs" },
-  { name: "services", to: "/services" },
+  { name: "3d printing", to: "/services/printing" },
+  { name: "modeling", to: "/services/modeling" },
   { name: "store", to: "/store" },
   { name: "about", to: "/about" },
+];
+
+const servicesNavigation = [
+  { name: "3d printing", to: "/services/printing" },
+  { name: "modeling", to: "/services/modeling" },
 ];
 
 function toggleDrawer() {
