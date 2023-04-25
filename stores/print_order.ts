@@ -331,6 +331,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                             estimated_time: estimated_time,
                             estimated_price: estimated_price,
                         })
+                        close();
                         break;
                     case 'error':
                         const errorMessage = parsedData.error;
@@ -431,6 +432,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
                     rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
+                    screenshot: '',
                 };
 
                 onFinishedCallback();

@@ -308,7 +308,15 @@ const loadingOverlayStore = useLoadingOverlayStore();
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
 
-loadingOverlayStore.show();
+if (
+  !filamentInfillStore.getFilamentInfills.length ||
+  !filamentSpoolStore.getAll.length
+) {
+  console.debug(
+    "Infills or spools missing. Showing loading overlay until they get fetched"
+  );
+  loadingOverlayStore.show();
+}
 
 const { dimensionUnit, rotationUnit } = storeToRefs(globalsStore);
 const { filamentInfills } = storeToRefs(filamentInfillStore);

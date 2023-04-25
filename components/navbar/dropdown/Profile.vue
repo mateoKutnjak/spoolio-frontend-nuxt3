@@ -88,7 +88,6 @@
             <MenuItem as="div">
             <NuxtLink to="/profile/">
 
-              <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
                 <Icon
                   name="lucide:user"
@@ -96,7 +95,6 @@
                   aria-hidden="true"
                 />Profile
               </div>
-              </MenuItem>
             </NuxtLink>
             </MenuItem>
             <MenuItem

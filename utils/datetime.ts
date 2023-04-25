@@ -38,6 +38,12 @@ export function reformatDateTime(rawDate: string | undefined): string {
     return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 }
 
+export function reformatTime(rawDate: string | undefined): string {
+    if (!rawDate) return "NULL ERROR"
+    const date = parseDate(rawDate);
+    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+}
+
 export function reformatSeconds(seconds: number): string {
 
     // * Add one day to every duration as buffer

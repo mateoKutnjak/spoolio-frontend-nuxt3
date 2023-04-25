@@ -70,6 +70,7 @@
             />
           </div>
         </button>
+        <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
         <NavbarDropdownProfile />
       </div>
     </div>

@@ -1,0 +1,110 @@
+<template>
+  <div
+    v-for="(printer, index) in printerStore.getPrinters"
+    :key="printer.id"
+    :class="index == printerStore.getPrinters.length - 1 ? '' : 'mb-6'"
+  >
+    <div class="w-full p-6 flex gap-4 items-center text-stone-600">
+      <Icon
+        name="lucide:printer"
+        size="50"
+      />
+      <div class="flex flex-col">
+        <div class="text-lg font-bold">{{ printer.name }}</div>
+        <div>{{ printer.type.name }}</div>
+      </div>
+      <div class="flex-1 flex gap-2 justify-center">
+        <div
+          v-for="supported_material in printer.type.supported_materials"
+          :key="supported_material.id"
+        >
+          <AttributeItem :title="supported_material.name" />
+        </div>
+      </div>
+      <div
+        v-if="!printer.available"
+        class="flex gap-2 items-center"
+      >
+        Not available
+        <Icon
+          class="text-error"
+          name="lucide:x-circle"
+          size="30"
+        />
+      </div>
+      <div
+        v-else
+        class="flex gap-2 items-center"
+      >
+        Available
+        <Icon
+          class="text-success"
+          name="lucide:check-circle"
+          size="30"
+        />
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <td>Order Id</td>
+            <td>File</td>
+            <th>Interval</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="printJob in printingJobStore.getByPrinterId(printer.id)"
+            :key="printJob.id"
+          >
+            <th>{{ printJob.id }}</th>
+            <td>{{ reformatDate(printJob.start_at) }}</td>
+            <td>{{ printJob.print_order_unit.order }}</td>
+            <td>
+              <a
+                class="link link-info"
+                :href="extractUrlFileStringUnion(printJob.print_order_unit.file)"
+              >
+                {{ urlExtractFilename(printJob.print_order_unit.file.toString()) }}
+              </a>
+            </td>
+            <td class="font-bold">{{ reformatTime(printJob.start_at) }} - {{ reformatTime(printJob.end_at) }}</td>
+            <td>
+              <OrderStatusView :raw-status="printJob.status" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { usePrintingJobStore } from "~~/stores/print_job";
+import { usePrinterStore } from "~~/stores/printer";
+import { PAGE_SIZE } from "~~/constants/constants";
+import { useNotificationStore } from "~~/stores/notification";
+
+const notificationStore = useNotificationStore();
+const printerStore = usePrinterStore();
+const printingJobStore = usePrintingJobStore();
+
+var limit = 10;
+var offset = 0;
+
+printerStore
+  .fetchPaginated(limit, offset)
+  .then((res) => {
+    res.results.forEach((el) => {
+      printingJobStore.fetchAllByPrinterId(el.id, true);
+    });
+  })
+  .catch((err) => notificationStore.showFetchError(err));
+</script>
+
+<style>
+</style>

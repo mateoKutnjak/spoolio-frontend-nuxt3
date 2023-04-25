@@ -7,6 +7,10 @@ export const RESTRICTED_PAGES_STARTS_WITH = [
     '/profile',
 ]
 
+export const RESTRICT_PAGES_NON_ADMIN_STARTS_WITH = [
+    '/admin'
+]
+
 export const HTTP_REQUEST_TIMEOUT = 15000;
 export const TIMEOUT_WS_INIT_MESSAGE = 5000;
 export const TIMEOUT_WS_DATA_MESSAGE = 30000;
@@ -78,6 +82,8 @@ export class OrderStatus {
     public static readonly inProgress = new OrderStatus('in_progress', 'In progress', '#277da1');
     public static readonly shipped = new OrderStatus('shipped', 'Shipped', '#d4a373');
     public static readonly delivered = new OrderStatus('delivered', 'Delivered', '#415a77');
+    public static readonly done = new OrderStatus('done', 'Done', '#d4a373');
+    public static readonly in_queue = new OrderStatus('in_queue', 'In queue', '#cccccc');
 
     public static readonly all: { [key: string]: OrderStatus } = {
         'reviewing':
@@ -94,6 +100,10 @@ export class OrderStatus {
             this.shipped,
         'delivered':
             this.delivered,
+        'done':
+            this.done,
+        'in_queue':
+            this.in_queue,
     }
 
     private constructor(public readonly server_name: string, public readonly display_name: string, public readonly colorHex: string) {

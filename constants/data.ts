@@ -323,3 +323,34 @@ export interface IStoreOrderUnit {
 export interface IPaymenIntent {
     clientSecret: string,
 }
+
+// ************* //
+// ** PRINTER ** //
+// ************* //
+
+export interface IPrinterType {
+    id: number,
+    name: string,
+    supported_materials: IFilamentMaterial[],
+}
+
+export interface IPrinter {
+    id: number,
+    name: string,
+    type: IPrinterType,
+    available: boolean,
+}
+
+// *************** //
+// ** PRINT JOB ** //
+// *************** //
+
+export interface IPrintingJob {
+    id: number,
+    print_order_unit: IPrintOrderUnit,
+    printer: number,
+    duration: number,
+    start_at: string,
+    end_at: string,
+    status: string,
+}
