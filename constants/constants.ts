@@ -75,6 +75,21 @@ export const TAX_FRACTION = 0.25;
 // ! IMPORTANT ! adjust frontend enums (constants.vue)
 export class OrderStatus {
 
+    static isValidTransitionPrintJobStatus(oldStatus: OrderStatus, newStatus: OrderStatus) {
+        switch (oldStatus) {
+            case OrderStatus.rejected:
+                return false;
+            case OrderStatus.in_queue:
+                return newStatus === OrderStatus.rejected || newStatus === OrderStatus.inProgress;
+            case OrderStatus.inProgress:
+                return newStatus === OrderStatus.done;
+            case OrderStatus.done:
+                return false;
+            default:
+                return false;
+        }
+    }
+
     public static readonly reviewing = new OrderStatus('reviewing', 'Reviewing', '#219ebc');
     public static readonly estimatingPrice = new OrderStatus('estimating_price', 'Estimating price', '#eae4e9');
     public static readonly rejected = new OrderStatus('rejected', 'Rejected', '#f28482');
@@ -105,6 +120,13 @@ export class OrderStatus {
         'in_queue':
             this.in_queue,
     }
+
+    public static readonly printingJobStatuses = [
+        this.rejected,
+        this.in_queue,
+        this.inProgress,
+        this.done,
+    ]
 
     private constructor(public readonly server_name: string, public readonly display_name: string, public readonly colorHex: string) {
     }

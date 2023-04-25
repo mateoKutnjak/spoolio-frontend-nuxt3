@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
 import { IPaginatedResponse, IPrintingJob } from '~~/constants/data';
+import { useAuthStore } from './auth';
 
 export const usePrintingJobStore = defineStore('print-jobs', {
     state: () => ({
@@ -81,6 +82,38 @@ export const usePrintingJobStore = defineStore('print-jobs', {
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
+
+        async updateStatus(id: number, status: string) {
+
+            const config = useRuntimeConfig();
+            const authStore = useAuthStore();
+
+            return promiseWithTimeout<IPrintingJob>(new Promise((resolve, reject) => {
+                customFetch<IPrintingJob>(`api/print-jobs/${id}/`, {
+                    baseURL: config.public.baseURL,
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${authStore.accessToken}`
+                    },
+                    body: {
+                        status: status,
+                    },
+                }).then((response: IPrintingJob) => {
+                    const index = this.printJobs.findIndex(el => el.id === id);
+
+                    if (index != -1) {
+                        this.printJobs[index] = response;
+                    } else {
+                        console.error(`Print job with id=${id} cannot be find locally. Refresh please`);
+                        reject(`Print job with id=${id} cannot be find locally. Refresh please`)
+                    }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        }
     },
 })
 

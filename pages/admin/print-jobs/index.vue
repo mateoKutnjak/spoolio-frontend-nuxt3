@@ -44,7 +44,7 @@
         />
       </div>
     </div>
-    <div class="overflow-x-auto">
+    <div class="overflow-x-visible">
       <table class="table w-full">
         <thead>
           <tr>
@@ -54,6 +54,7 @@
             <td>File</td>
             <th>Interval</th>
             <th>Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +77,14 @@
             <td>
               <OrderStatusView :raw-status="printJob.status" />
             </td>
+            <td class="relative">
+              <DropdownChoice
+                menu-button-icon="lucide:more-vertical"
+                :choices="OrderStatus.printingJobStatuses.map(el => el.display_name)"
+                :preselected="OrderStatus.all[printJob.status].display_name"
+                @on-item-chosen="item => onStatusChosen(item, printJob)"
+              ></DropdownChoice>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -86,9 +95,12 @@
 <script lang="ts" setup>
 import { usePrintingJobStore } from "~~/stores/print_job";
 import { usePrinterStore } from "~~/stores/printer";
-import { PAGE_SIZE } from "~~/constants/constants";
+import { OrderStatus, PAGE_SIZE } from "~~/constants/constants";
 import { useNotificationStore } from "~~/stores/notification";
+import { useDialogStore } from "~~/stores/dialog";
+import { IPrintingJob } from "~~/constants/data";
 
+const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const printerStore = usePrinterStore();
 const printingJobStore = usePrintingJobStore();
@@ -104,6 +116,43 @@ printerStore
     });
   })
   .catch((err) => notificationStore.showFetchError(err));
+
+function onStatusChosen(statusName: string, printJob: IPrintingJob) {
+  console.log(statusName);
+
+  dialogStore.open("DialogConfirm", {
+    title: `Are you sure about that?`,
+    subtitle: `You will change printing job #${printJob.id} status from ${
+      OrderStatus.all[printJob.status].display_name
+    } to ${statusName}?`,
+    onConfirm: () => {
+      const oldStatus = OrderStatus.all[printJob.status];
+      let newStatus = null;
+
+      for (let key in OrderStatus.all) {
+        if (OrderStatus.all[key].display_name === statusName) {
+          newStatus = OrderStatus.all[key];
+        }
+      }
+
+      if (!newStatus) {
+        notificationStore.show(
+          `Cannot update print order job. No OrderStatus with display_name ${statusName}`
+        );
+        return;
+      }
+
+      if (OrderStatus.isValidTransitionPrintJobStatus(oldStatus, newStatus)) {
+        printingJobStore.updateStatus(printJob.id, newStatus.server_name);
+      } else {
+        notificationStore.show(
+          `Cannot update print order job. Transition ${oldStatus.display_name} => ${newStatus.display_name} now allowed. Do this through backend admin site.`
+        );
+      }
+    },
+    onDismiss: () => {},
+  });
+}
 </script>
 
 <style>
