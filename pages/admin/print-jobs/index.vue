@@ -48,12 +48,11 @@
       <table class="table w-full">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Date</th>
+            <th>Job ID</th>
+            <th>Interval</th>
             <td>Order Id</td>
             <td>File</td>
-            <th>Interval</th>
-            <th>Status</th>
+            <th class="text-end">Status</th>
             <th></th>
           </tr>
         </thead>
@@ -63,8 +62,13 @@
             :key="printJob.id"
           >
             <th>{{ printJob.id }}</th>
-            <td>{{ reformatDate(printJob.start_at) }}</td>
-            <td>{{ printJob.print_order_unit.order }}</td>
+            <td>
+              <div class="flex flex-col gap-2">
+                <div><strong>Starts</strong> {{ reformatDateTime(printJob.start_at) }}</div>
+                <div><strong>Ends</strong> {{ reformatDateTime(printJob.end_at) }}</div>
+              </div>
+            </td>
+            <td># {{ printJob.print_order_unit.order }}</td>
             <td>
               <a
                 class="link link-info"
@@ -73,7 +77,6 @@
                 {{ urlExtractFilename(printJob.print_order_unit.file.toString()) }}
               </a>
             </td>
-            <td class="font-bold">{{ reformatTime(printJob.start_at) }} - {{ reformatTime(printJob.end_at) }}</td>
             <td>
               <OrderStatusView :raw-status="printJob.status" />
             </td>
