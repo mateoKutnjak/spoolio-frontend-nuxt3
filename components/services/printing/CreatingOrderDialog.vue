@@ -106,24 +106,21 @@
     <div
       v-show="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success"
       class="text-lg text-center text-gray-600"
-    >Your order has been created. Redirecting to payment service...</div>
+    >Your order has been created</div>
     <div
-      v-show="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success"
-      class="
-      btn
-      btn-lg
-      text-xl"
-      :class="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success  ? '': 'btn-disabled'"
-      @click="onOkPressed"
-    >Ok</div>
-    <div
-      v-show="orderStatus === OrderStatus.error || unitsStatus === OrderStatus.error"
-      class="
-      btn
-      btn-lg
-      text-xl"
-      @click="onReturnPressed"
-    >Return</div>
+      class="max-w-xl w-full flex flex-col md:flex-row gap-5 justify-center self-center"
+      v-show="(orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success) || orderStatus === OrderStatus.error || unitsStatus === OrderStatus.error"
+    >
+      <div
+        class="flex-1 btn btn-lg btn-outline text-xl rounded-sm"
+        @click="onReturnPressed"
+      >Later</div>
+      <div
+        class="flex-1 btn btn-lg btn-primary text-xl rounded-sm"
+        :class="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success  ? '': 'btn-disabled'"
+        @click="onOkPressed"
+      >Pay Now</div>
+    </div>
   </div>
 </template>
   
@@ -218,31 +215,23 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   printOrderStore.clear();
-  navigateTo("/blogs");
+
+  if (!print_order.value.id) {
+    console.error("Print order ID is null when trying to redirect to payment");
+    notificationStore.show(
+      "Please proceed with payment through order history."
+    );
+    navigateTo("/blogs");
+    return;
+  }
+  dialogStore.close();
+  navigateTo(`/payment/printing/${print_order.value.id}`);
 }
 
 function onReturnPressed() {
   dialogStore.close();
+  navigateTo("/blogs");
 }
-
-watch([orderStatus, unitsStatus], async ([newA, newB], [prevA, prevB]) => {
-  if (newA === OrderStatus.success && newB === OrderStatus.success) {
-    await new Promise((r) => setTimeout(r, 2500));
-
-    if (!print_order.value.id) {
-      console.error(
-        "Print order ID is null when trying to redirect to payment"
-      );
-      notificationStore.show(
-        "Please proceed with payment through order history."
-      );
-      return;
-    }
-
-    dialogStore.close();
-    navigateTo(`/payment/printing/${print_order.value.id}`);
-  }
-});
 </script>
   
   <style>
