@@ -347,6 +347,7 @@ export interface IPrinter {
 
 export interface IPrintingJob {
     id: number,
+    created_at: string,
     print_order_unit: IPrintOrderUnit,
     printer: number,
     duration: number,

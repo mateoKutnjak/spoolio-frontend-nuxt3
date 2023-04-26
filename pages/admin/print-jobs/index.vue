@@ -49,6 +49,7 @@
         <thead>
           <tr>
             <th>Job ID</th>
+            <th>Created at</th>
             <th>Interval</th>
             <td>Order Id</td>
             <td>File</td>
@@ -62,6 +63,7 @@
             :key="printJob.id"
           >
             <th>{{ printJob.id }}</th>
+            <td>{{ reformatDateTime(printJob.created_at) }}</td>
             <td>
               <div class="flex flex-col gap-2">
                 <div><strong>Starts</strong> {{ reformatDateTime(printJob.start_at) }}</div>

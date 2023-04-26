@@ -35,7 +35,7 @@ export function reformatDate(rawDate: string | undefined): string {
 export function reformatDateTime(rawDate: string | undefined): string {
     if (!rawDate) return "NULL ERROR"
     const date = parseDate(rawDate);
-    return `${date.getDate().toString().padStart(2, '0')}/${date.getMonth().toString().padStart(2, '0')}/${date.getFullYear()} at ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} at ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
 }
 
 export function reformatTime(rawDate: string | undefined): string {
