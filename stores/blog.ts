@@ -17,7 +17,7 @@ export const useBlogStore = defineStore('blog', {
             const config = useRuntimeConfig();
 
             return new Promise<IBlog>((resolve, reject) => {
-                customFetch<IBlog>(`api/blogs/${id}/`, {
+                customFetch<IBlog>(`api/blog/blogs/${id}/`, {
                     baseURL: config.public.baseURL,
                     method: 'GET'
                 }
@@ -42,7 +42,7 @@ export const useBlogStore = defineStore('blog', {
                 };
 
                 // todo check user? nullable
-                customFetch<IBlog>(`api/blogs/${this.blog?.id}/`, {
+                customFetch<IBlog>(`api/blog/blogs/${this.blog?.id}/`, {
                     baseURL: config.public.baseURL,
                     method: 'PATCH',
                     headers: {

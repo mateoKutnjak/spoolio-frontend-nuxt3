@@ -116,12 +116,31 @@ export interface IPaginatedResponse<T> {
 // **** BLOG **** //
 // ************** //
 
+export interface IBlogCategory {
+    id: number,
+    name: string,
+}
+
+export interface IBlogSubcategory {
+    id: number,
+    name: string,
+    category: IBlogCategory,
+}
+
+export interface IBlogTag {
+    id: number,
+    name: string,
+}
+
 export interface IBlog {
     id: number,
     title: string,
     subtitle: string,
     content: string,
     author: IUser,
+    category: IBlogCategory,
+    subcategory: IBlogSubcategory,
+    tags: IBlogTag[],
     like_count: number,
     liked_by_me: boolean,
     comment_count: number,

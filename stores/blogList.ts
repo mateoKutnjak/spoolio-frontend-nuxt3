@@ -21,7 +21,7 @@ export const useBlogListStore = defineStore('blog-list', {
             const config = useRuntimeConfig();
 
             return promiseWithTimeout<IPaginatedResponse<IBlog>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IBlog>>(`api/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IBlog>>(`api/blog/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IBlog>) => {
