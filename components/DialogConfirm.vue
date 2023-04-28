@@ -15,7 +15,7 @@
         Cancel
       </div>
       <div
-        class="btn btn-error rounded-sm"
+        class="btn btn-primary rounded-sm"
         @click="onPositive"
       >
         Confirm
