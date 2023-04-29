@@ -16,12 +16,12 @@ export const useBlogListStore = defineStore('blog-list', {
     },
 
     actions: {
-        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', append: boolean = false) {
+        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', category: string = '', append: boolean = false) {
 
             const config = useRuntimeConfig();
 
             return promiseWithTimeout<IPaginatedResponse<IBlog>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IBlog>>(`api/blog/blogs/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IBlog>>(`api/blog/blogs/?limit=${limit}&offset=${offset}&search=${search}&category=${category}`, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IBlog>) => {

@@ -22,6 +22,22 @@
 
       </div>
     </div>
+    <div class="flex gap-5">
+      <div
+        class="link link-hover"
+        @click="categorySelected = ''"
+      >All</div>
+      <div
+        v-for="blogCategory in blogCategories"
+        :key="blogCategory.id"
+      >
+        <div
+          class="link link-hover"
+          @click="categorySelected = blogCategory.id.toString()"
+        > {{ blogCategory.name }}</div>
+      </div>
+    </div>
+    <div class="divider h-[1px] mt-2 mb-12 bg-gray-500"></div>
     <div
       v-if="getPaginatedBlogs.count || 0 > 0"
       class="flex flex-col gap-8 items-center"
@@ -67,8 +83,10 @@ import { useBlogListStore } from "~/stores/blogList";
 import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { FacebookLoader } from "vue-content-loader";
+import { useBlogCategoryStore } from "~~/stores/blogCategory";
 
 const authStore = useAuthStore();
+const blogCategoriesStore = useBlogCategoryStore();
 const blogListStore = useBlogListStore();
 const notificationStore = useNotificationStore();
 
@@ -80,19 +98,34 @@ const showPageLoading = ref<boolean>(false);
 var limit = 10;
 var offset = 0;
 
+const categorySelected = ref<string>("");
+const searchString = ref<string>("");
+
 onMounted(() => {
   showInitLoading.value = true;
   blogListStore
-    .fetchPaginatedBlogs(limit, offset)
+    .fetchPaginatedBlogs(limit, offset, "")
     .then((_) => {})
     .catch((err) => notificationStore.showFetchError(err))
     .finally(() => {
       showInitLoading.value = false;
     });
+
+  blogCategoriesStore
+    .fetchSubcategories()
+    .catch((err) => notificationStore.showFetchError(err));
 });
 
 const getPaginatedBlogs = computed(() => {
   return blogListStore.getPaginatedBlogs;
+});
+
+const blogCategories = computed(() => {
+  return blogCategoriesStore.getCategories;
+});
+
+const blogSubcategories = computed(() => {
+  return blogCategoriesStore.getSubcategories;
 });
 
 const getUser = computed(() => {
@@ -107,12 +140,20 @@ watch(getUser, (value, old, invalidate) => {
 function onSearch(searchPhrase: string) {
   console.debug(`New search phrase: ${searchPhrase}`);
 
+  searchString.value = searchPhrase;
+
   // reset pagination values
   offset = 0;
   limit = 10;
 
   blogListStore
-    .fetchPaginatedBlogs(limit, offset, searchPhrase, false)
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchPhrase,
+      categorySelected.value || "",
+      false
+    )
     .then(() => (showPageLoading.value = false))
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -126,11 +167,32 @@ function loadMoreItems() {
     showPageLoading.value = true;
     offset = offset + limit;
     blogListStore
-      .fetchPaginatedBlogs(limit, offset, "", true)
+      .fetchPaginatedBlogs(
+        limit,
+        offset,
+        searchString.value,
+        categorySelected.value || "",
+        true
+      )
       .then(() => (showPageLoading.value = false))
       .catch((err) => notificationStore.showFetchError(err));
   }
 }
+
+watch(categorySelected, (value) => {
+  if (value) {
+    limit = 10;
+    offset = 0;
+
+    blogListStore.fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchString.value,
+      value,
+      false
+    );
+  }
+});
 </script>
 
 <style>
