@@ -141,6 +141,7 @@ export interface IBlog {
     category: IBlogCategory,
     subcategory: IBlogSubcategory,
     tags: IBlogTag[],
+    is_featured: boolean,
     like_count: number,
     liked_by_me: boolean,
     comment_count: number,

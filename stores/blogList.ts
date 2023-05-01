@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
+import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT, PAGE_SIZE } from '~~/constants/constants'
 import { IBlog, ILike, IPaginatedResponse } from '~~/constants/data'
 import { useAuthStore } from './auth'
 
@@ -8,11 +8,13 @@ export const useBlogListStore = defineStore('blog-list', {
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
-        blogs: [] as IBlog[]
+        blogs: [] as IBlog[],
+        featuredBlogs: [] as IBlog[]
     }),
 
     getters: {
         getPaginatedBlogs: (state) => state,
+        getFeaturedBlogs: (state) => state.featuredBlogs,
     },
 
     actions: {
@@ -34,6 +36,29 @@ export const useBlogListStore = defineStore('blog-list', {
                     } else {
                         this.blogs = response.results;
                     }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchFeaturedBlogs() {
+
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout<IBlog[]>(new Promise((resolve, reject) => {
+                customFetch<IBlog[]>(`api/blog/blogs/?is_featured=true`, {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IBlog[]) => {
+
+                    if (response.length > PAGE_SIZE) {
+                        console.warn(`Fetching is_featured returned more element than PAGE_SIZE (${PAGE_SIZE})`)
+                    }
+
+                    this.featuredBlogs = response;
 
                     resolve(response)
                 }).catch(err => {

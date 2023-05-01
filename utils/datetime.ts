@@ -32,6 +32,12 @@ export function reformatDate(rawDate: string | undefined): string {
     return prettyFormatDate(parseDate(rawDate));
 }
 
+export function reformatDateShort(rawDate: string | undefined): string {
+    if (!rawDate) return "NULL ERROR"
+    const date = parseDate(rawDate);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+}
+
 export function reformatDateTime(rawDate: string | undefined): string {
     if (!rawDate) return "NULL ERROR"
     const date = parseDate(rawDate);

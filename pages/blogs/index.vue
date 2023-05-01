@@ -1,12 +1,16 @@
 <template>
   <div class="container mx-auto">
     <div class="px-12 md:px-0 pb-12 flex flex-col md:flex-row gap-6 justify-between">
-      <div class="text-4xl text-gray-700">Projects</div>
-      <SearchBar
-        placeholder="Search projects"
-        @submit-search-phrase="onSearch"
-      />
-      <div
+      <!-- <div class="text-4xl text-gray-700">Projects</div> -->
+      <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-2xl">
+        <div class="mb-3 text-5xl text-white font-bold">Projects</div>
+        <SearchBar
+          class="absolute bottom-0 -mb-6 mx-auto left-0 right-0 max-w-sm shadow-lg"
+          placeholder="Search projects"
+          @submit-search-phrase="onSearch"
+        />
+      </div>
+      <!-- <div
         v-if="user?.is_staff || false"
         class="grid place-items-stretch"
       >
@@ -20,44 +24,65 @@
           </button>
         </NuxtLink>
 
-      </div>
+      </div> -->
     </div>
-    <div class="flex gap-5">
+    <div class="flex justify-center btn-group gap-4 my-2">
       <div
-        class="link link-hover"
+        class="btn btn-ghost btn-sm !rounded-full"
+        :class="categorySelected ? '' : 'btn-active !text-white'"
         @click="categorySelected = ''"
       >All</div>
       <div
         v-for="blogCategory in blogCategories"
         :key="blogCategory.id"
+        class="btn btn-ghost btn-sm !rounded-full"
+        :class="categorySelected === blogCategory.id.toString() ? 'btn-active !text-white' : ''"
+        @click="categorySelected = blogCategory.id.toString()"
       >
-        <div
-          class="link link-hover"
-          @click="categorySelected = blogCategory.id.toString()"
-        > {{ blogCategory.name }}</div>
+        {{ blogCategory.name }}
       </div>
     </div>
-    <div class="divider h-[1px] mt-2 mb-12 bg-gray-500"></div>
+
     <div
       v-if="getPaginatedBlogs.count || 0 > 0"
-      class="flex flex-col gap-8 items-center"
+      class="mt-12 flex flex-col gap-8 items-center"
     >
-      <div class="w-full flex flex-col gap-10">
-        <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
-        <div class="grid lg:grid-cols-2 gap-10">
+      <div class="w-full flex gap-6">
+        <div class="basis-2/3 flex flex-col gap-8 items-center">
+          <div class="w-full flex flex-col gap-4">
+            <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
+            <div class="mt-8 grid lg:grid-cols-2 gap-10">
+              <div
+                :key="blog.id"
+                v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
+              >
+                <BlogCard :item="blog" />
+              </div>
+            </div>
+          </div>
           <div
-            :key="blog.id"
-            v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
-          >
-            <BlogCard :item="blog" />
+            v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
+            class="btn btn-outline"
+            @click="loadMoreItems"
+          >Load more</div>
+        </div>
+        <div
+          v-if="getFeaturedBlogs.length > 0"
+          class="basis-1/3"
+        >
+          <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
+          </div>
+          <div class="flex flex-col overflow-x-auto">
+            <div
+              v-for="featuredBlog in getFeaturedBlogs"
+              :key="featuredBlog.id"
+            >
+
+              <BlogFeaturedCard :item="featuredBlog" />
+            </div>
           </div>
         </div>
       </div>
-      <div
-        v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
-        class="btn btn-outline"
-        @click="loadMoreItems"
-      >Load more</div>
     </div>
     <div v-else-if="showInitLoading">
       <div class="flex flex-col gap-12">
@@ -111,9 +136,19 @@ onMounted(() => {
       showInitLoading.value = false;
     });
 
+  blogListStore
+    .fetchFeaturedBlogs()
+    .then((_) => {})
+    .catch((err) => notificationStore.showFetchError(err))
+    .finally(() => {});
+
   blogCategoriesStore
     .fetchSubcategories()
     .catch((err) => notificationStore.showFetchError(err));
+});
+
+const getFeaturedBlogs = computed(() => {
+  return blogListStore.getFeaturedBlogs;
 });
 
 const getPaginatedBlogs = computed(() => {
@@ -180,18 +215,16 @@ function loadMoreItems() {
 }
 
 watch(categorySelected, (value) => {
-  if (value) {
-    limit = 10;
-    offset = 0;
+  limit = 10;
+  offset = 0;
 
-    blogListStore.fetchPaginatedBlogs(
-      limit,
-      offset,
-      searchString.value,
-      value,
-      false
-    );
-  }
+  blogListStore.fetchPaginatedBlogs(
+    limit,
+    offset,
+    searchString.value,
+    value,
+    false
+  );
 });
 </script>
 

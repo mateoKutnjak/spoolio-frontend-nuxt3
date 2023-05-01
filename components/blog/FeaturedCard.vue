@@ -1,51 +1,34 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
-    <div class="h-full card">
-
-      <div
-        v-if="item?.picture"
-        class="h-56 flex bg-gray-300 rounded-2xl"
-      >
-        <nuxt-img
-          class="rounded-2xl"
-          :src="item.picture"
-          style="object-fit: cover;"
-        />
-      </div>
-      <div class="card-body justify-between p-0 pt-4">
-        <div class="-ml-3 flex">
-          <div
-            v-for="tag in item.tags"
-            :key="tag.name"
-            class="btn btn-sm btn-ghost btn-info text-info rounded-full"
-          >{{ tag.name }}</div>
-        </div>
-        <div class="py-6">
-          <h2 class="card-title text-2xl text-gray-700 pb-3 font-black font-sans">{{item.title}}</h2>
-          <p class="text-gray-600 font-sans">{{item.subtitle}}</p>
-        </div>
-        <div class="flex gap-4 items-center font-sans">
+    <div class="w-64 card">
+      <div class="card-body justify-between p-0">
+        <div class="flex gap-3 items-center">
           <div class="avatar placeholder">
-            <div class="bg-neutral-focus text-neutral-content rounded-full w-14">
-              <span class="text-2xl">{{ initials }}</span>
+            <div class="bg-neutral-focus text-neutral-content rounded-full w-6">
+              <span class="text-xs">{{ initials }}</span>
             </div>
           </div>
-          <div class="flex flex-col">
-            <div class="font-bold text-gray-600">
-              <div v-if="!hasAnyName">Anonymous</div>
-              <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
-            </div>
-            <div class="text-gray-500">
-              {{reformatDate(item?.created_at)}}
-            </div>
+          <div class="font-bold text-gray-600">
+            <div v-if="!hasAnyName">Anonymous</div>
+            <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
           </div>
+          <Icon
+            name='lucide:circle'
+            size="7"
+          />
+          <div class="text-gray-500">
+            {{reformatDateShort(item?.created_at)}}
+          </div>
+        </div>
+        <div class="pb-4">
+          <h2 class="card-title text-lg text-gray-700 pb-3 font-black font-sans">{{item.title}}</h2>
         </div>
       </div>
     </div>
   </NuxtLink>
 </template>
-    
-    <script lang="ts" setup>
+      
+      <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useBlogListStore } from "~~/stores/blogList";
@@ -95,6 +78,6 @@ function toggleLike() {
     .catch((err) => notificationStore.showFetchError(err));
 }
 </script>
-    
-    <style>
+      
+      <style>
 </style>

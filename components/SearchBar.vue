@@ -1,13 +1,13 @@
 <template>
-  <div class="form-control">
-    <div class="flex border border-gray-400 bg-white">
+  <div class="form-control rounded-full">
+    <div class="flex border border-gray-400 bg-white rounded-full">
       <input
         type="text"
         placeholder="Search…"
         class="input btn-block !outline-none bg-transparent"
         v-model="input"
       />
-      <button class="btn btn-ghost rounded-none">
+      <button class="btn btn-ghost rounded-full">
         <Icon
           class="text-[#888888]"
           name="lucide:search"
