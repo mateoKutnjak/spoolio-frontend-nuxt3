@@ -49,12 +49,12 @@
         ></div>
       </div>
 
-      <div class="divider h-0"></div>
+      <!-- <div class="divider h-0"></div> -->
 
-      <CommentList
+      <!-- <CommentList
         :object-id="objectId"
         :content-type="CONTENT_TYPE_BLOG"
-      />
+      /> -->
     </div>
   </div>
 
