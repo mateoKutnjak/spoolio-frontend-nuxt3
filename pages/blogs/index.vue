@@ -30,14 +30,14 @@
       <div
         class="btn btn-ghost btn-sm !rounded-full"
         :class="categorySelected ? '' : 'btn-active !text-white'"
-        @click="categorySelected = ''"
+        @click="categorySelected = null"
       >All</div>
       <div
         v-for="blogCategory in blogCategories"
         :key="blogCategory.id"
         class="btn btn-ghost btn-sm !rounded-full"
-        :class="categorySelected === blogCategory.id.toString() ? 'btn-active !text-white' : ''"
-        @click="categorySelected = blogCategory.id.toString()"
+        :class="categorySelected?.id === blogCategory.id ? 'btn-active !text-white' : ''"
+        @click="categorySelected = blogCategory"
       >
         {{ blogCategory.name }}
       </div>
@@ -66,20 +66,31 @@
             @click="loadMoreItems"
           >Load more</div>
         </div>
-        <div
-          v-if="getFeaturedBlogs.length > 0"
-          class="basis-1/3"
-        >
-          <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
-          </div>
-          <div class="flex flex-col overflow-x-auto">
-            <div
-              v-for="featuredBlog in getFeaturedBlogs"
-              :key="featuredBlog.id"
-            >
-
-              <BlogFeaturedCard :item="featuredBlog" />
+        <div class="divider divider-horizontal m-0 w-0 before:bg-stone-300 after:bg-stone-300"></div>
+        <div class="basis-1/3 flex flex-col items-start">
+          <div v-if="getFeaturedBlogs.length > 0">
+            <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
             </div>
+            <div class="flex flex-col overflow-x-auto">
+              <div
+                v-for="featuredBlog in getFeaturedBlogs"
+                :key="featuredBlog.id"
+              >
+
+                <BlogFeaturedCard :item="featuredBlog" />
+              </div>
+            </div>
+          </div>
+          <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Tags
+          </div>
+          <div class="flex btn-group gap-2 my-2">
+            <div
+              v-for="blogTag in blogTags"
+              :key="blogTag.name"
+              class="btn btn-sm text-info rounded-full bg-stone-200 !rounded-full"
+              :class="tagSelected?.id === blogTag.id ? 'border-2 border-info' : ' btn-ghost'"
+              @click="tagSelected = blogTag"
+            >{{ blogTag.name }}</div>
           </div>
         </div>
       </div>
@@ -94,10 +105,15 @@
         ></FacebookLoader>
       </div>
     </div>
-    <div v-else>
-      <div class="grid justify-center h-56 h-56">
-        Nothing to show
-      </div>
+    <div
+      v-else
+      class="pt-16 flex flex-col justify-center items-center"
+    >
+      <Icon
+        name="noto:telescope"
+        size="230"
+      />
+      <div class="font-sans text-stone-500 text-xl font-bold">Nothing to show</div>
     </div>
   </div>
 </template>
@@ -109,6 +125,7 @@ import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { FacebookLoader } from "vue-content-loader";
 import { useBlogCategoryStore } from "~~/stores/blogCategory";
+import { IBlogCategory, IBlogTag } from "~~/constants/data";
 
 const authStore = useAuthStore();
 const blogCategoriesStore = useBlogCategoryStore();
@@ -123,7 +140,8 @@ const showPageLoading = ref<boolean>(false);
 var limit = 10;
 var offset = 0;
 
-const categorySelected = ref<string>("");
+const categorySelected = ref<IBlogCategory | null>(null);
+const tagSelected = ref<IBlogTag | null>(null);
 const searchString = ref<string>("");
 
 onMounted(() => {
@@ -145,6 +163,12 @@ onMounted(() => {
   blogCategoriesStore
     .fetchSubcategories()
     .catch((err) => notificationStore.showFetchError(err));
+
+  blogListStore
+    .fetchTags()
+    .then((_) => {})
+    .catch((err) => notificationStore.showFetchError(err))
+    .finally(() => {});
 });
 
 const getFeaturedBlogs = computed(() => {
@@ -161,6 +185,10 @@ const blogCategories = computed(() => {
 
 const blogSubcategories = computed(() => {
   return blogCategoriesStore.getSubcategories;
+});
+
+const blogTags = computed(() => {
+  return blogListStore.getTags;
 });
 
 const getUser = computed(() => {
@@ -186,7 +214,8 @@ function onSearch(searchPhrase: string) {
       limit,
       offset,
       searchPhrase,
-      categorySelected.value || "",
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
       false
     )
     .then(() => (showPageLoading.value = false))
@@ -206,7 +235,8 @@ function loadMoreItems() {
         limit,
         offset,
         searchString.value,
-        categorySelected.value || "",
+        categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+        tagSelected.value?.id ? tagSelected.value.id.toString() : "",
         true
       )
       .then(() => (showPageLoading.value = false))
@@ -214,7 +244,31 @@ function loadMoreItems() {
   }
 }
 
+function onTagClicked(tag: IBlogTag) {
+  searchString.value = "";
+  tagSelected.value = tag;
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogListStore
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchString.value,
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+      false
+    )
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
+}
+
 watch(categorySelected, (value) => {
+  tagSelected.value = null;
+  searchString.value = "";
+
   limit = 10;
   offset = 0;
 
@@ -222,9 +276,30 @@ watch(categorySelected, (value) => {
     limit,
     offset,
     searchString.value,
-    value,
+    value?.id ? value.id.toString() : "",
+    "",
     false
   );
+});
+
+watch(tagSelected, (value) => {
+  searchString.value = "";
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogListStore
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchString.value,
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+      false
+    )
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
 });
 </script>
 

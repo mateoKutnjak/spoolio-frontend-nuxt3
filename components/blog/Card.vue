@@ -26,7 +26,7 @@
         </div>
         <div class="flex gap-4 items-center font-sans">
           <div class="avatar placeholder">
-            <div class="bg-neutral-focus text-neutral-content rounded-full w-14">
+            <div class="bg-neutral-focus text-neutral-content rounded-full w-12">
               <span class="text-2xl">{{ initials }}</span>
             </div>
           </div>

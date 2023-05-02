@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_BLOG, HTTP_REQUEST_TIMEOUT, PAGE_SIZE } from '~~/constants/constants'
-import { IBlog, ILike, IPaginatedResponse } from '~~/constants/data'
+import { IBlog, IBlogTag, ILike, IPaginatedResponse } from '~~/constants/data'
 import { useAuthStore } from './auth'
 
 export const useBlogListStore = defineStore('blog-list', {
@@ -9,21 +9,28 @@ export const useBlogListStore = defineStore('blog-list', {
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
         blogs: [] as IBlog[],
-        featuredBlogs: [] as IBlog[]
+        featuredBlogs: [] as IBlog[],
+        tags: [] as IBlogTag[],
     }),
 
     getters: {
         getPaginatedBlogs: (state) => state,
         getFeaturedBlogs: (state) => state.featuredBlogs,
+        getTags: (state) => state.tags,
     },
 
     actions: {
-        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', category: string = '', append: boolean = false) {
+        async fetchPaginatedBlogs(limit: number = 10, offset: number = 0, search: string = '', category: string = '', tag: string = '', append: boolean = false) {
 
             const config = useRuntimeConfig();
 
+            var url = `api/blog/blogs/?limit=${limit}&offset=${offset}&search=${search}&category=${category}`;
+            if (tag) {
+                url = url + `&tags=${tag}`
+            }
+
             return promiseWithTimeout<IPaginatedResponse<IBlog>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IBlog>>(`api/blog/blogs/?limit=${limit}&offset=${offset}&search=${search}&category=${category}`, {
+                customFetch<IPaginatedResponse<IBlog>>(url, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IBlog>) => {
@@ -59,6 +66,29 @@ export const useBlogListStore = defineStore('blog-list', {
                     }
 
                     this.featuredBlogs = response;
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchTags() {
+
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout<IBlogTag[]>(new Promise((resolve, reject) => {
+                customFetch<IBlogTag[]>(`api/blog/tags/`, {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IBlogTag[]) => {
+
+                    if (response.length > PAGE_SIZE) {
+                        console.warn(`Fetching of blog tags returned more element than PAGE_SIZE (${PAGE_SIZE})`)
+                    }
+
+                    this.tags = response;
 
                     resolve(response)
                 }).catch(err => {
