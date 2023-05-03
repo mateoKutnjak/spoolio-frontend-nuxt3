@@ -50,11 +50,11 @@
       <div class="w-full flex gap-6">
         <div class="basis-2/3 flex flex-col gap-8 items-center">
           <div class="w-full flex flex-col gap-4">
-            <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" />
-            <div class="mt-8 grid lg:grid-cols-2 gap-10">
+            <!-- <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" /> -->
+            <div class="mt-8 flex flex-col gap-10">
               <div
                 :key="blog.id"
-                v-for="blog in getPaginatedBlogs.blogs.slice(1, getPaginatedBlogs.blogs.length)"
+                v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
               >
                 <BlogCard :item="blog" />
               </div>
@@ -71,7 +71,7 @@
           <div v-if="getFeaturedBlogs.length > 0">
             <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
             </div>
-            <div class="flex flex-col overflow-x-auto">
+            <div class="flex flex-col gap-5 overflow-x-auto">
               <div
                 v-for="featuredBlog in getFeaturedBlogs"
                 :key="featuredBlog.id"
@@ -81,6 +81,7 @@
               </div>
             </div>
           </div>
+          <div class="divider"></div>
           <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Tags
           </div>
           <div class="flex btn-group gap-2 my-2">

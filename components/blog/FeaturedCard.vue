@@ -1,14 +1,14 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
     <div class="w-64 card">
-      <div class="card-body justify-between p-0">
+      <div class="card-body gap-1 justify-between p-0">
         <div class="flex gap-3 items-center">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-6">
               <span class="text-xs">{{ initials }}</span>
             </div>
           </div>
-          <div class="font-bold text-gray-600">
+          <div class="font-bold text-gray-600 text-sm">
             <div v-if="!hasAnyName">Anonymous</div>
             <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
           </div>
@@ -20,9 +20,7 @@
             {{reformatDateShort(item?.created_at)}}
           </div>
         </div>
-        <div class="pb-4">
-          <h2 class="card-title text-lg text-gray-700 pb-3 font-black font-sans">{{item.title}}</h2>
-        </div>
+        <h2 class="card-title text-lg text-gray-700 font-sans font-medium">{{item.title}}</h2>
       </div>
     </div>
   </NuxtLink>

@@ -1,44 +1,42 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
-    <div class="h-full card">
+    <div class="h-full card md:card-side gap-6">
 
       <div
         v-if="item?.picture"
-        class="h-56 flex bg-gray-300 rounded-2xl"
+        class="basis-1/4 aspect-square rounded flex items-center"
       >
         <nuxt-img
-          class="rounded-2xl"
+          class="rounded aspect-square"
           :src="item.picture"
           style="object-fit: cover;"
         />
       </div>
-      <div class="card-body justify-between p-0 pt-4">
+      <div class="card-body gap-3 justify-center p-0">
+        <div class="flex gap-4 items-center font-sans">
+          <div class="avatar placeholder">
+            <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
+              <span class="text-sm">{{ initials }}</span>
+            </div>
+          </div>
+          <div class="font-bold text-gray-600 text-sm">
+            <div v-if="!hasAnyName">Anonymous</div>
+            <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
+          </div>
+          <div class="text-gray-500 text-sm">
+            {{reformatDate(item?.created_at)}}
+          </div>
+        </div>
+        <div class="py-0">
+          <h2 class="card-title text-xl text-gray-700 pb-1 font-black font-sans">{{item.title}}</h2>
+          <p class="text-gray-600 font-sans text-sm">{{item.subtitle}}</p>
+        </div>
         <div class="-ml-3 flex">
           <div
             v-for="tag in item.tags"
             :key="tag.name"
             class="btn btn-sm btn-ghost btn-info text-info rounded-full"
           >{{ tag.name }}</div>
-        </div>
-        <div class="py-6">
-          <h2 class="card-title text-2xl text-gray-700 pb-3 font-black font-sans">{{item.title}}</h2>
-          <p class="text-gray-600 font-sans">{{item.subtitle}}</p>
-        </div>
-        <div class="flex gap-4 items-center font-sans">
-          <div class="avatar placeholder">
-            <div class="bg-neutral-focus text-neutral-content rounded-full w-12">
-              <span class="text-2xl">{{ initials }}</span>
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <div class="font-bold text-gray-600">
-              <div v-if="!hasAnyName">Anonymous</div>
-              <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
-            </div>
-            <div class="text-gray-500">
-              {{reformatDate(item?.created_at)}}
-            </div>
-          </div>
         </div>
       </div>
     </div>
