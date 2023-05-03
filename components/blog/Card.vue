@@ -1,18 +1,18 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
-    <div class="h-full card md:card-side gap-6">
+    <div class="h-full card sm:card-side gap-6">
 
       <div
         v-if="item?.picture"
-        class="basis-1/4 aspect-square rounded flex items-center"
+        class="basis-1/4 sm:aspect-square rounded-none sm:rounded flex items-center"
       >
         <nuxt-img
-          class="rounded aspect-square"
+          class="rounded-none sm:rounded sm:aspect-square"
           :src="item.picture"
           style="object-fit: cover;"
         />
       </div>
-      <div class="card-body gap-3 justify-center p-0">
+      <div class="card-body gap-3 justify-center py-2 sm:p-0">
         <div class="flex gap-4 items-center font-sans">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-8">

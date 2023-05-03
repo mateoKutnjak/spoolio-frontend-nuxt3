@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto">
-    <div class="px-12 md:px-0 pb-12 flex flex-col md:flex-row gap-6 justify-between">
+    <div class="px-0 md:px-12 pb-12 flex flex-col md:flex-row gap-6 justify-between">
       <!-- <div class="text-4xl text-gray-700">Projects</div> -->
-      <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-2xl">
+      <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-none sm:rounded-2xl">
         <div class="mb-3 text-5xl text-white font-bold">Projects</div>
         <SearchBar
-          class="absolute bottom-0 -mb-6 mx-auto left-0 right-0 max-w-sm shadow-lg"
+          class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow-lg"
           placeholder="Search projects"
           @submit-search-phrase="onSearch"
         />
@@ -47,7 +47,7 @@
       v-if="getPaginatedBlogs.count || 0 > 0"
       class="mt-12 flex flex-col gap-8 items-center"
     >
-      <div class="w-full flex gap-6">
+      <div class="w-full flex flex-col md:flex-row gap-6">
         <div class="basis-2/3 flex flex-col gap-8 items-center">
           <div class="w-full flex flex-col gap-4">
             <!-- <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" /> -->
@@ -66,8 +66,8 @@
             @click="loadMoreItems"
           >Load more</div>
         </div>
-        <div class="divider divider-horizontal m-0 w-0 before:bg-stone-300 after:bg-stone-300"></div>
-        <div class="basis-1/3 flex flex-col items-start">
+        <div class="divider sm:divider-horizontal m-0"></div>
+        <div class="px-6 sm:px-0 basis-1/3 flex flex-col items-start">
           <div v-if="getFeaturedBlogs.length > 0">
             <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
             </div>
@@ -84,7 +84,7 @@
           <div class="divider"></div>
           <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Tags
           </div>
-          <div class="flex btn-group gap-2 my-2">
+          <div class="flex flex-wrap btn-group gap-2 my-2">
             <div
               v-for="blogTag in blogTags"
               :key="blogTag.name"
@@ -114,7 +114,7 @@
         name="noto:telescope"
         size="230"
       />
-      <div class="font-sans text-stone-500 text-xl font-bold">Nothing to show</div>
+      <div class="font-sans text-stone-500 text-xl">Nothing to show</div>
     </div>
   </div>
 </template>
