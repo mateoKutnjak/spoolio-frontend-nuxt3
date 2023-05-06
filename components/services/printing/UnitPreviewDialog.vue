@@ -8,8 +8,12 @@
         />
       </client-only>
       <div class="absolute top-4 left-6 max-w-fit">
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 items-start">
           <div class="text-2xl text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
+          <RadioGroupDimensionUnit
+            :unit="unit"
+            :key="unit.length_unit"
+          />
           <ServicesPrintingDimensionInfo
             :data="vector3Parse(unit.model_dimensions)"
             :unit="unit.length_unit"
