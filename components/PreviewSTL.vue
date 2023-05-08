@@ -303,7 +303,6 @@ function drawPlane(
   rotationUnit: RotationUnit,
   dimensionUnit: DimensionUnit
 ) {
-
   const rotationMatrix = new Matrix4();
   rotationMatrix.makeRotationFromEuler(
     new Euler(rotationVector.x, rotationVector.y, rotationVector.z)
@@ -313,7 +312,7 @@ function drawPlane(
   removeObjectFromSceneByName("plane_helper");
 
   const plane = new Plane(new Vector3(0, 0, 1), bbox.max.z);
-  const planeSize = dimensionUnit === DimensionUnit.mms ? 210 : 8.27;
+  const planeSize = dimensionUnit === DimensionUnit.mms ? 210 : 82.7;
   const helper = new PlaneHelper(plane, planeSize, 0x888888);
   helper.name = "plane_helper";
 
