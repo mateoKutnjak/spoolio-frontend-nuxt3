@@ -1,10 +1,10 @@
 <template>
-  <div class="flex justify-center btn-group my-2">
+  <div class="flex justify-center btn-group my-2 shadow-sm">
     <div
       v-for="dimensionUnit in dimensionUnits"
       :key="dimensionUnit"
       class="btn btn-sm"
-      :class="dimensionUnit === unit.length_unit ? 'btn-active !text-white' : 'btn-ghost bg-gray-300'"
+      :class="dimensionUnit === unit.length_unit ? 'btn-active !text-white' : 'btn-ghost bg-white'"
       @click="selected = dimensionUnit"
     >
       {{ dimensionUnit }}

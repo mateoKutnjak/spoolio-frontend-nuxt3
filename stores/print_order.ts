@@ -223,6 +223,13 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('model_rotation', unit.model_rotation)
             formData.append('optimal_rotation', unit.optimal_rotation);
             formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
+            formData.append('other_units', JSON.stringify(this.units.filter(el => el.localUrl !== unit.localUrl && el.estimated_time).map(el => {
+                return {
+                    quantity: el.quantity,
+                    material: el.spool.material,
+                    estimated_time: el.estimated_time
+                }
+            })))
 
             // * Negative infinity indicates loading
             this.updateUnit(unit.localUrl, {
