@@ -50,13 +50,15 @@
       <div class="w-full flex flex-col md:flex-row gap-6">
         <div class="basis-2/3 flex flex-col gap-8 items-center">
           <div class="w-full flex flex-col gap-4">
-            <!-- <BlogHeadCard :blog="getPaginatedBlogs.blogs[0]" /> -->
             <div class="mt-8 flex flex-col gap-10">
               <div
                 :key="blog.id"
                 v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
               >
-                <BlogCard :item="blog" />
+                <BlogCard
+                  :item="blog"
+                  @on-tag-clicked="tag => tagSelected = tag"
+                />
               </div>
             </div>
           </div>
@@ -69,7 +71,7 @@
         <div class="divider sm:divider-horizontal m-0"></div>
         <div class="px-6 sm:px-0 basis-1/3 flex flex-col items-start">
           <div v-if="getFeaturedBlogs.length > 0">
-            <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Featured
+            <div class="mb-5 font-bold text-gray-700 text-md">Featured
             </div>
             <div class="flex flex-col gap-5 overflow-x-auto">
               <div
@@ -82,16 +84,16 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="mb-6 btn btn-sm btn-primary rounded-sm text-white gap-2">Tags
+          <div class="mb-2 font-bold text-gray-700 text-md">Tags
           </div>
           <div class="flex flex-wrap btn-group gap-2 my-2">
-            <div
+            <BlogTag
               v-for="blogTag in blogTags"
               :key="blogTag.name"
-              class="btn btn-sm text-info rounded-full bg-stone-200 !rounded-full"
-              :class="tagSelected?.id === blogTag.id ? 'border-2 border-info' : ' btn-ghost'"
-              @click="tagSelected = blogTag"
-            >{{ blogTag.name }}</div>
+              :tag="blogTag"
+              :selected="tagSelected?.id === blogTag.id"
+              @on-tag-clicked="tag => tagSelected = blogTag"
+            />
           </div>
         </div>
       </div>

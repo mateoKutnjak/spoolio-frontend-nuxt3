@@ -1,7 +1,7 @@
 <template>
   <NuxtLink :to="`/blogs/${item.id}`">
     <div class="w-64 card">
-      <div class="card-body gap-1 justify-between p-0">
+      <div class="card-body gap-1.5 justify-between p-0">
         <div class="flex gap-3 items-center">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-6">
@@ -20,7 +20,7 @@
             {{reformatDateShort(item?.created_at)}}
           </div>
         </div>
-        <h2 class="card-title text-lg text-gray-700 font-sans font-medium">{{item.title}}</h2>
+        <h2 class="card-title text-lg text-gray-700 font-sans font-bold">{{item.title}}</h2>
       </div>
     </div>
   </NuxtLink>

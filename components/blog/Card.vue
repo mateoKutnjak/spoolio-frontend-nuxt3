@@ -28,15 +28,17 @@
           </div>
         </div>
         <div class="py-0">
-          <h2 class="card-title text-xl text-gray-700 pb-1 font-black font-sans">{{item.title}}</h2>
+          <h2 class="card-title text-2xl text-gray-700 pb-1 font-sans">{{item.title}}</h2>
           <p class="text-gray-600 font-sans text-sm">{{item.subtitle}}</p>
         </div>
-        <div class="-ml-3 flex">
-          <div
+        <div class="flex gap-2">
+          <BlogTag
             v-for="tag in item.tags"
             :key="tag.name"
-            class="btn btn-sm btn-ghost btn-info text-info rounded-full"
-          >{{ tag.name }}</div>
+            :tag="tag"
+            :selected="false"
+            @on-tag-clicked="emit('onTagClicked', tag)"
+          />
         </div>
       </div>
     </div>
@@ -54,6 +56,7 @@ const blogStore = useBlogListStore();
 const notificationStore = useNotificationStore();
 
 const { item } = defineProps(["item"]);
+const emit = defineEmits(["onTagClicked"]);
 
 const { user } = storeToRefs(authStore);
 
