@@ -59,9 +59,9 @@
               >€{{totalPrice.toFixed(2) }}</strong>
             </div>
             <div class="px-3 py-2 flex gap-2 items-center">
-              <div class="text-base text-gray-700 font-normal"> ETA: </div>
+              <div class="text-base text-gray-700 font-normal"> ETA (without delivery): </div>
 
-              <div v-if="etaSeconds === Number.NEGATIVE_INFINITY">
+              <div v-if="eta === null">
                 <Icon
                   class="text-gray-500 -my-10"
                   name="eos-icons:three-dots-loading"
@@ -69,7 +69,7 @@
                 />
               </div>
               <div
-                v-else-if="etaSeconds === Number.POSITIVE_INFINITY"
+                v-else-if="eta === undefined"
                 class="px-3 py-0.5 bg-error rounded-md shadow text-sm text-white font-semibold"
               >
                 Error
@@ -77,7 +77,7 @@
               <strong
                 class="text-md font-bold"
                 v-else
-              >{{reformatSeconds(etaSeconds)}}</strong>
+              >{{reformatDateShort(eta)}}</strong>
             </div>
           </div>
           <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
@@ -185,7 +185,7 @@
           <div class="hidden md:flex gap-5 justify-end">
             <NuxtLink
               class="btn btn-primary btn-lg gap-1"
-              :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && etaSeconds !== Number.NEGATIVE_INFINITY && etaSeconds !== Number.POSITIVE_INFINITY ? '' : 'btn-disabled'"
+              :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
               <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
@@ -344,8 +344,8 @@ const totalPrice = computed(() => {
   return printOrderStore.getTotalPrice;
 });
 
-const etaSeconds = computed(() => {
-  return printOrderStore.getETASeconds;
+const eta = computed(() => {
+  return printOrderStore.getETA;
 });
 
 onMounted(async () => {

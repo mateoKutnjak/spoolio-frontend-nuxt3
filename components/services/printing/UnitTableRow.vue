@@ -258,6 +258,7 @@ function duplicateUnit() {
       length_unit: unit.length_unit,
       rotation_unit: unit.rotation_unit,
       estimated_time: unit.estimated_time,
+      screenshot: unit.screenshot,
     });
   } else {
     throw createError(

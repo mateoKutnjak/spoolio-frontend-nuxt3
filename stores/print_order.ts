@@ -59,6 +59,11 @@ export const usePrintOrderStore = defineStore('print-order', {
         units: [] as IPrintOrderUnit[],
         attachmentFiles: [] as IAttachmentFile[],
         attachmentImages: [] as IAttachmentImage[],
+
+        // * null - waiting
+        // * undefined - error
+        // * non-empty string - valid value
+        eta: null as string | undefined | null,
     }),
 
     getters: {
@@ -105,6 +110,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return acc + item.quantity * item.estimated_time;
             }, 0)
         },
+        getETA: (state) => {
+            return state.eta;
+        }
     },
 
     actions: {
@@ -204,6 +212,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     estimated_price: Number.POSITIVE_INFINITY
                 })
 
+                this.eta = undefined;
+
                 return;
             }
 
@@ -237,6 +247,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 estimated_price: Number.NEGATIVE_INFINITY
             })
 
+            // * Null indicates loading
+            this.eta = null;
+
             console.debug("Websockets: Opening...")
 
             // * First we connect to websocket
@@ -265,6 +278,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                         estimated_time: Number.POSITIVE_INFINITY,
                         estimated_price: Number.POSITIVE_INFINITY
                     })
+
+                    // * Null indicates error
+                    this.eta = null;
 
                     close();
                 } else {
@@ -309,6 +325,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                                     estimated_price: Number.POSITIVE_INFINITY
                                 })
 
+                                // * Null indicates error
+                                this.eta = null;
+
                                 close();
                             } else {
                                 // * Init message is received, no need for closing of the websocket connection
@@ -319,14 +338,18 @@ export const usePrintOrderStore = defineStore('print-order', {
                     case 'data':
                         const estimated_time = parsedData.data?.estimated_time;
                         const estimated_price = parsedData.data?.estimated_price;
+                        const estimated_ending_time = parsedData.data?.estimated_ending_time;
 
-                        if (!estimated_time || !estimated_price) {
+                        if (!estimated_time || !estimated_price || !estimated_ending_time) {
                             console.debug(`Websockets: Incomplete data message. Estimated time = ${estimated_time}. Estimated price = ${estimated_price}`)
 
                             this.updateUnit(unit.localUrl, {
                                 estimated_time: Number.POSITIVE_INFINITY,
                                 estimated_price: Number.POSITIVE_INFINITY
                             })
+
+                            // * Null indicates error
+                            this.eta = null;
 
                             close();
                             return;
@@ -336,8 +359,11 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                         this.updateUnit(unit.localUrl, {
                             estimated_time: estimated_time,
-                            estimated_price: estimated_price,
+                            estimated_price: estimated_price
                         })
+
+                        this.eta = estimated_ending_time;
+
                         close();
                         break;
                     case 'error':
@@ -349,6 +375,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                             estimated_time: Number.POSITIVE_INFINITY,
                             estimated_price: Number.POSITIVE_INFINITY
                         })
+
+                        // * Null indicates error
+                        this.eta = null;
 
                         break;
                     case 'close':
