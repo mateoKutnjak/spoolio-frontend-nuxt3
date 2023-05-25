@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PROFIT_MARGIN_MULTIPLIER, TIMEOUT_WS_DATA_MESSAGE, TIMEOUT_WS_INIT_MESSAGE } from '~~/constants/constants';
+import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION, PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION, PROFIT_MARGIN_MULTIPLIER, TIMEOUT_WS_PRINT_JOB_ETA_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_INIT_MESSAGE } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { useFilamentInfillStore } from './filament_infill';
@@ -198,7 +198,130 @@ export const usePrintOrderStore = defineStore('print-order', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async slicerEstimate(unit: IPrintOrderUnit) {
+        async estimatePrintJobsOnly() {
+            const config = useRuntimeConfig();
+
+            const authStore = useAuthStore();
+            const notificationStore = useNotificationStore();
+
+            if (!authStore.loggedIn) {
+                notificationStore.show('Please log in to use this feature', ToastLevelType.info);
+                this.eta = undefined;
+                return;
+            }
+
+            // * Null indicates loading
+            this.eta = null;
+
+            console.debug("Websockets: Opening...")
+
+            // * First we connect to websocket
+            const {
+                supported,
+                ws,
+                send,
+                close,
+                messageEvent,
+                errorEvent,
+                data,
+                isOpen,
+                isClosed,
+                errored,
+            } = useWebSocket(`${config.public.baseWsURL}ws/print-order/estimation/print-job-ending-time/`);
+
+            let isDataWebsocketMessageReceived = false;
+
+            // * Set initial wait for Websocket to get 'init' message from server
+            new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_PRINT_JOB_ETA_ESTIMATION_DATA_MESSAGE)).then(() => {
+                if (!isDataWebsocketMessageReceived) {
+                    console.debug('Timeout on websocket waiting to receive data message. Closing websocket')
+
+                    // * Null indicates error
+                    this.eta = undefined;
+
+                    close();
+                } else {
+                    // * Init message is received, no need for closing of the websocket connection
+                }
+            });
+
+            watch(data, value => {
+                console.debug(`Websockets message = ${value}`)
+                let parsedData = JSON.parse(value);
+
+                switch (parsedData.type) {
+                    case 'data':
+                        const estimated_ending_time = parsedData.data?.estimated_ending_time;
+
+                        if (!estimated_ending_time) {
+                            console.debug(`Websockets: Incomplete data message. Estimated ending time = ${estimated_ending_time}`)
+
+                            // * Null indicates error
+                            this.eta = undefined;
+
+                            close();
+                            return;
+                        }
+
+                        isDataWebsocketMessageReceived = true;
+
+                        this.eta = estimated_ending_time;
+
+                        close();
+                        break;
+                    case 'error':
+                        const errorMessage = parsedData.error;
+                        console.error(`Websocker error: ${errorMessage}`)
+
+                        // * Null indicates error
+                        this.eta = undefined;
+
+                        break;
+                    case 'close':
+                        const reason = parsedData.data?.reason;
+                        console.debug(`Websockets: close signal ${reason} received. Closing...`)
+                        close();
+                        console.debug('Websockets: Closed')
+
+                        break;
+                    default:
+                        console.debug('Unknown Websocket message type. Requesting websocket connection close...')
+                        close();
+                        console.debug('Websockets: Closed')
+                        break;
+                }
+
+                console.debug('Websockets: Message received')
+                console.debug(value)
+            })
+
+            watch(isOpen, value => {
+
+                console.debug(`Websockets: isOpen=${value}`)
+
+                if (value) {
+                    console.debug("Websockets: Opened")
+
+                    const body = JSON.stringify(this.units.filter(el => el.estimated_time).map(el => {
+                        return {
+                            quantity: el.quantity,
+                            material: el.spool.material,
+                            estimated_time: el.estimated_time
+                        }
+                    }))
+
+                    send(body);
+                }
+            })
+
+            watch(isClosed, value => {
+                console.debug("Websockets: Closing...")
+                close()
+                console.debug("Websockets: Closed")
+            })
+        },
+
+        async estimateSlicerAndPrintJobs(unit: IPrintOrderUnit) {
             const config = useRuntimeConfig();
 
             const authStore = useAuthStore();
@@ -264,13 +387,13 @@ export const usePrintOrderStore = defineStore('print-order', {
                 isOpen,
                 isClosed,
                 errored,
-            } = useWebSocket(`${config.public.baseWsURL}ws/slicer-estimation/`);
+            } = useWebSocket(`${config.public.baseWsURL}ws/print-order/estimation/slicer-and-print-job-ending-time/`);
 
             let isInitWebsocketMessageReceived = false;
             let isDataWebsocketMessageReceived = false;
 
             // * Set initial wait for Websocket to get 'init' message from server
-            new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_INIT_MESSAGE)).then(() => {
+            new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_SLICER_ESTIMATION_INIT_MESSAGE)).then(() => {
                 if (!isInitWebsocketMessageReceived) {
                     console.debug('Timeout on websocket waiting to receive init message. Closing websocket')
 
@@ -280,7 +403,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     })
 
                     // * Null indicates error
-                    this.eta = null;
+                    this.eta = undefined;
 
                     close();
                 } else {
@@ -316,7 +439,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                         }), HTTP_REQUEST_TIMEOUT);
 
                         // * Set initial wait for Websocket to get 'data' message from server
-                        new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_DATA_MESSAGE)).then(() => {
+                        new Promise(resolve => setTimeout(resolve, TIMEOUT_WS_SLICER_ESTIMATION_DATA_MESSAGE)).then(() => {
                             if (!isDataWebsocketMessageReceived) {
                                 console.debug('Timeout on websocket waiting to receive data message. Closing websocket')
 
@@ -326,7 +449,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                                 })
 
                                 // * Null indicates error
-                                this.eta = null;
+                                this.eta = undefined;
 
                                 close();
                             } else {
@@ -349,7 +472,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                             })
 
                             // * Null indicates error
-                            this.eta = null;
+                            this.eta = undefined;
 
                             close();
                             return;
@@ -377,7 +500,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                         })
 
                         // * Null indicates error
-                        this.eta = null;
+                        this.eta = undefined;
 
                         break;
                     case 'close':
@@ -419,10 +542,18 @@ export const usePrintOrderStore = defineStore('print-order', {
 
         addUnit(unit: IPrintOrderUnit) {
             this.units.push(unit);
+
+            this.estimateSlicerAndPrintJobs(unit)
+        },
+
+        addDuplicate(unit: IPrintOrderUnit) {
+            this.units.push(unit);
+
+            this.estimatePrintJobsOnly()
         },
 
         async add3dModelFile(file: File, onFinishedCallback: () => {}) {
-            if (PRINT_ORDER_FILES_TYPES.indexOf(file.type) < 0 && PRINT_ORDER_FILES_SUFFIXES.indexOf(urlExtractFileSuffix(file.name.toLowerCase())) < 0) {
+            if (!listContains(PRINT_ORDER_FILES_TYPES, file.type) && !listContains(PRINT_ORDER_FILES_SUFFIXES, urlExtractFileSuffix(file.name.toLowerCase()))) {
                 console.error(`Cannot add file type ${file.type} as 3d model. Supported models are ${PRINT_ORDER_FILES_TYPES}`);
                 return;
             }
@@ -475,8 +606,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 // ! First add unit to pinia state, then call slicer because slicer 
                 // ! manipulates some  data of pinia state regarding this particular unit
-                this.units.push(unit);
-                this.slicerEstimate(unit);
+                this.addUnit(unit);
             })
         },
 
@@ -506,6 +636,26 @@ export const usePrintOrderStore = defineStore('print-order', {
                 const updatedUnit = Object.assign(unit, fieldUpdate)
 
                 this.units[index] = updatedUnit;
+
+                let performSlicerAndPrintJobETAEstimation = false;
+                let performOnlyPrintJobETAEstimation = false;
+
+                Object.keys(fieldUpdate).forEach(el => {
+                    
+                    if (listContains(PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION, el)) {
+                        performSlicerAndPrintJobETAEstimation = true;
+                    }
+                    if (
+                        listContains(PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION, el)) {
+                        performOnlyPrintJobETAEstimation = true;
+                    }
+                });
+
+                if (performSlicerAndPrintJobETAEstimation) {
+                    this.estimateSlicerAndPrintJobs(this.units[index])
+                } else if (performOnlyPrintJobETAEstimation) {
+                    this.estimatePrintJobsOnly();
+                }
             }
         },
 

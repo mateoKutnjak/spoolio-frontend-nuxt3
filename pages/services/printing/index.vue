@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
         <div class="text-4xl">Create your printing order</div>
         <div class="flex gap-4 items-end">
-          <ListboxDimensionUnit class="self-end" />
+          <!-- <ListboxDimensionUnit class="self-end" /> -->
           <!-- <ListboxRotationUnit class="self-end" /> -->
           <div
             class="btn btn-error"
@@ -15,12 +15,12 @@
       </div>
       <div v-if="units.length > 0 || itemInsertedLoading">
         <div class="flex flex-col gap-8">
-          <div class="p-2 flex flex-col sm:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
+          <div class="h-16 p-2 flex flex-col sm:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
             <div class="px-3 py-2 flex items-center">
               <div class="text-base text-gray-700 font-normal mr-2"> Number of different items: </div>
               <div class="text-md font-bold">{{ units.length }}</div>
             </div>
-            <div class="px-3 py-2 flex items-center">
+            <div class="px-3 py-2 flex items-center ">
               <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
 
               <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
@@ -32,9 +32,12 @@
               </div>
               <div
                 v-else-if="totalPrice === Number.POSITIVE_INFINITY"
-                class="px-3 py-0.5 bg-error rounded-md shadow text-sm text-white font-semibold"
+                class="mb-0.5 text-error"
               >
-                Error
+                <Icon
+                  name="lucide:alert-circle"
+                  size="20"
+                />
               </div>
               <div
                 v-else-if="totalPrice <= PRINT_ORDER_MIN_PRICE"
@@ -68,11 +71,8 @@
                   size="50"
                 />
               </div>
-              <div
-                v-else-if="eta === undefined"
-                class="px-3 py-0.5 bg-error rounded-md shadow text-sm text-white font-semibold"
-              >
-                Error
+              <div v-else-if="eta === undefined">
+                <ButtonRetry @on-click="printOrderStore.estimatePrintJobsOnly()" />
               </div>
               <strong
                 class="text-md font-bold"

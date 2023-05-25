@@ -77,7 +77,6 @@ const selectedItem = ref(printOrderUnit.infill);
 watch(selectedItem, (value) => {
   if (value) {
     printOrderStore.updateUnit(fileUrl, { infill: value });
-    printOrderStore.slicerEstimate(printOrderUnit);
   }
 });
 </script>

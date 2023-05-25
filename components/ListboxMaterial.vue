@@ -82,10 +82,6 @@ watch(selectedItem, (value) => {
 
     // First update the unit
     printOrderStore.updateUnit(fileUrl, { spool: value });
-
-    // Then call slicer
-    // TODO this should be done in separated function
-    printOrderStore.slicerEstimate(printOrderUnit);
     printOrderStore.updateScreenshot(fileUrl);
   }
 });

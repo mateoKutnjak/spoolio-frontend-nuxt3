@@ -10,10 +10,10 @@
       <div class="absolute top-4 left-6 max-w-fit">
         <div class="flex flex-col gap-3 items-start">
           <div class="text-2xl text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
-          <RadioGroupDimensionUnit
+          <!-- <RadioGroupDimensionUnit
             :unit="unit"
             :key="unit.length_unit"
-          />
+          /> -->
           <ServicesPrintingDimensionInfo
             :data="vector3Parse(unit.model_dimensions)"
             :unit="unit.length_unit"
@@ -64,15 +64,10 @@
             size="70"
           />
         </div>
-        <div
-          v-else-if="price === Number.POSITIVE_INFINITY"
-          class="btn btn-error gap-2 shadow text-white"
-          :class="unit ? '' : 'btn-disabled'"
-          @click.stop="unit ? printOrderStore.slicerEstimate(unit) : () => null"
-        >
-          <Icon name="lucide:refresh-cw" />
-          Retry
+        <div v-else-if="price === Number.POSITIVE_INFINITY">
+          <ButtonRetry @on-click="unit ? printOrderStore.estimateSlicerAndPrintJobs(unit) : () => null" />
         </div>
+
         <div
           v-else
           class="text-4xl text-gray-700"

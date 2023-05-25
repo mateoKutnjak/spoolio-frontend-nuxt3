@@ -1,11 +1,11 @@
 <template>
-  <div class="flex justify-center btn-group my-2 shadow-sm">
+  <div class="w-min flex justify-start btn-group">
     <div
       v-for="dimensionUnit in dimensionUnits"
       :key="dimensionUnit"
-      class="btn btn-sm"
+      class="btn btn-sm border border-gray-300"
       :class="dimensionUnit === unit.length_unit ? 'btn-active !text-white' : 'btn-ghost bg-white'"
-      @click="selected = dimensionUnit"
+      @click.stop="selected = dimensionUnit"
     >
       {{ dimensionUnit }}
     </div>

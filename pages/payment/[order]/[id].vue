@@ -100,7 +100,7 @@ if (!stripe) {
   );
 }
 
-if (PAYMENT_ORDER_NAMES.indexOf(order) < 0) {
+if (listContains(PAYMENT_ORDER_NAMES, order)) {
   console.error(`Cannot proceed with payment for order name ${order}`);
   throw createError(`Cannot proceed with payment for order name ${order}`);
 }

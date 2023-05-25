@@ -27,10 +27,14 @@
       </div>
     </td>
     <td class="py-4">
-      <div class="h-48 max-w-xs flex flex-col gap-8 justify-center">
+      <div class="h-48 max-w-xs flex flex-col justify-between">
         <div class="text-lg font-semibold text-gray-700 dark:text-white line-clamp-1">
           {{ extractUrlFileStringUnion(unit.file) }}
         </div>
+        <!-- <RadioGroupDimensionUnit
+          :unit="unit"
+          :key="unit.length_unit"
+        /> -->
         <div class="flex flex-col gap-1.5">
           <ServicesPrintingDimensionInfo
             :data="vector3Parse(unit.model_dimensions)"
@@ -73,14 +77,8 @@
             size="50"
           />
         </div>
-        <div
-          v-else-if="totalPrice === Number.POSITIVE_INFINITY"
-          class="btn btn-sm btn-error gap-2 shadow text-white"
-          :class="printOrderUnit ? '' : 'btn-disabled'"
-          @click.stop="printOrderUnit ? printOrderStore.slicerEstimate(printOrderUnit) : () => null"
-        >
-          <Icon name="lucide:refresh-cw" />
-          Retry
+        <div v-else-if="totalPrice === Number.POSITIVE_INFINITY">
+          <ButtonRetry @on-click="printOrderUnit ? printOrderStore.estimateSlicerAndPrintJobs(unit) : () => null" />
         </div>
         <div
           v-else
@@ -236,7 +234,7 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
 
 function duplicateUnit() {
   if (unit.file instanceof File) {
-    printOrderStore.addUnit(<IPrintOrderUnit>{
+    printOrderStore.addDuplicate(<IPrintOrderUnit>{
       id: undefined,
       quantity: unit.quantity,
       spool: unit.spool,

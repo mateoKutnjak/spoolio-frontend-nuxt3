@@ -176,14 +176,14 @@ function onFilesAdded(files: File[]) {
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
 
-    if (MODELING_ORDER_ATTACHMENT_FILE_TYPES.indexOf(element.type) > -1) {
+    if (listContains(MODELING_ORDER_ATTACHMENT_FILE_TYPES, element.type)) {
       modelingOrderStore.addAttachmentFile(<IAttachmentFile>{
         file: element,
         comment: "",
         localUrl: URL.createObjectURL(element),
       });
     } else if (
-      MODELING_ORDER_ATTACHMENT_IMAGE_TYPES.indexOf(element.type) > -1
+      listContains(MODELING_ORDER_ATTACHMENT_IMAGE_TYPES, element.type)
     ) {
       modelingOrderStore.addAttachmentImage(<IAttachmentImage>{
         image: element,

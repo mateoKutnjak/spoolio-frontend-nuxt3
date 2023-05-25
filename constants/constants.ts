@@ -12,8 +12,9 @@ export const RESTRICT_PAGES_NON_ADMIN_STARTS_WITH = [
 ]
 
 export const HTTP_REQUEST_TIMEOUT = 15000;
-export const TIMEOUT_WS_INIT_MESSAGE = 5000;
-export const TIMEOUT_WS_DATA_MESSAGE = 30000;
+export const TIMEOUT_WS_SLICER_ESTIMATION_INIT_MESSAGE = 5000;
+export const TIMEOUT_WS_SLICER_ESTIMATION_DATA_MESSAGE = 30000;
+export const TIMEOUT_WS_PRINT_JOB_ETA_ESTIMATION_DATA_MESSAGE = 10000;
 
 export const CONTENT_TYPE_ORDER_UNIT = 'orderunit';
 export const CONTENT_TYPE_ORDER = 'printorder';
@@ -50,6 +51,15 @@ export const PRINT_ORDER_FILES_TYPES = ['model/stl'];
 // * file suffixes are turned in lowercase
 export const PRINT_ORDER_FILES_SUFFIXES = ['stl'];
 export const PRINT_ORDER_MIN_PRICE = 10;
+
+// * Parameters of print unit which when changed
+// * need to perform slicer estimation (also perform
+// * print job ETA estimation)
+export const PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION = ['rotation', 'infill', 'spool', 'length_unit', 'use_optimal_rotation', 'rotation_unit', 'model_rotation']
+
+// * Parameters of print unit which when changed
+// * need to perform ONLY print job ETA estimation
+export const PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION = ['quantity']
 
 // * Billing address types
 
