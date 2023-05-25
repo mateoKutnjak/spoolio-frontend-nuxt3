@@ -196,66 +196,21 @@
           </div>
         </div>
       </div>
-      <div v-else>
-        <div
-          @dragover.prevent
-          @drop.prevent
-        >
-          <label
-            for="dropzone-file"
-            class="my-12 py-24 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-            @drop="drop"
-          >
-            <div class="mb-2">
-              <Icon
-                class="text-stone-400/70"
-                name="lucide:file-box"
-                size="50"
-                aria-hidden="true"
-              />
-            </div>
-            <div class="flex flex-col gap-1">
-              <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
-              <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
-            </div>
-            <input
-              id="dropzone-file"
-              type="file"
-              name="fff"
-              class="hidden"
-              @change="change"
-            />
-          </label>
-        </div>
+      <div
+        v-else
+        class="card p-8 shadow bg-white"
+      >
+        <DragAndDropArea
+          title="Add 3D model or drag and drop"
+          subtitle=".STL (max 150MB)"
+          @on-change="change"
+          @on-drop="drop"
+        />
       </div>
     </div>
     <div class="md:hidden mx-6 my-6 flex justify-end gap-3">
 
-      <div>
-        <div
-          class="tooltip tooltip-left"
-          data-tip="Upload 3D model"
-        >
-          <label
-            for="dropzone-file"
-            class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
-            @drop="drop"
-          >
-            <Icon
-              name="lucide:upload-cloud"
-              size="27"
-              aria-hidden="true"
-            />
-            <input
-              id="dropzone-file"
-              type="file"
-              name="fff"
-              class="hidden"
-              @change="change"
-            />
-          </label>
-        </div>
-      </div>
+      <FileUploadFAB @change="change" />
       <div>
         <div
           class="tooltip tooltip-left"

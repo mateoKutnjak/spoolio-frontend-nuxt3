@@ -55,36 +55,14 @@
                 }"
               />
             </div>
-            <div class="hidden md:block card shadow-sm border border-gray-300 bg-white rounded-xl mb-5">
-              <div
-                class="flex h-full p-4"
-                @dragover.prevent
-                @drop.prevent
-              >
-                <label
-                  for="dropzone-file"
-                  class="flex-1 flex flex-col gap-2 items-center justify-center px-12 bg-gray-200 w-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg py-6"
-                  @drop="drop"
-                >
-                  <div class="text-blue-500">
-                    <Icon
-                      name="lucide:upload-cloud"
-                      size="55"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Drag your attachments here</span></p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">.TXT, .PDF, .JPG, .JPEG or .PNG</p>
-                  <div class="btn btn-ghost bg-blue-500 text-white mt-1">Browse files</div>
-                  <input
-                    id="dropzone-file"
-                    type="file"
-                    name="fff"
-                    class="hidden"
-                    @change="change"
-                  />
-                </label>
-              </div>
+            <div class="card p-4 mb-5 bg-white shadow">
+              <DragAndDropArea
+                class="h-full"
+                title="Choose a file or drag it here"
+                subtitle=".TXT, .PDF, .JPG, .JPEG or .PNG"
+                @on-change="change"
+                @on-drop="drop"
+              />
             </div>
           </div>
           <div class="divider p-0 m-0"></div>
@@ -103,33 +81,7 @@
       </FormKit>
     </div>
     <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
-
-      <div>
-        <div
-          class="tooltip tooltip-left"
-          data-tip="Upload 3D model"
-        >
-          <label
-            for="dropzone-file"
-            class="btn btn-circle btn-ghost btn-lg bg-base-100 shadow-md"
-            @drop="drop"
-          >
-            <Icon
-              class="text-gray-500"
-              name="lucide:upload-cloud"
-              size="30"
-              aria-hidden="true"
-            />
-            <input
-              id="dropzone-file"
-              type="file"
-              name="fff"
-              class="hidden"
-              @change="change"
-            />
-          </label>
-        </div>
-      </div>
+      <FileUploadFAB @change="change" />
     </div>
   </div>
 </template>
