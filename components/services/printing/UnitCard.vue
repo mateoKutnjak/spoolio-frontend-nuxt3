@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card sm:card-side bg-white rounded-none cursor-pointer border border-gray-300 shadow-md dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+    class="card sm:card-side bg-white rounded-none cursor-pointer border border-gray-300 shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
     @click="$emit('on-item-clicked', unit.localUrl)"
   >
     <div class="sm:m-6 h-44 w-full sm:w-44 bg-[#EAEAEA] flex justify-center">

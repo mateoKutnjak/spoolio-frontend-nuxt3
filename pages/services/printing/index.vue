@@ -105,81 +105,31 @@
               class="pb-6"
               viewBox="0 0 800 150"
             ></ContentLoader>
-            <div
-              class="p-6 py-3"
-              @dragover.prevent
-              @drop.prevent
-            >
-              <label
-                for="dropzone-file"
-                class="h-44 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                @drop="drop"
-              >
-                <div class="mb-2">
-                  <Icon
-                    class="text-stone-400/70"
-                    name="lucide:file-box"
-                    size="50"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div class="flex flex-col gap-1">
-                  <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
-                  <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
-                </div>
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  name="fff"
-                  class="hidden"
-                  @change="change"
-                />
-              </label>
-            </div>
+            <DragAndDropArea
+              class="h-56"
+              title="Add 3D model or drag and drop"
+              subtitle=".STL (max 150 MB)"
+              @on-change="change"
+              @on-drop="drop"
+            />
           </div>
 
           <div class="block lg:hidden">
-            <div
-              class="flex flex-col gap-5"
-              v-for="item in units"
-              :key="item.localUrl"
-            >
+            <div class="flex flex-col gap-2">
               <ServicesPrintingUnitCard
+                v-for="item in units"
+                :key="item.localUrl"
                 :unit="item"
                 @on-item-clicked="onItemClicked"
               />
             </div>
-            <div
-              class="mt-8"
-              @dragover.prevent
-              @drop.prevent
-            >
-              <label
-                for="dropzone-file"
-                class="py-12 flex gap-5 items-center justify-center w-full border-2 border-stone-300 border-dashed cursor-pointer bg-stone-200/30 hover:bg-stone-200/60 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-white dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                @drop="drop"
-              >
-                <div class="mb-2">
-                  <Icon
-                    class="text-stone-400/70"
-                    name="lucide:file-box"
-                    size="50"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div class="flex flex-col gap-1">
-                  <p class="text-sm text-stone-500 dark:text-gray-400"><span class="font-semibold">Add 3D model</span> or drag and drop</p>
-                  <p class="text-sm text-stone-500 dark:text-gray-400">.STL (max 150 MB)</p>
-                </div>
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  name="fff"
-                  class="hidden"
-                  @change="change"
-                />
-              </label>
-            </div>
+            <DragAndDropArea
+              class="mt-4"
+              title="Add 3D model or drag and drop"
+              subtitle=".STL (max 150MB)"
+              @on-change="change"
+              @on-drop="drop"
+            />
           </div>
 
           <div class="hidden md:flex gap-5 justify-end">
@@ -201,6 +151,7 @@
         class="card p-8 shadow bg-white"
       >
         <DragAndDropArea
+          class="h-[35vh]"
           title="Add 3D model or drag and drop"
           subtitle=".STL (max 150MB)"
           @on-change="change"
