@@ -5,7 +5,7 @@
       <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-none sm:rounded-2xl">
         <div class="mb-3 text-5xl text-white font-bold">Projects</div>
         <SearchBar
-          class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow-lg"
+          class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow"
           placeholder="Search projects"
           @submit-search-phrase="onSearch"
         />
@@ -108,16 +108,7 @@
         ></FacebookLoader>
       </div>
     </div>
-    <div
-      v-else
-      class="pt-16 flex flex-col justify-center items-center"
-    >
-      <Icon
-        name="noto:telescope"
-        size="230"
-      />
-      <div class="font-sans text-stone-500 text-xl">Nothing to show</div>
-    </div>
+    <EmptyPlaceholder v-else />
   </div>
 </template>
 

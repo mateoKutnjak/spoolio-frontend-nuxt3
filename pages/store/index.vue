@@ -28,12 +28,7 @@
         <progress class="progress w-56"></progress>
       </div>
     </div>
-    <div v-else>
-      <div class="grid justify-center h-56 h-56">
-        Nothing to show
-
-      </div>
-    </div>
+    <EmptyPlaceholder v-else />
   </div>
 
 </template>
