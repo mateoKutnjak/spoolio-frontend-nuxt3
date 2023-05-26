@@ -15,75 +15,16 @@
       </div>
       <div v-if="units.length > 0 || itemInsertedLoading">
         <div class="flex flex-col gap-8">
-          <div class="h-16 p-2 flex flex-col sm:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
-            <div class="px-3 py-2 flex items-center">
-              <div class="text-base text-gray-700 font-normal mr-2"> Number of different items: </div>
-              <div class="text-md font-bold">{{ units.length }}</div>
-            </div>
-            <div class="px-3 py-2 flex items-center ">
-              <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
-
-              <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
-                <Icon
-                  class="text-gray-500 -my-10"
-                  name="eos-icons:three-dots-loading"
-                  size="50"
-                />
-              </div>
-              <div
-                v-else-if="totalPrice === Number.POSITIVE_INFINITY"
-                class="mb-0.5 text-error"
-              >
-                <Icon
-                  name="lucide:alert-circle"
-                  size="20"
-                />
-              </div>
-              <div
-                v-else-if="totalPrice <= PRINT_ORDER_MIN_PRICE"
-                class="flex gap-1 items-center justify-end"
-              >
-                <div
-                  class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
-                  @click="notificationStore.show(`Minimum price we charge is ${PRINT_ORDER_MIN_PRICE}€`)"
-                >
-                  <Icon
-                    class="text-warning"
-                    name="lucide:alert-triangle"
-                    size="20"
-                  />
-                  €{{totalPrice.toFixed(2) }}
-                </div>
-
-              </div>
-              <strong
-                class="text-lg font-bold text-gray-700 "
-                v-else
-              >€{{totalPrice.toFixed(2) }}</strong>
-            </div>
-            <div class="px-3 py-2 flex gap-2 items-center">
-              <div class="text-base text-gray-700 font-normal"> ETA (without delivery): </div>
-
-              <div v-if="eta === null">
-                <Icon
-                  class="text-gray-500 -my-10"
-                  name="eos-icons:three-dots-loading"
-                  size="50"
-                />
-              </div>
-              <div v-else-if="eta === undefined">
-                <ButtonRetry @on-click="printOrderStore.estimatePrintJobsOnly()" />
-              </div>
-              <strong
-                class="text-md font-bold"
-                v-else
-              >{{reformatDateShort(eta)}}</strong>
-            </div>
-          </div>
+          <ServicesPrintingOrderSummary
+            :eta="eta"
+            :number-of-different-items="units.length"
+            :number-of-items="9999"
+            :total-price="totalPrice"
+          />
           <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
             <table class="table-auto w-full">
               <thead class="rounded-lg">
-                <tr class="bg-base-200">
+                <tr class="bg-stone-300/60">
                   <th class="pt-4 pb-3 text-start text-xs uppercase"></th>
                   <th class="pt-4 pb-3 text-start text-xs uppercase">Unit details</th>
                   <th class="pt-4 pb-3 text-center text-xs uppercase">Attributes</th>
