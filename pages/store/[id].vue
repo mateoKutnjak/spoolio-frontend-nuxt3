@@ -48,11 +48,11 @@
           :rated-by-me="product.rated_by_me"
         />
       </div>
-      <aside class="md:sticky order-first md:order-last top-8 col-span-3 h-full">
+      <aside class="md:sticky order-first md:order-last top-8 h-full md:w-1/3">
         <div class="card border border-gray-300 rounded-sm shadow-md bg-white">
           <div class="card-body">
             <div class="card-title items-center mb-6">
-              <div class="flex-1 text-lg text-gray-700">{{product?.title}}</div>
+              <div class="flex-1 text-lg text-gray-700 line-clamp-3">{{product?.title}}</div>
               <RatingPreview
                 :rating-value="product?.average_rating || 0"
                 :rating-count="product?.rating_count || 0"
@@ -60,13 +60,13 @@
             </div>
             <div class="divider mt-0 mb-6 h-0"></div>
 
-            <div class="mb-3 flex-1 flex flex-col gap-3">
+            <div class="mb-3 flex-1 flex flex-col gap-3 items-start">
               <div
                 v-for="[variationName, variations] in productVariationOptions"
                 :key="variationName"
               >
-                <div class="flex gap-4 items-center">
-                  <div class="text-gray-700 font-base text-lg text-gray-800 dark:text-white">{{ variationName }}</div>
+                <div class="flex flex-col gap-1 items-start">
+                  <div class="text-gray-700 font-semibold text-sm text-gray-800 dark:text-white">{{ variationName }}</div>
                   <!-- <div class="dropdown dropdown-end">
                     <label
                       tabindex="0"
@@ -83,10 +83,10 @@
                       </div>
                     </div>
                   </div> -->
-                  <div class="btn-group gap-1">
+                  <div class="flex flex-wrap gap-1">
                     <div
-                      class="btn btn-outline btn-xs border-gray-400 text-gray-600"
-                      :class="productVariationOptionSelections.get(variationName) === index ? 'btn-active' : ''"
+                      class="btn btn-sm border-gray-400 text-gray-600"
+                      :class="productVariationOptionSelections.get(variationName) === index ? 'btn-primary' : 'btn-outline'"
                       v-for="option, index in variations"
                       :key="option.title"
                       @click="setOption(variationName, index)"
