@@ -111,6 +111,13 @@ export const useCartStore = defineStore('cart', {
 
             this.cartItems = cartItemsCopy;
         },
+        removeAll(combinationId: number) {
+            const cartItemsCopy = new Map<number, [IProductVariationOptionCombination, number]>(this.cartItems);
+
+            cartItemsCopy.delete(combinationId)
+
+            this.cartItems = cartItemsCopy;
+        },
         setQuantity(combinationId: number, combination: IProductVariationOptionCombination, quantity: number) {
             const cartItemsCopy = new Map<number, [IProductVariationOptionCombination, number]>(this.cartItems);
 

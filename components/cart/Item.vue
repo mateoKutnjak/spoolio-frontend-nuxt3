@@ -1,15 +1,28 @@
 <template>
-  <div class="flex flex-col gap-6 items-start">
+  <div class="bg-stone-300/70 flex flex-col gap-6 items-start">
     <div class="flex flex-col gap-1">
-      <div class="text-md font-bold">{{combination.product?.title || 'null'}} <NuxtLink :to="`/store/${combination.product?.id}`">
-          <div
-            class="btn btn-ghost btn-xs text-blue-500"
-            @click="drawerStore.close()"
-          >Details</div>
-        </NuxtLink>
+      <div class="flex">
+        <div class="text-md font-bold line-clamp-2">{{combination.product?.title || 'null'}}
+
+        </div>
+        <div
+          class="btn btn-ghost btn-sm btn-circle text-error"
+          @click="onDeleteClicked"
+        >
+          <Icon
+            name="lucide:trash-2"
+            size="20"
+          />
+        </div>
       </div>
       <div>{{combination.product?.description}}
       </div>
+      <NuxtLink :to="`/store/${combination.product?.id}`">
+        <div
+          class="-ml-3 btn btn-ghost btn-sm text-info"
+          @click="drawerStore.close()"
+        >Details</div>
+      </NuxtLink>
 
     </div>
     <div class="flex gap-2 justify-start">
@@ -39,8 +52,10 @@ import { useCartStore } from "~~/stores/cart";
 
 import { MAX_CART_ITEMS } from "~~/constants/constants";
 import { IProductVariationOptionCombination } from "~~/constants/data";
+import { useDialogStore } from "~~/stores/dialog";
 
 const cartStore = useCartStore();
+const dialogStore = useDialogStore();
 const drawerStore = useDrawerStore();
 
 const { combination } = defineProps<{
@@ -63,6 +78,17 @@ function decreaseQuantity() {
 
 function setQuantity(quantity: number) {
   cartStore.setQuantity(combination.id, combination, quantity);
+}
+
+function onDeleteClicked() {
+  dialogStore.open("DialogConfirm", {
+    title: `Are you sure about that?`,
+    subtitle: `You will remove this item from your cart`,
+    onConfirm: () => {
+      cartStore.removeAll(combination.id);
+    },
+    onDismiss: () => {},
+  });
 }
 </script>
   
