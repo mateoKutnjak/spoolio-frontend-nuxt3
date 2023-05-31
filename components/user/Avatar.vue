@@ -3,7 +3,7 @@
     <div class="shadow w-12 h-12 rounded-full bg-base-100/80">
       <Icon
         class="w-12 h-12 p-2 text-gray-500"
-        name="lucide:user"
+        name="lucide:user-2"
         aria-hidden="true"
       />
     </div>

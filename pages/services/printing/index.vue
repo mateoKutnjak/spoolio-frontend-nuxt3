@@ -303,8 +303,10 @@ function change(e: any) {
 
     if (element.size > MAX_FILE_SIZE_STL) {
       notificationStore.show(
-        element.name + " " +
-        capitalizeOnlyFirstLetter(t('exceeds_limit_of')) + " " +
+        element.name +
+          " " +
+          capitalizeOnlyFirstLetter(t("exceeds_limit_of")) +
+          " " +
           MAX_FILE_SIZE_STL / 1024 / 1024 +
           " MBs",
         ToastLevelType.info
@@ -333,8 +335,10 @@ function drop(e: any) {
 
     if (element.size > MAX_FILE_SIZE_STL) {
       notificationStore.show(
-        element.name + " " +
-        capitalizeOnlyFirstLetter(t('exceeds_limit_of')) + " " +
+        element.name +
+          " " +
+          capitalizeOnlyFirstLetter(t("exceeds_limit_of")) +
+          " " +
           MAX_FILE_SIZE_STL / 1024 / 1024 +
           " MBs"
       );
