@@ -3,7 +3,7 @@
     <div class="px-0 md:px-12 pb-12 flex flex-col md:flex-row gap-6 justify-between">
       <!-- <div class="text-4xl text-gray-700">Projects</div> -->
       <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-none sm:rounded-2xl">
-        <div class="mb-3 text-5xl text-white font-bold">Projects</div>
+        <div class="mb-3 text-5xl text-white font-bold">{{ $t('projects') }}</div>
         <SearchBar
           class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow"
           placeholder="Search projects"
@@ -31,7 +31,7 @@
         class="btn btn-ghost btn-sm !rounded-full"
         :class="categorySelected ? '' : 'btn-active !text-white'"
         @click="categorySelected = null"
-      >All</div>
+      >{{ capitalizeOnlyFirstLetter($t('all')) }}</div>
       <div
         v-for="blogCategory in blogCategories"
         :key="blogCategory.id"
@@ -66,12 +66,12 @@
             v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
             class="btn btn-outline"
             @click="loadMoreItems"
-          >Load more</div>
+          >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
         </div>
         <div class="divider sm:divider-horizontal m-0"></div>
         <div class="px-6 sm:px-0 basis-1/3 flex flex-col items-start">
           <div v-if="getFeaturedBlogs.length > 0">
-            <div class="mb-5 font-bold text-gray-700 text-md">Featured
+            <div class="mb-5 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('featured')) }}
             </div>
             <div class="flex flex-col gap-5 overflow-x-auto">
               <div
@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="mb-2 font-bold text-gray-700 text-md">Tags
+          <div class="mb-2 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('tags')) }}
           </div>
           <div class="flex flex-wrap btn-group gap-2 my-2">
             <BlogTag

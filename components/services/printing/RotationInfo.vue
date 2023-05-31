@@ -23,7 +23,7 @@
         />
       </label>
       <div class="mt-1.5 text-sm">
-        {{ useOptimalRotation ? 'Optimal orientation' : 'Custom orientation' }}
+        {{ useOptimalRotation ? capitalizeOnlyFirstLetter($t('optimal_orientation')) : capitalizeOnlyFirstLetter($t('custom_orientation')) }}
       </div>
 
     </div>
@@ -48,7 +48,7 @@
                 outer: '!m-0',
               }"
             />
-            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+            <div class="text-sm">{{ $t(RotationUnit[rotationUnit]) }}</div>
           </div>
           <div class="flex gap-2 items-center">
             <strong class="text-xs"> Y </strong>
@@ -62,7 +62,7 @@
                 outer: '!m-0',
               }"
             />
-            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+            <div class="text-sm">{{ $t(RotationUnit[rotationUnit]) }}</div>
           </div>
           <div class="flex gap-2 items-center">
             <strong class="text-xs"> Z </strong>
@@ -76,7 +76,7 @@
                 outer: '!m-0',
               }"
             />
-            <div class="text-sm">{{ RotationUnit[rotationUnit] }}</div>
+            <div class="text-sm">{{ $t(RotationUnit[rotationUnit]) }}</div>
           </div>
           <FormKit
             v-if="!useOptimalRotation"

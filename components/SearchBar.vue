@@ -3,7 +3,7 @@
     <div class="flex border border-gray-400 bg-white rounded-full">
       <input
         type="text"
-        placeholder="Search…"
+        :placeholder="capitalizeOnlyFirstLetter($t('search'))"
         class="input btn-block !outline-none bg-transparent"
         v-model="input"
       />

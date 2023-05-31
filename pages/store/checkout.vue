@@ -12,7 +12,7 @@
         <div class="flex-1 flex flex-col gap-4">
           <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-5">
-              <div class="card-title font-normal text-gray-700">1. Contact email<div class="pt-1">
+              <div class="card-title font-normal text-gray-700">1. {{ capitalizeOnlyFirstLetter($t('contact_email')) }}<div class="pt-1">
                 </div>
               </div>
               <FormKit
@@ -29,7 +29,7 @@
           <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-5">
               <div class="card-title">
-                2. Addresses
+                2. {{ capitalizeOnlyFirstLetter($t('addresses')) }}
               </div>
               <div class="flex flex-col">
                 <FormKit
@@ -55,7 +55,7 @@
           </div>
           <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-4">
-              <div class="card-title font-normal text-gray-700">3. Shipping method</div>
+              <div class="card-title font-normal text-gray-700">3. {{ capitalizeOnlyFirstLetter($t('shipping_method')) }}</div>
               <FormKit
                 :type="shippingMethodInput"
                 name="Shipping method"
@@ -69,7 +69,7 @@
           </div>
           <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
             <div class="card-body gap-4">
-              <div class="card-title">4. Payment method</div>
+              <div class="card-title">4. {{ capitalizeOnlyFirstLetter($t('payment_method')) }}</div>
               <FormInputPaymentMethod />
             </div>
           </div>
@@ -77,7 +77,7 @@
         <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
           <div class="card shadow-md border bg-white">
             <div class="card-body gap-8">
-              <div class="card-title font-medium text-2xl text-gray-700">Order Summary</div>
+              <div class="card-title font-medium text-2xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
               <div class="flex flex-col gap-10">
 
                 <div
@@ -96,26 +96,26 @@
                   <table class="table table-compact w-full">
                     <tbody class="">
                       <tr>
-                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">Items total price</td>
+                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('items_price')) }}</td>
                         <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">€{{ (cartStore.getCartTotalPrice).toFixed(2) }}</td>
                       </tr>
                       <tr>
                         <td class="pl-0 py-1 py-0 text-base text-start border-b-2 border-gray-500 bg-transparent">
-                          <div class="flex gap-1"><strong>Subtotal</strong>(VAT excluded)</div>
+                          <div class="flex gap-1"><strong>{{ capitalizeOnlyFirstLetter($t('subtotal')) }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_excluded')) }})</div>
                         </td>
                         <td class="py-1 pt-0 text-lg text-end border-b-2 border-gray-500 bg-transparent"> <strong>€{{ (cartStore.getCartTotalPrice).toFixed(2) }}</strong></td>
                       </tr>
                       <tr>
-                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`Tax (${taxPercentage * 100}%)`}}</td>
+                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`${capitalizeOnlyFirstLetter($t('tax'))} (${taxPercentage * 100}%)`}}</td>
                         <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">€{{ (cartStore.getCartTotalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
                       <tr>
-                        <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">Shipping fees</td>
+                        <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
                         <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">€{{ Number(store_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
                       <tr>
                         <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
-                          <div class="flex gap-1"><strong>TOTAL PRICE</strong>(VAT included)</div>
+                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_included')) }})</div>
                         </td>
                         <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>€{{ (cartStore.getCartTotalPrice * (1+taxPercentage) + Number(store_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
                       </tr>
@@ -125,7 +125,7 @@
                 <div class="flex flex-col gap-4">
                   <FormKit
                     type="checkbox"
-                    label="I agree to Terms & Condition and the Privacy Policy"
+                    :label="capitalizeOnlyFirstLetter($t('i_agree_to_terms_and_conditions_and_privacy_policy'))"
                     name="Terms and Conditions"
                     validation="accepted"
                     validation-visibility="submit"
@@ -135,7 +135,7 @@
                   />
                   <FormKit
                     type="submit"
-                    label="PAY NOW"
+                    :label="$t('pay_now').toUpperCase()"
                     :classes="{
                     input: 'btn btn-primary btn-block text-base'
                   }"
@@ -162,7 +162,11 @@ import { createInput } from "@formkit/vue";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "~~/stores/auth";
-import { IAddressBilling, IAddressShipping, IShippingMethod } from "~~/constants/data";
+import {
+  IAddressBilling,
+  IAddressShipping,
+  IShippingMethod,
+} from "~~/constants/data";
 
 const taxPercentage = 0.25;
 
@@ -186,7 +190,7 @@ const shippingMethodInput = createInput(ShippingMethod, {
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 
-const { user } = storeToRefs(authStore)
+const { user } = storeToRefs(authStore);
 const { cartItems, store_order } = storeToRefs(cartStore);
 
 const contact_email_ref = computed(() => {

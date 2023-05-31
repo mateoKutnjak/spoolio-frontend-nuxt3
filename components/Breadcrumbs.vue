@@ -6,7 +6,7 @@
         :key="crumb.name"
       >
         <NuxtLink :to="crumb.path">
-          {{crumb.name}}
+          {{ capitalizeOnlyFirstLetter($t(crumb.name)) }}
         </NuxtLink>
       </li>
     </ul>

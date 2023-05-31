@@ -24,7 +24,7 @@
                   name="lucide:edit"
                   size="20"
                   aria-hidden="true"
-                />Edit
+                />{{ capitalizeOnlyFirstLetter($t('edit')) }}
               </div>
             </NuxtLink>
           </div>

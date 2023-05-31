@@ -62,7 +62,7 @@
       </button>
     </div>
     <div class="text-gray-500 text-sm">
-      Showing results {{ currentPage * PAGE_SIZE + 1 }}-{{ Math.min((currentPage+1) * PAGE_SIZE, count) }} of {{ count }}
+      {{ capitalizeOnlyFirstLetter($t('showing_results')) }} {{ currentPage * PAGE_SIZE + 1 }}-{{ Math.min((currentPage+1) * PAGE_SIZE, count) }} {{ $t('of') }} {{ count }}
     </div>
   </div>
 </template>

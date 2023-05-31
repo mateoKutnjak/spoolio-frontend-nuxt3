@@ -6,7 +6,7 @@
           name="lucide:map-pin"
           size="22"
         />
-        <div>Shipping address</div>
+        <div>{{ capitalizeOnlyFirstLetter($t('shipping_address')) }}</div>
       </div>
       <div class="flex flex-col gap-1 text-start text-base text-gray-600">
         <p class="font-bold">{{shippingAddress.first_name}} {{shippingAddress.last_name}}</p>

@@ -2,7 +2,7 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-8">
       <div class="px-12 md:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
-        <div class="text-3xl">Print order #{{ order.id }}</div>
+        <div class="text-3xl">{{ `${capitalizeOnlyFirstLetter($t('print_order'))} #${order.id}` }}</div>
         <div class="text-xl text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
         <OrderStatusView :raw-status="order.status" />
       </div>
@@ -15,8 +15,8 @@
         class=" flex flex-col gap-4"
       >
         <div class="px-6 md:px-0 flex gap-8 justify-between">
-          <div class="text-lg text-gray-700">Total price: <strong>{{ order.estimated_price }} €</strong></div>
-          <div class="text-lg text-gray-700">Number of files: <strong>{{ data.length }}</strong></div>
+          <div class="text-lg text-gray-700">{{ capitalizeOnlyFirstLetter($t('total_price')) }}: <strong>{{ order.estimated_price }} €</strong></div>
+          <div class="text-lg text-gray-700">{{ capitalizeOnlyFirstLetter($t('number_od_files')) }}: <strong>{{ data.length }}</strong></div>
         </div>
         <OrderHistoryPrintingDetailsUnitCard
           v-for="unit in data"

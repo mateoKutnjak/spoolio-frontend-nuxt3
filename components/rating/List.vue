@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col gap-8 items-start">
-    <h3 class="text-lg font-semibold text-gray-900">Ratings</h3>
+    <h3 class="text-lg font-semibold text-gray-900">{{ capitalizeOnlyFirstLetter($t('ratings')) }}</h3>
     <RatingForm
       v-if="!ratedByMe"
       :object-id="objectId"
@@ -22,14 +22,14 @@
         v-if="ratings.length < count"
         class="btn btn-primary"
         @click="loadMoreRatings"
-      >Load more ratings</div>
+      >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
 
     </div>
     <div
       v-else
       class="flex justify-center italic"
     >
-      No ratings yet
+    {{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}
     </div>
   </div>
 </template>

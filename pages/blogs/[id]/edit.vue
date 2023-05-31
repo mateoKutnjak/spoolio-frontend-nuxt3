@@ -5,7 +5,6 @@
         type="form"
         id="blog-edit-form"
         :form-class="submitted ? 'hide' : 'show'"
-        submit-label="Update"
         @submit="submitHandler"
         :actions="false"
       >
@@ -15,7 +14,7 @@
             <FormKit
               type="text"
               name="title"
-              label="Title"
+              :label="capitalizeOnlyFirstLetter($t('title'))"
               v-model="blogTitle"
               validation="required"
               validation-visibility="blur"
@@ -25,7 +24,7 @@
             <FormKit
               type="text"
               name="subtitle"
-              label="Subtitle"
+              :label="capitalizeOnlyFirstLetter($t('subtitle'))"
               v-model="blogSubtitle"
               validation="required"
               validation-visibility="blur"
@@ -47,7 +46,7 @@
           <div class="card-actions justify-center py-12">
             <FormKit
               type="submit"
-              label="Update post"
+              :label="capitalizeOnlyFirstLetter($t('update'))"
             />
           </div>
 

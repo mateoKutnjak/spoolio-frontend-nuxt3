@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div>About</div>
+    <div>{{ capitalizeOnlyFirstLetter($t('about')) }}</div>
   </div>
 </template>
   

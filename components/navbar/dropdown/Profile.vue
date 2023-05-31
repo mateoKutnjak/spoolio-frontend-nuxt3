@@ -53,7 +53,7 @@
                 name="lucide:user"
                 size="20"
                 aria-hidden="true"
-              />Login
+              />{{ capitalizeOnlyFirstLetter($t('sign_in')) }}
             </div>
             </MenuItem>
             <MenuItem
@@ -65,7 +65,7 @@
                 name="lucide:log-out"
                 size="20"
                 aria-hidden="true"
-              />Sign Up
+              />{{ capitalizeOnlyFirstLetter($t('sign_up')) }}
             </div>
             </MenuItem>
           </div>
@@ -81,7 +81,7 @@
                   name="lucide:clipboard-list"
                   size="20"
                   aria-hidden="true"
-                />Order history
+                />{{ capitalizeOnlyFirstLetter($t('order_history')) }}
               </div>
               </MenuItem>
             </NuxtLink>
@@ -93,7 +93,7 @@
                   name="lucide:user"
                   size="20"
                   aria-hidden="true"
-                />Profile
+                />{{ capitalizeOnlyFirstLetter($t('profile')) }}
               </div>
             </NuxtLink>
             </MenuItem>
@@ -106,7 +106,7 @@
                 name="lucide:log-out"
                 size="20"
                 aria-hidden="true"
-              />Logout
+              />{{ capitalizeOnlyFirstLetter($t('logout')) }}
             </div>
             </MenuItem>
           </div>

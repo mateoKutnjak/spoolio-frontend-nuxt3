@@ -3,7 +3,7 @@
     class="btn btn-sm text-info rounded-full bg-stone-200 !rounded-full"
     :class="selected ? 'border-2 border-info' : ' btn-ghost'"
     @click.prevent="emit('onTagClicked', tag)"
-  >{{ tag.name }}</div>
+  >{{ capitalizeOnlyFirstLetter($t(tag.name)) }}</div>
 </template>
 
 <script lang="ts" setup>

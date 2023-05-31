@@ -6,7 +6,7 @@
           name="lucide:credit-card"
           size="22"
         />
-        <div>Billing address</div>
+        <div>{{ capitalizeOnlyFirstLetter($t('billing_address')) }}</div>
       </div>
       <div class="flex flex-col gap-1 text-start text-base text-gray-600">
         <p class="font-bold">{{billingAddress.first_name}} {{billingAddress.last_name}}</p>

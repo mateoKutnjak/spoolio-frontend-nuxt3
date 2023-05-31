@@ -15,41 +15,45 @@
     </div>
     <div class="navbar-center hidden lg:flex">
       <NuxtLink to="/blogs">
-        <button class="btn btn-ghost text-gray-700">projects</button>
+        <button class="btn btn-ghost text-gray-700">{{$t('projects')}}</button>
       </NuxtLink>
       <NavbarDropdownServices :navigation="servicesNavigation" />
       <NuxtLink to="/store">
-        <button class="btn btn-ghost text-gray-700">store</button>
+        <button class="btn btn-ghost text-gray-700">{{$t('store')}}</button>
       </NuxtLink>
       <NuxtLink to="/about">
-        <button class="btn btn-ghost text-gray-700">about</button>
+        <button class="btn btn-ghost text-gray-700">{{$t('about')}}</button>
       </NuxtLink>
     </div>
     <div class="navbar-end">
       <div class="flex items-center">
 
         <div>
-          <button
-            class="btn btn-ghost btn-square hover:bg-transparent"
+          <label
+            class="btn btn-square btn-ghost swap swap-rotate"
             :class="getCartItems.size > 0 ? '' : 'btn-square'"
           >
-            <label class="swap swap-rotate">
-              <input type="checkbox" />
-              <Icon
-                class="swap-on"
-                name="emojione:flag-for-united-states"
-                size="27"
-                aria-hidden="true"
-              />
-              <Icon
-                class="swap-off"
-                name="emojione:flag-for-croatia"
-                size="27"
-                aria-hidden="true"
-              />
 
-            </label>
-          </button>
+            <!-- this hidden checkbox controls the state -->
+            <input
+              type="checkbox"
+              v-model="languageCheckbox"
+            />
+
+            <Icon
+              :class="'swap-on'"
+              name="emojione:flag-for-united-states"
+              size="27"
+              aria-hidden="true"
+            />
+            <Icon
+              :class="'swap-off'"
+              name="emojione:flag-for-croatia"
+              size="27"
+              aria-hidden="true"
+            />
+
+          </label>
         </div>
         <button
           class="btn btn-ghost"
@@ -94,16 +98,26 @@
 </template>
   
   <script lang="ts" setup>
+import { Language } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
 import { useCartStore } from "~~/stores/cart";
 import { useDrawerStore } from "~~/stores/drawer";
+import { useGlobalsStore } from "~~/stores/globals";
+
+const { locale } = useI18n();
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
+const globalsStore = useGlobalsStore();
 
 const isLoginDialogShown = ref(false);
 const isRegisterDialogShown = ref(false);
+
+const initialLanguage = globalsStore.getLanguage;
+
+// TODO this wont support more than two languages
+const languageCheckbox = ref(initialLanguage === Language.croatian);
 
 const getUser = computed(() => {
   return authStore.getUser;
@@ -115,14 +129,14 @@ const getCartItems = computed(() => {
 
 const navigation = [
   { name: "projects", to: "/blogs" },
-  { name: "3d printing", to: "/services/printing" },
+  { name: "_3d_printing", to: "/services/printing" },
   { name: "modeling", to: "/services/modeling" },
   { name: "store", to: "/store" },
   { name: "about", to: "/about" },
 ];
 
 const servicesNavigation = [
-  { name: "3d printing", to: "/services/printing" },
+  { name: "_3d_printing", to: "/services/printing" },
   { name: "modeling", to: "/services/modeling" },
 ];
 
@@ -133,6 +147,17 @@ function toggleDrawer() {
 function closeDropdown(e: any) {
   e.target?.blur();
 }
+
+watch(languageCheckbox, (value) => {
+  console.log(value);
+  if (value) {
+    globalsStore.setLanguage(Language.english);
+    locale.value = Language.english.localeName;
+  } else {
+    globalsStore.setLanguage(Language.croatian);
+    locale.value = Language.croatian.localeName;
+  }
+});
 </script>
   
   <style>

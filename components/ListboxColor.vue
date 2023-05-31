@@ -9,7 +9,7 @@
     >
       <div class="relative mt-1">
         <ListboxButton class="relative z-0 w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-          <span class="block truncate">{{ selectedItem.color.name }}</span>
+          <span class="block truncate">{{ capitalizeOnlyFirstLetter($t(selectedItem.color.name)) }}</span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <Icon name="lucide:chevrons-up-down" />
           </span>
@@ -35,7 +35,7 @@
                 <span :class="[
                       selected ? 'font-medium' : 'font-base',
                       'block truncate',
-                    ]">{{ spool.color.name }}</span>
+                    ]">{{ capitalizeOnlyFirstLetter($t(spool.color.name)) }}</span>
               </li>
             </ListboxOption>
           </ListboxOptions>

@@ -28,7 +28,7 @@
           name="lucide:plus-square"
           size="20"
         />
-        Add payment method
+        {{ capitalizeOnlyFirstLetter($t('add_payment_method')) }}
       </div>
     </div>
   </div>
@@ -38,6 +38,8 @@
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
+
+const {t} = useI18n();
 
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
@@ -50,7 +52,7 @@ onMounted(() => {
 
 function onEdit() {
   notificationStore.show(
-    "No other options available currently",
+    capitalizeOnlyFirstLetter(t('no_other_payment_options_available')),
     ToastLevelType.info
   );
 }

@@ -25,7 +25,7 @@
         v-if="!printer.available"
         class="flex gap-2 items-center"
       >
-        Not available
+        {{ capitalizeOnlyFirstLetter($t('not_available')) }}
         <Icon
           class="text-error"
           name="lucide:x-circle"
@@ -36,7 +36,7 @@
         v-else
         class="flex gap-2 items-center"
       >
-        Available
+      {{ capitalizeOnlyFirstLetter($t('available')) }}
         <Icon
           class="text-success"
           name="lucide:check-circle"
@@ -48,11 +48,11 @@
       <table class="table w-full">
         <thead>
           <tr>
-            <th>Job ID</th>
-            <th>Created at</th>
-            <th>Interval</th>
-            <td>Order Id</td>
-            <td>File</td>
+            <th>{{ capitalizeOnlyFirstLetter($t('job_id')) }}</th>
+            <th>{{ capitalizeOnlyFirstLetter($t('created_at')) }}</th>
+            <th>{{ capitalizeOnlyFirstLetter($t('interval')) }}</th>
+            <td>{{ capitalizeOnlyFirstLetter($t('order_id')) }}</td>
+            <td>{{ capitalizeOnlyFirstLetter($t('file')) }}</td>
             <th class="text-end">Status</th>
             <th></th>
           </tr>
@@ -66,8 +66,8 @@
             <td>{{ reformatDateTime(printJob.created_at) }}</td>
             <td>
               <div class="flex flex-col gap-2">
-                <div><strong>Starts</strong> {{ reformatDateTime(printJob.start_at) }}</div>
-                <div><strong>Ends</strong> {{ reformatDateTime(printJob.end_at) }}</div>
+                <div><strong>{{ capitalizeOnlyFirstLetter($t('start')) }}</strong> {{ reformatDateTime(printJob.start_at) }}</div>
+                <div><strong>{{ capitalizeOnlyFirstLetter($t('end')) }}</strong> {{ reformatDateTime(printJob.end_at) }}</div>
               </div>
             </td>
             <td># {{ printJob.print_order_unit.order }}</td>

@@ -2,14 +2,14 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-8">
       <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
-        <div class="text-3xl">Modeling order #{{ order.id }}</div>
+        <div class="text-3xl">{{ `${capitalizeOnlyFirstLetter($t('modeling_order'))} #${order.id}`}}</div>
         <div class="text-xl text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
         <OrderStatusView :raw-status="order.status" />
       </div>
       <div class="px-6 lg:px-0">
         <div class="mb-2 form-control w-full max-w-xs">
           <label class="label">
-            <span class="label-text">Contact email</span>
+            <span class="label-text">{{ capitalizeOnlyFirstLetter($t('contact_email')) }}</span>
           </label>
           <input
             class="input input-bordered input-md w-full max-w-xs"
@@ -19,7 +19,7 @@
         </div>
         <div class="mb-4 lg:mb-12 form-control">
           <label class="label">
-            <span class="label-text">Your request</span>
+            <span class="label-text">{{ capitalizeOnlyFirstLetter($t('description')) }}</span>
           </label>
           <textarea
             class="textarea input-bordered"
@@ -34,7 +34,7 @@
               class="mb-2 form-control"
             >
               <label class="label">
-                <span class="label-text">Attachment files</span>
+                <span class="label-text">{{ capitalizeOnlyFirstLetter($t('attachment_files')) }}</span>
               </label>
               <div
                 class="flex gap-2 text-gray-500 items-center"
@@ -56,7 +56,7 @@
               class="mb-2 form-control"
             >
               <label class="label">
-                <span class="label-text">Attachment images</span>
+                <span class="label-text">{{ capitalizeOnlyFirstLetter($t('attachment_images')) }}</span>
               </label>
               <div
                 class="flex gap-2 text-gray-500 items-center"

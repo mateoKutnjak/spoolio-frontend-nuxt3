@@ -5,7 +5,7 @@
       class="relative inline-block text-left"
     >
       <MenuButton>
-        <div class="btn btn-ghost text-gray-700">services</div>
+        <div class="btn btn-ghost text-gray-700">{{ $t('services') }}</div>
       </MenuButton>
 
       <transition
@@ -26,7 +26,7 @@
 
               <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start text-gray-700 font-normal">
-                {{item.name}}
+                {{$t(item.name)}}
               </div>
               </MenuItem>
             </NuxtLink>

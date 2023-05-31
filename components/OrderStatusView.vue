@@ -4,7 +4,7 @@
       v-if="rawStatus"
       class="w-fit whitespace-nowrap px-4 py-1.5 text-white text-sm font-bold rounded-full"
       :style="`background-color: ${ OrderStatus.all[rawStatus].colorHex}`"
-    >{{ OrderStatus.all[rawStatus].display_name }}</div>
+    >{{ capitalizeOnlyFirstLetter($t(OrderStatus.all[rawStatus].server_name)) }}</div>
   </div>
 </template>
 

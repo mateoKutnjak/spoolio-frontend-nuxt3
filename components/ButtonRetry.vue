@@ -7,7 +7,9 @@
       name="lucide:refresh-cw"
       size="18"
     />
-    <div class="mt-0.5 text-base">Retry</div>
+    <div class="mt-0.5 text-base">
+      {{ capitalizeOnlyFirstLetter($t('retry')) }}
+    </div>
   </div>
 </template>
 

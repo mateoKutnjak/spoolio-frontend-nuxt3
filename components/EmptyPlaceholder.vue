@@ -4,7 +4,7 @@
       name="noto:telescope"
       size="230"
     />
-    <div class="font-sans text-stone-500 text-xl">Nothing to show</div>
+    <div class="font-sans text-stone-500 text-xl">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</div>
   </div>
 </template>
 

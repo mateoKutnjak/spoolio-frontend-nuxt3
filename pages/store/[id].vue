@@ -90,7 +90,7 @@
                       v-for="option, index in variations"
                       :key="option.title"
                       @click="setOption(variationName, index)"
-                    >{{ option.title }}
+                    >{{ capitalizeOnlyFirstLetter($t(option.title)) }}
                     </div>
                   </div>
                 </div>
@@ -103,7 +103,7 @@
                   class="text-success"
                   name="lucide:check-circle"
                   size="25"
-                />{{ activeOptionsCombination?.sku }} available in stock
+                />{{ activeOptionsCombination?.sku }} {{ $t('in_stock') }}
               </div>
               <div
                 v-else
@@ -114,7 +114,7 @@
                   name="lucide:x-circle"
                   size="25"
                 />
-                Out of stock
+                {{ capitalizeOnlyFirstLetter($t('out_of_stock')) }}
               </div>
             </div>
 
@@ -135,7 +135,7 @@
                   name="lucide:shopping-cart"
                   size="22"
                   aria-hidden="true"
-                />Add to cart
+                />{{ capitalizeOnlyFirstLetter($t('add_to_cart')) }}
               </button>
             </div>
           </div>
@@ -269,8 +269,6 @@ function addToCart() {
     activeOptionsCombination.value.id,
     activeOptionsCombination.value
   );
-
-  notificationStore.show("Added to cart", ToastLevelType.success);
 }
 
 function extractProductVariations(): Map<string, IProductVariationOption[]> {

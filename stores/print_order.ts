@@ -641,7 +641,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 let performOnlyPrintJobETAEstimation = false;
 
                 Object.keys(fieldUpdate).forEach(el => {
-                    
+
                     if (listContains(PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION, el)) {
                         performSlicerAndPrintJobETAEstimation = true;
                     }

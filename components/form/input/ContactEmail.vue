@@ -29,7 +29,7 @@
       name="lucide:plus-square"
       size="18"
     />
-    Add contact email
+    {{ capitalizeOnlyFirstLetter($t('add_contact_email')) }}
   </div>
 
 </template>

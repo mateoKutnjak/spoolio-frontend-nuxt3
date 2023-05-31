@@ -8,9 +8,9 @@
         <thead class="rounded-lg">
           <tr class="bg-base-200">
             <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">Id</th>
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">Order date</th>
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">Contact email</th>
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">Price</th>
+            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('order_date')) }}</th>
+            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('contact_email')) }}</th>
+            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('price')) }}</th>
             <th class="px-8 pt-4 pb-3 text-end text-xs uppercase">Status</th>
           </tr>
         </thead>
@@ -50,14 +50,14 @@
             name="file-icons:3d-model"
             size="50"
           />
-          <p class="text-2xl pt-4 py-8">You have not created any modeling orders yet</p>
+          <p class="text-2xl pt-4 py-8">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</p>
           <NuxtLink to="/services/modeling">
             <div class="btn btn-outline bg-white gap-2 border-gray-500 text-gray-500">
               <Icon
                 name="lucide:plus"
                 size="22"
               />
-              <div class="text-lg"> New modeling order </div>
+              <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('new_modeling_order')) }} </div>
             </div>
           </NuxtLink>
         </div>

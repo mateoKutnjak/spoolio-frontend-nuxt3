@@ -17,7 +17,7 @@
             v-for="tag in blog.tags"
             :key="tag.name"
             class="btn btn-sm btn-ghost btn-info text-info rounded-full"
-          >{{ tag.name }}</div>
+          >{{ capitalizeOnlyFirstLetter($t(tag.name)) }}</div>
         </div>
         <div class="py-6">
           <h2 class="card-title text-2xl text-gray-700 pb-3 font-black font-sans">{{blog.title}}</h2>

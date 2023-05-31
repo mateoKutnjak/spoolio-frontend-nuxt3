@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <div class="card-title text-base text-gray-400 font-normal justify-between items-center">
-        <div class="text font-medium">Billing address</div>
+        <div class="text font-medium">{{ capitalizeOnlyFirstLetter($t('billing_address')) }}</div>
         <div
           class="btn btn-ghost btn-circle btn-sm text-primary"
           @click="openDialog"
@@ -38,7 +38,7 @@
       name="lucide:plus-square"
       size="18"
     />
-    Add billing address
+    {{ capitalizeOnlyFirstLetter($t('add_billing_address')) }}
   </div>
 </template>
   

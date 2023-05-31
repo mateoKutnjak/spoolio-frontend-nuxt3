@@ -10,8 +10,14 @@ export default defineNuxtConfig({
         '@nuxt/image-edge',
         'nuxt-vue3-google-signin',
         '@nuxtjs/color-mode',
-        '@nuxtjs/google-fonts'
+        '@nuxtjs/google-fonts',
+        '@nuxtjs/i18n',
     ],
+    i18n: {
+        locales: ['en', 'hr'],  // used in URL path prefix
+        defaultLocale: 'hr',    // default locale of your project for Nuxt pages and routings
+        vueI18n: './i18n.config.ts',
+    },
     colorMode: {
         preference: 'light',
         fallback: 'light',

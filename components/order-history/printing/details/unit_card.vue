@@ -21,7 +21,7 @@
           class="link link-info"
           :href="extractUrlFileStringUnion(unit.file)"
         >
-          Download
+          {{ capitalizeOnlyFirstLetter($t('download')) }}
         </a>
       </div>
       <div class="flex flex-col md:flex-row gap-5">
@@ -39,15 +39,15 @@
         <div class="flex gap-2">
           <AttributeItem
             :title="unit.spool.material.name"
-            tooltip="Material color"
+            :tooltip="capitalizeOnlyFirstLetter($t('filament_color'))"
           />
           <AttributeItem
             :title="unit.spool.color.name"
-            tooltip="Filament material"
+            :tooltip="capitalizeOnlyFirstLetter($t('filament_material'))"
           />
           <AttributeItem
             :title="`${unit.infill.percentage * 100}%`"
-            tooltip="Infill percentage"
+            :tooltip="capitalizeOnlyFirstLetter($t('infill_percentage'))"
           />
         </div>
         <div class="text-xl text-gray-600">{{ unit.estimated_price }} €</div>

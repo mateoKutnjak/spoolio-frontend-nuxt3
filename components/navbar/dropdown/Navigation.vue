@@ -32,7 +32,7 @@
 
               <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start text-gray-700 font-normal">
-                {{item.name}}
+                {{$t(item.name)}}
               </div>
               </MenuItem>
             </NuxtLink>

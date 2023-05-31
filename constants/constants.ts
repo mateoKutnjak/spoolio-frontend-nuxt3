@@ -1,3 +1,11 @@
+export class Language {
+    public static readonly english = new Language('en', 0);
+    public static readonly croatian = new Language('hr', 1);
+  
+    private constructor(public readonly localeName: string, public readonly index: number) {
+    }
+  }
+
 export const BACKGROUND_COLOR = "#f6f8fa";
 
 // * Restrict non-auth user to access anything but index page => /

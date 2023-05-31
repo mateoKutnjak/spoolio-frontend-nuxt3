@@ -13,7 +13,7 @@
           </nuxt-img>
         </div>
         <div class="w-36 flex gap-4 justify-between items-center text-gray-500 text-sm">
-          Quantity:
+          {{ capitalizeOnlyFirstLetter($t('quantity')) }}:
           <LimitedNumberInput
             :key="unit.quantity"
             class="w-full"
@@ -56,15 +56,15 @@
       <div class="flex gap-2 items-center justify-center">
         <AttributeItem
           :title="getMaterialName()"
-          tooltip="Filament material"
+          :tooltip="capitalizeOnlyFirstLetter($t('filament_material'))"
         />
         <AttributeItem
           :title="(getInfillPercentage() * 100).toString() + '%'"
-          tooltip="Infill percentage"
+          :tooltip="capitalizeOnlyFirstLetter($t('infill_percentage'))"
         />
         <AttributeItem
           :title="getColorName()"
-          tooltip="Material color"
+          :tooltip="capitalizeOnlyFirstLetter($t('filament_color'))"
         />
       </div>
     </td>
@@ -121,6 +121,8 @@ import {
 import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { usePrintOrderStore } from "~~/stores/print_order";
+
+const { t } = useI18n();
 
 const { unit } = defineProps<{
   unit: IPrintOrderUnit;
@@ -266,8 +268,15 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {
-    localUrl: unit.localUrl,
+  dialogStore.open("DialogConfirm", {
+    title: capitalizeOnlyFirstLetter(t("are_you_sure")),
+    subtitle: capitalizeOnlyFirstLetter(
+      t("this_will_remove_print_unit_from_your_order")
+    ),
+    onConfirm: () => {
+      printOrderStore.removeUnitByFileLocalUrl(unit.localUrl);
+    },
+    onDismiss: () => {},
   });
 }
 </script>

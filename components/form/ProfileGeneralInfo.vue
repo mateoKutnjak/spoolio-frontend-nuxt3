@@ -1,20 +1,19 @@
 <template>
   <div class="card-body gap-8">
     <div class="card-title flex justify-between">
-      General info
+      {{ capitalizeOnlyFirstLetter($t('general_info')) }}
     </div>
 
     <FormKit
       type="form"
       id="profile-form"
-      submit-label="Save"
       @submit="submitHandler"
       :actions="false"
     >
       <FormKit
         type="email"
         name="general_email"
-        label="Contact email"
+        :label="capitalizeOnlyFirstLetter($t('contact_email'))"
         v-model="contact_email_ref"
         validation="email"
         validation-visibility="blur"
@@ -22,7 +21,7 @@
       <div class="pt-8">
         <FormKit
           type="submit"
-          label="Save"
+          :label="capitalizeOnlyFirstLetter($t('save'))"
           :classes="{
                     input: 'btn btn-primary btn-block'
                 }"

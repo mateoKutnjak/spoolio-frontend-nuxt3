@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8">
-    <h3 class="text-lg font-semibold text-gray-900">Comments</h3>
+    <h3 class="text-lg font-semibold text-gray-900">{{ capitalizeOnlyFirstLetter($t('comments')) }}</h3>
     <CommentForm
       :object-id="objectId"
       :content-type="contentType"
@@ -21,14 +21,14 @@
         v-if="comments.length < commentCount"
         class="btn btn-primary"
         @click="loadMoreComments"
-      >Load more comments</div>
+      >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
 
     </div>
     <div
       v-else
       class="flex justify-center italic"
     >
-      No comments yet
+    {{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}
     </div>
   </div>
 </template>

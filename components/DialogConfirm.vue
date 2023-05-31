@@ -12,13 +12,13 @@
         class="btn btn-ghost rounded-sm border-gray-500 text-gray-700"
         @click="onNegative"
       >
-        Cancel
+        {{ capitalizeOnlyFirstLetter($t('cancel')) }}
       </div>
       <div
         class="btn btn-primary rounded-sm"
         @click="onPositive"
       >
-        Confirm
+      {{ capitalizeOnlyFirstLetter($t('confirm')) }}
       </div>
     </div>
   </div>

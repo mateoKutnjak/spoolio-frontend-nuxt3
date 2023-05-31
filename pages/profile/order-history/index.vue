@@ -18,7 +18,7 @@
                 ? 'bg-accent/[0.2]'
                 : '',
             ]">
-            {{ tabCategory }}
+            {{ capitalizeOnlyFirstLetter($t(tabCategory)) }}
           </div>
         </Tab>
       </TabList>
@@ -61,7 +61,7 @@ storeOrderHistoryStore
   .fetchOrderHistoryPaginated()
   .catch((err) => notificationStore.showFetchError(err));
 
-const tabCategories = ["Print orders", "Modeling orders", "Purchases"];
+const tabCategories = ["print_orders", "modeling_orders", "store_orders"];
 </script>
 
 <style>

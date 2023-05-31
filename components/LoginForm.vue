@@ -3,7 +3,6 @@
     <FormKit
       type="form"
       id="login-form"
-      submit-label="Sign In"
       @submit="submitHandler"
       :actions="false"
     >
@@ -12,19 +11,19 @@
           <FormKit
             type="email"
             name="email"
-            placeholder="E-mail"
+            :placeholder="capitalizeOnlyFirstLetter($t('email'))"
             v-model="email"
           />
           <FormKit
             type="password"
             name="password"
-            placeholder="Password"
+            :placeholder="capitalizeOnlyFirstLetter($t('password'))"
             v-model="password"
           />
         </div>
         <FormKit
           type="submit"
-          label="Sign In"
+          :label="capitalizeOnlyFirstLetter($t('sign_in'))"
           :classes="{
               input: 'btn-block',
             }"

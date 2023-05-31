@@ -31,7 +31,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-3xl text-gray-700">Creating order</div>
+        <div class="text-3xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('creating_order')) }}</div>
       </div>
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -63,7 +63,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-3xl text-gray-700">Uploading models ({{ unitsUploadedCount }}/{{  units.length }})</div>
+        <div class="text-3xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('uploading_models')) }} ({{ unitsUploadedCount }}/{{  units.length }})</div>
       </div>
       <!-- <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -106,7 +106,7 @@
     <div
       v-show="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success"
       class="text-lg text-center text-gray-600"
-    >Your order has been created</div>
+    >{{ capitalizeOnlyFirstLetter($t('your_order_has_been_placed')) }}</div>
     <div
       class="max-w-xl w-full flex flex-col md:flex-row gap-5 justify-center self-center"
       v-show="(orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success) || orderStatus === OrderStatus.error || unitsStatus === OrderStatus.error"
@@ -114,12 +114,12 @@
       <div
         class="flex-1 btn btn-lg btn-outline text-xl rounded-sm"
         @click="onReturnPressed"
-      >Later</div>
+      >{{ capitalizeOnlyFirstLetter($t('later')) }}</div>
       <div
         class="flex-1 btn btn-lg btn-primary text-xl rounded-sm"
         :class="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success  ? '': 'btn-disabled'"
         @click="onOkPressed"
-      >Pay Now</div>
+      >{{ $t('pay_now').toUpperCase() }}</div>
     </div>
   </div>
 </template>
@@ -131,6 +131,8 @@ import { IPrintOrder, IPrintOrderUnit } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
+
+const {t} = useI18n();
 
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
@@ -218,9 +220,7 @@ function onOkPressed() {
 
   if (!print_order.value.id) {
     console.error("Print order ID is null when trying to redirect to payment");
-    notificationStore.show(
-      "Please proceed with payment through order history."
-    );
+    capitalizeOnlyFirstLetter(t('please_proceed_with_payment_through_order_history'));
     navigateTo("/blogs");
     return;
   }

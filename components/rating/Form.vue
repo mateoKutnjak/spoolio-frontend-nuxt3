@@ -2,7 +2,7 @@
   <div class="w-full card bg-base-100 shadow-md">
     <div class="card-body form-control p-6">
       <div class="flex gap-3 mb-3">
-        <div class="text-gray-500 italic font-medium">How would you rate this product?</div>
+        <div class="text-gray-500 italic font-medium"> {{ capitalizeOnlyFirstLetter($t('how_would_you_rate_this_product')) }}</div>
         <div class="rating">
           <input
             type="radio"
@@ -59,7 +59,7 @@
         class="btn btn-primary"
         :class="[inProgress ? 'loading' : '', ratingValue ? '' : 'btn-disabled']"
         @click="submitHandler"
-      >Rate</div>
+      >{{ capitalizeOnlyFirstLetter($t('rate')) }}</div>
     </div>
 
   </div>
@@ -76,6 +76,8 @@ const { objectId, contentType } = defineProps<{
   contentType: string;
 }>();
 
+const {t} = useI18n();
+
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 const ratingStore = useRatingStore();
@@ -87,18 +89,18 @@ const inProgress = ref(false);
 
 const submitHandler = async () => {
   if (!authStore.accessToken) {
-    notificationStore.show("Log in to post comment", ToastLevelType.info);
+    notificationStore.show(capitalizeOnlyFirstLetter(t('login_to_perform_this_action')), ToastLevelType.info);
     return;
   }
 
   if (!authStore.getUser?.id) {
-    notificationStore.show("Log in to post comment", ToastLevelType.info);
+    notificationStore.show(capitalizeOnlyFirstLetter(t('login_to_perform_this_action')), ToastLevelType.info);
     return;
   }
 
   if (!ratingValue.value) {
     notificationStore.show(
-      "Please rate this product with stars",
+      capitalizeOnlyFirstLetter(t('please_rate_this_product_with_stars')),
       ToastLevelType.info
     );
     return;
@@ -115,7 +117,7 @@ const submitHandler = async () => {
       contentType
     )
     .then(() => {
-      notificationStore.show("Comment posted", ToastLevelType.success);
+      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
       content.value = "";
 
       // TODO try to avoid reloading window later

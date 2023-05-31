@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="pb-12 flex justify-between items-center">
-      <div class="text-4xl">Products</div>
+      <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('products')) }}</div>
       <SearchBar
         placeholder="Search products"
         @submit-search-phrase="onSearch"
@@ -21,7 +21,7 @@
         v-if="getPaginatedProducts.count && getPaginatedProducts.count > getPaginatedProducts.products.length"
         class="btn btn-outline"
         @click="loadMoreItems"
-      >Load more</div>
+      >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
     </div>
     <div v-else-if="showInitLoading">
       <div class="grid justify-center h-56">

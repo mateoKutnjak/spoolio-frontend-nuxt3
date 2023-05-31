@@ -24,7 +24,7 @@
         <MenuItems class="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div class="px-1 py-1">
             <MenuItem>
-            <div class="px-2 py-2 text-sm text-gray-500">Change job status</div>
+            <div class="px-2 py-2 text-sm text-gray-500"> {{ capitalizeOnlyFirstLetter($t('change_job_status')) }}</div>
             </MenuItem>
             <div class="divider h-0 m-1"></div>
             <MenuItem
@@ -40,7 +40,7 @@
                 ]"
               @click="onItemClicked(choice)"
             >
-              {{ choice }}
+              {{ capitalizeOnlyFirstLetter($t(choice)) }}
             </button>
             </MenuItem>
           </div>

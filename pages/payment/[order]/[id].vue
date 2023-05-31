@@ -14,7 +14,7 @@
     </div>
 
     <div class="text-gray-500 font-base">
-      You are paying for print order amount of
+      {{ capitalizeOnlyFirstLetter($t('you_are_paying_amount_of')) }}
       <strong>{{ amountToPay.toFixed(2) }} EUR </strong>
     </div>
 
@@ -38,7 +38,7 @@
         :class="paymentProcessing ? 'loading' : ''"
         id="submit"
         @click="submitPayment"
-      >Pay</div>
+      >{{ capitalizeOnlyFirstLetter($t('pay')) }}</div>
     </form>
   </div>
 </template>
@@ -55,6 +55,8 @@ import { usePaymentStore } from "~~/stores/payment";
 definePageMeta({
   layout: false,
 });
+
+const {t} = useI18n();
 
 const { order, id } = useRoute().params;
 
@@ -100,7 +102,7 @@ if (!stripe) {
   );
 }
 
-if (listContains(PAYMENT_ORDER_NAMES, order)) {
+if (!listContains(PAYMENT_ORDER_NAMES, order.trim())) {
   console.error(`Cannot proceed with payment for order name ${order}`);
   throw createError(`Cannot proceed with payment for order name ${order}`);
 }
@@ -259,7 +261,7 @@ function submitPayment() {
 
           navigateTo("/blogs");
           notificationStore.show(
-            "Payment successful. We sent you an email.",
+            capitalizeOnlyFirstLetter(t('payment_successfull_check_your_email')),
             ToastLevelType.success
           );
 

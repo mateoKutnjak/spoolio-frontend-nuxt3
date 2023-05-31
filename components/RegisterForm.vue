@@ -12,7 +12,7 @@
           <FormKit
             type="email"
             name="email"
-            placeholder="E-mail"
+            :placeholder="capitalizeOnlyFirstLetter($t('email'))"
             v-model="email"
             validation="required|email"
             validation-visibility="blur"
@@ -20,7 +20,7 @@
           <FormKit
             type="password"
             name="password"
-            placeholder="Password"
+            :placeholder="capitalizeOnlyFirstLetter($t('password'))"
             v-model="password"
             validation="required|length:5,15|matches:/[0-9]/"
             validation-visibility="blur"
@@ -28,7 +28,7 @@
           <FormKit
             type="password"
             name="password_confirm"
-            placeholder="Confirm password"
+            :placeholder="capitalizeOnlyFirstLetter($t('confirm_password'))"
             v-model="confirmPassword"
             validation="required|confirm"
             validation-label="Password confirmation"
@@ -37,7 +37,7 @@
           <FormKit
             type="text"
             name="invitation_token"
-            placeholder="Invitation token"
+            :placeholder="capitalizeOnlyFirstLetter($t('invitation_token'))"
             v-model="invitationToken"
             validation="required"
             validation-visibility="blur"
@@ -48,7 +48,7 @@
         </div>
         <FormKit
           type="submit"
-          label="Sign Up"
+          :label="capitalizeOnlyFirstLetter($t('sign_up'))"
           :classes="{
               input: 'btn-block'
             }"

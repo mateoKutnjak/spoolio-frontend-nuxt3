@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <div class="card-title text-base text-gray-400 font-normal justify-between items-center">
-        <div class="text font-medium">Shipping address</div>
+        <div class="text font-medium">{{ capitalizeOnlyFirstLetter($t('shipping_address')) }}</div>
         <div
           class="btn btn-ghost btn-circle btn-sm text-primary"
           @click="openDialog"
@@ -36,7 +36,7 @@
       name="lucide:plus-square"
       size="18"
     />
-    Add shipping address
+    {{ capitalizeOnlyFirstLetter($t('add_shipping_address')) }}
   </div>
 </template>
     

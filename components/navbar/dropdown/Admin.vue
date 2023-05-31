@@ -38,7 +38,7 @@
                 name="lucide:boxes"
                 size="20"
                 aria-hidden="true"
-              />Print Jobs
+              />{{ capitalizeOnlyFirstLetter($t('print_jobs')) }}
             </div>
             </MenuItem>
           </div>

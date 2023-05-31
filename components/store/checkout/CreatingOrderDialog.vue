@@ -31,7 +31,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-3xl text-gray-700">Creating order</div>
+        <div class="text-3xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('creating_order')) }}</div>
       </div>
     </div>
     <div
@@ -42,16 +42,7 @@
     <div
       v-show="orderStatus === OrderStatus.success"
       class="text-lg text-center text-gray-600"
-    >Your order has been placed. Redirecting to payment service...</div>
-    <div
-      v-show="orderStatus === OrderStatus.success"
-      class="
-      btn
-      btn-lg
-      text-xl"
-      :class="orderStatus === OrderStatus.success  ? '': 'btn-disabled'"
-      @click="onOkPressed"
-    >Ok</div>
+    >{{ capitalizeOnlyFirstLetter($t('your_order_has_been_placed')) }} {{ capitalizeOnlyFirstLetter($t('redirecting_you_to_payment_service')) }}</div>
     <div
       v-show="orderStatus === OrderStatus.error"
       class="
@@ -59,7 +50,7 @@
       btn-lg
       text-xl"
       @click="onReturnPressed"
-    >Return</div>
+    >{{ capitalizeOnlyFirstLetter($t('return')) }}</div>
   </div>
 </template>
   
@@ -70,6 +61,8 @@ import { IStoreOrder } from "~~/constants/data";
 import { useCartStore } from "~~/stores/cart";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
+
+const {t} = useI18n();
 
 const cartStore = useCartStore();
 const dialogStore = useDialogStore();
@@ -131,9 +124,7 @@ watch(orderStatus, async (value) => {
       console.error(
         "Store order ID is null when trying to redirect to payment"
       );
-      notificationStore.show(
-        "Please proceed with payment through order history."
-      );
+      capitalizeOnlyFirstLetter(t('please_proceed_with_payment_through_order_history'))
       return;
     }
 

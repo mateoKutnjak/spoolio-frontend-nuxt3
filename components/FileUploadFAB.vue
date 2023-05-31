@@ -1,7 +1,7 @@
 <template>
   <div
     class="tooltip tooltip-left"
-    data-tip="Upload 3D model"
+    :data-tip="capitalizeOnlyFirstLetter($t('upload_3d_model'))"
   >
     <label
       for="dropzone-file"

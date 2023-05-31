@@ -21,7 +21,7 @@
         <div
           class="-ml-3 btn btn-ghost btn-sm text-info"
           @click="drawerStore.close()"
-        >Details</div>
+        >{{ capitalizeOnlyFirstLetter($t('details')) }}</div>
       </NuxtLink>
 
     </div>
@@ -41,7 +41,7 @@
         @on-increase-value="increaseQuantity"
         @on-value-set="(q) => setQuantity(q) "
       />
-      <div class="text-xl font-bold mt-2">${{(combination.price * quantity).toFixed(2) }}</div>
+      <div class="text-xl font-bold mt-2">€{{(combination.price * quantity).toFixed(2) }}</div>
     </div>
   </div>
 </template>

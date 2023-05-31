@@ -10,7 +10,7 @@
             {{shipping_method.provider}}
           </strong>
           <div>
-            {{shipping_method.description}}
+            {{ capitalizeOnlyFirstLetter($t(shipping_method.description)) }}
           </div>
         </div>
         <div class="flex-1"></div>
@@ -39,7 +39,7 @@
       name="lucide:plus-square"
       size="24"
     />
-    Add shipping method
+    {{ capitalizeOnlyFirstLetter($t('choose_shipping_method')) }}
   </div>
 </template>
     

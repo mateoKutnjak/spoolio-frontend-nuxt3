@@ -12,7 +12,7 @@
             aria-hidden="true"
           />
           <h2 class="mt-1 text-xl">
-            Cart items
+            {{ capitalizeOnlyFirstLetter($t('cart_items')) }}
           </h2>
         </div>
         <div class="grow">
@@ -33,8 +33,8 @@
         </div>
         <div class="flex flex-col gap-1 p-4">
           <div class="flex gap-1 justify-end">
-            <div class="py-2 text-lg">Total: </div>
-            <strong class="py-2 text-xl text-end">${{totalSum.toFixed(2)}}</strong>
+            <div class="py-2 text-lg">{{ capitalizeOnlyFirstLetter($t('total')) }}: </div>
+            <strong class="py-2 text-xl text-end">€{{totalSum.toFixed(2)}}</strong>
 
           </div>
           <div class="justify-center items-end gap-2 text-2xl font-bold">
@@ -44,7 +44,7 @@
                 <div
                   class="btn btn-success btn-block text-lg"
                   @click="drawerStore.close()"
-                >{{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+                >{{ capitalizeOnlyFirstLetter($t('checkout')) }}</div>
               </ClientOnly>
             </NuxtLink>
           </div>
@@ -55,7 +55,7 @@
         class="h-full flex flex-col"
       >
         <div class="h-full flex flex-col gap-2 italic justify-center items-center">
-          <p class="font-bold text-gray-500 text-lg">Your cart is empty</p>
+          <p class="font-bold text-gray-500 text-lg">{{ capitalizeOnlyFirstLetter($t('your_cart_is_empty')) }}</p>
         </div>
       </ul>
     </div>

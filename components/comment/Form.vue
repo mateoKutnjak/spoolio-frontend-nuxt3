@@ -15,7 +15,7 @@
       class="btn btn-primary"
       :class="[commentPostingInProgress ? 'loading' : '', content.length ? '' : 'btn-disabled']"
       @click="submitHandler"
-    >Comment</div>
+    >{{ capitalizeOnlyFirstLetter($t('comment_verb')) }}</div>
   </div>
 </template>
     

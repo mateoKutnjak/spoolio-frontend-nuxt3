@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col gap-16 p-12 justify-between items-center">
-    <div class="card-title justify-center text-3xl">Your modeling order</div>
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -32,7 +31,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-2xl text-gray-700">Creating order</div>
+        <div class="text-2xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('creating_order')) }}</div>
       </div>
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -64,7 +63,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-2xl text-gray-700">Uploading files ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
+        <div class="text-2xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('uploading_files')) }} ({{ attachmentsUploadedCount }}/{{  attachmentFiles.length }})</div>
       </div>
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -96,7 +95,7 @@
             </div>
           </TransitionRoot>
         </div>
-        <div class="text-2xl text-gray-700">Uploading images ({{ attachmentsImagesUploadedCount }}/{{  attachmentImages.length }})</div>
+        <div class="text-2xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('uploading_images')) }} ({{ attachmentsImagesUploadedCount }}/{{  attachmentImages.length }})</div>
       </div>
     </div>
 
@@ -115,7 +114,7 @@
     <div
       v-show="everythingSuccessful"
       class="text-lg text-center text-gray-600"
-    >Your modeling order has been created. We will contact you as soon as possible.</div>
+    >{{ capitalizeOnlyFirstLetter($t('your_order_has_been_placed')) }}. {{ capitalizeOnlyFirstLetter($t('we_will_contact_you_as_soon_as_possible')) }}.</div>
     <div
       v-show="everythingSuccessful"
       class="
@@ -124,7 +123,7 @@
       text-xl"
       :class="everythingSuccessful ? '': 'btn-disabled'"
       @click="onOkPressed"
-    >Ok</div>
+    >{{ capitalizeOnlyFirstLetter($t('ok')) }}</div>
     <div
       v-show="hasErrors"
       class="
@@ -133,18 +132,20 @@
       text-xl
       "
       @click="onReturnPressed"
-    >Return</div>
+    >{{ capitalizeOnlyFirstLetter($t('return')) }}</div>
   </div>
 </template>
   
   <script lang="ts" setup>
 import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
-import { IAttachmentFile, IAttachmentImage, IModelingOrder } from "~~/constants/data";
-import { useDialogStore } from "~~/stores/dialog";
 import {
-  useModelingOrderStore,
-} from "~~/stores/modeling_order";
+  IAttachmentFile,
+  IAttachmentImage,
+  IModelingOrder,
+} from "~~/constants/data";
+import { useDialogStore } from "~~/stores/dialog";
+import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
 
 const dialogStore = useDialogStore();
@@ -215,7 +216,6 @@ onMounted(async () => {
     index < modelingOrderStore.getAttachmentFiles.length;
     index++
   ) {
-
     const attachmentFile = modelingOrderStore.getAttachmentFiles[index];
     var attachmentFileResult: IAttachmentFile;
 
@@ -252,7 +252,6 @@ onMounted(async () => {
     index < modelingOrderStore.getAttachmentImages.length;
     index++
   ) {
-
     const attachmentImage = modelingOrderStore.getAttachmentImages[index];
     var attachmentImageResult: IAttachmentImage;
 

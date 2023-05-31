@@ -2,7 +2,7 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-10 justify-between pt-4">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
-        <div class="text-4xl">Create your printing order</div>
+        <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('create_your_3d_printing_order')) }}</div>
         <div class="flex gap-4 items-end">
           <!-- <ListboxDimensionUnit class="self-end" /> -->
           <!-- <ListboxRotationUnit class="self-end" /> -->
@@ -10,7 +10,7 @@
             class="btn btn-error"
             :class="units.length ? '' : 'btn-disabled'"
             @click="onClearOrder"
-          >Clear order</div>
+          >{{ capitalizeOnlyFirstLetter($t('clear_order')) }}</div>
         </div>
       </div>
       <div v-if="units.length > 0 || itemInsertedLoading">
@@ -26,9 +26,9 @@
               <thead class="rounded-lg">
                 <tr class="bg-stone-300/60">
                   <th class="pt-4 pb-3 text-start text-xs uppercase"></th>
-                  <th class="pt-4 pb-3 text-start text-xs uppercase">Unit details</th>
-                  <th class="pt-4 pb-3 text-center text-xs uppercase">Attributes</th>
-                  <th class="pt-4 pb-3 text-center text-xs uppercase">Price</th>
+                  <th class="pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('unit_details')) }}</th>
+                  <th class="pt-4 pb-3 text-center text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('attributes')) }}</th>
+                  <th class="pt-4 pb-3 text-center text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('price')) }}</th>
                   <th class="pt-4 pb-3 text-end text-xs uppercase"></th>
                 </tr>
               </thead>
@@ -48,7 +48,7 @@
             ></ContentLoader>
             <DragAndDropArea
               class="h-56"
-              title="Add 3D model or drag and drop"
+              :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
               subtitle=".STL (max 150 MB)"
               @on-change="change"
               @on-drop="drop"
@@ -66,7 +66,7 @@
             </div>
             <DragAndDropArea
               class="mt-4"
-              title="Add 3D model or drag and drop"
+              :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
               subtitle=".STL (max 150MB)"
               @on-change="change"
               @on-drop="drop"
@@ -79,10 +79,11 @@
               :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? '' : 'btn-disabled'"
               to="/services/printing/checkout/"
             >
+              {{ capitalizeOnlyFirstLetter($t('checkout')) }}
               <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
-              <ClientOnly>
+              <!-- <ClientOnly>
                 <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
-              </ClientOnly>
+              </ClientOnly> -->
             </NuxtLink>
           </div>
         </div>
@@ -93,7 +94,7 @@
       >
         <DragAndDropArea
           class="h-[35vh]"
-          title="Add 3D model or drag and drop"
+          :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
           subtitle=".STL (max 150MB)"
           @on-change="change"
           @on-drop="drop"
@@ -106,7 +107,7 @@
       <div>
         <div
           class="tooltip tooltip-left"
-          data-tip="Checkout"
+          :data-tip="capitalizeOnlyFirstLetter($t('checkout'))"
         >
           <NuxtLink
             class="btn btn-circle btn-primary btn-lg shadow-md"
@@ -145,6 +146,8 @@ import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { ContentLoader } from "vue-content-loader";
 import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
+
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -300,8 +303,8 @@ function change(e: any) {
 
     if (element.size > MAX_FILE_SIZE_STL) {
       notificationStore.show(
-        element.name +
-          " exceeds the limit of " +
+        element.name + " " +
+        capitalizeOnlyFirstLetter(t('exceeds_limit_of')) + " " +
           MAX_FILE_SIZE_STL / 1024 / 1024 +
           " MBs",
         ToastLevelType.info
@@ -330,8 +333,8 @@ function drop(e: any) {
 
     if (element.size > MAX_FILE_SIZE_STL) {
       notificationStore.show(
-        element.name +
-          " exceeds the limit of " +
+        element.name + " " +
+        capitalizeOnlyFirstLetter(t('exceeds_limit_of')) + " " +
           MAX_FILE_SIZE_STL / 1024 / 1024 +
           " MBs"
       );
@@ -378,7 +381,16 @@ function onItemClicked(localUrl: string) {
 }
 
 function onClearOrder() {
-  dialogStore.open("DialogConfirmClearPrintOrder", {});
+  dialogStore.open("DialogConfirm", {
+    title: capitalizeOnlyFirstLetter(t("are_you_sure")),
+    subtitle: capitalizeOnlyFirstLetter(
+      t("this_will_remove_all_print_units_from_your_order")
+    ),
+    onConfirm: () => {
+      printOrderStore.clear();
+    },
+    onDismiss: () => {},
+  });
 }
 </script>
 

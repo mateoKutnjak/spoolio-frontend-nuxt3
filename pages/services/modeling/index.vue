@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="flex flex-col gap-8">
-      <div class="text-4xl">Describe what you want created</div>
+      <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('describe_what_you_want_us_to_create_for_you')) }}</div>
       <FormKit
         type="form"
         id="modeling-order-form"
@@ -16,7 +16,7 @@
                 <FormKit
                   type="text"
                   v-model="modeling_order.contact_email"
-                  placeholder="Contact e-mail"
+                  :placeholder="capitalizeOnlyFirstLetter($t('contact_email'))"
                   validation="email|required"
                   validation-visibility="submit"
                   :validation-messages="{
@@ -34,13 +34,13 @@
                   v-show="user"
                   class="link link-info font-semibold pt-3"
                   @click="onUseDefaultContactEmail"
-                >Use default</div>
+                >{{ capitalizeOnlyFirstLetter($t('use_default')) }}</div>
               </div>
               <FormKit
                 type="textarea"
                 v-model="modeling_order.comment"
                 rows="1"
-                placeholder="What can we do for you?"
+                :placeholder="capitalizeOnlyFirstLetter($t('description'))"
                 validation="required"
                 validation-visibility="submit"
                 :validation-messages="{
@@ -58,8 +58,8 @@
             <div class="card p-4 mb-5 bg-white shadow">
               <DragAndDropArea
                 class="h-full"
-                title="Choose a file or drag it here"
-                subtitle=".TXT, .PDF, .JPG, .JPEG or .PNG"
+                :title="capitalizeOnlyFirstLetter($t('choose_file_or_drag_it_here'))"
+                subtitle=".TXT, .PDF, .JPG, .JPEG, .PNG"
                 @on-change="change"
                 @on-drop="drop"
               />
@@ -71,7 +71,7 @@
           <div class="flex justify-center mt-12">
             <FormKit
               type="submit"
-              :label="isLoggedIn ? 'Send request' : 'Send request as guest'"
+              :label="capitalizeOnlyFirstLetter($t('send_request'))"
               :classes="{
               input: 'btn-lg btn-block',
             }"
@@ -97,6 +97,8 @@ import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
+
+const {t} = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -144,9 +146,7 @@ function onFilesAdded(files: File[]) {
       });
     } else {
       notificationStore.show(
-        "File type " +
-          filenameExtension(element.name).toUpperCase() +
-          " is not supported",
+        capitalizeOnlyFirstLetter(t('file_type')) + ' ' + filenameExtension(element.name).toUpperCase() + " " + capitalizeOnlyFirstLetter(t('not_supported')),
         ToastLevelType.error
       );
       console.log("File type not supported yet TODO");

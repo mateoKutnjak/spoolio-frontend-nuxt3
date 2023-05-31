@@ -44,15 +44,15 @@
                 <div class="flex gap-2 items-start justify-start">
                   <AttributeItem
                     :title="getMaterialName()"
-                    tooltip="Filament material"
+                    :tooltip="capitalizeOnlyFirstLetter($t('filament_material'))"
                   />
                   <AttributeItem
                     :title="(getInfillPercentage() * 100).toString() + '%'"
-                    tooltip="Infill percentage"
+                    :tooltip="capitalizeOnlyFirstLetter($t('infill_percentage'))"
                   />
                   <AttributeItem
                     :title="getColorName()"
-                    tooltip="Material color"
+                    :tooltip="capitalizeOnlyFirstLetter($t('filament_color'))"
                   />
                 </div>
               </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="flex flex-wrap gap-8 justify-end items-end">
               <div class="flex flex-col gap-1 items-center justify-center">
-                <div class="text-sm text-gray-400">Quantity</div>
+                <div class="text-sm text-gray-400">{{ capitalizeOnlyFirstLetter($t('quantity')) }}</div>
                 <input
                   type="number"
                   class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -120,6 +120,8 @@ import { useDialogStore } from "~~/stores/dialog";
 import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useGlobalsStore } from "~~/stores/globals";
 import { usePrintOrderStore } from "~~/stores/print_order";
+
+const { t } = useI18n();
 
 const { unit } = defineProps<{
   unit: IPrintOrderUnit;
@@ -279,8 +281,15 @@ function duplicateUnit() {
 }
 
 function removeUnit() {
-  dialogStore.open("DialogConfirmDeletePrintOrderUnit", {
-    localUrl: unit.localUrl,
+  dialogStore.open("DialogConfirm", {
+    title: capitalizeOnlyFirstLetter(t("are_you_sure")),
+    subtitle: capitalizeOnlyFirstLetter(
+      t("this_will_remove_print_unit_from_your_order")
+    ),
+    onConfirm: () => {
+      printOrderStore.removeUnitByFileLocalUrl(unit.localUrl);
+    },
+    onDismiss: () => {},
   });
 }
 

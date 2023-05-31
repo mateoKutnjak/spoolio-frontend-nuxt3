@@ -1,11 +1,11 @@
 <template>
   <div class="p-2 flex flex-col lg:flex-row gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow rounded-none">
     <div class="px-3 py-2 flex items-center">
-      <div class="text-base text-gray-700 font-normal mr-2"> Number of different items: </div>
+      <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('number_of_different_items')) }}: </div>
       <div class="text-md font-bold">{{ numberOfDifferentItems }}</div>
     </div>
     <div class="px-3 py-2 flex items-center ">
-      <div class="text-base text-gray-700 font-normal mr-2"> Total price: </div>
+      <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
 
       <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
         <Icon
@@ -29,7 +29,7 @@
       >
         <div
           class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
-          @click="notificationStore.show(`Minimum price we charge is ${PRINT_ORDER_MIN_PRICE}€`)"
+          @click="notificationStore.show(`${capitalizeOnlyFirstLetter($t('minimum_price_for_printing_order_is'))} ${PRINT_ORDER_MIN_PRICE}€`)"
         >
           <Icon
             class="text-warning"
@@ -46,7 +46,7 @@
       >€{{totalPrice.toFixed(2) }}</strong>
     </div>
     <div class="px-3 py-2 flex gap-2 items-center">
-      <div class="text-base text-gray-700 font-normal"> ETA (without delivery): </div>
+      <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
 
       <div v-if="eta === null">
         <Icon

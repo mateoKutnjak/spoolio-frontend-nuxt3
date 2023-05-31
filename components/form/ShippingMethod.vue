@@ -1,7 +1,7 @@
 <template>
   <div class="card-body gap-6 py-6 pt-4">
     <div class="card-title">
-      Shipping method
+      {{ capitalizeOnlyFirstLetter($t('shipping_method')) }}
     </div>
     <div>
       <RadioGroup v-model="selected">
@@ -75,7 +75,7 @@
     <div
       class="btn btn-block btn-primary text-lg"
       @click="onSubmit"
-    >Save</div>
+    >{{ capitalizeOnlyFirstLetter($t('save')) }}</div>
   </div>
 </template>
   

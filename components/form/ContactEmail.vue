@@ -1,10 +1,8 @@
 <template>
   <div class="card-body gap-8 p-2 py-0">
-    <InfoLabel message="Enter contact e-mail where you will receive order updates" />
     <FormKit
       type="form"
       id="profile-form"
-      submit-label="Update"
       @submit="submitHandler"
       :actions="false"
       :incomplete-message="false"
@@ -21,12 +19,15 @@
           v-if="user"
           class="btn btn-ghost link link-info text-sm"
           @click="onUseDefaultClicked"
-        >Use default</div>
+        >{{ capitalizeOnlyFirstLetter($t('use_default')) }}</div>
       </div>
       <div class="pt-2">
         <FormKit
           type="submit"
-          label="Save"
+          :label="capitalizeOnlyFirstLetter($t('save'))"
+          :classes="{
+            input: 'btn-block'
+          }"
         />
       </div>
 
@@ -39,6 +40,8 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
+
+const {t} = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -60,7 +63,7 @@ function onUseDefaultClicked() {
   } else if (user.value?.email) {
     email_ref.value = user.value.email;
   } else {
-    notificationStore.show("Cannot do that", ToastLevelType.error);
+    notificationStore.show(capitalizeOnlyFirstLetter(t('cannot_do_that')), ToastLevelType.error);
   }
 }
 

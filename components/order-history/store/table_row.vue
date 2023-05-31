@@ -23,12 +23,12 @@
           <div class="card-body">
             <div class="flex flex-col gap-6 items-start">
               <div>
-                <div class="text-sm text-gray-500 text-start">Contact email:</div>
+                <div class="text-sm text-gray-500 text-start">{{ capitalizeOnlyFirstLetter($t('contact_email')) }}:</div>
                 <strong>{{order?.contact_email}}</strong>
               </div>
               <div class="flex gap-8">
                 <div class="flex flex-col text-start text-base text-gray-800 w-32">
-                  <div class="text-sm text-gray-500">Shipping address</div>
+                  <div class="text-sm text-gray-500">{{ capitalizeOnlyFirstLetter($t('shipping_address')) }}</div>
                   <div class="divider m-0"></div>
                   <strong>{{order?.shipping_address.first_name}} {{order?.shipping_address.last_name}}</strong>
                   <p class="font-normal">{{order?.shipping_address.address}} </p>
@@ -37,7 +37,7 @@
                   <p class="font-normal">{{order?.shipping_address.phone_number}}</p>
                 </div>
                 <div class="flex flex-col text-start text-base text-gray-800 w-32">
-                  <div class="text-sm text-gray-500">Billing address</div>
+                  <div class="text-sm text-gray-500">{{ capitalizeOnlyFirstLetter($t('billing_address')) }}</div>
                   <div class="divider m-0"></div>
                   <strong>{{order?.billing_address.first_name}} {{order?.billing_address.last_name}}</strong>
                   <p class="font-normal">{{order?.billing_address.address}}</p>

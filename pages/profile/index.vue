@@ -30,6 +30,8 @@ import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { IAddressBilling, IAddressShipping, IProfile } from "~~/constants/data";
 
+const {t} = useI18n();
+
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
@@ -47,7 +49,7 @@ function onShippingAddressSaved(shipping_address: IAddressShipping) {
       shipping_address: shipping_address,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevelType.success);
+      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -58,7 +60,7 @@ function onBillingAddressSaved(billing_address: IAddressBilling) {
       billing_address: billing_address,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevelType.success);
+      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -69,7 +71,7 @@ function onGeneralInfoSaved(contact_email: string) {
       email: contact_email,
     })
     .then(() => {
-      notificationStore.show("Information saved", ToastLevelType.success);
+      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
     })
     .catch((err) => notificationStore.showFetchError(err));
 }

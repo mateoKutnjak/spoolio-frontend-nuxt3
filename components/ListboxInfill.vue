@@ -9,7 +9,7 @@
     >
       <div class="relative mt-1">
         <ListboxButton class="relative z-0 w-48 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-          <span class="block truncate">{{ selectedItem.name }} ({{selectedItem.percentage * 100}}%)</span>
+          <span class="block truncate">{{ capitalizeOnlyFirstLetter($t(selectedItem.name)) }} ({{selectedItem.percentage * 100}}%)</span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <Icon name="lucide:chevrons-up-down" />
           </span>
@@ -35,7 +35,7 @@
                 <span :class="[
                       selected ? 'font-medium' : 'font-base',
                       'block truncate',
-                    ]">{{ infill.name }} ({{infill.percentage * 100}}%)</span>
+                    ]">{{ capitalizeOnlyFirstLetter($t(infill.name)) }} ({{infill.percentage * 100}}%)</span>
               </li>
             </ListboxOption>
           </ListboxOptions>
