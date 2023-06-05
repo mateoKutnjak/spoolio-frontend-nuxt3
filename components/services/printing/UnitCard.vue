@@ -113,11 +113,9 @@ import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import {
   IAttachmentFile,
   IAttachmentImage,
-  IFilamentInfill,
   IPrintOrderUnit,
 } from "~~/constants/data";
 import { useDialogStore } from "~~/stores/dialog";
-import { useFilamentInfillStore } from "~~/stores/filament_infill";
 import { useGlobalsStore } from "~~/stores/globals";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
@@ -129,10 +127,7 @@ const { unit } = defineProps<{
 
 const dialogStore = useDialogStore();
 const globalsStore = useGlobalsStore();
-const filamentInfillStore = useFilamentInfillStore();
 const printOrderStore = usePrintOrderStore();
-
-const infills = ref<IFilamentInfill[]>(filamentInfillStore.getFilamentInfills);
 
 const comment = ref<string>("");
 const attachmentFiles = ref<IAttachmentFile[]>([]);
@@ -227,13 +222,6 @@ function handleBlur(event: Event) {
   }
 }
 
-watch(
-  filamentInfillStore.getFilamentInfills,
-  (value, oldValue, onInvalidate) => {
-    infills.value = value;
-  }
-);
-
 watch(comment, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { comment: value });
 });
@@ -253,6 +241,8 @@ function duplicateUnit() {
       quantity: unit.quantity,
       spool: unit.spool,
       infill: unit.infill,
+      infill_wall_combination: unit.infill_wall_combination,
+      wall: unit.wall,
       estimatedPrice: unit.estimated_price,
       file: unit.file,
       comment: comment.value,

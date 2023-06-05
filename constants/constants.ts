@@ -1,10 +1,10 @@
 export class Language {
     public static readonly english = new Language('en', 0);
     public static readonly croatian = new Language('hr', 1);
-  
+
     private constructor(public readonly localeName: string, public readonly index: number) {
     }
-  }
+}
 
 export const BACKGROUND_COLOR = "#f6f8fa";
 
@@ -63,7 +63,7 @@ export const PRINT_ORDER_MIN_PRICE = 10;
 // * Parameters of print unit which when changed
 // * need to perform slicer estimation (also perform
 // * print job ETA estimation)
-export const PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION = ['rotation', 'infill', 'spool', 'length_unit', 'use_optimal_rotation', 'rotation_unit', 'model_rotation']
+export const PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION = ['rotation', 'infill', 'walls', 'spool', 'length_unit', 'use_optimal_rotation', 'rotation_unit', 'model_rotation']
 
 // * Parameters of print unit which when changed
 // * need to perform ONLY print job ETA estimation

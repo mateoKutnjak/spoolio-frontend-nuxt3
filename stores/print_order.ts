@@ -2,11 +2,13 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION, PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION, PROFIT_MARGIN_MULTIPLIER, TIMEOUT_WS_PRINT_JOB_ETA_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_INIT_MESSAGE } from '~~/constants/constants';
 import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from './auth';
-import { useFilamentInfillStore } from './filament_infill';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { usePrintOrderHistoryStore } from './order_history_print';
 import { useNotificationStore } from './notification';
+import { usePrintOrderUnitInfillStore } from './print_order_unit_infill';
+import { usePrintOrderUnitWallStore } from './print_order_unit_wall';
+import { usePrintOrderUnitInfillWallCombinationStore } from './print_order_unit_infill_wall_combination';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -72,7 +74,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         getUnits: (state) => state.units,
         getUnitByLocalUrl: (state) => {
             return (localUrl: string) => {
-                return state.units.find(el => el.localUrl === localUrl);
+                return state.units.find(el => el.localUrl.includes(localUrl));
             }
         },
         getContactEmail: (state) => state.print_order?.contact_email || '',
@@ -168,6 +170,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
+            formData.append("wall", unit.wall.id.toString());
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
@@ -344,6 +347,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
+            formData.append("wall", unit.wall.id.toString());
             formData.append('local_url', unit.localUrl);
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
@@ -559,7 +563,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }
 
             const filamentSpoolStore = useFilamentSpoolStore();
-            const filamentInfillStore = useFilamentInfillStore();
+            const printOrderUnitInfillWallCombinationStore = usePrintOrderUnitInfillWallCombinationStore();
             const globalsStore = useGlobalsStore();
 
             if (!filamentSpoolStore.getAll.length) {
@@ -567,8 +571,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            if (!filamentInfillStore.getFilamentInfills.length) {
-                console.error(`Cannot add file as 3d model. No default filament infill found`);
+            if (!printOrderUnitInfillWallCombinationStore.getAll.length) {
+                console.error(`Cannot add file as 3d model. No default infill-walls combination found`);
                 return;
             }
 
@@ -581,7 +585,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                     id: undefined,
                     quantity: 1,
                     spool: filamentSpoolStore.getAll[0],
-                    infill: filamentInfillStore.getFilamentInfills[0],
+                    infill: printOrderUnitInfillWallCombinationStore.getAll[0].infill,
+                    wall: printOrderUnitInfillWallCombinationStore.getAll[0].wall,
+                    infill_wall_combination: printOrderUnitInfillWallCombinationStore.getAll[0],
                     estimated_price: Number.NEGATIVE_INFINITY,
                     estimated_time: Number.NEGATIVE_INFINITY,
                     file: file,

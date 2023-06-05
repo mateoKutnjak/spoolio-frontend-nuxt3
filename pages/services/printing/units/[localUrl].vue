@@ -7,8 +7,10 @@
           :stlFileUrl="unit.localUrl"
         />
       </client-only>
+
       <div class="absolute top-4 left-6 max-w-fit">
         <div class="flex flex-col gap-3 items-start">
+          <ButtonBack />
           <div class="text-2xl text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
           <!-- <RadioGroupDimensionUnit
             :unit="unit"
@@ -37,14 +39,10 @@
             :key="unit.spool.material.id"
             :file-url="unit.localUrl"
           />
-          <ListboxInfill
+          <ListboxPrintOrderUnitInfillWallCombination
             class="w-full"
             :file-url="unit.localUrl"
           />
-          <!-- <ListboxPrintOrderUnitWall
-            class="w-full"
-            :file-url="unit.localUrl"
-          /> -->
         </div>
       </div>
       <div class="absolute bottom-4 left-6">
@@ -82,16 +80,30 @@
   </div>
 </template>
   
-  <script lang="ts" setup>
+<script lang="ts" setup>
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { IPrintOrderUnit } from "~~/constants/data";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
-const { unit } = defineProps<{
-  unit: IPrintOrderUnit;
-}>();
+definePageMeta({
+  layout: false,
+});
+
+const { localUrl } = useRoute().params;
+
+if (typeof localUrl !== "string") {
+  console.debug(`localUrl parameter (${localUrl}) is not of type string`);
+  throw createError("localUrl parameter is not of type string");
+}
 
 const printOrderStore = usePrintOrderStore();
+
+const unit = printOrderStore.getUnitByLocalUrl(localUrl);
+
+if (!unit) {
+  console.debug(`Print order unit with localUrl=${localUrl} is not found`);
+  throw createError(`Print order unit with localUrl=${localUrl} is not found`);
+}
 
 const selectedSpool = ref(unit.spool);
 const selectedInfill = ref(unit.infill);

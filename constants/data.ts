@@ -178,12 +178,6 @@ export interface IFilamentMaterial {
     density: number,
 }
 
-export interface IFilamentInfill {
-    id: number,
-    name: string,
-    percentage: number
-}
-
 export interface IFilamentSpool {
     id: number,
     material: IFilamentMaterial,
@@ -246,16 +240,18 @@ export interface IProductImage {
     comment: string,
 }
 
-// ********************* //
-// **** PRINT ORDER **** //
-// ********************* //
+// ************************** //
+// **** PRINT ORDER UNIT **** //
+// ************************** //
 
 export interface IPrintOrderUnit {
     id: number | undefined,
     comment: string,
     quantity: number,
     spool: IFilamentSpool,
-    infill: IFilamentInfill,
+    infill: IPrintOrderUnitInfill,
+    wall: IPrintOrderUnitWall,
+    infill_wall_combination: IPrintOrderUnitInfillWallCombination,
     file: File | string,
     localUrl: string,
     attachmentFiles: IAttachmentFile[],
@@ -274,6 +270,28 @@ export interface IPrintOrderUnit {
     estimated_time: number,
     screenshot: string,
 }
+
+export interface IPrintOrderUnitInfill {
+    id: number,
+    name: string,
+    percentage: number
+}
+
+export interface IPrintOrderUnitWall {
+    id: number,
+    amount: number,
+}
+
+export interface IPrintOrderUnitInfillWallCombination {
+    id: number,
+    name: string,
+    infill: IPrintOrderUnitInfill,
+    wall: IPrintOrderUnitWall,
+}
+
+// ********************* //
+// **** PRINT ORDER **** //
+// ********************* //
 
 export interface IPrintOrder {
     id: number,

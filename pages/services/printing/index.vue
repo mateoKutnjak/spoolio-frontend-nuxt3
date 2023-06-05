@@ -128,10 +128,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import {
-  MAX_FILE_SIZE_STL,
-  PRINT_ORDER_MIN_PRICE,
-} from "~~/constants/constants";
+import { MAX_FILE_SIZE_STL } from "~~/constants/constants";
 import {
   IAttachmentFile,
   IAttachmentImage,
@@ -139,38 +136,46 @@ import {
 } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
-import { useFilamentInfillStore } from "~~/stores/filament_infill";
+import { usePrintOrderUnitInfillStore } from "~~/stores/print_order_unit_infill";
 import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { useGlobalsStore } from "~~/stores/globals";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { ContentLoader } from "vue-content-loader";
 import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
+import { usePrintOrderUnitWallStore } from "~~/stores/print_order_unit_wall";
+import { usePrintOrderUnitInfillWallCombinationStore } from "~~/stores/print_order_unit_infill_wall_combination";
 
 const { t } = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const filamentSpoolStore = useFilamentSpoolStore();
-const filamentInfillStore = useFilamentInfillStore();
+const printOrderUnitInfillStore = usePrintOrderUnitInfillStore();
 const globalsStore = useGlobalsStore();
 const loadingOverlayStore = useLoadingOverlayStore();
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
+const printOrderUnitWallStore = usePrintOrderUnitWallStore();
+const printOrderUnitInfillWallCombinationStore =
+  usePrintOrderUnitInfillWallCombinationStore();
 
 if (
-  !filamentInfillStore.getFilamentInfills.length ||
-  !filamentSpoolStore.getAll.length
+  !printOrderUnitInfillStore.getInfills.length ||
+  !filamentSpoolStore.getAll.length ||
+  !printOrderUnitWallStore.getWalls.length ||
+  !printOrderUnitInfillWallCombinationStore.getAll.length
 ) {
-  console.debug(
-    "Infills or spools missing. Showing loading overlay until they get fetched"
-  );
   loadingOverlayStore.show();
 }
 
 const { dimensionUnit, rotationUnit } = storeToRefs(globalsStore);
-const { filamentInfills } = storeToRefs(filamentInfillStore);
+const { infills } = storeToRefs(printOrderUnitInfillStore);
 const { filamentSpools } = storeToRefs(filamentSpoolStore);
+const { walls } = storeToRefs(printOrderUnitWallStore);
+const { infillWallCombinations } = storeToRefs(
+  printOrderUnitInfillWallCombinationStore
+);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
@@ -201,19 +206,31 @@ const eta = computed(() => {
 onMounted(async () => {
   await filamentSpoolStore
     .fetchFilamentSpools()
-    .then(() => {})
-    .catch((err) => notificationStore.showFetchError(err));
-
-  console.log("Spools fetched successfuly TODO");
-
-  await filamentInfillStore
-    .fetchFilamentInfills()
     .then(() => {
-      console.log("Infills fetched successfuly TODO");
+      console.debug("Spools fetched");
     })
     .catch((err) => notificationStore.showFetchError(err));
 
-  console.log("Infills fetched successfuly TODO");
+  await printOrderUnitInfillStore
+    .fetchInfills()
+    .then(() => {
+      console.debug("Infills fetched");
+    })
+    .catch((err) => notificationStore.showFetchError(err));
+
+  await printOrderUnitWallStore
+    .fetchWalls()
+    .then(() => {
+      console.debug("Walls fetched");
+    })
+    .catch((err) => notificationStore.showFetchError(err));
+
+  await printOrderUnitInfillWallCombinationStore
+    .fetchAll()
+    .then(() => {
+      console.debug("Infill walls combinations fetched");
+    })
+    .catch((err) => notificationStore.showFetchError(err));
 
   for (
     let index = 0;
@@ -240,14 +257,17 @@ onMounted(async () => {
   }
 });
 
-watch([filamentInfills, filamentSpools], ([newA, newB], [oldA, oldB]) => {
-  // Disable loading overlay when all data is fetched
-  if (newA.length && newB.length) {
-    loadingOverlayStore.close();
-  } else {
-    loadingOverlayStore.show();
+watch(
+  [infills, filamentSpools, walls, infillWallCombinations],
+  ([newA, newB, newC, newD], [oldA, oldB, oldC, oldD]) => {
+    // Disable loading overlay when all data is fetched
+    if (newA.length && newB.length && newC.length && newD.length) {
+      loadingOverlayStore.close();
+    } else {
+      loadingOverlayStore.show();
+    }
   }
-});
+);
 
 watch(getUser, (value, oldValue, onInvalidate) => {});
 
@@ -377,11 +397,13 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  dialogStore.open(
-    "ServicesPrintingUnitPreviewDialog",
-    { unit: unit.value },
-    "2xl"
-  );
+  navigateTo(`/services/printing/units/${unit.value?.localUrl.split("/")[3]}/`);
+
+  // dialogStore.open(
+  //   "ServicesPrintingUnitPreviewDialog",
+  //   { unit: unit.value },
+  //   "2xl"
+  // );
 }
 
 function onClearOrder() {

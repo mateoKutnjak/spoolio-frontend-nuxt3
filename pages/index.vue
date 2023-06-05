@@ -1,12 +1,12 @@
 <template>
   <div class="container mx-auto">
-    <client-only class="flex-1">
+    <!-- <client-only class="flex-1">
       <PreviewIndex
         class="w-92 h-[55vh] p-0"
         :backgroundColor="BACKGROUND_COLOR"
         stlFileUrl="/3d/complete.stl"
       />
-    </client-only>
+    </client-only> -->
 
   </div>
 </template>
