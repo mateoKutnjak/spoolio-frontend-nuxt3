@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_ORDER, CONTENT_TYPE_ORDER_UNIT, HOURLY_RATE_EUR, HTTP_REQUEST_TIMEOUT, LAYER_AREA, PRICE_MARGIN_FACTOR, PRINT_ORDER_FILES_SUFFIXES, PRINT_ORDER_FILES_TYPES, PRINT_ORDER_MIN_PRICE, PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION, PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION, PROFIT_MARGIN_MULTIPLIER, TIMEOUT_WS_PRINT_JOB_ETA_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_DATA_MESSAGE, TIMEOUT_WS_SLICER_ESTIMATION_INIT_MESSAGE } from '~~/constants/constants';
-import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
+import { IAddressBilling, IAddressShipping, IAttachmentFile, IAttachmentImage, IPrintOrder, IPrintOrderUnit, IPrintingMethod } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
@@ -9,6 +9,7 @@ import { useNotificationStore } from './notification';
 import { usePrintOrderUnitInfillStore } from './print_order_unit_infill';
 import { usePrintOrderUnitWallStore } from './print_order_unit_wall';
 import { usePrintOrderUnitInfillWallCombinationStore } from './print_order_unit_infill_wall_combination';
+import { usePrintingMethodStore } from './printing_method';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -564,6 +565,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             const filamentSpoolStore = useFilamentSpoolStore();
             const printOrderUnitInfillWallCombinationStore = usePrintOrderUnitInfillWallCombinationStore();
+            const printingMethodStore = usePrintingMethodStore();
             const globalsStore = useGlobalsStore();
 
             if (!filamentSpoolStore.getAll.length) {
@@ -573,6 +575,11 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             if (!printOrderUnitInfillWallCombinationStore.getAll.length) {
                 console.error(`Cannot add file as 3d model. No default infill-walls combination found`);
+                return;
+            }
+
+            if (!printingMethodStore.getPrintingMethods.length) {
+                console.error(`Cannot add file as 3d model. No default printing method found`)
                 return;
             }
 
@@ -606,6 +613,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
                     screenshot: '',
+                    printing_method: printingMethodStore.getPrintingMethods[0],
                 };
 
                 onFinishedCallback();
@@ -663,6 +671,25 @@ export const usePrintOrderStore = defineStore('print-order', {
                     this.estimatePrintJobsOnly();
                 }
             }
+        },
+
+        setUnitPrintingMethod(localUrl: string, printing_method: IPrintingMethod) {
+            if (!printing_method.supported_materials.length) {
+                console.debug(`No supported materials for printing method ${printing_method.name}`)
+                return;
+            }
+
+            const filamentSpoolStore = useFilamentSpoolStore();
+
+            const material = printing_method.supported_materials[0];
+            const spoolsWithSelectedMaterial = filamentSpoolStore.getSpoolsWithMaterial(material);
+
+            if (!spoolsWithSelectedMaterial.length) {
+                console.debug(`No spools for material ${material.name}`)
+                return;
+            }
+
+            this.updateUnit(localUrl, { printing_method: printing_method, spool: spoolsWithSelectedMaterial[0] })
         },
 
         removeUnit(unit: IPrintOrderUnit) {

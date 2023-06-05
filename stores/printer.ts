@@ -24,7 +24,7 @@ export const usePrinterStore = defineStore('printer', {
 
 
             return promiseWithTimeout<IPaginatedResponse<IPrinter>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IPrinter>>(`api/printers/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IPrinter>>(`api/printers/printers/?limit=${limit}&offset=${offset}&search=${search}`, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IPrinter>) => {

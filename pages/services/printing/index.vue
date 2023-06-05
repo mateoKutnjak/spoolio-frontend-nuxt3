@@ -145,6 +145,7 @@ import { ContentLoader } from "vue-content-loader";
 import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
 import { usePrintOrderUnitWallStore } from "~~/stores/print_order_unit_wall";
 import { usePrintOrderUnitInfillWallCombinationStore } from "~~/stores/print_order_unit_infill_wall_combination";
+import { usePrintingMethodStore } from "~~/stores/printing_method";
 
 const { t } = useI18n();
 
@@ -159,12 +160,14 @@ const printOrderStore = usePrintOrderStore();
 const printOrderUnitWallStore = usePrintOrderUnitWallStore();
 const printOrderUnitInfillWallCombinationStore =
   usePrintOrderUnitInfillWallCombinationStore();
+const printingMethodStore = usePrintingMethodStore();
 
 if (
   !printOrderUnitInfillStore.getInfills.length ||
   !filamentSpoolStore.getAll.length ||
   !printOrderUnitWallStore.getWalls.length ||
-  !printOrderUnitInfillWallCombinationStore.getAll.length
+  !printOrderUnitInfillWallCombinationStore.getAll.length ||
+  !printingMethodStore.getPrintingMethods.length
 ) {
   loadingOverlayStore.show();
 }
@@ -176,6 +179,7 @@ const { walls } = storeToRefs(printOrderUnitWallStore);
 const { infillWallCombinations } = storeToRefs(
   printOrderUnitInfillWallCombinationStore
 );
+const { printingMethods } = storeToRefs(printingMethodStore);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
@@ -204,6 +208,13 @@ const eta = computed(() => {
 });
 
 onMounted(async () => {
+  await printingMethodStore
+    .fetch()
+    .then(() => {
+      console.debug("Printing methods fetched");
+    })
+    .catch((err) => notificationStore.showFetchError(err));
+
   await filamentSpoolStore
     .fetchFilamentSpools()
     .then(() => {
@@ -258,10 +269,16 @@ onMounted(async () => {
 });
 
 watch(
-  [infills, filamentSpools, walls, infillWallCombinations],
-  ([newA, newB, newC, newD], [oldA, oldB, oldC, oldD]) => {
+  [infills, filamentSpools, walls, infillWallCombinations, printingMethods],
+  ([newA, newB, newC, newD, newE], [oldA, oldB, oldC, oldD, oldE]) => {
     // Disable loading overlay when all data is fetched
-    if (newA.length && newB.length && newC.length && newD.length) {
+    if (
+      newA.length &&
+      newB.length &&
+      newC.length &&
+      newD.length &&
+      newE.length
+    ) {
       loadingOverlayStore.close();
     } else {
       loadingOverlayStore.show();

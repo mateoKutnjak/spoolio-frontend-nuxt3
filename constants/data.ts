@@ -252,6 +252,7 @@ export interface IPrintOrderUnit {
     infill: IPrintOrderUnitInfill,
     wall: IPrintOrderUnitWall,
     infill_wall_combination: IPrintOrderUnitInfillWallCombination,
+    printing_method: IPrintingMethod,
     file: File | string,
     localUrl: string,
     attachmentFiles: IAttachmentFile[],
@@ -377,6 +378,12 @@ export interface IPrinter {
     name: string,
     type: IPrinterType,
     available: boolean,
+}
+
+export interface IPrintingMethod {
+    id: number,
+    name: string,
+    supported_materials: IFilamentMaterial[]
 }
 
 // *************** //

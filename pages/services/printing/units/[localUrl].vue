@@ -29,8 +29,13 @@
       </div>
       <div class="absolute top-4 right-6 max-w-fit">
         <div class="flex flex-col gap-1 justify-end items-end">
+          <ListboxPrintingMethod
+            class="w-full"
+            :file-url="unit.localUrl"
+          />
           <ListboxMaterial
             class="w-full"
+            :key="unit.spool.id"
             :file-url="unit.localUrl"
           />
           <!-- ? :key binding is added to refresh component ListboxColor when material id changes -->

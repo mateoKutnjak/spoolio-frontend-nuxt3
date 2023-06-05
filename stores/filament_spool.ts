@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { HTTP_REQUEST_TIMEOUT } from "~~/constants/constants";
-import { IFilamentSpool } from "~~/constants/data";
+import { IFilamentMaterial, IFilamentSpool } from "~~/constants/data";
 
 export const useFilamentSpoolStore = defineStore('filament-spool', {
     state: () => ({
@@ -21,6 +21,11 @@ export const useFilamentSpoolStore = defineStore('filament-spool', {
         getSpoolsWithSameMaterialAs: (state) => {
             return (spool: IFilamentSpool) => {
                 return state.filamentSpools.filter((item) => item.material.id === spool.material.id);
+            }
+        },
+        getSpoolsWithMaterial: (state) => {
+            return (material: IFilamentMaterial) => {
+                return state.filamentSpools.filter((item) => item.material.id === material.id);
             }
         },
         getSpoolsUniqueMaterials: (state) => {

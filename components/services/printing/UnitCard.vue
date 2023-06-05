@@ -262,6 +262,7 @@ function duplicateUnit() {
       estimated_price: unit.estimated_price,
       estimated_time: unit.estimated_time,
       screenshot: unit.screenshot,
+      printing_method: unit.printing_method,
     });
   } else {
     throw createError(
