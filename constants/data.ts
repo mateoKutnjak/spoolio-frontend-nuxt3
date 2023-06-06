@@ -370,6 +370,11 @@ export interface IPaymenIntent {
 export interface IPrinterType {
     id: number,
     name: string,
+    printing_method: IPrintingMethod,
+    printer_count: number,
+    picture: string,
+    max_print_size: string,
+    max_resolution: number,
     supported_materials: IFilamentMaterial[],
 }
 
@@ -383,6 +388,11 @@ export interface IPrinter {
 export interface IPrintingMethod {
     id: number,
     name: string,
+    full_name: string,
+    resolution: number,
+    precision: number,
+    smoothness: number,
+    pricing: number,
     supported_materials: IFilamentMaterial[]
 }
 

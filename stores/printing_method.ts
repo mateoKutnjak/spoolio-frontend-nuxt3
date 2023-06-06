@@ -13,7 +13,7 @@ export const usePrintingMethodStore = defineStore('printing-method', {
     },
 
     actions: {
-        async fetch() {
+        async fetch(): Promise<IPrintingMethod[]> {
 
             const config = useRuntimeConfig();
 

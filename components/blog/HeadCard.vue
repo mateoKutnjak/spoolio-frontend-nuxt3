@@ -26,7 +26,7 @@
         <div class="flex gap-4 items-center font-sans">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-14">
-              <span class="text-2xl">{{ initials }}</span>
+              <span class="text-2xl">{{ userProfileInitials(blog.author?.profile) }}</span>
             </div>
           </div>
           <div class="flex flex-col">
@@ -89,17 +89,6 @@ const { user } = storeToRefs(authStore);
 
 const hasAnyName = computed(() => {
   return blog.author?.profile?.first_name || blog.author?.profile?.last_name;
-});
-
-const initials = computed(() => {
-  const result =
-    (blog.author?.profile?.first_name
-      ? blog.author.profile.first_name[0]
-      : "") +
-    (blog.author?.profile?.last_name ? blog.author.profile.last_name[0] : "");
-
-  if (result) return result;
-  return "A";
 });
 
 function toggleLike() {

@@ -16,7 +16,7 @@
         <div class="flex gap-4 items-center font-sans">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
-              <span class="text-sm">{{ initials }}</span>
+              <span class="text-sm">{{ userProfileInitials(item.author?.profile) }}</span>
             </div>
           </div>
           <div class="font-bold text-gray-600 text-sm">
@@ -62,17 +62,6 @@ const { user } = storeToRefs(authStore);
 
 const hasAnyName = computed(() => {
   return item.user?.profile?.first_name || item.user?.profile?.last_name;
-});
-
-const initials = computed(() => {
-  const result =
-    (item.author?.profile?.first_name
-      ? item.author.profile.first_name[0]
-      : "") +
-    (item.author?.profile?.last_name ? item.author.profile.last_name[0] : "");
-
-  if (result) return result;
-  return "A";
 });
 
 const isCurrentyLoggedUser = computed(() => {

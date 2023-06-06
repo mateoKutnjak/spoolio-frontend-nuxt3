@@ -58,14 +58,17 @@
         :checked="ratingValue >= 4.75"
       />
     </div>
-    <div class="text-sm font-normal text-gray-700">({{ ratingCount }})</div>
+    <div
+      v-show="ratingCount"
+      class="text-sm font-normal text-gray-700"
+    >({{ ratingCount }})</div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const { ratingValue, ratingCount } = defineProps<{
   ratingValue: number;
-  ratingCount: number;
+  ratingCount?: number;
 }>();
 </script>
 
