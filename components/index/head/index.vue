@@ -16,7 +16,7 @@
         <div>
           <div class="flex gap-2">
             <div class="text-xs text-stone-600">
-              {{ capitalizeOnlyFirstLetter($t('supported_formats')) }}: STL, STEP
+              {{ capitalizeOnlyFirstLetter($t('supported_formats')) }}: STL
             </div>
           </div>
           <NuxtLink
