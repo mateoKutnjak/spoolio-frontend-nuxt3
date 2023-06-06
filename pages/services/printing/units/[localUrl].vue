@@ -91,7 +91,7 @@ import { IPrintOrderUnit } from "~~/constants/data";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
 definePageMeta({
-  layout: false,
+  layout: "clean",
 });
 
 const { localUrl } = useRoute().params;

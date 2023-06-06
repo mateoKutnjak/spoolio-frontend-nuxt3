@@ -81,7 +81,7 @@
           <FormKit
             v-if="!useOptimalRotation"
             type="submit"
-            label="Save"
+            :label="capitalizeOnlyFirstLetter($t('save'))"
             :classes="{input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs', outer: '!m-0', }"
             :input-class="{
               'loading': slicerEstimationPending

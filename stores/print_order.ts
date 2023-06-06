@@ -275,7 +275,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                         break;
                     case 'error':
                         const errorMessage = parsedData.error;
-                        console.error(`Websocker error: ${errorMessage}`)
+                        console.error(`Websocket error: ${errorMessage}`)
+                        notificationStore.show(`Websocket error: ${errorMessage}`);
 
                         // * Null indicates error
                         this.eta = undefined;
@@ -496,7 +497,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                         break;
                     case 'error':
                         const errorMessage = parsedData.error;
-                        console.error(`Websocker error: ${errorMessage}`)
+                        console.error(`Websocket error: ${errorMessage}`)
+                        notificationStore.show(`Websocket error: ${errorMessage}`);
 
                         // * Positive infinity indicates ERROR
                         this.updateUnit(unit.localUrl, {
