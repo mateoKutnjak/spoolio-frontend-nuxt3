@@ -10,6 +10,11 @@
         <IndexProjectsBlog :blog="blog" />
       </div>
     </div>
+
+    <ButtonFindOutMore
+      class="self-end"
+      to="/blogs"
+    />
   </div>
 </template>
   
