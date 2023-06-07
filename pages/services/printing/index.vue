@@ -90,10 +90,34 @@
       </div>
       <div
         v-else
-        class="card p-8 shadow bg-white"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
+        <div class="flex flex-col gap-8">
+          <div class="text-stone-600 font-bold text-2xl">{{$t('quick_3d_print').toUpperCase()}}</div>
+          <ul class="list-inside space-y-2">
+            <li class="flex gap-2 items-start">
+              <span class="text-primary font-bold">1/</span>
+              <div class="flex flex-wrapm gap-2">
+                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
+                <NuxtLink to="/services/modeling"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
+                </NuxtLink>
+              </div>
+            </li>
+            <li class="flex gap-2 items-start">
+              <span class="text-primary font-bold">2/</span>
+              <div class="flex flex-wrap">
+                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('define_the_desired_characteristics')) }}</span>
+              </div>
+            </li>
+            <li class="flex gap-2 items-start">
+              <span class="text-primary font-bold">3/</span>
+              <div class="flex flex-wrap">
+                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('automatically_find_out_the_price')) }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
         <DragAndDropArea
-          class="h-[35vh]"
           :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
           subtitle=".STL (max 150MB)"
           @on-change="change"
@@ -104,7 +128,7 @@
     <div class="md:hidden mx-6 my-6 flex justify-end gap-3">
 
       <FileUploadFAB @change="change" />
-      <div>
+      <div v-if="printOrderStore.units.length > 0">
         <div
           class="tooltip tooltip-left"
           :data-tip="capitalizeOnlyFirstLetter($t('checkout'))"
