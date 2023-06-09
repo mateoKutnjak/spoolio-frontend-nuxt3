@@ -5,6 +5,7 @@ export const useDialogStore = defineStore('dialog', {
         isOpened: false,
         componentName: "",
         componentProps: undefined,
+        message: undefined as string | undefined,
         widthClass: "",
         closeOnClickOutside: true,
     }),
@@ -24,10 +25,11 @@ export const useDialogStore = defineStore('dialog', {
                 this.isOpened = !this.isOpened;
             }
         },
-        open(componentName: string, componentProps: any, widthClass: string = "md", closeOnClickOutside = true) {
+        open(componentName: string, componentProps: any, message?: string, widthClass: string = "md", closeOnClickOutside = true) {
             this.isOpened = true;
             this.componentName = componentName;
             this.componentProps = componentProps;
+            this.message = message;
             this.widthClass = widthClass
             this.closeOnClickOutside = closeOnClickOutside;
         }

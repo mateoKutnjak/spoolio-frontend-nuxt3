@@ -10,6 +10,7 @@ import { usePrintOrderUnitInfillStore } from './print_order_unit_infill';
 import { usePrintOrderUnitWallStore } from './print_order_unit_wall';
 import { usePrintOrderUnitInfillWallCombinationStore } from './print_order_unit_infill_wall_combination';
 import { usePrintingMethodStore } from './printing_method';
+import { useDialogStore } from './dialog';
 
 async function postAttachmentFile(item: IAttachmentFile, contentType: string, objectId: number): Promise<IAttachmentFile> {
 
@@ -206,9 +207,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             const config = useRuntimeConfig();
 
             const authStore = useAuthStore();
+            const dialogStore = useDialogStore();
             const notificationStore = useNotificationStore();
 
             if (!authStore.loggedIn) {
+                dialogStore.open('AuthForm', {}, 'Please log in to perform estimation')
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
                 this.eta = undefined;
                 return;
@@ -330,9 +333,11 @@ export const usePrintOrderStore = defineStore('print-order', {
             const config = useRuntimeConfig();
 
             const authStore = useAuthStore();
+            const dialogStore = useDialogStore();
             const notificationStore = useNotificationStore();
 
             if (!authStore.loggedIn) {
+                dialogStore.open('AuthForm', {}, 'Please log in to perform estimation')
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
 
                 this.updateUnit(unit.localUrl, {

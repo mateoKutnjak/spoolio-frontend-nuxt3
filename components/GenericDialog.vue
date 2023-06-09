@@ -66,6 +66,7 @@ const {
   isDialogOpened,
   componentName,
   componentProps,
+  message,
   widthClass,
   closeOnClickOutside,
 } = storeToRefs(dialogStore);

@@ -1,0 +1,222 @@
+<template>
+  <div class="card-body gap-8 px-6 py-2">
+    <Tabs
+      class="self-center"
+      :tabs="tabs"
+      :selected-tab-index="0"
+      @on-tab-clicked="index => onTabClicked(index)"
+    />
+    <FormKit
+      v-if="selectedTab === 0"
+      type="form"
+      id="register-form"
+      submit-label="Sign In"
+      @submit="submitHandler"
+      :actions="false"
+    >
+      <div class="flex flex-col gap-5">
+        <div>
+          <FormKit
+            type="email"
+            name="email"
+            :placeholder="capitalizeOnlyFirstLetter($t('email'))"
+            v-model="email"
+            validation="required|email"
+            validation-visibility="blur"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            :placeholder="capitalizeOnlyFirstLetter($t('password'))"
+            v-model="password"
+            validation="required|length:5,15|matches:/[0-9]/"
+            validation-visibility="blur"
+          />
+          <FormKit
+            type="password"
+            name="password_confirm"
+            :placeholder="capitalizeOnlyFirstLetter($t('confirm_password'))"
+            v-model="confirmPassword"
+            validation="required|confirm"
+            validation-label="Password confirmation"
+            validation-visibility="blur"
+          />
+          <FormKit
+            type="text"
+            name="invitation_token"
+            :placeholder="capitalizeOnlyFirstLetter($t('invitation_token'))"
+            v-model="invitationToken"
+            validation="required"
+            validation-visibility="blur"
+            :validation-messages="{
+              required: 'Invitation token is required',
+            }"
+          />
+        </div>
+        <FormKit
+          type="submit"
+          :label="capitalizeOnlyFirstLetter($t('sign_up'))"
+          :classes="{
+              input: 'btn-block'
+            }"
+          :input-class="{
+            'loading': loading
+          }"
+        />
+      </div>
+    </FormKit>
+    <FormKit
+      v-else-if="selectedTab === 1"
+      type="form"
+      id="login-form"
+      @submit="submitHandlerLogin"
+      :actions="false"
+    >
+      <div class="flex flex-col gap-5">
+        <div>
+          <FormKit
+            type="email"
+            name="email"
+            :placeholder="capitalizeOnlyFirstLetter($t('email'))"
+            v-model="emailLogin"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            :placeholder="capitalizeOnlyFirstLetter($t('password'))"
+            v-model="passwordLogin"
+          />
+        </div>
+        <FormKit
+          type="submit"
+          :label="capitalizeOnlyFirstLetter($t('sign_in'))"
+          :classes="{
+              input: 'btn-block',
+            }"
+          :input-class="{
+            'loading': loading
+          }"
+        />
+      </div>
+    </FormKit>
+
+    <!-- <GoogleSignInButton
+      @success="handleLoginSuccess"
+      @error="handleLoginError"
+    ></GoogleSignInButton> -->
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { FormKitNode } from "@formkit/core";
+import { useDialogStore } from "~~/stores/dialog";
+import { useNotificationStore } from "~~/stores/notification";
+import { useAuthStore } from "../stores/auth";
+
+import { GoogleSignInButton, CredentialResponse } from "vue3-google-signin";
+import { ITab } from "~~/constants/data";
+
+const { t } = useI18n();
+
+const authStore = useAuthStore();
+const dialogStore = useDialogStore();
+const notificationStore = useNotificationStore();
+
+const email = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const password = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const confirmPassword = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const invitationToken = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+
+const loading = ref(false);
+
+const tabs = [
+  <ITab>{ title: capitalizeOnlyFirstLetter(t("sign_up")) },
+  <ITab>{ title: capitalizeOnlyFirstLetter(t("sign_in")) },
+];
+const selectedTab = ref(0);
+
+async function submitHandler(data: any, node: FormKitNode | undefined) {
+  // This delay is here only because of progress indicator button
+  // await new Promise((r) => setTimeout(r, 1000));
+
+  loading.value = true;
+
+  authStore
+    .register(
+      email.value,
+      password.value,
+      confirmPassword.value,
+      invitationToken.value
+    )
+    .then((loginRequestState) => {
+      dialogStore.close();
+      navigateTo("/services/printing");
+    })
+    .catch((err) => {
+      notificationStore.showFetchError(err);
+      node?.setErrors(
+        err?.data?.non_field_errors || ["Error occurred. Please try again."],
+        err?.data
+      );
+    })
+    .finally(() => (loading.value = false));
+}
+
+// handle success event
+const handleRegisterSuccess = (response: CredentialResponse) => {
+  const { credential } = response;
+  authStore.registerGoogle(credential!); // TODO check null value
+  console.log("Access Token", credential);
+};
+
+// handle an error event
+const handleRegisterError = () => {
+  console.error("Login failed");
+};
+
+const emailLogin = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+const passwordLogin = ref<string>(""); // FormKit - cannot be wuthout args - undefined
+
+const loadingLogin = ref(false);
+
+async function submitHandlerLogin(data: any, node: FormKitNode | undefined) {
+  // This delay is here only because of progress indicator button
+  // await new Promise((r) => setTimeout(r, 1000));
+
+  loadingLogin.value = true;
+
+  authStore
+    .login(emailLogin.value, passwordLogin.value)
+    .then((loginRequestState) => {
+      dialogStore.close();
+      navigateTo("/blogs");
+    })
+    .catch((err) => {
+      notificationStore.showFetchError(err);
+      node?.setErrors(
+        err?.data?.non_field_errors || ["Error occurred. Please try again."],
+        err?.data
+      );
+    })
+    .finally(() => (loadingLogin.value = false));
+}
+
+// handle success event
+const handleLoginSuccess = (response: CredentialResponse) => {
+  const { credential } = response;
+  authStore.registerGoogle(credential!); // TODO check null value
+  console.log("Access Token", credential);
+};
+
+// handle an error event
+const handleLoginError = () => {
+  console.error("Login failed");
+};
+
+function onTabClicked(index: number) {
+  selectedTab.value = index;
+}
+</script>
+
+<style>
+</style>
