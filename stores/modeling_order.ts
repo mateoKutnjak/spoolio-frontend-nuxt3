@@ -1,23 +1,31 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IAttachmentFile, IAttachmentImage, IModelingOrder } from '~~/constants/data';
+import { IAttachmentFile, IAttachmentImage, IModelingOrder, IModelingOrderItemAttribute, IModelingOrderItemType } from '~~/constants/data';
 import { useAuthStore } from './auth';
+import { ofetch } from 'ofetch';
 
 export const useModelingOrderStore = defineStore('modeling-order', {
     state: () => ({
         modeling_order: <IModelingOrder>{
             contact_email: '',
             comment: '',
+            item_type: null as IModelingOrderItemType | null,
+            item_attributes: [] as IModelingOrderItemAttribute[],
         },
-        
+
         attachmentFiles: [] as IAttachmentFile[],
         attachmentImages: [] as IAttachmentImage[],
+
+        itemTypes: [] as IModelingOrderItemType[],
+        itemAttributes: [] as IModelingOrderItemAttribute[],
     }),
 
     getters: {
         getAttachmentFiles: (state) => state.attachmentFiles,
         getAttachmentImages: (state) => state.attachmentImages,
         getContactEmail: (state) => state.modeling_order.contact_email,
+        getItemTypes: (state) => state.itemTypes,
+        getItemAttributes: (state) => state.itemAttributes,
     },
 
     actions: {
@@ -26,23 +34,27 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             this.modeling_order = <IModelingOrder>{
                 contact_email: '',
                 comment: '',
+                item_type: null as IModelingOrderItemType | null,
+                item_attributes: [] as IModelingOrderItemAttribute[],
             }
         },
 
         async postOrder(): Promise<IModelingOrder> {
 
             const config = useRuntimeConfig();
-            
+
             const authStore = useAuthStore();
 
             const body = {
                 contact_email: this.modeling_order.contact_email,
                 comment: this.modeling_order.comment,
-                user_profile: authStore.getUser?.profile?.id
+                user_profile: authStore.getUser?.profile?.id,
+                item_attributes: this.modeling_order.item_attributes.map(el => el.id),
+                item_type: this.modeling_order.item_type?.id || null,
             }
 
             return promiseWithTimeout<IModelingOrder>(new Promise<IModelingOrder>((resolve, reject) => {
-                customFetch<IModelingOrder>('api/modeling-orders/', {
+                customFetch<IModelingOrder>('api/modeling-orders/orders/', {
                     baseURL: config.public.baseURL,
                     method: 'POST',
                     body: body,
@@ -81,7 +93,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
         async postAttachmentImage(item: IAttachmentImage, orderId: number): Promise<IAttachmentImage> {
 
             const config = useRuntimeConfig();
-            
+
 
             var formData = new FormData();
             formData.append("image", item.image);
@@ -131,6 +143,44 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             } else {
                 console.error("Item not found among attached images");
             }
+        },
+
+        async fetchItemTypes(): Promise<IModelingOrderItemType[]> {
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout(new Promise((resolve, reject) => {
+                ofetch<IModelingOrderItemType[]>('api/modeling-orders/item-types/', {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IModelingOrderItemType[]) => {
+                    this.itemTypes = response;
+                    resolve(response);
+                }).catch((err) => {
+                    reject(err);
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchItemAttributes() {
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout(new Promise((resolve, reject) => {
+                ofetch<IModelingOrderItemAttribute[]>('api/modeling-orders/item-attributes/', {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IModelingOrderItemAttribute[]) => {
+                    this.itemAttributes = response;
+                    resolve(response);
+                }).catch((err) => {
+                    reject(err);
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        updateOrder(fieldUpdate: any) {
+
+            if (!this.modeling_order) return;
+            Object.assign(this.modeling_order, fieldUpdate)
         },
     },
 })

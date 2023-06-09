@@ -7,32 +7,56 @@
         <OrderStatusView :raw-status="order.status" />
       </div>
       <div class="px-6 lg:px-0">
-        <div class="mb-2 form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">{{ capitalizeOnlyFirstLetter($t('contact_email')) }}</span>
-          </label>
-          <input
-            class="input input-bordered input-md w-full max-w-xs"
-            readonly
-            :placeholder="order.contact_email"
-          />
-        </div>
-        <div class="mb-4 lg:mb-12 form-control">
-          <label class="label">
-            <span class="label-text">{{ capitalizeOnlyFirstLetter($t('description')) }}</span>
-          </label>
-          <textarea
-            class="textarea input-bordered"
-            :placeholder="order.comment"
-            readonly
-          ></textarea>
-        </div>
-        <div class="flex flex-col lg:flex-row gap-6 lg:gap-12">
-          <div class="flex flex-col gap-1">
-            <div
-              v-if="attachment_files_data?.length"
-              class="mb-2 form-control"
-            >
+        <ul class="space-y-8">
+          <li class="flex gap-4 items-center text-stone-600">
+            <Icon
+              name="material-symbols:circle"
+              size="12"
+            />
+            <span>{{ capitalizeOnlyFirstLetter($t('contact_email')) }}</span>
+            <input
+              class="input input-bordered input-sm w-full max-w-xs"
+              readonly
+              :placeholder="order.contact_email"
+            />
+          </li>
+          <li class="flex gap-4 items-start text-stone-600">
+            <Icon
+              class="mt-1.5"
+              name="material-symbols:circle"
+              size="12"
+            />
+            <span>{{ capitalizeOnlyFirstLetter($t('description')) }}</span>
+            <textarea
+              class="textarea input-bordered w-full max-w-2xl"
+              :placeholder="order.comment"
+              readonly
+            ></textarea>
+          </li>
+          <li class="flex gap-4 items-center text-stone-600">
+            <Icon
+              name="material-symbols:circle"
+              size="12"
+            />
+            <OrderHistoryModelingDetailsItemType :item_type="order.item_type" />
+          </li>
+          <li class="flex gap-4 items-center text-stone-600">
+            <Icon
+              name="material-symbols:circle"
+              size="12"
+            />
+            <OrderHistoryModelingDetailsItemAttributes :item_attributes="order.item_attributes" />
+          </li>
+          <li
+            v-if="attachment_files_data?.length"
+            class="flex gap-4 items-start text-stone-600"
+          >
+            <Icon
+              class="mt-2.5"
+              name="lucide:paperclip"
+              size="16"
+            />
+            <div>
               <label class="label">
                 <span class="label-text">{{ capitalizeOnlyFirstLetter($t('attachment_files')) }}</span>
               </label>
@@ -50,14 +74,6 @@
                   :href="extractUrlFileStringUnion(attachmentFile.file)"
                 >{{ urlExtractFilename(extractUrlFileStringUnion(attachmentFile.file)) }}</a>
               </div>
-            </div>
-            <div
-              v-if="attachment_images_data?.length"
-              class="mb-2 form-control"
-            >
-              <label class="label">
-                <span class="label-text">{{ capitalizeOnlyFirstLetter($t('attachment_images')) }}</span>
-              </label>
               <div
                 class="flex gap-2 text-gray-500 items-center"
                 v-for="attachmentImage in attachment_images_data"
@@ -73,14 +89,15 @@
                 >{{ urlExtractFilename(extractUrlFileStringUnion(attachmentImage.image)) }}</a>
               </div>
             </div>
-          </div>
-          <OrderHistoryModelingDetailsCheckoutCard
-            v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment"
-            class="flex-1"
-            :order="order"
-          />
-        </div>
+          </li>
+        </ul>
+
       </div>
+      <OrderHistoryModelingDetailsCheckoutCard
+        v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment"
+        class="w-min self-center"
+        :order="order"
+      />
     </div>
   </div>
 </template>

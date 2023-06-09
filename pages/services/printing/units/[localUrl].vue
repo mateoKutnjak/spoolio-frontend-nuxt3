@@ -87,7 +87,6 @@
   
 <script lang="ts" setup>
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
-import { IPrintOrderUnit } from "~~/constants/data";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
 definePageMeta({

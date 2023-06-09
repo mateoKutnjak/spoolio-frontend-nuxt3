@@ -328,6 +328,18 @@ export interface IModelingOrder {
     contact_email: string,
     estimated_price: number,
     status: string,
+    item_type: IModelingOrderItemType,
+    item_attributes: IModelingOrderItemAttribute[],
+}
+
+export interface IModelingOrderItemType {
+    id: number,
+    name: string,
+}
+
+export interface IModelingOrderItemAttribute {
+    id: number,
+    name: string,
 }
 
 // ***************** //

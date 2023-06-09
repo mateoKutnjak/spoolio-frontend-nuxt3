@@ -65,6 +65,27 @@
               />
             </div>
           </div>
+          <div class="flex gap-4 items-center">
+            <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_type')) }}:</div>
+            <SelectSingleChoice
+              v-if="itemTypes.length > 0"
+              :options="itemTypes"
+              :preselect-option="itemTypes[0]"
+              :extract-id="(option: IModelingOrderItemType) => option.id"
+              :extract-title="(option: IModelingOrderItemType) => option.name"
+              @on-selection-change="l => itemTypeSelectionChange(l)"
+            />
+          </div>
+          <div class="flex gap-4 items-center">
+            <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_attributes')) }}:</div>
+            <SelectMultiChoice
+              v-if="itemAttributes.length > 0"
+              :options="itemAttributes"
+              :extract-id="(option: IModelingOrderItemAttribute) => option.id"
+              :extract-title="(option: IModelingOrderItemAttribute) => option.name"
+              @on-selection-change="l => itemAttributeSelectionChange(l)"
+            />
+          </div>
           <div class="divider p-0 m-0"></div>
           <ServicesModelingAttachmentFiles />
           <ServicesModelingAttachmentImages />
@@ -92,21 +113,52 @@ import {
   MODELING_ORDER_ATTACHMENT_FILE_TYPES,
   MODELING_ORDER_ATTACHMENT_IMAGE_TYPES,
 } from "~~/constants/constants";
-import { IAttachmentFile, IAttachmentImage } from "~~/constants/data";
+import {
+  IAttachmentFile,
+  IAttachmentImage,
+  IModelingOrderItemAttribute,
+  IModelingOrderItemType,
+} from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
+import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
 import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
-const notificationStore = useNotificationStore();
+const loadingOverlayStore = useLoadingOverlayStore();
 const modelingOrderStore = useModelingOrderStore();
+const notificationStore = useNotificationStore();
+
+if (
+  !modelingOrderStore.getItemTypes.length ||
+  !modelingOrderStore.getItemAttributes.length
+) {
+  loadingOverlayStore.show();
+}
 
 const { user } = storeToRefs(authStore);
-const { modeling_order } = storeToRefs(modelingOrderStore);
+const { modeling_order, itemTypes, itemAttributes } =
+  storeToRefs(modelingOrderStore);
+
+onMounted(async () => {
+  await modelingOrderStore
+    .fetchItemTypes()
+    .then((res: IModelingOrderItemType[]) => {
+      console.debug("Item types fetched");
+
+      // * Manually assign first item type to order
+      modelingOrderStore.updateOrder({ item_type: res[0] });
+    })
+    .catch((err) => notificationStore.showFetchError(err));
+  await modelingOrderStore
+    .fetchItemAttributes()
+    .then(() => console.debug("Item attributes fetched"))
+    .catch((err) => notificationStore.showFetchError(err));
+});
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
@@ -146,7 +198,11 @@ function onFilesAdded(files: File[]) {
       });
     } else {
       notificationStore.show(
-        capitalizeOnlyFirstLetter(t('file_type')) + ' ' + filenameExtension(element.name).toUpperCase() + " " + capitalizeOnlyFirstLetter(t('not_supported')),
+        capitalizeOnlyFirstLetter(t("file_type")) +
+          " " +
+          filenameExtension(element.name).toUpperCase() +
+          " " +
+          capitalizeOnlyFirstLetter(t("not_supported")),
         ToastLevelType.error
       );
       console.log("File type not supported yet TODO");
@@ -163,6 +219,26 @@ function onUseDefaultContactEmail() {
     modeling_order.value.contact_email = user.value?.profile?.email;
   }
 }
+
+function itemAttributeSelectionChange(
+  itemAttributes: IModelingOrderItemAttribute[]
+) {
+  modelingOrderStore.updateOrder({ item_attributes: itemAttributes });
+}
+
+function itemTypeSelectionChange(itemType: IModelingOrderItemType) {
+  modelingOrderStore.updateOrder({ item_type: itemType });
+}
+
+watch([itemTypes, itemAttributes], ([newA, newB], [oldA, oldB]) => {
+  // Disable loading overlay when all data is fetched
+
+  if (newA.length && newB.length) {
+    loadingOverlayStore.close();
+  } else {
+    loadingOverlayStore.show();
+  }
+});
 </script>
 
 <style>

@@ -85,39 +85,6 @@ export const useStoreOrderHistoryStore = defineStore('order-history-store', {
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
-
-        async updateOrderStatusById(id: number, status: string) {
-
-            const config = useRuntimeConfig();
-            
-            const authStore = useAuthStore();
-
-            return promiseWithTimeout<IStoreOrder>(new Promise((resolve, reject) => {
-                customFetch<IStoreOrder>(`api/store-orders/${id}/`, {
-                    baseURL: config.public.baseURL,
-                    method: 'PATCH',
-                    headers: {
-                        Authorization: `Bearer ${authStore.accessToken}`
-                    },
-                    body: {
-                        status: status,
-                    },
-                }).then((response: IStoreOrder) => {
-                    const index = this.orders.findIndex(el => el.id === id);
-
-                    if (index != -1) {
-                        this.orders[index] = response;
-                    } else {
-                        console.error("Store order with id cannot be find locally. Refresh please");
-                        reject("Store order with id cannot be find locally. Refresh please")
-                    }
-
-                    resolve(response)
-                }).catch(err => {
-                    reject(err)
-                })
-            }), HTTP_REQUEST_TIMEOUT);
-        },
         
         add(order: IStoreOrder) {
             this.orders.unshift(order);

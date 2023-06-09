@@ -25,7 +25,7 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
             
 
             return promiseWithTimeout<IPaginatedResponse<IModelingOrder>>(new Promise((resolve, reject) => {
-                customFetch<IPaginatedResponse<IModelingOrder>>(`api/modeling-orders/?limit=${limit}&offset=${offset}&search=${search}`, {
+                customFetch<IPaginatedResponse<IModelingOrder>>(`api/modeling-orders/orders/?limit=${limit}&offset=${offset}&search=${search}`, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IPaginatedResponse<IModelingOrder>) => {
@@ -51,7 +51,7 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
             const config = useRuntimeConfig();
             
             return promiseWithTimeout<IModelingOrder>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrder>(`api/modeling-orders/${id}/`, {
+                customFetch<IModelingOrder>(`api/modeling-orders/orders/${id}/`, {
                     baseURL: config.public.baseURL,
                     method: 'GET',
                 }).then((response: IModelingOrder) => {
@@ -119,38 +119,6 @@ export const useModelingOrderHistoryStore = defineStore('order-history-modeling'
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
-
-        async updateOrderStatusById(id: number, status: string) {
-
-            const config = useRuntimeConfig();
-            const authStore = useAuthStore();
-
-            return promiseWithTimeout<IModelingOrder>(new Promise((resolve, reject) => {
-                customFetch<IModelingOrder>(`api/modeling-orders/${id}/`, {
-                    baseURL: config.public.baseURL,
-                    method: 'PATCH',
-                    headers: {
-                        Authorization: `Bearer ${authStore.accessToken}`
-                    },
-                    body: {
-                        status: status,
-                    },
-                }).then((response: IModelingOrder) => {
-                    const index = this.modeling_orders.findIndex(el => el.id === id);
-
-                    if (index != -1) {
-                        this.modeling_orders[index] = response;
-                    } else {
-                        console.error("Store order with id cannot be find locally. Refresh please");
-                        reject("Store order with id cannot be find locally. Refresh please")
-                    }
-
-                    resolve(response)
-                }).catch(err => {
-                    reject(err)
-                })
-            }), HTTP_REQUEST_TIMEOUT);
-        }
     },
 })
 
