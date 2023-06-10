@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="btn btn-sm gap-1"
-      :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'btn-success text-white' : 'btn-outline'"
+      class="btn btn-sm gap-1 shadow border-none"
+      :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'btn-success text-white' : 'btn-outline bg-white'"
       v-for="option in options"
       :key="extractId(option)"
       @click="onItemClicked(option)"

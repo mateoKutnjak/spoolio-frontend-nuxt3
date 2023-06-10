@@ -1,26 +1,39 @@
 <template>
   <div class="container mx-auto">
-    <div class="flex flex-col gap-10 justify-between pt-4">
+    <div class="flex flex-col gap-8 justify-between pt-4">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
-        <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('create_your_3d_printing_order')) }}</div>
+        <ServicesPrintingStepsPreview :step-active="0" />
         <div class="flex gap-4 items-end">
           <!-- <ListboxDimensionUnit class="self-end" /> -->
           <!-- <ListboxRotationUnit class="self-end" /> -->
-          <div
-            class="btn btn-error"
-            :class="units.length ? '' : 'btn-disabled'"
-            @click="onClearOrder"
-          >{{ capitalizeOnlyFirstLetter($t('clear_order')) }}</div>
+
         </div>
+      </div>
+      <div
+        v-if="printOrderStore.getUnits.length"
+        class="py-2 px-4 rounded-lg shadow flex gap-3 jusify-between items-center bg-white"
+      >
+        <div class="flex-1 text-stone-600 font-bold">{{ $t('print_order').toUpperCase() }}</div>
+        <ServicesPrintingOrderETA :eta="eta" />
+        <ServicesPrintingOrderPrice :total-price="totalPrice" />
+        <NuxtLink
+          class="btn btn-primary btn-sm gap-1 rounded-md"
+          :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'text-white' : 'btn-disabled'"
+          to="/services/printing/checkout/"
+        >
+          {{ capitalizeOnlyFirstLetter($t('checkout')) }}
+          <Icon
+            name="lucide:arrow-right"
+            size="20"
+          />
+          <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+          <!-- <ClientOnly>
+                <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+              </ClientOnly> -->
+        </NuxtLink>
       </div>
       <div v-if="units.length > 0 || itemInsertedLoading">
         <div class="flex flex-col gap-8">
-          <ServicesPrintingOrderSummary
-            :eta="eta"
-            :number-of-different-items="units.length"
-            :number-of-items="9999"
-            :total-price="totalPrice"
-          />
           <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
             <table class="table-auto w-full">
               <thead class="rounded-lg">
@@ -47,7 +60,6 @@
               viewBox="0 0 800 150"
             ></ContentLoader>
             <DragAndDropArea
-              class="h-56"
               :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
               subtitle=".STL (max 150 MB)"
               @on-change="change"
@@ -72,25 +84,11 @@
               @on-drop="drop"
             />
           </div>
-
-          <div class="hidden md:flex gap-5 justify-end">
-            <NuxtLink
-              class="btn btn-primary btn-lg gap-1"
-              :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? '' : 'btn-disabled'"
-              to="/services/printing/checkout/"
-            >
-              {{ capitalizeOnlyFirstLetter($t('checkout')) }}
-              <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
-              <!-- <ClientOnly>
-                <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
-              </ClientOnly> -->
-            </NuxtLink>
-          </div>
         </div>
       </div>
       <div
         v-else
-        class="grid grid-cols-1 md:grid-cols-2 gap-6"
+        class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <div class="flex flex-col gap-8">
           <div class="text-stone-600 font-bold text-2xl">{{$t('quick_3d_print').toUpperCase()}}</div>

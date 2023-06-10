@@ -1,5 +1,6 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto flex flex-col gap-8 text-stone-600">
+    <ServicesPrintingStepsPreview :step-active="1" />
     <FormKit
       type="form"
       id="print-order-checkout-form"
@@ -74,11 +75,11 @@
           </div>
         </div>
         <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
-          <div class="card shadow-md border bg-white">
+          <div class="card shadow-md border bg-white rounded-none">
             <div class="card-body">
               <div class="flex flex-col gap-10">
                 <div class="flex flex-col gap-4">
-                  <div class="card-title">{{ capitalizeOnlyFirstLetter($t('items')) }}: {{ units.length }}</div>
+                  <div class="">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
                   <div class="flex gap-4 overflow-x-auto pb-1">
                     <div
                       v-for="unit in units"
