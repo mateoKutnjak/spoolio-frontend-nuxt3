@@ -29,7 +29,7 @@
     </div>
     <div
       v-if="data"
-      class="grid grid-cols-2 gap-2 border border-primary divide-x divide-primary rounded"
+      class="grid grid-cols-2 gap-2 border border-primary divide-x divide-primary rounded bg-white shadow"
     >
       <div
         v-for="printerType, index in data"
