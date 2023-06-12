@@ -95,7 +95,7 @@
           <ul class="list-inside space-y-2">
             <li class="flex gap-2 items-start">
               <span class="text-primary font-bold">1/</span>
-              <div class="flex flex-wrapm gap-2">
+              <div class="flex flex-wrap gap-2">
                 <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
                 <NuxtLink to="/services/modeling"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
                 </NuxtLink>
