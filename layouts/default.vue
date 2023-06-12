@@ -12,9 +12,9 @@
       <div class="flex flex-col h-screen">
         <Navbar />
         <Toast />
-        <div class="w-full py-12 mx-auto max-w-7xl flex-1 flex flex-col gap-12">
-          <Breadcrumbs class="px-12" />
-          <div class="md:px-12">
+        <div class="w-full flex-1 flex flex-col gap-12">
+          <!-- <Breadcrumbs class="px-12" /> -->
+          <div class="">
             <slot />
           </div>
         </div>

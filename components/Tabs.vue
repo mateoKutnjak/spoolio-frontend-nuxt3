@@ -1,11 +1,11 @@
 <template>
-  <div class="flex gap-1 justify-center w-min">
+  <div class="flex flex-wrap gap-1 justify-center">
     <div
       v-for="tab, index in tabs"
       :key="tab.title"
       class="w-max py-3 px-4 cursor-pointer border-0 font-semibold hover:border-b-2 flex items-center gap-2"
-      :class="selected === index ? 'border-b-2 border-primary text-primary' : 'text-stone-600 hover:border-stone-300 hover:text-stone-600'"
-      @click="onTabClicked(index)"
+      :class="selected === index ? 'border-b-2 border-primary text-primary' : 'border-b-2 border-transparent text-stone-600 hover:border-stone-300 hover:text-stone-600'"
+      @click="onTabClick(tab)"
     >
       <Icon
         v-if="tab.iconName"
@@ -28,9 +28,9 @@ const emit = defineEmits(["onTabClicked"]);
 
 const selected = ref(selectedTabIndex);
 
-function onTabClicked(index: number) {
-  selected.value = index;
-  emit("onTabClicked", index);
+function onTabClick(tab: ITab) {
+  selected.value = tabs.findIndex((el) => el.title === tab.title);
+  emit("onTabClicked", tab);
 }
 </script>
 

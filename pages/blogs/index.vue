@@ -1,114 +1,59 @@
 <template>
-  <div class="container mx-auto">
-    <div class="px-0 md:px-12 pb-12 flex flex-col md:flex-row gap-6 justify-between">
-      <!-- <div class="text-4xl text-gray-700">Projects</div> -->
-      <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-none sm:rounded-2xl">
-        <div class="mb-3 text-5xl text-white font-bold">{{ $t('projects') }}</div>
-        <SearchBar
-          class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow"
-          placeholder="Search projects"
-          @submit-search-phrase="onSearch"
+  <div class="pb-12">
+    <BlogTopCard
+      v-if="featuredBlogsData"
+      :blog="featuredBlogsData?.length ? featuredBlogsData[0] : null"
+    />
+    <div class="mx-auto md:px-12 max-w-7xl mt-12 flex flex-col gap-12">
+      <div v-if="featuredBlogsData">
+        <div class="pb-4 text-stone-700 text-2xl font-bold">Featured</div>
+        <div class="flex md:flex-row flex-col gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 gap-6">
+            <BlogFeaturedCard
+              v-for="featuredBlog in featuredBlogsData.slice(1, 3)"
+              :key="featuredBlog.id"
+              :item="featuredBlog"
+              @on-tag-clicked="(tag: IBlogTag) => onTagClicked(tag)"
+            ></BlogFeaturedCard>
+          </div>
+          <div class="flex flex-col gap-4">
+            <BlogFeaturedCardCompact
+              v-for="featuredBlog in featuredBlogsData.slice(3, 6)"
+              :key="featuredBlog"
+              :item="featuredBlog"
+              @on-tag-clicked="(tag: IBlogTag) => onTagClicked(tag)"
+            >
+            </BlogFeaturedCardCompact>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="blogTagsData"
+        class="flex flex-wrap gap-12 "
+      >
+        <div class="px-4 md:px-0 mt-1 text-stone-700 text-2xl font-bold">Categories</div>
+        <Tabs
+          :tabs="tags"
+          :selected-tab-index="tags.findIndex(el => el.title === tagSelected?.name)"
+          :key="tagSelected"
+          @on-tab-clicked="tab => onTabClicked(tab)"
         />
       </div>
-      <!-- <div
-        v-if="user?.is_staff || false"
-        class="grid place-items-stretch"
-      >
-        <NuxtLink to="/blogs/create">
-          <button class="btn btn-outline btn-accent btn-block gap-2">
-            <Icon
-              name="lucide:plus"
-              size="20"
-              aria-hidden="true"
-            />New blog
-          </button>
-        </NuxtLink>
-
-      </div> -->
-    </div>
-    <div class="flex justify-center btn-group gap-4 my-2">
+      <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-4 gap-6">
+        <BlogCard
+          :key="blog.id"
+          v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
+          :item="blog"
+          @on-tag-clicked="tag => tagSelected = tag"
+        >
+        </BlogCard>
+      </div>
       <div
-        class="btn btn-ghost btn-sm !rounded-full"
-        :class="categorySelected ? '' : 'btn-active !text-white'"
-        @click="categorySelected = null"
-      >{{ capitalizeOnlyFirstLetter($t('all')) }}</div>
-      <div
-        v-for="blogCategory in blogCategories"
-        :key="blogCategory.id"
-        class="btn btn-ghost btn-sm !rounded-full"
-        :class="categorySelected?.id === blogCategory.id ? 'btn-active !text-white' : ''"
-        @click="categorySelected = blogCategory"
-      >
-        {{ blogCategory.name }}
-      </div>
+        v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
+        class="btn btn-outline btn-wide self-center"
+        @click="loadMoreItems"
+      >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
     </div>
-
-    <div
-      v-if="getPaginatedBlogs.count || 0 > 0"
-      class="mt-12 flex flex-col gap-8 items-center"
-    >
-      <div class="w-full flex flex-col md:flex-row gap-6">
-        <div class="basis-2/3 flex flex-col gap-8 items-center">
-          <div class="w-full flex flex-col gap-4">
-            <div class="mt-8 flex flex-col gap-10">
-              <div
-                :key="blog.id"
-                v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
-              >
-                <BlogCard
-                  :item="blog"
-                  @on-tag-clicked="tag => tagSelected = tag"
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
-            class="btn btn-outline"
-            @click="loadMoreItems"
-          >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
-        </div>
-        <div class="divider sm:divider-horizontal m-0"></div>
-        <div class="px-6 sm:px-0 basis-1/3 flex flex-col items-start">
-          <div v-if="getFeaturedBlogs.length > 0">
-            <div class="mb-5 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('featured')) }}
-            </div>
-            <div class="flex flex-col gap-5 overflow-x-auto">
-              <div
-                v-for="featuredBlog in getFeaturedBlogs"
-                :key="featuredBlog.id"
-              >
-
-                <BlogFeaturedCard :item="featuredBlog" />
-              </div>
-            </div>
-          </div>
-          <div class="divider"></div>
-          <div class="mb-2 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('tags')) }}
-          </div>
-          <div class="flex flex-wrap btn-group gap-2 my-2">
-            <BlogTag
-              v-for="blogTag in blogTags"
-              :key="blogTag.name"
-              :tag="blogTag"
-              :selected="tagSelected?.id === blogTag.id"
-              @on-tag-clicked="tag => tagSelected = blogTag"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else-if="showInitLoading">
-      <div class="flex flex-col gap-12">
-        <FacebookLoader
-          v-for="index in 10"
-          :key="index"
-          primary-color="#dddddd"
-          secondary-color="#e5e5e5"
-        ></FacebookLoader>
-      </div>
-    </div>
-    <EmptyPlaceholder v-else />
   </div>
 </template>
 
@@ -119,7 +64,9 @@ import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { FacebookLoader } from "vue-content-loader";
 import { useBlogCategoryStore } from "~~/stores/blogCategory";
-import { IBlogCategory, IBlogTag } from "~~/constants/data";
+import { IBlogCategory, IBlogTag, ITab } from "~~/constants/data";
+
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const blogCategoriesStore = useBlogCategoryStore();
@@ -138,31 +85,59 @@ const categorySelected = ref<IBlogCategory | null>(null);
 const tagSelected = ref<IBlogTag | null>(null);
 const searchString = ref<string>("");
 
-onMounted(() => {
+const {
+  data: featuredBlogsData,
+  pending: featuredBlogsPending,
+  error: featuredBlogsError,
+  refresh: featuredBlogsRefresh,
+} = useAsyncData("blogs_featured_blogs", () =>
+  blogListStore.fetchFeaturedBlogs()
+);
+
+const {
+  data: blogTagsData,
+  pending: blogTagsPending,
+  error: blogTagsError,
+  refresh: blogTagsRefresh,
+} = useAsyncData("blogs_tags", () => blogListStore.fetchTags());
+
+const tags = computed(() => {
+  if (!blogTagsData.value) return [];
+
+  const result = [<ITab>{ title: capitalizeOnlyFirstLetter(t("all")) }];
+  result.push(...blogTagsData.value.map((el) => <ITab>{ title: el.name }));
+  return result;
+});
+
+const {
+  data: blogPaginatedData,
+  pending: blogPaginatedPending,
+  error: blogPaginatedError,
+  refresh: blogPaginatedRefresh,
+} = useAsyncData("blogs_paginated_blogs", () =>
+  blogListStore.fetchPaginatedBlogs()
+);
+
+onMounted(async () => {
   showInitLoading.value = true;
-  blogListStore
-    .fetchPaginatedBlogs(limit, offset, "")
-    .then((_) => {})
-    .catch((err) => notificationStore.showFetchError(err))
-    .finally(() => {
-      showInitLoading.value = false;
-    });
 
-  blogListStore
-    .fetchFeaturedBlogs()
-    .then((_) => {})
-    .catch((err) => notificationStore.showFetchError(err))
-    .finally(() => {});
+  // blogListStore
+  //   .fetchPaginatedBlogs(limit, offset, "")
+  //   .then((_) => {})
+  //   .catch((err) => notificationStore.showFetchError(err))
+  //   .finally(() => {
+  //     showInitLoading.value = false;
+  //   });
 
-  blogCategoriesStore
-    .fetchSubcategories()
-    .catch((err) => notificationStore.showFetchError(err));
+  // blogCategoriesStore
+  //   .fetchSubcategories()
+  //   .catch((err) => notificationStore.showFetchError(err));
 
-  blogListStore
-    .fetchTags()
-    .then((_) => {})
-    .catch((err) => notificationStore.showFetchError(err))
-    .finally(() => {});
+  // blogListStore
+  //   .fetchTags()
+  //   .then((_) => {})
+  //   .catch((err) => notificationStore.showFetchError(err))
+  //   .finally(() => {});
 });
 
 const getFeaturedBlogs = computed(() => {
@@ -238,6 +213,28 @@ function loadMoreItems() {
   }
 }
 
+function onTabClicked(tab: ITab) {
+  if (!blogTagsData.value) {
+    console.error(`Tag data not found`);
+    return;
+  }
+
+  if (tab?.title === capitalizeOnlyFirstLetter(t("all"))) {
+    console.log("all selected");
+    tagSelected.value = null;
+    return;
+  }
+
+  const tag = blogTagsData.value.find((el) => el.name === tab.title);
+
+  if (!tag) {
+    console.error(`Tag with name ${tab.title} not found in blog tags`);
+    return;
+  }
+
+  tagSelected.value = tag;
+}
+
 function onTagClicked(tag: IBlogTag) {
   searchString.value = "";
   tagSelected.value = tag;
@@ -258,23 +255,6 @@ function onTagClicked(tag: IBlogTag) {
     .then(() => (showPageLoading.value = false))
     .catch((err) => notificationStore.showFetchError(err));
 }
-
-watch(categorySelected, (value) => {
-  tagSelected.value = null;
-  searchString.value = "";
-
-  limit = 10;
-  offset = 0;
-
-  blogListStore.fetchPaginatedBlogs(
-    limit,
-    offset,
-    searchString.value,
-    value?.id ? value.id.toString() : "",
-    "",
-    false
-  );
-});
 
 watch(tagSelected, (value) => {
   searchString.value = "";

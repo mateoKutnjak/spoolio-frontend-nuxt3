@@ -33,7 +33,7 @@
         name="lucide:lock"
         size="18"
       />
-      {{ capitalizeOnlyFirstLetter($t('privacy')) }}
+      {{ capitalizeOnlyFirstLetter($t('privacy')) }}:
       {{ capitalizeOnlyFirstLetter($t('all_files_are_encrypted')) }}
     </div>
   </div>

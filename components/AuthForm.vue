@@ -4,7 +4,7 @@
       class="self-center"
       :tabs="tabs"
       :selected-tab-index="0"
-      @on-tab-clicked="index => onTabClicked(index)"
+      @on-tab-clicked="tab => onTabClicked(tab)"
     />
     <FormKit
       v-if="selectedTab === 0"
@@ -213,8 +213,8 @@ const handleLoginError = () => {
   console.error("Login failed");
 };
 
-function onTabClicked(index: number) {
-  selectedTab.value = index;
+function onTabClicked(tab: ITab) {
+  selectedTab.value = tabs.indexOf(tab);
 }
 </script>
 

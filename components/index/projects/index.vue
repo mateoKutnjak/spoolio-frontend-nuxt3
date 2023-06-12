@@ -1,10 +1,13 @@
 <template>
-  <div class="flex flex-col gap-6 justify-center px-12 md:px-0">
+  <div
+    v-if="data"
+    class="flex flex-col gap-6 justify-center px-12 md:px-0"
+  >
     <div class="text-3xl font-bold text-stone-600">{{ $t('projects').toUpperCase() }}</div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
-        v-for="blog in data"
+        v-for="blog in data.slice(0, 3)"
         :key="blog.id"
       >
         <IndexProjectsBlog :blog="blog" />

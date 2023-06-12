@@ -1,61 +1,63 @@
 <template>
-  <NuxtLink :to="`/blogs/${item.id}`">
-    <div class="h-full card sm:card-side gap-6">
 
-      <div
-        v-if="item?.picture"
-        class="basis-1/4 sm:aspect-square rounded-none sm:rounded flex items-center"
-      >
+  <TransitionRoot
+    v-if="item"
+    appear
+    :show="true"
+    as="div"
+    enter="transform transition duration-[1000ms]"
+    enter-from="opacity-0"
+    enter-to="opacity-100"
+    leave="transform duration-200 transition ease-in-out"
+    leave-from="opacity-100 "
+    leave-to="opacity-0"
+  >
+    <NuxtLink
+      :to="`/blogs/${item.id}`"
+      class="h-full"
+    >
+      <div class="h-full flex flex-col gap-2">
         <nuxt-img
-          class="rounded-none sm:rounded sm:aspect-square"
+          v-if="item?.picture"
+          class="h-[15rem] w-full md:rounded-lg rounded-none object-cover"
           :src="item.picture"
-          style="object-fit: cover;"
         />
-      </div>
-      <div class="card-body gap-3 justify-center py-2 sm:p-0">
-        <div class="flex gap-4 items-center font-sans">
-          <div class="avatar placeholder">
-            <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
-              <span class="text-sm">{{ userProfileInitials(item.author?.profile) }}</span>
-            </div>
+        <EmptyImagePlaceholder
+          v-else
+          class="h-[15rem] w-full rounded-lg"
+        />
+        <div class="md:px-0 px-4 flex flex-col gap-2">
+          <div class="text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
+          <div class="text-2xl font-bold text-stone-600">{{ item.title }}</div>
+          <div class="text-stone-600 text-sm">{{ item.subtitle }}</div>
+          <div class="flex-1"></div>
+          <div class="mt-3 card-actions justify-start">
+            <div
+              v-for="tag in item.tags"
+              :key="tag.id"
+              class="btn btn-outline btn-xs rounded-sm text-stone-700"
+              @click.prevent="emit('onTagClicked', tag)"
+            >{{ tag.name }}</div>
           </div>
-          <div class="font-bold text-gray-600 text-sm">
-            <div v-if="!hasAnyName">Anonymous</div>
-            <div v-else>{{(item.author?.profile?.first_name || '')}} {{item.author?.profile?.last_name || ''}}</div>
-          </div>
-          <div class="text-gray-500 text-sm">
-            {{reformatDate(item?.created_at)}}
-          </div>
-        </div>
-        <div class="py-0">
-          <h2 class="card-title text-2xl text-gray-700 pb-1 font-sans">{{item.title}}</h2>
-          <p class="text-gray-600 font-sans text-sm">{{item.subtitle}}</p>
-        </div>
-        <div class="flex gap-2">
-          <BlogTag
-            v-for="tag in item.tags"
-            :key="tag.name"
-            :tag="tag"
-            :selected="false"
-            @on-tag-clicked="emit('onTagClicked', tag)"
-          />
         </div>
       </div>
-    </div>
-  </NuxtLink>
+    </NuxtLink>
+  </TransitionRoot>
 </template>
-    
-    <script lang="ts" setup>
+      
+      <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~~/stores/auth";
 import { useBlogListStore } from "~~/stores/blogList";
 import { useNotificationStore } from "~~/stores/notification";
+import { TransitionRoot } from "@headlessui/vue";
 
 const authStore = useAuthStore();
 const blogStore = useBlogListStore();
 const notificationStore = useNotificationStore();
 
 const { item } = defineProps(["item"]);
+
 const emit = defineEmits(["onTagClicked"]);
 
 const { user } = storeToRefs(authStore);
@@ -85,6 +87,6 @@ function toggleLike() {
     .catch((err) => notificationStore.showFetchError(err));
 }
 </script>
-    
-    <style>
+      
+      <style>
 </style>

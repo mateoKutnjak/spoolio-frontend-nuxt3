@@ -1,0 +1,301 @@
+<template>
+  <div class="container mx-auto">
+    <div class="px-0 md:px-12 pb-12 flex flex-col md:flex-row gap-6 justify-between">
+      <!-- <div class="text-4xl text-gray-700">Projects</div> -->
+      <div class="relative w-full h-44 flex justify-center items-center bg-primary rounded-none sm:rounded-2xl">
+        <div class="mb-3 text-5xl text-white font-bold">{{ $t('projects') }}</div>
+        <SearchBar
+          class="absolute bottom-0 -mb-6 mx-auto left-10 right-10 max-w-sm shadow"
+          placeholder="Search projects"
+          @submit-search-phrase="onSearch"
+        />
+      </div>
+      <!-- <div
+        v-if="user?.is_staff || false"
+        class="grid place-items-stretch"
+      >
+        <NuxtLink to="/blogs/create">
+          <button class="btn btn-outline btn-accent btn-block gap-2">
+            <Icon
+              name="lucide:plus"
+              size="20"
+              aria-hidden="true"
+            />New blog
+          </button>
+        </NuxtLink>
+
+      </div> -->
+    </div>
+    <div class="flex justify-center btn-group gap-4 my-2">
+      <div
+        class="btn btn-ghost btn-sm !rounded-full"
+        :class="categorySelected ? '' : 'btn-active !text-white'"
+        @click="categorySelected = null"
+      >{{ capitalizeOnlyFirstLetter($t('all')) }}</div>
+      <div
+        v-for="blogCategory in blogCategories"
+        :key="blogCategory.id"
+        class="btn btn-ghost btn-sm !rounded-full"
+        :class="categorySelected?.id === blogCategory.id ? 'btn-active !text-white' : ''"
+        @click="categorySelected = blogCategory"
+      >
+        {{ blogCategory.name }}
+      </div>
+    </div>
+
+    <div
+      v-if="getPaginatedBlogs.count || 0 > 0"
+      class="mt-12 flex flex-col gap-8 items-center"
+    >
+      <div class="w-full flex flex-col md:flex-row gap-6">
+        <div class="basis-2/3 flex flex-col gap-8 items-center">
+          <div class="w-full flex flex-col gap-4">
+            <div class="mt-8 flex flex-col gap-10">
+              <div
+                :key="blog.id"
+                v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
+              >
+                <BlogCard
+                  :item="blog"
+                  @on-tag-clicked="tag => tagSelected = tag"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
+            class="btn btn-outline"
+            @click="loadMoreItems"
+          >{{ capitalizeOnlyFirstLetter($t('load_more')) }}</div>
+        </div>
+        <div class="divider sm:divider-horizontal m-0"></div>
+        <div class="px-6 sm:px-0 basis-1/3 flex flex-col items-start">
+          <div v-if="getFeaturedBlogs.length > 0">
+            <div class="mb-5 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('featured')) }}
+            </div>
+            <div class="flex flex-col gap-5 overflow-x-auto">
+              <div
+                v-for="featuredBlog in getFeaturedBlogs"
+                :key="featuredBlog.id"
+              >
+
+                <BlogFeaturedCard :item="featuredBlog" />
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="mb-2 font-bold text-gray-700 text-md">{{ capitalizeOnlyFirstLetter($t('tags')) }}
+          </div>
+          <div class="flex flex-wrap btn-group gap-2 my-2">
+            <BlogTag
+              v-for="blogTag in blogTags"
+              :key="blogTag.name"
+              :tag="blogTag"
+              :selected="tagSelected?.id === blogTag.id"
+              @on-tag-clicked="tag => tagSelected = blogTag"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else-if="showInitLoading">
+      <div class="flex flex-col gap-12">
+        <FacebookLoader
+          v-for="index in 10"
+          :key="index"
+          primary-color="#dddddd"
+          secondary-color="#e5e5e5"
+        ></FacebookLoader>
+      </div>
+    </div>
+    <EmptyPlaceholder v-else />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useBlogListStore } from "~/stores/blogList";
+import { useAuthStore } from "~~/stores/auth";
+import { useNotificationStore } from "~~/stores/notification";
+import { FacebookLoader } from "vue-content-loader";
+import { useBlogCategoryStore } from "~~/stores/blogCategory";
+import { IBlogCategory, IBlogTag } from "~~/constants/data";
+
+const authStore = useAuthStore();
+const blogCategoriesStore = useBlogCategoryStore();
+const blogListStore = useBlogListStore();
+const notificationStore = useNotificationStore();
+
+const { user } = storeToRefs(authStore);
+
+const showInitLoading = ref<boolean>(true);
+const showPageLoading = ref<boolean>(false);
+
+var limit = 10;
+var offset = 0;
+
+const categorySelected = ref<IBlogCategory | null>(null);
+const tagSelected = ref<IBlogTag | null>(null);
+const searchString = ref<string>("");
+
+onMounted(() => {
+  showInitLoading.value = true;
+  blogListStore
+    .fetchPaginatedBlogs(limit, offset, "")
+    .then((_) => {})
+    .catch((err) => notificationStore.showFetchError(err))
+    .finally(() => {
+      showInitLoading.value = false;
+    });
+
+  blogListStore
+    .fetchFeaturedBlogs()
+    .then((_) => {})
+    .catch((err) => notificationStore.showFetchError(err))
+    .finally(() => {});
+
+  blogCategoriesStore
+    .fetchSubcategories()
+    .catch((err) => notificationStore.showFetchError(err));
+
+  blogListStore
+    .fetchTags()
+    .then((_) => {})
+    .catch((err) => notificationStore.showFetchError(err))
+    .finally(() => {});
+});
+
+const getFeaturedBlogs = computed(() => {
+  return blogListStore.getFeaturedBlogs;
+});
+
+const getPaginatedBlogs = computed(() => {
+  return blogListStore.getPaginatedBlogs;
+});
+
+const blogCategories = computed(() => {
+  return blogCategoriesStore.getCategories;
+});
+
+const blogSubcategories = computed(() => {
+  return blogCategoriesStore.getSubcategories;
+});
+
+const blogTags = computed(() => {
+  return blogListStore.getTags;
+});
+
+const getUser = computed(() => {
+  user.value = authStore.getUser;
+  return authStore.getUser;
+});
+
+watch(getUser, (value, old, invalidate) => {
+  user.value = value;
+});
+
+function onSearch(searchPhrase: string) {
+  console.debug(`New search phrase: ${searchPhrase}`);
+
+  searchString.value = searchPhrase;
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogListStore
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchPhrase,
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+      false
+    )
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
+}
+
+function loadMoreItems() {
+  if (
+    getPaginatedBlogs.value.next &&
+    getPaginatedBlogs.value.count &&
+    getPaginatedBlogs.value.count > offset
+  ) {
+    showPageLoading.value = true;
+    offset = offset + limit;
+    blogListStore
+      .fetchPaginatedBlogs(
+        limit,
+        offset,
+        searchString.value,
+        categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+        tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+        true
+      )
+      .then(() => (showPageLoading.value = false))
+      .catch((err) => notificationStore.showFetchError(err));
+  }
+}
+
+function onTagClicked(tag: IBlogTag) {
+  searchString.value = "";
+  tagSelected.value = tag;
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogListStore
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchString.value,
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+      false
+    )
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
+}
+
+watch(categorySelected, (value) => {
+  tagSelected.value = null;
+  searchString.value = "";
+
+  limit = 10;
+  offset = 0;
+
+  blogListStore.fetchPaginatedBlogs(
+    limit,
+    offset,
+    searchString.value,
+    value?.id ? value.id.toString() : "",
+    "",
+    false
+  );
+});
+
+watch(tagSelected, (value) => {
+  searchString.value = "";
+
+  // reset pagination values
+  offset = 0;
+  limit = 10;
+
+  blogListStore
+    .fetchPaginatedBlogs(
+      limit,
+      offset,
+      searchString.value,
+      categorySelected.value?.id ? categorySelected.value.id.toString() : "",
+      tagSelected.value?.id ? tagSelected.value.id.toString() : "",
+      false
+    )
+    .then(() => (showPageLoading.value = false))
+    .catch((err) => notificationStore.showFetchError(err));
+});
+</script>
+
+<style>
+</style>
