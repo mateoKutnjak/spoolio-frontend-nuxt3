@@ -70,9 +70,10 @@
           <div class="block lg:hidden">
             <div class="flex flex-col gap-2">
               <ServicesPrintingUnitCard
-                v-for="item in units"
+                v-for="item, index in units"
                 :key="item.localUrl"
                 :unit="item"
+                :index="index"
                 @on-item-clicked="onItemClicked"
               />
             </div>
@@ -188,6 +189,7 @@ if (
   !printOrderUnitInfillStore.getInfills.length ||
   !filamentSpoolStore.getAll.length ||
   !printOrderUnitWallStore.getWalls.length ||
+  !printOrderUnitWallStore.getWallThicknesses.length ||
   !printOrderUnitInfillWallCombinationStore.getAll.length ||
   !printingMethodStore.getPrintingMethods.length
 ) {
@@ -197,7 +199,7 @@ if (
 const { dimensionUnit, rotationUnit } = storeToRefs(globalsStore);
 const { infills } = storeToRefs(printOrderUnitInfillStore);
 const { filamentSpools } = storeToRefs(filamentSpoolStore);
-const { walls } = storeToRefs(printOrderUnitWallStore);
+const { walls, wallThicknesses } = storeToRefs(printOrderUnitWallStore);
 const { infillWallCombinations } = storeToRefs(
   printOrderUnitInfillWallCombinationStore
 );
@@ -258,6 +260,13 @@ onMounted(async () => {
     })
     .catch((err) => notificationStore.showFetchError(err));
 
+  await printOrderUnitWallStore
+    .fetchWallThicknesses()
+    .then(() => {
+      console.debug("Wall thicknesses fetched");
+    })
+    .catch((err) => notificationStore.showFetchError(err));
+
   await printOrderUnitInfillWallCombinationStore
     .fetchAll()
     .then(() => {
@@ -291,15 +300,26 @@ onMounted(async () => {
 });
 
 watch(
-  [infills, filamentSpools, walls, infillWallCombinations, printingMethods],
-  ([newA, newB, newC, newD, newE], [oldA, oldB, oldC, oldD, oldE]) => {
+  [
+    infills,
+    filamentSpools,
+    walls,
+    wallThicknesses,
+    infillWallCombinations,
+    printingMethods,
+  ],
+  (
+    [newA, newB, newC, newD, newE, newF],
+    [oldA, oldB, oldC, oldD, oldE, oldF]
+  ) => {
     // Disable loading overlay when all data is fetched
     if (
       newA.length &&
       newB.length &&
       newC.length &&
       newD.length &&
-      newE.length
+      newE.length &&
+      newF.length
     ) {
       loadingOverlayStore.close();
     } else {

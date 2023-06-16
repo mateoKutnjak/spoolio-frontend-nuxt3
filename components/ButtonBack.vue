@@ -3,13 +3,13 @@
       href=""
       @click.prevent="$router.back()"
     >
-      <div class="flex gap-2">
+      <div class="flex gap-2 items-center">
         <Icon
-          class="mt-[1px]"
+          class=""
           name="lucide:arrow-left"
-          size="24"
+          size="20"
         />
-        <div class="text-lg font-bold">{{ capitalizeOnlyFirstLetter($t('go_back')) }}</div>
+        <div class="mt-[2px] text-sm font-bold">{{ $t('go_back').toUpperCase() }}</div>
       </div>
     </a></div>
 </template>

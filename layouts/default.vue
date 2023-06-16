@@ -1,51 +1,51 @@
 <template>
-  <div class="drawer drawer-end">
-    <input
-      id="my-drawer"
-      type="checkbox"
-      class="drawer-toggle"
-    />
-    <div
-      class="drawer-content"
-      :style="`background-color: ${BACKGROUND_COLOR};`"
-    >
-      <div class="flex flex-col h-screen">
-        <Navbar />
-        <Toast />
-        <div class="w-full flex-1 flex flex-col gap-12">
-          <!-- <Breadcrumbs class="px-12" /> -->
-          <div class="">
+  <div>
+    <div class="drawer drawer-end">
+      <input
+        id="my-drawer"
+        type="checkbox"
+        class="drawer-toggle"
+      />
+      <div
+        class="drawer-content"
+        :style="`background-color: white;`"
+      >
+        <div class="flex flex-col h-screen">
+          <Navbar />
+          <Toast />
+          <div class="w-full flex-1 flex flex-col gap-12">
+            <!-- <Breadcrumbs class="px-12" /> -->
             <slot />
           </div>
+          <Footer />
         </div>
-        <Footer />
+
+      </div>
+      <div class="drawer-side overflow-x-hidden">
+        <label
+          for="my-drawer"
+          class="drawer-overlay"
+        ></label>
+        <CartDrawerMenu />
       </div>
 
+      <GenericDialog
+        :component-name="componentName"
+        :show="isDialogOpened"
+        @on-close-clicked="dialogStore.close()"
+      >
+      </GenericDialog>
     </div>
-    <div class="drawer-side overflow-x-hidden">
-      <label
-        for="my-drawer"
-        class="drawer-overlay"
-      ></label>
-      <CartDrawerMenu />
-    </div>
-
-    <GenericDialog
-      :component-name="componentName"
-      :show="isDialogOpened"
-      @on-close-clicked="dialogStore.close()"
+    <div
+      v-if="isLoadingOverlayVisible"
+      class="absolute z-50 top-0 bottom-0 right-0 left-0 bg-gray-400/60 flex flex-col justify-center items-center"
     >
-    </GenericDialog>
-  </div>
-  <div
-    v-if="isLoadingOverlayVisible"
-    class="absolute z-50 top-0 bottom-0 right-0 left-0 bg-gray-400/60 flex flex-col justify-center items-center"
-  >
-    <Icon
-      class="grow text-gray-500 text-primary"
-      name="eos-icons:three-dots-loading"
-      size="150"
-    />
+      <Icon
+        class="grow text-primary"
+        name="eos-icons:three-dots-loading"
+        size="150"
+      />
+    </div>
   </div>
 </template>
 

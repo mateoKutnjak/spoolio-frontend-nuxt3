@@ -1,119 +1,4 @@
 <template>
-  <div class="px-12 py-6 flex flex-col gap-2 rounded-md border-2 border-stone-400">
-    <div class="flex justify-between">
-      <div class="flex flex-col">
-        <div class="text-stone-400">
-          MODEL {{ index+1 }}/{{ totalUnitCount }}
-        </div>
-        <div class="mt-2 text-stone-700 text-xl font-bold">{{ extractUrlFileStringUnion(unit.file).toUpperCase() }}</div>
-        <ServicesPrintingDimensionInfo
-          :data="vector3Parse(unit.model_dimensions)"
-          :unit="unit.length_unit"
-        />
-      </div>
-
-      <div class="flex gap-1">
-        <div
-          class="btn btn-md btn-circle btn-ghost text-gray-400"
-          @click.stop="duplicateUnit"
-        >
-          <Icon
-            name="lucide:copy"
-            size="24"
-          />
-        </div>
-        <div
-          class="btn btn-md btn-circle btn-ghost text-red-600"
-          @click.stop="removeUnit"
-        >
-          <Icon
-            name="lucide:trash-2"
-            size="24"
-          />
-        </div>
-      </div>
-
-    </div>
-
-    <div class="card sm:card-side gap-8">
-      <div class="flex flex-col gap-4 items-center basis-1/3">
-        <div class="flex">
-          <nuxt-img
-            class="aspect-square border-2 border-stone-400 rounded-md"
-            :src="unit.screenshotURL"
-          >
-          </nuxt-img>
-        </div>
-        <IncreaseDecreaseQuantity
-          :max="MAX_PRINT_QUANTITY"
-          :min="1"
-          :initial-value="unit.quantity"
-          @on-decrease-value="decreaseQuantity"
-          @on-increase-value="increaseQuantity"
-          @on-value-set="(q) => setQuantity(q) "
-        />
-      </div>
-
-      <div class="grid grid-cols-3">
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
-        </div>
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
-            <Icon
-              class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:hash"
-              size="20"
-            />{{ unit.infill.percentage * 100 }}%
-          </div>
-        </div>
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.estimated_price }} todo</div>
-        </div>
-
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.spool.material.name }}</div>
-        </div>
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
-            <Icon
-              class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:layers"
-              size="20"
-            />{{ unit.wall_thickness.thickness }}mm
-          </div>
-        </div>
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.estimated_time * unit.quantity }} todo</div>
-        </div>
-
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
-        </div>
-        <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
-            <Icon
-              class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:align-justify"
-              size="20"
-            />{{ unit.wall.amount }}
-          </div>
-        </div>
-        <div class="btn btn-primary text-white">
-          <Icon name="lucide:edit-2" />{{ capitalizeOnlyFirstLetter($t('settings')).toUpperCase() }}
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div
     class="card sm:card-side bg-white rounded-none cursor-pointer border border-gray-300 shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
     @click="$emit('on-item-clicked', unit.localUrl)"
@@ -236,9 +121,8 @@ import { usePrintOrderStore } from "~~/stores/print_order";
 
 const { t } = useI18n();
 
-const { unit, index } = defineProps<{
+const { unit } = defineProps<{
   unit: IPrintOrderUnit;
-  index: number;
 }>();
 
 const dialogStore = useDialogStore();
@@ -252,8 +136,6 @@ const attachmentImages = ref<IAttachmentImage[]>([]);
 const printOrderUnit = computed(() =>
   printOrderStore.getUnitByLocalUrl(unit.localUrl)
 );
-
-const totalUnitCount = computed(() => printOrderStore.getUnits.length);
 
 onMounted(() => {
   comment.value = unit.comment;
@@ -295,10 +177,6 @@ function decreaseQuantity() {
   } else {
     printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
   }
-}
-
-function setQuantity(q: number) {
-  printOrderStore.updateUnit(unit.localUrl, { quantity: q });
 }
 
 function updateValue(event: Event) {

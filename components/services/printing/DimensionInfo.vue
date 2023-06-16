@@ -1,16 +1,14 @@
 <template>
-  <div class="flex gap-1 items-end text-gray-500">
-    <Icon
-      class="mr-2"
-      name="lucide:move-diagonal"
-      size="25"
-    />
-    <strong v-if="data">{{ data.x.toFixed(0)}}
-      x
-      {{ data.y.toFixed(0)}}
-      x
-      {{ data.z.toFixed(0)}}</strong>
-    <div class="text-sm">{{ unit }}</div>
+  <div
+    v-if="data"
+    class="space-x-1 text-stone-400 text-lg"
+  >
+    <span>{{ data.x.toFixed(1) }}</span>
+    <span>x</span>
+    <span>{{ data.y.toFixed(1) }}</span>
+    <span>x</span>
+    <span>{{ data.z.toFixed(1) }}</span>
+    <span>{{ unit }}</span>
   </div>
 </template>
 
@@ -19,7 +17,7 @@ import { Vector3 } from "three";
 
 const { data, unit } = defineProps<{
   data: Vector3 | undefined;
-  unit: string,
+  unit: string;
 }>();
 </script>
 

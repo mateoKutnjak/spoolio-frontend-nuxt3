@@ -1,14 +1,14 @@
 <template>
-  <div class="w-36">
+  <div class="w-28">
     <Listbox
       v-model="selectedUnit"
       class="z-10"
     >
       <div class="relative mt-1">
-        <ListboxButton class="btn btn-ghost relative w-full cursor-default rounded-lg bg-white justify-between pl-5 pr-3 shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+        <ListboxButton class="btn btn-ghost btn-sm relative w-full cursor-default rounded-lg justify-between  text-stone-600 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
           <span class="">{{ selectedUnit }}</span>
           <Icon
-            name="lucide:chevrons-up-down"
+            name="lucide:chevron-down"
             size="24"
             class="h-5 w-5 text-gray-400"
             aria-hidden="true"

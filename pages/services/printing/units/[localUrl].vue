@@ -1,84 +1,96 @@
 <template>
-  <div class="card-body gap-10 p-0 m-0">
-    <div class="relative flex flex-col">
-      <client-only class="flex-1">
-        <PreviewSTL
-          class="w-92 h-[80vh] p-0 border-gray-400"
-          :stlFileUrl="unit.localUrl"
-        />
-      </client-only>
+  <div class="mx-auto max-w-5xl">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <ButtonBack class="text-primary" />
+        <div class="flex gap-24 justify-between items-end">
+          <div class="text-lg font-bold text-stone-700 line-clamp-1">{{ extractUrlFileStringUnion(unit.file).toUpperCase()
+        }}</div>
+          <div class="flex flex-col gap-1 items-center">
+            <div class="text-sm text-stone-700">{{ capitalizeFirstLetter($t('quantity')) }}</div>
+            <IncreaseDecreaseQuantityButtons
+              :max="MAX_PRINT_QUANTITY"
+              :min="1"
+              :initialValue="quantity"
+              @on-decrease-value="decreaseQuantity"
+              @on-increase-value="increaseQuantity"
+              @on-value-set="(q) => setQuantity(q)"
+            />
+          </div>
+          <div class="flex flex-col gap-1 items-center">
+            <div class="text-sm text-stone-700">{{ capitalizeFirstLetter($t('price')) }}</div>
+            <div v-if="price === Number.NEGATIVE_INFINITY">
+              <Icon
+                class="text-gray-500 -my-6"
+                name="eos-icons:three-dots-loading"
+                size="70"
+              />
+            </div>
+            <div v-else-if="price === Number.POSITIVE_INFINITY">
+              <ButtonRetry @on-click="unit ? printOrderStore.estimateSlicerAndPrintJobs(unit) : () => null" />
+            </div>
 
-      <div class="absolute top-4 left-6 max-w-fit">
-        <div class="flex flex-col gap-3 items-start">
-          <ButtonBack />
-          <div class="text-2xl text-gray-500 line-clamp-1">{{ extractUrlFileStringUnion(unit.file) }}</div>
-          <!-- <RadioGroupDimensionUnit
-            :unit="unit"
-            :key="unit.length_unit"
-          /> -->
-          <ServicesPrintingDimensionInfo
-            :data="vector3Parse(unit.model_dimensions)"
-            :unit="unit.length_unit"
-          />
-          <ServicesPrintingVolumeInfo
-            :data="unit.model_volume"
-            :unit="unit.length_unit"
-          />
-          <ServicesPrintingRotationInfo :localUrl="unit.localUrl" />
+            <div
+              v-else
+              class="text-xl font-bold text-gray-700"
+            >€{{ (price).toFixed(2) }}
+            </div>
+          </div>
+          <div class="btn btn-primary btn-sm gap-1 text-white">
+            <Icon
+              name="lucide:check"
+              size="18"
+            />{{ capitalizeOnlyFirstLetter($t('save')) }}
+          </div>
         </div>
       </div>
-      <div class="absolute top-4 right-6 max-w-fit">
-        <div class="flex flex-col gap-1 justify-end items-end">
-          <ListboxPrintingMethod
-            class="w-full"
-            :file-url="unit.localUrl"
-          />
-          <ListboxMaterial
-            class="w-full"
-            :key="unit.spool.id"
-            :file-url="unit.localUrl"
-          />
-          <!-- ? :key binding is added to refresh component ListboxColor when material id changes -->
-          <ListboxColor
-            class="w-full"
-            :key="unit.spool.material.id"
-            :file-url="unit.localUrl"
-          />
-          <ListboxPrintOrderUnitInfillWallCombination
-            class="w-full"
-            :file-url="unit.localUrl"
-          />
-        </div>
-      </div>
-      <div class="absolute bottom-4 left-6">
-        <div class="flex justify-between items-start">
-          <IncreaseDecreaseQuantityButtons
-            :max="MAX_PRINT_QUANTITY"
-            :min="1"
-            :initialValue="quantity"
-            @on-decrease-value="decreaseQuantity"
-            @on-increase-value="increaseQuantity"
-            @on-value-set="(q) => setQuantity(q)"
-          />
-        </div>
-      </div>
-      <div class="absolute bottom-4 right-6">
 
-        <div v-if="price === Number.NEGATIVE_INFINITY">
-          <Icon
-            class="text-gray-500 -my-6"
-            name="eos-icons:three-dots-loading"
-            size="70"
-          />
-        </div>
-        <div v-else-if="price === Number.POSITIVE_INFINITY">
-          <ButtonRetry @on-click="unit ? printOrderStore.estimateSlicerAndPrintJobs(unit) : () => null" />
-        </div>
+      <div class="py-12 grid grid-cols-2 gap-12">
+        <div class="flex flex-col gap-4">
+          <div class="border border-primary">
+            <client-only class="border border-primary">
+              <PreviewSTL
+                class="p-0 border-gray-400 aspect-video"
+                :unit="unit"
+              />
+            </client-only>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <ServicesPrintingUnitDimensionForm :unit="unit" />
+            <ServicesPrintingUnitOrientationForm :unit="unit" />
+          </div>
+          <div class="flex flex-col">
+            TODO implement scaling
+            TODO save length/rotation in mms/degrees
+            TODO check if model fits the printer
+          </div>
 
-        <div
-          v-else
-          class="text-4xl text-gray-700"
-        >€{{ (price).toFixed(2)}}
+        </div>
+        <div class="flex flex-col gap-2">
+
+          <div class="text-stone-700 font-bold">{{ $t('printing_method').toUpperCase() }}</div>
+          <ServicesPrintingMethodRadio :unit="unit" />
+
+          <div class="mt-4 text-stone-700 font-bold">{{ $t('material').toUpperCase() }}</div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col">
+              <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('type_of_plastics')) }}</div>
+              <ServicesPrintingUnitMaterial
+                :unit="unit"
+                :key="unit.printing_method.id"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
+              <ServicesPrintingUnitColor
+                :unit="unit"
+                :key="`${unit.spool.id}`"
+              />
+            </div>
+          </div>
+
+          <div class="mt-4 text-stone-700 font-bold">{{ $t('mechanical_properties').toUpperCase() }}</div>
+          <ServicesPrintingUnitMechanicalProperties :unit="unit" />
         </div>
       </div>
     </div>
@@ -88,10 +100,6 @@
 <script lang="ts" setup>
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { usePrintOrderStore } from "~~/stores/print_order";
-
-definePageMeta({
-  layout: "clean",
-});
 
 const { localUrl } = useRoute().params;
 
@@ -159,7 +167,7 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
 });
 </script>
   
-  <style scoped>
+<style scoped>
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

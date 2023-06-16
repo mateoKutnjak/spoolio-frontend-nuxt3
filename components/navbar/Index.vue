@@ -8,7 +8,7 @@
       <NuxtLink class="btn btn-ghost">
         <nuxt-img
           width="112px"
-          src="/img/logo-primary.svg"
+          src="/img/ur3d-primary.svg"
           alt="logo"
         />
       </NuxtLink>

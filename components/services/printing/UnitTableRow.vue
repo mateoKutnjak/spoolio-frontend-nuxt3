@@ -1,8 +1,5 @@
 <template>
-  <tr
-    class="cursor-pointer hover:bg-stone-100/70"
-    @click="$emit('on-item-clicked', unit.localUrl)"
-  >
+  <tr class="cursor-pointer hover:bg-stone-100/70">
     <td class="px-6 pr-16 py-6 w-36">
       <div class="w-36 flex flex-col gap-4">
         <div class="w-36 h-36">
@@ -106,6 +103,9 @@
           size="24"
         />
       </div>
+      <NuxtLink :to="`/services/printing/units/${urlExtractFilename(unit.localUrl)}`">
+        <div class="btn">todo postavke</div>
+      </NuxtLink>
     </td>
   </tr>
 </template>
@@ -231,6 +231,9 @@ function duplicateUnit() {
       infill: unit.infill,
       infill_wall_combination: unit.infill_wall_combination,
       wall: unit.wall,
+      wall_thickness: unit.wall_thickness,
+      scale: unit.scale,
+      scale_display: unit.scale,
       estimated_price: unit.estimated_price,
       file: unit.file,
       comment: comment.value,

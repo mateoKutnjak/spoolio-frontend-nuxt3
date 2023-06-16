@@ -2,7 +2,7 @@
   <input
     type="number"
     v-model="value"
-    class="input input-sm input-bordered !outline-none"
+    class="input input-sm input-bordered !outline-none !text-right"
   />
 </template>
 

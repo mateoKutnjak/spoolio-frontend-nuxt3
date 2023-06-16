@@ -251,7 +251,10 @@ export interface IPrintOrderUnit {
     spool: IFilamentSpool,
     infill: IPrintOrderUnitInfill,
     wall: IPrintOrderUnitWall,
+    wall_thickness: IPrintOrderUnitWallThickness,
     infill_wall_combination: IPrintOrderUnitInfillWallCombination,
+    scale: number,
+    scale_display: number,
     printing_method: IPrintingMethod,
     file: File | string,
     localUrl: string,
@@ -281,6 +284,11 @@ export interface IPrintOrderUnitInfill {
 export interface IPrintOrderUnitWall {
     id: number,
     amount: number,
+}
+
+export interface IPrintOrderUnitWallThickness {
+    id: number,
+    thickness: number,
 }
 
 export interface IPrintOrderUnitInfillWallCombination {
@@ -405,7 +413,8 @@ export interface IPrintingMethod {
     precision: number,
     smoothness: number,
     pricing: number,
-    supported_materials: IFilamentMaterial[]
+    supported_materials: IFilamentMaterial[],
+    printer_type_picture: string,
 }
 
 // *************** //

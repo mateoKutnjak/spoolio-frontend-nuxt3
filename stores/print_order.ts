@@ -6,7 +6,6 @@ import { useFilamentSpoolStore } from './filament_spool';
 import { useGlobalsStore } from './globals';
 import { usePrintOrderHistoryStore } from './order_history_print';
 import { useNotificationStore } from './notification';
-import { usePrintOrderUnitInfillStore } from './print_order_unit_infill';
 import { usePrintOrderUnitWallStore } from './print_order_unit_wall';
 import { usePrintOrderUnitInfillWallCombinationStore } from './print_order_unit_infill_wall_combination';
 import { usePrintingMethodStore } from './printing_method';
@@ -173,6 +172,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
             formData.append("wall", unit.wall.id.toString());
+            formData.append('wall_thickness', unit.wall_thickness.id.toString())
+            formData.append('scale', unit.scale.toString())
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
@@ -355,6 +356,8 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("spool", unit.spool.id.toString());
             formData.append("infill", unit.infill.id.toString());
             formData.append("wall", unit.wall.id.toString());
+            formData.append('wall_thickness', unit.wall_thickness.id.toString());
+            formData.append('scale', unit.scale.toString())
             formData.append('local_url', unit.localUrl);
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
@@ -572,6 +575,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             const filamentSpoolStore = useFilamentSpoolStore();
             const printOrderUnitInfillWallCombinationStore = usePrintOrderUnitInfillWallCombinationStore();
+            const printOrderUnitWallStore = usePrintOrderUnitWallStore();
             const printingMethodStore = usePrintingMethodStore();
             const globalsStore = useGlobalsStore();
 
@@ -580,8 +584,12 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
+            if (!printOrderUnitWallStore.getWallThicknesses.length) {
+                console.error(`Cannot add file as 3d model. No default infill-walls combination found`)
+            }
+
             if (!printOrderUnitInfillWallCombinationStore.getAll.length) {
-                console.error(`Cannot add file as 3d model. No default infill-walls combination found`);
+                console.error(`Cannot add file as 3d model. No default wall thickness found`);
                 return;
             }
 
@@ -599,9 +607,12 @@ export const usePrintOrderStore = defineStore('print-order', {
                     id: undefined,
                     quantity: 1,
                     spool: filamentSpoolStore.getAll[0],
-                    infill: printOrderUnitInfillWallCombinationStore.getAll[0].infill,
-                    wall: printOrderUnitInfillWallCombinationStore.getAll[0].wall,
+                    infill: printOrderUnitInfillWallCombinationStore.getAll[0].infill, // ! Watch out must be part of same combination
+                    wall: printOrderUnitInfillWallCombinationStore.getAll[0].wall, // ! Watch out must be part of same combination
+                    wall_thickness: printOrderUnitWallStore.getWallThicknesses[0],
                     infill_wall_combination: printOrderUnitInfillWallCombinationStore.getAll[0],
+                    scale: 1.0,
+                    scale_display: 1.0,
                     estimated_price: Number.NEGATIVE_INFINITY,
                     estimated_time: Number.NEGATIVE_INFINITY,
                     file: file,
@@ -644,7 +655,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             })
         },
 
-        updateUnit(localUrl: string, fieldUpdate: any) {
+        async updateUnit(localUrl: string, fieldUpdate: any) {
 
             //todo check if field exist in unit 
             // todo check if value is of good type
@@ -673,9 +684,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 });
 
                 if (performSlicerAndPrintJobETAEstimation) {
-                    this.estimateSlicerAndPrintJobs(this.units[index])
+                    await this.estimateSlicerAndPrintJobs(this.units[index])
                 } else if (performOnlyPrintJobETAEstimation) {
-                    this.estimatePrintJobsOnly();
+                    await this.estimatePrintJobsOnly();
                 }
             }
         },

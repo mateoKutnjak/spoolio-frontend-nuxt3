@@ -56,7 +56,7 @@ definePageMeta({
   layout: false,
 });
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const { order, id } = useRoute().params;
 
@@ -261,7 +261,9 @@ function submitPayment() {
 
           navigateTo("/blogs");
           notificationStore.show(
-            capitalizeOnlyFirstLetter(t('payment_successfull_check_your_email')),
+            capitalizeOnlyFirstLetter(
+              t("payment_successfull_check_your_email")
+            ),
             ToastLevelType.success
           );
 

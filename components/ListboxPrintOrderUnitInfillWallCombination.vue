@@ -243,7 +243,7 @@ watch(selectedWall, (value) => {
   if (value) {
     if (useCustomCombination.value) {
       // * Without this check, slicer will be called twice when combinaiton changes
-      printOrderStore.updateUnit(fileUrl, { walls: value });
+      printOrderStore.updateUnit(fileUrl, { wall: value });
     }
   }
 });

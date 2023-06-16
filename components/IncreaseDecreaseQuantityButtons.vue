@@ -13,7 +13,7 @@
     <input
       type="number"
       v-model="value"
-      class="input input-bordered w-20 !outline-none"
+      class="input input-bordered input-sm w-16 !outline-none"
     />
     <button
       class="btn btn-sm btn-circle btn-ghost"

@@ -17,7 +17,7 @@
     <div>
       <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('company')) }}</span>
       <NuxtLink
-        to="about"
+        to="/about"
         class="link link-hover"
       >{{ capitalizeOnlyFirstLetter($t('about')) }}</NuxtLink>
       <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('contact')) }}</a>

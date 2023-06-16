@@ -24,7 +24,19 @@ module.exports = {
     ],
     daisyui: {
         base: false,
-        themes: ['bumblebee']
+        themes: [
+            {
+                mytheme: {
+                    "primary": "#e17d4e",
+                    "secondary": "#f6d860",
+                    "accent": "#37cdbe",
+                    "neutral": "#3d4451",
+                    'info': '#00a7e1',
+                    "success": '#09bc8a',
+                    "base-100": "#ffffff",
+                },
+            },
+        ],
     },
     darkMode: 'class'
 }

@@ -26,7 +26,7 @@ const boxClassification = {
     options: 'flex gap-6'
 }
 const buttonClassification = {
-    input: 'btn btn-primary rounded-sm font-bold text-base',
+    input: 'btn btn-primary rounded-md font-bold text-base',
 }
 
 export default {
