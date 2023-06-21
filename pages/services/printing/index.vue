@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex flex-col gap-8 justify-between pt-4">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-8">
+    <div class="flex flex-col gap-8 justify-between">
       <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
         <ServicesPrintingStepsPreview :step-active="0" />
         <div class="flex gap-4 items-end">
@@ -11,30 +11,22 @@
       </div>
       <div
         v-if="printOrderStore.getUnits.length"
-        class="py-2 px-4 rounded-lg shadow flex gap-3 jusify-between items-center bg-white"
+        class="py-2 px-4 rounded-lg shadow flex gap-6 jusify-between md:items-center items-start bg-white"
       >
-        <div class="flex-1 text-stone-600 font-bold">{{ $t('print_order').toUpperCase() }}</div>
-        <ServicesPrintingOrderETA :eta="eta" />
-        <ServicesPrintingOrderPrice :total-price="totalPrice" />
-        <NuxtLink
-          class="btn btn-primary btn-sm gap-1 rounded-md"
-          :class="units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'text-white' : 'btn-disabled'"
-          to="/services/printing/checkout/"
+        <div class="flex-1 text-stone-600 font-bold text-xl">{{ $t('print_order').toUpperCase() }}</div>
+        <div
+          class="btn btn-error btn-sm btn-outline rounded-md hover:!text-white"
+          @click="onClearOrder"
         >
-          {{ capitalizeOnlyFirstLetter($t('checkout')) }}
           <Icon
-            name="lucide:arrow-right"
-            size="20"
-          />
-          <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
-          <!-- <ClientOnly>
-                <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
-              </ClientOnly> -->
-        </NuxtLink>
+            name="lucide:trash-2"
+            size="18"
+          />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
+        </div>
       </div>
       <div v-if="units.length > 0 || itemInsertedLoading">
         <div class="flex flex-col gap-8">
-          <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
+          <!-- <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
             <table class="table-auto w-full">
               <thead class="rounded-lg">
                 <tr class="bg-stone-300/60">
@@ -65,25 +57,52 @@
               @on-change="change"
               @on-drop="drop"
             />
-          </div>
+          </div> -->
 
-          <div class="block lg:hidden">
-            <div class="flex flex-col gap-2">
-              <ServicesPrintingUnitCard
-                v-for="item, index in units"
-                :key="item.localUrl"
-                :unit="item"
-                :index="index"
-                @on-item-clicked="onItemClicked"
-              />
+          <div class="flex lg:flex-row flex-col  gap-8">
+            <div class="w-full relative flex flex-col md:flex-row gap-2">
+              <div class="w-full flex flex-col gap-4">
+                <ServicesPrintingUnitCard
+                  v-for="item, index in units"
+                  :key="item.localUrl"
+                  :unit="item"
+                  :index="index"
+                  @on-item-clicked="onItemClicked"
+                />
+              </div>
+
             </div>
-            <DragAndDropArea
-              class="mt-4"
-              :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
-              subtitle=".STL (max 150MB)"
-              @on-change="change"
-              @on-drop="drop"
-            />
+            <aside class="lg:sticky order-last top-8 h-full lg:w-1/2">
+              <div class="flex flex-col gap-8">
+                <DragAndDropArea
+                  :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
+                  subtitle=".STL (max 150MB)"
+                  @on-change="change"
+                  @on-drop="drop"
+                />
+                <div
+                  v-if="printOrderStore.getUnits.length"
+                  class="py-2 px-4 rounded-lg shadow flex flex-col gap-1 jusify-between md:items-end items-center bg-white"
+                >
+                  <ServicesPrintingOrderETA :eta="eta" />
+                  <ServicesPrintingOrderPrice :total-price="totalPrice" />
+                  <NuxtLink
+                    :class="`btn btn-sm gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'btn-primary text-white' : 'btn-disabled'}`"
+                    :to="localePath('/services/printing/checkout/')"
+                  >
+                    {{ capitalizeOnlyFirstLetter($t('checkout')).toUpperCase() }}
+                    <Icon
+                      name="lucide:arrow-right"
+                      size="20"
+                    />
+                    <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
+                    <!-- <ClientOnly>
+                <div> {{ isLoggedIn ? 'Checkout' : 'Checkout as guest'}}</div>
+              </ClientOnly> -->
+                  </NuxtLink>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </div>
@@ -98,7 +117,7 @@
               <span class="text-primary font-bold">1/</span>
               <div class="flex flex-wrap gap-2">
                 <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
-                <NuxtLink to="/services/modeling"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
+                <NuxtLink :to="localePath('/services/modeling')"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
                 </NuxtLink>
               </div>
             </li>
@@ -133,9 +152,9 @@
           :data-tip="capitalizeOnlyFirstLetter($t('checkout'))"
         >
           <NuxtLink
-            class="btn btn-circle btn-primary btn-lg shadow-md"
-            :class="totalPrice > 0 ? '' : 'btn-disabled'"
-            to="/services/printing/checkout/"
+            class="btn btn-circle  btn-lg shadow-md"
+            :class="totalPrice > 0 ? 'btn-primary' : 'btn-disabled'"
+            :to="localePath('/services/printing/checkout/')"
           >
             <Icon
               name="lucide:shopping-cart"
@@ -171,6 +190,7 @@ import { usePrintOrderUnitInfillWallCombinationStore } from "~~/stores/print_ord
 import { usePrintingMethodStore } from "~~/stores/printing_method";
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -456,7 +476,11 @@ function onItemClicked(localUrl: string) {
   unit.value = units.value.find((el) => el.localUrl === localUrl);
   isDetailsDialogShown.value = true;
 
-  navigateTo(`/services/printing/units/${unit.value?.localUrl.split("/")[3]}/`);
+  navigateTo(
+    localePath(
+      `/services/printing/units/${unit.value?.localUrl.split("/")[3]}/`
+    )
+  );
 
   // dialogStore.open(
   //   "ServicesPrintingUnitPreviewDialog",

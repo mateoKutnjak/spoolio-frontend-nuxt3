@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-8">
     <TabGroup>
       <TabList class="p-2 flex gap-2 justify-start sm:rounded-xl bg-white overflow-x-auto shadow-md rounded-lg">
         <Tab
@@ -12,11 +12,11 @@
           v-slot="{ selected }"
         >
           <div :class="[
-              'btn btn-ghost px-3 text-base font-medium text-gray-600',
+              'btn  px-3 text-base font-medium text-gray-600',
               'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none',
               selected
-                ? 'bg-accent/[0.2]'
-                : '',
+                ? 'btn-primary'
+                : 'btn-ghost',
             ]">
             {{ capitalizeOnlyFirstLetter($t(tabCategory)) }}
           </div>

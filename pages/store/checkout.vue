@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
 
     <FormKit
       type="form"
@@ -234,7 +234,7 @@ onMounted(async () => {
 });
 
 function submitHandler() {
-  dialogStore.open("StoreCheckoutCreatingOrderDialog", {}, "2xl", true);
+  dialogStore.open("StoreCheckoutCreatingOrderDialog", {}, undefined, "lg", true);
 }
 </script>
 

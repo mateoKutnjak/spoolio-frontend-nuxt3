@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-16 p-12 justify-between">
+  <div class="flex flex-col gap-12 p-12 justify-between">
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -112,11 +112,11 @@
       v-show="(orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success) || orderStatus === OrderStatus.error || unitsStatus === OrderStatus.error"
     >
       <div
-        class="flex-1 btn btn-lg btn-outline text-xl rounded-sm"
+        class="flex-1 btn btn-outline text-xl rounded-sm"
         @click="onReturnPressed"
       >{{ capitalizeOnlyFirstLetter($t('later')) }}</div>
       <div
-        class="flex-1 btn btn-lg btn-primary text-xl rounded-sm"
+        class="flex-1 btn btn-primary text-xl rounded-sm"
         :class="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success  ? '': 'btn-disabled'"
         @click="onOkPressed"
       >{{ $t('pay_now').toUpperCase() }}</div>
@@ -132,7 +132,8 @@ import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
-const {t} = useI18n();
+const { t } = useI18n();
+const localePath = useLocalePath();
 
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
@@ -220,17 +221,19 @@ function onOkPressed() {
 
   if (!print_order.value.id) {
     console.error("Print order ID is null when trying to redirect to payment");
-    capitalizeOnlyFirstLetter(t('please_proceed_with_payment_through_order_history'));
-    navigateTo("/blogs");
+    capitalizeOnlyFirstLetter(
+      t("please_proceed_with_payment_through_order_history")
+    );
+    navigateTo(localePath("/"));
     return;
   }
   dialogStore.close();
-  navigateTo(`/payment/printing/${print_order.value.id}`);
+  navigateTo(localePath(`/payment/printing/${print_order.value.id}`));
 }
 
 function onReturnPressed() {
   dialogStore.close();
-  navigateTo("/blogs");
+  navigateTo(localePath("/"));
 }
 </script>
   

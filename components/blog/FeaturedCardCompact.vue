@@ -12,7 +12,7 @@
     leave-from="opacity-100 "
     leave-to="opacity-0"
   >
-    <NuxtLink :to="`blogs/${item.id}`">
+    <NuxtLink :to="localePath(`blogs/${item.id}`)">
       <div class="md:px-0 px-4 flex flex-col gap-2">
         <div class="text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
         <div class="text-xl font-bold text-stone-600">{{ item.title }}</div>

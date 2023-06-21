@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/blogs/${blog.id}`">
+  <NuxtLink :to="localePath(`/blogs/${blog.id}`)">
     <div class="card lg:card-side gap-6">
       <div
         v-if="blog?.picture"

@@ -49,6 +49,8 @@ import { useAuthStore } from "../stores/auth";
 
 import { GoogleSignInButton, CredentialResponse } from "vue3-google-signin";
 
+const localePath = useLocalePath();
+
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
@@ -68,7 +70,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     .login(email.value, password.value)
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo("/blogs");
+      navigateTo(localePath("/blogs"));
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

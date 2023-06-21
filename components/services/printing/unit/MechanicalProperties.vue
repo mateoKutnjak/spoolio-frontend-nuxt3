@@ -35,14 +35,14 @@
       </label>
     </div>
 
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
       <div
         v-if="infills && infills.length > 0"
         class="flex flex-col"
       >
         <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
         <Dropdown
-          :key="unit.infill"
+          :key="unit.infill.id"
           :items="infills"
           :preselected-item="unit.infill"
           :extract-name="(el: IPrintOrderUnitInfill) => `${el.percentage * 100}%`"
@@ -58,7 +58,7 @@
       >
         <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
         <Dropdown
-          :key="unit.wall"
+          :key="unit.wall.id"
           :items="walls"
           :preselected-item="unit.wall"
           :extract-name="(el: IPrintOrderUnitWall) => `${el.amount}`"

@@ -20,7 +20,7 @@
         </tbody>
       </table>
       <NuxtLink
-        :to="`/payment/modeling/${order.id}`"
+        :to="localePath(`/payment/modeling/${order.id}`)"
         class="btn btn-primary btn-block btn-l"
       >
       {{ $t('pay_now').toUpperCase() }}

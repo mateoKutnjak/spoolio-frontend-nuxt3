@@ -6,32 +6,35 @@
         class="toast toast-bottom toast-end px-12 py-8 z-50 text-base"
       >
 
-        <div
-          class="py-4 px-5 w-full max-w-md rounded shadow-lg text-white font-bold"
-          :class="toastBgColor"
-          role="alert"
-        >
-          <div class="flex gap-5 justify-between items-center">
-            <div class="justify-center items-center rounded-lg">
-              <Icon
-                :name="toastIconName"
-                size="25"
-              />
-              <span class="sr-only">Check icon</span>
+        <div class="w-full rounded-md shadow-lg font-bold bg-white text-stone-600">
+          <div class="flex">
+            <div :class="`w-4 ${toastBgColor} rounded-tl-md rounded-bl-md`"></div>
+            <div class="px-5 py-4 flex gap-5 items-center">
+              <div class="justify-center items-center rounded-lg">
+                <Icon
+                  :class="textColor"
+                  :name="toastIconName"
+                  size="25"
+                />
+                <span class="sr-only">Check icon</span>
+              </div>
+              <div class="flex flex-col">
+                <div class="text-sm font-bold">{{ capitalizeOnlyFirstLetter(toastTitle) }}</div>
+                <div class="text-sm font-normal">{{message || ''}}</div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-ghost btn-sm btn-square"
+                data-dismiss-target="#toast-success"
+                aria-label="Close"
+                @click="onCloseClicked"
+              >
+                <Icon
+                  name="lucide:x"
+                  size="23"
+                />
+              </button>
             </div>
-            <div>{{message || ''}}</div>
-            <button
-              type="button"
-              class="btn btn-ghost btn-sm btn-square"
-              data-dismiss-target="#toast-success"
-              aria-label="Close"
-              @click="onCloseClicked"
-            >
-              <Icon
-                name="lucide:x"
-                size="23"
-              />
-            </button>
           </div>
         </div>
 
@@ -60,7 +63,22 @@ const toastBgColor = computed(() => {
     case ToastLevelType.info:
       return "bg-info";
     default:
-      return "bg-gray-700";
+      return "bg-stone-600";
+  }
+});
+
+const textColor = computed(() => {
+  switch (type.value) {
+    case ToastLevelType.debug:
+      return "text-warning";
+    case ToastLevelType.error:
+      return "text-error";
+    case ToastLevelType.success:
+      return "text-success";
+    case ToastLevelType.info:
+      return "text-info";
+    default:
+      return "text-stone-600";
   }
 });
 
@@ -76,6 +94,21 @@ const toastIconName = computed(() => {
       return "lucide:info";
     default:
       return "bg-gray-700";
+  }
+});
+
+const toastTitle = computed(() => {
+  switch (type.value) {
+    case ToastLevelType.debug:
+      return "debug";
+    case ToastLevelType.error:
+      return "error";
+    case ToastLevelType.success:
+      return "success";
+    case ToastLevelType.info:
+      return "info";
+    default:
+      return "message";
   }
 });
 

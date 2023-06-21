@@ -7,10 +7,10 @@
             <div class="text-xl text-gray-700">{{ capitalizeOnlyFirstLetter($t(storeOrderUnit.item.product.title)) }}</div>
             <div class="text-sm">
               [ <NuxtLink
-                to="/store"
+                :to="localePath('/store')"
                 class="link link-info"
               >{{ capitalizeOnlyFirstLetter($t(storeOrderUnit.item.product.category.name)) }}</NuxtLink> / <NuxtLink
-                to="/store"
+                :to="localePath('/store')"
                 class="link link-info"
               >{{ capitalizeOnlyFirstLetter($t(storeOrderUnit.item.product.subcategory.name)) }}</NuxtLink> ]
             </div>

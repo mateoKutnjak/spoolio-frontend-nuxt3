@@ -1,9 +1,10 @@
 <template>
-  <div class="mx-auto max-w-5xl">
+  <div class="container mx-auto max-w-7xl px-12 py-12">
     <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-12">
         <ButtonBack class="text-primary" />
-        <div class="flex gap-24 justify-between items-end">
+
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 lg:gap-12 justify-between items-start lg:items-end">
           <div class="text-lg font-bold text-stone-700 line-clamp-1">{{ extractUrlFileStringUnion(unit.file).toUpperCase()
         }}</div>
           <div class="flex flex-col gap-1 items-center">
@@ -36,7 +37,10 @@
             >€{{ (price).toFixed(2) }}
             </div>
           </div>
-          <div class="btn btn-primary btn-sm gap-1 text-white">
+          <div
+            class="btn btn-primary btn-sm gap-1 text-white"
+            @click.prevent="$router.back()"
+          >
             <Icon
               name="lucide:check"
               size="18"
@@ -45,7 +49,7 @@
         </div>
       </div>
 
-      <div class="py-12 grid grid-cols-2 gap-12">
+      <div class="py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div class="flex flex-col gap-4">
           <div class="border border-primary">
             <client-only class="border border-primary">
@@ -55,14 +59,9 @@
               />
             </client-only>
           </div>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <ServicesPrintingUnitDimensionForm :unit="unit" />
             <ServicesPrintingUnitOrientationForm :unit="unit" />
-          </div>
-          <div class="flex flex-col">
-            TODO implement scaling
-            TODO save length/rotation in mms/degrees
-            TODO check if model fits the printer
           </div>
 
         </div>
@@ -84,7 +83,7 @@
               <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
               <ServicesPrintingUnitColor
                 :unit="unit"
-                :key="`${unit.spool.id}`"
+                :key="`${unit.printing_method.id} ${unit.spool.id}`"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3 py-2 flex items-center ">
+  <div class="flex items-center ">
     <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
 
     <div v-if="totalPrice === Number.NEGATIVE_INFINITY">

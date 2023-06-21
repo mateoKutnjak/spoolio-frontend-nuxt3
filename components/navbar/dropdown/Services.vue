@@ -21,7 +21,7 @@
             <NuxtLink
               v-for="item in navigation"
               :key="item.name"
-              :to="`${item.to}`"
+              :to="localePath(`${item.to}`)"
             >
 
               <MenuItem as="div">

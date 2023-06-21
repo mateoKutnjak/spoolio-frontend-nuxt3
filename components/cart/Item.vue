@@ -17,7 +17,7 @@
       </div>
       <div>{{combination.product?.description}}
       </div>
-      <NuxtLink :to="`/store/${combination.product?.id}`">
+      <NuxtLink :to="localePath(`/store/${combination.product?.id}`)">
         <div
           class="-ml-3 btn btn-ghost btn-sm text-info"
           @click="drawerStore.close()"
@@ -34,6 +34,7 @@
     </div>
     <div class="w-full flex justify-between items-start">
       <IncreaseDecreaseQuantityButtons
+        :key="quantity"
         :max="MAX_CART_ITEMS"
         :min="1"
         :initialValue="quantity"

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div class="relative flex flex-col md:flex-row gap-6">
       <div class="flex-1 flex flex-col gap-8 items-start">
         <div
@@ -52,7 +52,7 @@
         <div class="card border border-gray-300 rounded-sm shadow-md bg-white">
           <div class="card-body">
             <div class="card-title items-center mb-6">
-              <div class="flex-1 text-lg text-gray-700 line-clamp-3">{{product?.title}}</div>
+              <div class="flex-1 text-base text-stone-600 line-clamp-3">{{product?.title}}</div>
               <RatingPreview
                 :rating-value="product?.average_rating || 0"
                 :rating-count="product?.rating_count || 0"
@@ -66,7 +66,7 @@
                 :key="variationName"
               >
                 <div class="flex flex-col gap-1 items-start">
-                  <div class="text-gray-700 font-semibold text-sm text-gray-800 dark:text-white">{{ variationName }}</div>
+                  <div class="font-semibold text-sm text-stone-700 dark:text-white">{{ variationName }}</div>
                   <!-- <div class="dropdown dropdown-end">
                     <label
                       tabindex="0"
@@ -85,7 +85,7 @@
                   </div> -->
                   <div class="flex flex-wrap gap-1">
                     <div
-                      class="btn btn-sm border-gray-400 text-gray-600"
+                      class="btn btn-sm text-stone-600 rounded"
                       :class="productVariationOptionSelections.get(variationName) === index ? 'btn-primary' : 'btn-outline'"
                       v-for="option, index in variations"
                       :key="option.title"
@@ -120,15 +120,15 @@
 
             <div class="card-actions gap-12 justify-between items-center">
               <div v-if="activeOptionsCombination?.price">
-                <div class="text-3xl text-xl text-gray-800 dark:text-white">
+                <div class="text-3xl text-stone-600 dark:text-white">
                   {{`€${activeOptionsCombination?.price}`}}
                 </div>
               </div>
               <div v-else>
               </div>
               <button
-                class="btn btn-success gap-3"
-                :class="activeOptionsCombination?.price ? '' : 'btn-disabled' "
+                class="btn gap-3"
+                :class="activeOptionsCombination?.price ? 'btn-success' : 'btn-disabled' "
                 @click="addToCart"
               >
                 <Icon

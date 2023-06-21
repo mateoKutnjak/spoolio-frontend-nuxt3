@@ -24,7 +24,7 @@
       <div class="absolute max-w-7xl mx-auto h-[25em] bottom-0 left-0 right-0 p-8 flex flex-col gap-1 justify-end">
         <div class="text-stone-50 text-6xl font-bold drop-shadow-md">{{ blog.title }}</div>
         <div class="mb-4 text-stone-50 text-xl font-medium drop-shadow-xl">{{ blog.subtitle }}</div>
-        <NuxtLink :to="`/blogs/${blog.id}`">
+        <NuxtLink :to="localePath(`/blogs/${blog.id}`)">
           <div class="btn btn-primary btn-wide shadow-md">Read Article
           </div>
         </NuxtLink>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <OrderHistoryPrintingDetails
       v-if="data"
       :order="data"

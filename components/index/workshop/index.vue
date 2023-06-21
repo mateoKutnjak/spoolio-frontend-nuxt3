@@ -24,7 +24,7 @@
       </div>
       <ButtonFindOutMore
         class="self-end"
-        to="/about"
+        :to="localePath('/about')"
       />
     </div>
   </div>

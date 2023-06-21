@@ -35,10 +35,12 @@
 
       <div
         class="btn btn-primary btn-block mt-5"
-        :class="paymentProcessing ? 'loading' : ''"
         id="submit"
         @click="submitPayment"
-      >{{ capitalizeOnlyFirstLetter($t('pay')) }}</div>
+      ><span
+          v-if="paymentProcessing"
+          class="loading loading-spinner"
+        ></span>{{ capitalizeOnlyFirstLetter($t('pay')) }}</div>
     </form>
   </div>
 </template>
@@ -57,6 +59,7 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const { order, id } = useRoute().params;
 
@@ -243,7 +246,7 @@ function submitPayment() {
         // Show error to your customer (for example, insufficient funds)
         console.log(`Payment error = ${result.error.message}`);
 
-        navigateTo("/blogs");
+        navigateTo(localePath("/"));
         notificationStore.show(
           result.error.message?.toString() || "Error occurred",
           ToastLevelType.error
@@ -259,7 +262,7 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          navigateTo("/blogs");
+          navigateTo(localePath("/"));
           notificationStore.show(
             capitalizeOnlyFirstLetter(
               t("payment_successfull_check_your_email")

@@ -15,7 +15,7 @@
             </div>
           </div>
           <div>
-            <NuxtLink :to="`/blogs/${id}/edit`">
+            <NuxtLink :to="localePath(`/blogs/${id}/edit`)">
               <div
                 v-if="user?.is_staff && user?.id === blog?.author?.id || false"
                 class="btn btn-outline gap-1"

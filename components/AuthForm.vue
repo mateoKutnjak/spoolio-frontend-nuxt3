@@ -117,6 +117,7 @@ import { GoogleSignInButton, CredentialResponse } from "vue3-google-signin";
 import { ITab } from "~~/constants/data";
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -150,7 +151,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     )
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo("/services/printing");
+      navigateTo(localePath("/services/printing"));
     })
     .catch((err) => {
       notificationStore.showFetchError(err);
@@ -189,7 +190,10 @@ async function submitHandlerLogin(data: any, node: FormKitNode | undefined) {
     .login(emailLogin.value, passwordLogin.value)
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo("/blogs");
+      notificationStore.show(
+        `Welcome ${emailLogin.value}`,
+        ToastLevelType.info
+      );
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

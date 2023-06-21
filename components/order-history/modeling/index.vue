@@ -51,7 +51,7 @@
             size="50"
           />
           <p class="text-2xl pt-4 py-8">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</p>
-          <NuxtLink to="/services/modeling">
+          <NuxtLink :to="localePath('/services/modeling')">
             <div class="btn btn-outline bg-white gap-2 border-gray-500 text-gray-500">
               <Icon
                 name="lucide:plus"
@@ -72,6 +72,8 @@ import { PAGE_SIZE } from "~~/constants/constants";
 import { IModelingOrder } from "~~/constants/data";
 import { useNotificationStore } from "~~/stores/notification";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
+
+const localePath = useLocalePath();
 
 const notificationStore = useNotificationStore();
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();
@@ -101,7 +103,7 @@ function onPageSelected(pageSelected: number) {
 }
 
 function onItemClicked(order: IModelingOrder) {
-  navigateTo(`/profile/order-history/modeling/${order.id}`);
+  navigateTo(localePath(`/profile/order-history/modeling/${order.id}`));
 }
 </script>
   

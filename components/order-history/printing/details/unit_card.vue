@@ -35,7 +35,7 @@
           :predefined-dimension-unit="unit.length_unit"
         />
       </div>
-      <div class="card-actions justify-end justify-between items-center">
+      <div class="card-actions justify-between items-center">
         <div class="flex gap-2">
           <AttributeItem
             :title="unit.spool.material.name"

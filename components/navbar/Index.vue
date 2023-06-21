@@ -5,7 +5,10 @@
         class="lg:hidden"
         :navigation="navigation"
       />
-      <NuxtLink class="btn btn-ghost">
+      <NuxtLink
+        class="btn btn-ghost"
+        :to="localePath('/')"
+      >
         <nuxt-img
           width="112px"
           src="/img/ur3d-primary.svg"
@@ -14,14 +17,14 @@
       </NuxtLink>
     </div>
     <div class="navbar-center hidden lg:flex">
-      <NuxtLink to="/blogs">
+      <NuxtLink :to="localePath('/blogs')">
         <button class="btn btn-ghost text-gray-700">{{$t('projects')}}</button>
       </NuxtLink>
       <NavbarDropdownServices :navigation="servicesNavigation" />
-      <NuxtLink to="/store">
+      <NuxtLink :to="localePath('/store')">
         <button class="btn btn-ghost text-gray-700">{{$t('store')}}</button>
       </NuxtLink>
-      <NuxtLink to="/about">
+      <NuxtLink :to="localePath('/about')">
         <button class="btn btn-ghost text-gray-700">{{$t('about')}}</button>
       </NuxtLink>
     </div>
@@ -63,7 +66,7 @@
           <div class="flex items-center gap-1 ">
             <span
               v-show="getCartItems.size > 0"
-              class="indicator-item indicator-middle badge badge-primary"
+              class="indicator-item indicator-middle badge badge-primary text-white text-xs"
             >{{cartStore.getCartTotalQuantity}}</span>
 
             <Icon

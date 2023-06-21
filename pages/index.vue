@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div class="flex flex-col gap-24">
       <IndexHead />
       <IndexOurServices />

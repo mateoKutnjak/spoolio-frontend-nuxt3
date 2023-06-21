@@ -1,98 +1,100 @@
 <template>
-  <div
-    v-for="(printer, index) in printerStore.getPrinters"
-    :key="printer.id"
-    :class="index == printerStore.getPrinters.length - 1 ? '' : 'mb-6'"
-  >
-    <div class="w-full p-6 flex gap-4 items-center text-stone-600">
-      <Icon
-        name="lucide:printer"
-        size="50"
-      />
-      <div class="flex flex-col">
-        <div class="text-lg font-bold">{{ printer.name }}</div>
-        <div>{{ printer.type.name }}</div>
-      </div>
-      <div class="flex-1 flex gap-2 justify-center">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
+    <div
+      v-for="(printer, index) in printerStore.getPrinters"
+      :key="printer.id"
+      :class="index == printerStore.getPrinters.length - 1 ? '' : 'mb-6'"
+    >
+      <div class="w-full p-6 flex gap-4 items-center text-stone-600">
+        <Icon
+          name="lucide:printer"
+          size="50"
+        />
+        <div class="flex flex-col">
+          <div class="text-lg font-bold">{{ printer.name }}</div>
+          <div>{{ printer.type.name }}</div>
+        </div>
+        <div class="flex-1 flex gap-2 justify-center">
+          <div
+            v-for="supported_material in printer.type.supported_materials"
+            :key="supported_material.id"
+          >
+            <AttributeItem :title="supported_material.name" />
+          </div>
+        </div>
         <div
-          v-for="supported_material in printer.type.supported_materials"
-          :key="supported_material.id"
+          v-if="!printer.available"
+          class="flex gap-2 items-center"
         >
-          <AttributeItem :title="supported_material.name" />
+          {{ capitalizeOnlyFirstLetter($t('not_available')) }}
+          <Icon
+            class="text-error"
+            name="lucide:x-circle"
+            size="30"
+          />
+        </div>
+        <div
+          v-else
+          class="flex gap-2 items-center"
+        >
+          {{ capitalizeOnlyFirstLetter($t('available')) }}
+          <Icon
+            class="text-success"
+            name="lucide:check-circle"
+            size="30"
+          />
         </div>
       </div>
-      <div
-        v-if="!printer.available"
-        class="flex gap-2 items-center"
-      >
-        {{ capitalizeOnlyFirstLetter($t('not_available')) }}
-        <Icon
-          class="text-error"
-          name="lucide:x-circle"
-          size="30"
-        />
+      <div class="overflow-x-visible">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th>{{ capitalizeOnlyFirstLetter($t('job_id')) }}</th>
+              <th>{{ capitalizeOnlyFirstLetter($t('created_at')) }}</th>
+              <th>{{ capitalizeOnlyFirstLetter($t('interval')) }}</th>
+              <td>{{ capitalizeOnlyFirstLetter($t('order_id')) }}</td>
+              <td>{{ capitalizeOnlyFirstLetter($t('file')) }}</td>
+              <th class="text-end">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="printJob in printingJobStore.getByPrinterId(printer.id)"
+              :key="printJob.id"
+            >
+              <th>{{ printJob.id }}</th>
+              <td>{{ reformatDateTime(printJob.created_at) }}</td>
+              <td>
+                <div class="flex flex-col gap-2">
+                  <div><strong>{{ capitalizeOnlyFirstLetter($t('start')) }}</strong> {{ reformatDateTime(printJob.start_at) }}</div>
+                  <div><strong>{{ capitalizeOnlyFirstLetter($t('end')) }}</strong> {{ reformatDateTime(printJob.end_at) }}</div>
+                </div>
+              </td>
+              <td># {{ printJob.print_order_unit.order }}</td>
+              <td>
+                <a
+                  class="link link-info"
+                  :href="extractUrlFileStringUnion(printJob.print_order_unit.file)"
+                >
+                  {{ urlExtractFilename(printJob.print_order_unit.file.toString()) }}
+                </a>
+              </td>
+              <td>
+                <OrderStatusView :raw-status="printJob.status" />
+              </td>
+              <td class="relative">
+                <DropdownChoice
+                  menu-button-icon="lucide:more-vertical"
+                  :choices="OrderStatus.printingJobStatuses.map(el => el.display_name)"
+                  :preselected="OrderStatus.all[printJob.status].display_name"
+                  @on-item-chosen="item => onStatusChosen(item, printJob)"
+                ></DropdownChoice>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div
-        v-else
-        class="flex gap-2 items-center"
-      >
-      {{ capitalizeOnlyFirstLetter($t('available')) }}
-        <Icon
-          class="text-success"
-          name="lucide:check-circle"
-          size="30"
-        />
-      </div>
-    </div>
-    <div class="overflow-x-visible">
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th>{{ capitalizeOnlyFirstLetter($t('job_id')) }}</th>
-            <th>{{ capitalizeOnlyFirstLetter($t('created_at')) }}</th>
-            <th>{{ capitalizeOnlyFirstLetter($t('interval')) }}</th>
-            <td>{{ capitalizeOnlyFirstLetter($t('order_id')) }}</td>
-            <td>{{ capitalizeOnlyFirstLetter($t('file')) }}</td>
-            <th class="text-end">Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="printJob in printingJobStore.getByPrinterId(printer.id)"
-            :key="printJob.id"
-          >
-            <th>{{ printJob.id }}</th>
-            <td>{{ reformatDateTime(printJob.created_at) }}</td>
-            <td>
-              <div class="flex flex-col gap-2">
-                <div><strong>{{ capitalizeOnlyFirstLetter($t('start')) }}</strong> {{ reformatDateTime(printJob.start_at) }}</div>
-                <div><strong>{{ capitalizeOnlyFirstLetter($t('end')) }}</strong> {{ reformatDateTime(printJob.end_at) }}</div>
-              </div>
-            </td>
-            <td># {{ printJob.print_order_unit.order }}</td>
-            <td>
-              <a
-                class="link link-info"
-                :href="extractUrlFileStringUnion(printJob.print_order_unit.file)"
-              >
-                {{ urlExtractFilename(printJob.print_order_unit.file.toString()) }}
-              </a>
-            </td>
-            <td>
-              <OrderStatusView :raw-status="printJob.status" />
-            </td>
-            <td class="relative">
-              <DropdownChoice
-                menu-button-icon="lucide:more-vertical"
-                :choices="OrderStatus.printingJobStatuses.map(el => el.display_name)"
-                :preselected="OrderStatus.all[printJob.status].display_name"
-                @on-item-chosen="item => onStatusChosen(item, printJob)"
-              ></DropdownChoice>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>

@@ -103,7 +103,7 @@
           size="24"
         />
       </div>
-      <NuxtLink :to="`/services/printing/units/${urlExtractFilename(unit.localUrl)}`">
+      <NuxtLink :to="localePath(`/services/printing/units/${urlExtractFilename(unit.localUrl)}`)">
         <div class="btn">todo postavke</div>
       </NuxtLink>
     </td>

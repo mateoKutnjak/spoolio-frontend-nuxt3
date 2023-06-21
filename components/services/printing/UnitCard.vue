@@ -1,6 +1,6 @@
 <template>
-  <div class="px-12 py-6 flex flex-col gap-2 rounded-md border-2 border-stone-400">
-    <div class="flex justify-between">
+  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border-2 border-stone-400">
+    <div class="flex sm:flex-row flex-col justify-between">
       <div class="flex flex-col">
         <div class="text-stone-400">
           MODEL {{ index+1 }}/{{ totalUnitCount }}
@@ -36,14 +36,12 @@
     </div>
 
     <div class="card sm:card-side gap-8">
-      <div class="flex flex-col gap-4 items-center basis-1/3">
-        <div class="flex">
-          <nuxt-img
-            class="aspect-square border-2 border-stone-400 rounded-md"
-            :src="unit.screenshotURL"
-          >
-          </nuxt-img>
-        </div>
+      <div class="h-min flex flex-col gap-4 items-center">
+        <nuxt-img
+          class="md:h-44 h-min aspect-square border-2 border-stone-400 rounded-md"
+          :src="unit.screenshotURL"
+        >
+        </nuxt-img>
         <IncreaseDecreaseQuantity
           :max="MAX_PRINT_QUANTITY"
           :min="1"
@@ -54,7 +52,7 @@
         />
       </div>
 
-      <div class="grid grid-cols-3">
+      <div class="w-full h-min grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
         <div>
           <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
           <div class="text-stone-700 text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
@@ -70,8 +68,11 @@
           </div>
         </div>
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.estimated_price }} todo</div>
+          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
+          <ServicesPrintingUnitSinglePrice
+            :unit="unit"
+            :price="totalPrice / unit.quantity"
+          />
         </div>
 
         <div>
@@ -79,7 +80,7 @@
           <div class="text-stone-700 text-xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
+          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
           <div class="text-stone-700 text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
@@ -89,8 +90,11 @@
           </div>
         </div>
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.estimated_time * unit.quantity }} todo</div>
+          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
+          <ServicesPrintingUnitSinglePrice
+            :unit="unit"
+            :price="totalPrice"
+          />
         </div>
 
         <div>
@@ -98,7 +102,7 @@
           <div class="text-stone-700 text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
+          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
           <div class="text-stone-700 text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
@@ -107,118 +111,12 @@
             />{{ unit.wall.amount }}
           </div>
         </div>
-        <div class="btn btn-primary text-white">
-          <Icon name="lucide:edit-2" />{{ capitalizeOnlyFirstLetter($t('settings')).toUpperCase() }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div
-    class="card sm:card-side bg-white rounded-none cursor-pointer border border-gray-300 shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-    @click="$emit('on-item-clicked', unit.localUrl)"
-  >
-    <div class="sm:m-6 h-44 w-full sm:w-44 bg-[#EAEAEA] flex justify-center">
-      <nuxt-img
-        class="h-44 w-44 p-0 m-0 sm:border sm:border-gray-300"
-        :src="unit.screenshotURL"
-      >
-      </nuxt-img>
-    </div>
-    <div class="card-body">
-      <div class="flex flex-col flex-1">
-        <div class="flex flex-col flex-1 gap-4 justify-between">
-          <div class="flex">
-            <div class="flex-1 text-lg text-gray-900 dark:text-white line-clamp-1 m">
-              {{ extractUrlFileStringUnion(unit.file) }}
-            </div>
-            <div>
-              <button
-                class="btn btn-md btn-circle btn-ghost text-gray-400"
-                @click.stop="duplicateUnit"
-              >
-                <Icon
-                  name="lucide:copy"
-                  size="24"
-                />
-              </button>
-              <button
-                class="btn btn-md btn-circle btn-ghost text-red-600"
-                @click.stop="removeUnit"
-              >
-                <Icon
-                  name="lucide:trash-2"
-                  size="24"
-                />
-              </button>
-            </div>
+        <NuxtLink :to="localePath(`/services/printing/units/${urlExtractFilename(unit.localUrl)}`)">
+          <div class="mt-4 btn btn-primary btn-sm text-white rounded-md">
+            {{ capitalizeOnlyFirstLetter($t('settings')).toUpperCase() }}
           </div>
-          <div class="flex justify-between items-end">
-            <div class="flex flex-col gap-2 justify-between">
-              <div class="text-sm text-left text-gray-500 dark:text-white mb-2">
-                <div class="flex gap-2 items-start justify-start">
-                  <AttributeItem
-                    :title="getMaterialName()"
-                    :tooltip="capitalizeOnlyFirstLetter($t('filament_material'))"
-                  />
-                  <AttributeItem
-                    :title="(getInfillPercentage() * 100).toString() + '%'"
-                    :tooltip="capitalizeOnlyFirstLetter($t('infill_percentage'))"
-                  />
-                  <AttributeItem
-                    :title="getColorName()"
-                    :tooltip="capitalizeOnlyFirstLetter($t('filament_color'))"
-                  />
-                </div>
-              </div>
-              <ServicesPrintingDimensionInfo
-                :data="vector3Parse(unit.model_dimensions)"
-                :unit="unit.length_unit"
-              />
-              <ServicesPrintingVolumeInfo
-                :data="unit.model_volume"
-                :unit="unit.length_unit"
-              />
-              <ServicesPrintingRotationPreview
-                :key="unit.model_rotation"
-                :data="unit.model_rotation"
-                :unit="unit.rotation_unit"
-              />
-            </div>
-            <div class="flex flex-wrap gap-8 justify-end items-end">
-              <div class="flex flex-col gap-1 items-center justify-center">
-                <div class="text-sm text-gray-400">{{ capitalizeOnlyFirstLetter($t('quantity')) }}</div>
-                <input
-                  type="number"
-                  class="bg-gray-50 w-14 h-9 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  v-model="unit.quantity"
-                  @input="updateValue"
-                  @blur="handleBlur"
-                  @click.stop.prevent
-                />
-              </div>
-              <div class="flex justify-center text-xl text-gray-700 font-semibold">
-                <div v-if="totalPrice === Number.NEGATIVE_INFINITY">
-                  <Icon
-                    class="text-gray-500 -my-10"
-                    name="eos-icons:three-dots-loading"
-                    size="50"
-                  />
-                </div>
-                <div v-else-if="totalPrice === Number.POSITIVE_INFINITY">
-                  <ButtonRetry @on-click="printOrderUnit ? printOrderStore.estimateSlicerAndPrintJobs(unit) : () => null" />
-                </div>
-                <div
-                  v-else
-                  class="flex gap-1 items-center"
-                >€{{ (totalPrice).toFixed(2)}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </NuxtLink>
       </div>
-
     </div>
   </div>
 </template>
@@ -368,7 +266,7 @@ function duplicateUnit() {
       wall_thickness: unit.wall_thickness,
       scale: unit.scale,
       scale_display: unit.scale,
-      estimatedPrice: unit.estimated_price,
+      estimated_price: unit.estimated_price,
       file: unit.file,
       comment: comment.value,
       localUrl: URL.createObjectURL(unit.file),
@@ -384,7 +282,6 @@ function duplicateUnit() {
       screenshotURL: unit.screenshotURL,
       length_unit: unit.length_unit,
       rotation_unit: unit.rotation_unit,
-      estimated_price: unit.estimated_price,
       estimated_time: unit.estimated_time,
       screenshot: unit.screenshot,
       printing_method: unit.printing_method,

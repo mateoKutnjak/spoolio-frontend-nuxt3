@@ -5,7 +5,7 @@
         v-for="crumb in crumbs"
         :key="crumb.name"
       >
-        <NuxtLink :to="crumb.path">
+        <NuxtLink :to="localePath('crumb.path')">
           {{ capitalizeOnlyFirstLetter($t(crumb.name)) }}
         </NuxtLink>
       </li>

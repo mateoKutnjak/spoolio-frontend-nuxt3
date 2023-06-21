@@ -36,7 +36,7 @@
         <strong class="text-xs"> X </strong>
         <FormKit
           type="number"
-          v-model="rotationX"
+          v-model="dimensionX"
           :disabled="true"
           :classes="{
                 input: 'input input-bordered w-full input-sm !text-right !outline-none',
@@ -49,7 +49,7 @@
         <strong class="text-xs"> Y </strong>
         <FormKit
           type="number"
-          v-model="rotationY"
+          v-model="dimensionY"
           :disabled="true"
           :classes="{
                 input: 'input input-bordered w-full input-sm !text-right !outline-none',
@@ -62,7 +62,7 @@
         <strong class="text-xs"> Z </strong>
         <FormKit
           type="number"
-          v-model="rotationZ"
+          v-model="dimensionZ"
           :disabled="true"
           :classes="{
                 input: 'input input-bordered w-full input-sm !text-right !outline-none',
@@ -117,10 +117,8 @@
   
   <script lang="ts" setup>
 import { IPrintOrderUnit } from "~~/constants/data";
-import { useGlobalsStore } from "~~/stores/globals";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
-const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
 
 const { unit } = defineProps<{
@@ -134,9 +132,9 @@ const dimensionUnits: string[] = Object.keys(DimensionUnit).filter((item) => {
 const modelDimensions = vector3Parse(unit.model_dimensions);
 
 const lockScale = ref(true);
-const rotationX = ref(modelDimensions.x.toFixed(2));
-const rotationY = ref(modelDimensions.y.toFixed(2));
-const rotationZ = ref(modelDimensions.z.toFixed(2));
+const dimensionX = ref((modelDimensions.x * unit.scale).toFixed(2));
+const dimensionY = ref((modelDimensions.y * unit.scale).toFixed(2));
+const dimensionZ = ref((modelDimensions.z * unit.scale).toFixed(2));
 const scale = ref(unit.scale);
 
 const submitted = ref(true);
@@ -155,6 +153,10 @@ watch(scale, (value) => {
   printOrderStore.updateUnit(unit.localUrl, {
     scale_display: value,
   });
+
+  dimensionX.value = (value * modelDimensions.x).toFixed(2);
+  dimensionY.value = (value * modelDimensions.y).toFixed(2);
+  dimensionZ.value = (value * modelDimensions.z).toFixed(2);
 
   submitted.value = false;
 });

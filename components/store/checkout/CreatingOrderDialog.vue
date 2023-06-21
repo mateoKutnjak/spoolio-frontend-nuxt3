@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 p-12 justify-between">
+  <div class="flex flex-col gap-12 p-12 justify-between">
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -47,7 +47,6 @@
       v-show="orderStatus === OrderStatus.error"
       class="
       btn
-      btn-lg
       text-xl"
       @click="onReturnPressed"
     >{{ capitalizeOnlyFirstLetter($t('return')) }}</div>
@@ -63,6 +62,7 @@ import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
 const {t} = useI18n();
+const localePath = useLocalePath();
 
 const cartStore = useCartStore();
 const dialogStore = useDialogStore();
@@ -109,7 +109,7 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   cartStore.clear();
-  navigateTo("/blogs");
+  navigateTo(localePath("/blogs"));
 }
 
 function onReturnPressed() {
@@ -129,7 +129,7 @@ watch(orderStatus, async (value) => {
     }
 
     dialogStore.close();
-    navigateTo(`/payment/store/${store_order.value.id}`);
+    navigateTo(localePath(`/payment/store/${store_order.value.id}`));
   }
 });
 </script>

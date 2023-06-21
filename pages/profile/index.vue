@@ -1,23 +1,26 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex flex-col gap-5 justify-center items-center">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
+    <div class="flex flex-col gap-5 justify-center items-start">
       <FormProfileGeneralInfo
         :contact_email="contact_email_ref"
         :enable-use-default="false"
         @on-saved="onGeneralInfoSaved"
       />
 
-      <FormShippingAddress
-        :shipping_address="shipping_address_ref"
-        :enable-use-default="false"
-        :on-saved="onShippingAddressSaved"
-      />
+      <div class="grid grid-cols-2 gap-12">
 
-      <FormBillingAddress
-        :billing_address="billing_address_ref"
-        :enable-use-default="false"
-        :on-saved="onBillingAddressSaved"
-      />
+        <FormShippingAddress
+          :shipping_address="shipping_address_ref"
+          :enable-use-default="false"
+          :on-saved="onShippingAddressSaved"
+        />
+
+        <FormBillingAddress
+          :billing_address="billing_address_ref"
+          :enable-use-default="false"
+          :on-saved="onBillingAddressSaved"
+        />
+      </div>
     </div>
 
   </div>
@@ -30,7 +33,7 @@ import { useAuthStore } from "~~/stores/auth";
 import { useNotificationStore } from "~~/stores/notification";
 import { IAddressBilling, IAddressShipping, IProfile } from "~~/constants/data";
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
@@ -49,7 +52,10 @@ function onShippingAddressSaved(shipping_address: IAddressShipping) {
       shipping_address: shipping_address,
     })
     .then(() => {
-      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
+      notificationStore.show(
+        capitalizeOnlyFirstLetter(t("saved")),
+        ToastLevelType.success
+      );
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -60,7 +66,10 @@ function onBillingAddressSaved(billing_address: IAddressBilling) {
       billing_address: billing_address,
     })
     .then(() => {
-      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
+      notificationStore.show(
+        capitalizeOnlyFirstLetter(t("saved")),
+        ToastLevelType.success
+      );
     })
     .catch((err) => notificationStore.showFetchError(err));
 }
@@ -71,7 +80,10 @@ function onGeneralInfoSaved(contact_email: string) {
       email: contact_email,
     })
     .then(() => {
-      notificationStore.show(capitalizeOnlyFirstLetter(t('saved')), ToastLevelType.success);
+      notificationStore.show(
+        capitalizeOnlyFirstLetter(t("saved")),
+        ToastLevelType.success
+      );
     })
     .catch((err) => notificationStore.showFetchError(err));
 }

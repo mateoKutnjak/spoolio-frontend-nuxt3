@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-navigateTo("/profile/order-history/");
+const localePath = useLocalePath();
+navigateTo(localePath("/profile/order-history/"));
 </script>
 
 <style>

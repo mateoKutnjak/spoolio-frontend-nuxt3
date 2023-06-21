@@ -34,20 +34,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { usePrintOrderStore } from "~~/stores/print_order";
 import { useGlobalsStore } from "~~/stores/globals";
 import { DimensionUnit, RotationUnit } from "~~/utils/enums";
+import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
+import { IPrintOrderUnit } from "~~/constants/data";
 
-const { stlFileUrl } = defineProps<{
-  stlFileUrl: string;
+const { unit } = defineProps<{
+  unit: IPrintOrderUnit;
 }>();
 
 const globalsStore = useGlobalsStore();
 const printOrderStore = usePrintOrderStore();
-
-const printOrderUnit = printOrderStore.getUnitByLocalUrl(stlFileUrl);
-
-if (!printOrderUnit) {
-  console.error(`Print order unit is null for fileUrl=${stlFileUrl}`);
-  throw createError(`Print order unit is null for fileUrl=${stlFileUrl}`);
-}
 
 let renderer: WebGLRenderer;
 let controls: OrbitControls;
@@ -57,6 +52,13 @@ const root = ref(null);
 const { width, height } = useElementSize(root);
 
 const aspectRatio = computed(() => width.value / height.value);
+
+printOrderStore.updateUnit(unit.localUrl, {scale_display: unit.scale})
+
+
+const scale_display = computed(
+  () => printOrderStore.getUnitByLocalUrl(unit.localUrl)?.scale_display
+);
 
 const color = ref<number>();
 
@@ -108,11 +110,18 @@ addLights();
 // *** OBJECT LOADING *** //
 
 const { load } = useSTLModel();
-const geometry = await load(stlFileUrl);
+const exporter = new STLExporter();
+console.log("exporter");
+console.log(exporter);
+const geometry = await load(unit.localUrl);
+
+// *** OBJECT SCALE *** //
+
+geometry.scale(unit.scale, unit.scale, unit.scale);
 
 // *** OBJECT MODELING *** //
 
-const meshColor = printOrderUnit.spool.color.value;
+const meshColor = unit.spool.color.value;
 
 const mesh = new Mesh(
   geometry,
@@ -126,9 +135,9 @@ if (mesh.geometry.boundingBox) {
   positionCameraOnObject(camera, mesh.geometry.boundingBox);
 
   const bbox = mesh.geometry.boundingBox;
-  const rotationVector = vector3Parse(printOrderUnit.model_rotation);
-  const rotationUnit = printOrderUnit.rotation_unit;
-  const dimensionUnit = printOrderUnit.length_unit;
+  const rotationVector = vector3Parse(unit.model_rotation);
+  const rotationUnit = unit.rotation_unit;
+  const dimensionUnit = unit.length_unit;
 
   if (bbox) {
     drawPlane(
@@ -144,7 +153,7 @@ if (mesh.geometry.boundingBox) {
 
 // *** OBJECT ROTATION *** //
 
-const model_rotation = vector3Parse(printOrderUnit.model_rotation);
+const model_rotation = vector3Parse(unit.model_rotation);
 
 mesh.rotation.set(model_rotation.x, model_rotation.y, model_rotation.z);
 
@@ -164,14 +173,14 @@ watch(color, (value) => {
 });
 
 watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
-  const item = value.find((el) => el.localUrl === stlFileUrl);
+  const item = value.find((el) => el.localUrl === unit.localUrl);
 
   if (!item) {
     mesh.material.color.setHex(0xeaeaea);
     return;
   }
 
-  const colorStringValue = printOrderUnit.spool.color.value;
+  const colorStringValue = unit.spool.color.value;
   const colorStringValueTrimmed = colorStringValue.substring(1);
   const parsed = parseInt(colorStringValueTrimmed, 16);
 
@@ -196,6 +205,42 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
 
   mesh.rotation.set(rotationVector.x, rotationVector.y, rotationVector.z);
 });
+
+watch(scale_display, (value, oldValue) => {
+  if (value && oldValue) {
+    const newScale = value / oldValue;
+    mesh.geometry.scale(newScale, newScale, newScale);
+
+    recenterCameraAndRedrawPlane(mesh);
+  }
+});
+
+function recenterCameraAndRedrawPlane(
+  mesh: Mesh<BufferGeometry, MeshStandardMaterial>
+) {
+  geometry.computeBoundingBox();
+
+  if (mesh.geometry.boundingBox) {
+    centerObject(mesh, mesh.geometry.boundingBox);
+    positionCameraOnObject(camera, mesh.geometry.boundingBox);
+
+    const bbox = mesh.geometry.boundingBox;
+    const rotationVector = vector3Parse(unit.model_rotation);
+    const rotationUnit = unit.rotation_unit;
+    const dimensionUnit = unit.length_unit;
+
+    if (bbox) {
+      drawPlane(
+        bbox,
+        rotationVector,
+        rotationUnit as RotationUnit,
+        dimensionUnit as DimensionUnit
+      );
+    } else {
+      console.error("Bounding box not calculated after rotation changes");
+    }
+  }
+}
 
 onMounted(() => {
   setRenderer();

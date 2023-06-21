@@ -16,7 +16,7 @@
 
     <ButtonFindOutMore
       class="self-end"
-      to="/blogs"
+      :to="localePath('/blogs')"
     />
   </div>
 </template>

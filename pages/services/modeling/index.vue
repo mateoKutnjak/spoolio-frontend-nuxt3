@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-8">
     <div class="flex flex-col gap-8">
       <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('describe_what_you_want_us_to_create_for_you')) }}</div>
       <FormKit
@@ -65,43 +65,62 @@
               />
             </div>
           </div>
-          <div class="flex gap-4 items-center">
-            <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_type')) }}:</div>
-            <SelectSingleChoice
-              v-if="itemTypes.length > 0"
-              :options="itemTypes"
-              :preselect-option="itemTypes[0]"
-              :extract-id="(option: IModelingOrderItemType) => option.id"
-              :extract-title="(option: IModelingOrderItemType) => option.name"
-              @on-selection-change="l => itemTypeSelectionChange(l)"
-            />
-          </div>
-          <div class="flex gap-4 items-center">
-            <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_attributes')) }}:</div>
-            <SelectMultiChoice
-              v-if="itemAttributes.length > 0"
-              :options="itemAttributes"
-              :extract-id="(option: IModelingOrderItemAttribute) => option.id"
-              :extract-title="(option: IModelingOrderItemAttribute) => option.name"
-              @on-selection-change="l => itemAttributeSelectionChange(l)"
-            />
+
+          <div class="overflow-x-auto">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_type')) }}:</div>
+                  </td>
+                  <td>
+                    <SelectSingleChoice
+                      v-if="itemTypes.length > 0"
+                      :options="itemTypes"
+                      :preselect-option="itemTypes[0]"
+                      :extract-id="(option: IModelingOrderItemType) => option.id"
+                      :extract-title="(option: IModelingOrderItemType) => option.name"
+                      @on-selection-change="l => itemTypeSelectionChange(l)"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_attributes')) }}:</div>
+                  </td>
+                  <td>
+                    <SelectMultiChoice
+                      v-if="itemAttributes.length > 0"
+                      :options="itemAttributes"
+                      :extract-id="(option: IModelingOrderItemAttribute) => option.id"
+                      :extract-title="(option: IModelingOrderItemAttribute) => option.name"
+                      @on-selection-change="l => itemAttributeSelectionChange(l)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="divider p-0 m-0"></div>
           <ServicesModelingAttachmentFiles />
           <ServicesModelingAttachmentImages />
-          <div class="flex justify-center mt-12">
+          <div class="flex justify-center mt-4">
             <FormKit
               type="submit"
               :label="capitalizeOnlyFirstLetter($t('send_request'))"
-              :classes="{
-              input: 'btn-lg btn-block',
-            }"
             />
           </div>
         </div>
       </FormKit>
     </div>
-    <div class="md:hidden toast mx-6 my-6 flex flex-col gap-3">
+    <div class="
+              md:hidden
+              toast
+              mx-6
+              my-6
+              flex
+              flex-col
+              gap-3">
       <FileUploadFAB @change="change" />
     </div>
   </div>
@@ -211,7 +230,7 @@ function onFilesAdded(files: File[]) {
 }
 
 async function submitHandler() {
-  dialogStore.open("ServicesModelingCreatingOrderDialog", {}, "2xl", false);
+  dialogStore.open("ServicesModelingCreatingOrderDialog", {}, undefined, "2xl", false);
 }
 
 function onUseDefaultContactEmail() {

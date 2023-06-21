@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3 py-2 flex gap-2 items-center">
+  <div class="flex gap-2 items-center">
     <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
 
     <div v-if="eta === null">

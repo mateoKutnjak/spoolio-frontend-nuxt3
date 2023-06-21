@@ -137,9 +137,6 @@ async function submitHandler() {
   submitted.value = true;
 }
 
-function onRotationUnitSelected(e: any) {
-  unit.rotation_unit = e;
-}
 
 watch(useOptimalRotation, (value) => {
   if (value) {

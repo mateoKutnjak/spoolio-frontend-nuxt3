@@ -26,9 +26,11 @@
 
 <script lang="ts" setup>
 import { IPrintingMethod, IPrintOrderUnit } from "~~/constants/data";
+import { useFilamentSpoolStore } from "~~/stores/filament_spool";
 import { usePrintingMethodStore } from "~~/stores/printing_method";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
+const filamentSpoolStore = useFilamentSpoolStore();
 const printOrderStore = usePrintOrderStore();
 const printingMethodStore = usePrintingMethodStore();
 
@@ -41,7 +43,32 @@ const printingMethods = printingMethodStore.getPrintingMethods;
 const selectedMethod = ref<IPrintingMethod | null>(unit.printing_method);
 
 watch(selectedMethod, (value) => {
-  printOrderStore.updateUnit(unit.localUrl, { printing_method: value });
+  if (value) {
+    printOrderStore.updateUnit(unit.localUrl, { printing_method: value });
+
+    if (!value.supported_materials || !value.supported_materials.length) {
+      throw createError(
+        `Supported materials not existant for printing method ${value.name}. Got ${value.supported_materials}`
+      );
+    }
+    const firstSupportedMaterial = value.supported_materials[0];
+
+    const spoolWithFirstSupportedMaterial =
+      filamentSpoolStore.getSpoolsWithMaterial(firstSupportedMaterial);
+
+    if (
+      !spoolWithFirstSupportedMaterial ||
+      !spoolWithFirstSupportedMaterial.length
+    ) {
+      throw createError(
+        `Spools not found for material ${firstSupportedMaterial.name}. Got ${spoolWithFirstSupportedMaterial}`
+      );
+    }
+
+    printOrderStore.updateUnit(unit.localUrl, {
+      spool: spoolWithFirstSupportedMaterial[0],
+    });
+  }
 });
 </script>
 

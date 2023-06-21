@@ -13,7 +13,7 @@
     leave-to="opacity-0"
   >
     <NuxtLink
-      :to="`/blogs/${item.id}`"
+      :to="localePath(`/blogs/${item.id}`)"
       class="h-full"
     >
       <div class="h-full flex flex-col gap-2">

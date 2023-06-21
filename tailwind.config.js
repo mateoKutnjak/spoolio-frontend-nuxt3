@@ -28,12 +28,25 @@ module.exports = {
             {
                 mytheme: {
                     "primary": "#e17d4e",
-                    "secondary": "#f6d860",
-                    "accent": "#37cdbe",
-                    "neutral": "#3d4451",
-                    'info': '#00a7e1',
-                    "success": '#09bc8a',
+                    "secondary": "#C05321",
+                    "accent": "#0FA3B1",
+                    "neutral": "#D9E5D6",
+                    "error": '#e75f6b',
+                    'info': '#4489C5',
+                    "success": '#679436',
+                    "warning": '#dcab18',
                     "base-100": "#ffffff",
+
+                    ".btn": {
+                        "font-weight": 500
+                    },
+
+                    ".btn-primary": {
+                        "color": "white",
+                    },
+                    ".btn-error": {
+                        "color": "white",
+                    },
                 },
             },
         ],

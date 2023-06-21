@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <NuxtLink :to="`/store/${product.id}/`">
+    <NuxtLink :to="localePath(`/store/${product.id}/`)">
       <div class="card bg-base-100 border-1 rounded-sm shadow h-full">
 
         <div

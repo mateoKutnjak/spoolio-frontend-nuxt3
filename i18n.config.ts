@@ -454,7 +454,7 @@ export default defineI18nConfig(() => ({
             regular: 'regularno',
             rejected: 'odbijeno',
             resolution: 'rezolucija',
-            retry: 'pokušaj ponovo',
+            retry: 'ponovi',
             return: 'povratak',
             reviewing: 'pregledavanje',
             save: 'spremi',

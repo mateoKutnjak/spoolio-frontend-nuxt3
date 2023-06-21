@@ -1,5 +1,5 @@
 <template>
-  <div class="z-20">
+  <div>
     <Menu
       as="div"
       class="relative inline-block text-left"
@@ -26,12 +26,12 @@
         leave-from-class="transform scale-100 opacity-100"
         leave-to-class="transform scale-95 opacity-0"
       >
-        <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
 
           <div class="px-2 py-2">
             <MenuItem
               as="div"
-              @click="navigateTo('/admin/print-jobs')"
+              @click="navigateTo(localePath('/admin/print-jobs'))"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -54,17 +54,10 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
 
 import { useAuthStore } from "~~/stores/auth";
-import { useDialogStore } from "~~/stores/dialog";
 
 const authStore = useAuthStore();
-const dialogStore = useDialogStore();
 
 const { user } = storeToRefs(authStore);
-
-function logout() {
-  authStore.logout();
-  navigateTo("/blogs");
-}
 </script>
 
 <style>

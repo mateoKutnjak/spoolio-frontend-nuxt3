@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/blogs/${blog.id}`">
+  <NuxtLink :to="localePath(`/blogs/${blog.id}`)">
     <div class="h-full card gap-6">
 
       <div

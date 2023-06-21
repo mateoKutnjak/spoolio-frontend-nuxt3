@@ -5,7 +5,7 @@
   >
     <Dropdown
       :items="spools"
-      :preselected-item="spools[0]"
+      :preselected-item="unit.spool"
       :extract-name="(el: IFilamentSpool) => el.material.name"
       background-color="bg-stone-200"
       size="md"

@@ -6,18 +6,18 @@
     <div>
       <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('services')) }}</span>
       <NuxtLink
-        to="/services/printing"
+        :to="localePath('/services/printing')"
         class="link link-hover"
       >{{ capitalizeOnlyFirstLetter($t('printing')) }}</NuxtLink>
       <NuxtLink
-        to="/services/modeling"
+        :to="localePath('/services/modeling')"
         class="link link-hover"
       >{{ capitalizeOnlyFirstLetter($t('modeling')) }}</NuxtLink>
     </div>
     <div>
       <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('company')) }}</span>
       <NuxtLink
-        to="/about"
+        :to="localePath('/about')"
         class="link link-hover"
       >{{ capitalizeOnlyFirstLetter($t('about')) }}</NuxtLink>
       <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('contact')) }}</a>

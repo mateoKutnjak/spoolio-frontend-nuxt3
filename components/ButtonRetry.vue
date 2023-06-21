@@ -1,13 +1,14 @@
 <template>
   <div
-    class="btn btn-sm btn-error gap-2 shadow text-white"
+    class="btn btn-sm btn-error gap-2 rounded-md text-white font-thin items-center"
     @click.stop="emit('onClick')"
   >
     <Icon
-      name="lucide:refresh-cw"
-      size="18"
+      class="mb-0.5"
+      name="lucide:alert-triangle"
+      size="17"
     />
-    <div class="mt-0.5 text-base">
+    <div class="text-base">
       {{ capitalizeOnlyFirstLetter($t('retry')) }}
     </div>
   </div>

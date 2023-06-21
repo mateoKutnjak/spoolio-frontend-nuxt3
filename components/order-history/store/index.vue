@@ -51,7 +51,7 @@
             size="50"
           />
           <p class="text-2xl pt-4 py-8">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</p>
-          <NuxtLink to="/store/">
+          <NuxtLink :to="localePath('/store/')">
             <div class="btn btn-outline bg-white gap-2 border-gray-500">
               <div class="text-lg"> {{ capitalizeOnlyFirstLetter($t('go_to_store')) }} </div>
             </div>
@@ -68,6 +68,8 @@ import { PAGE_SIZE } from "~~/constants/constants";
 import { IStoreOrder } from "~~/constants/data";
 import { useNotificationStore } from "~~/stores/notification";
 import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
+
+const localePath = useLocalePath();
 
 const notificationStore = useNotificationStore();
 const storeOrderHistoryStore = useStoreOrderHistoryStore();
@@ -105,7 +107,7 @@ function onPageSelected(pageSelected: number) {
 }
 
 function onItemClicked(order: IStoreOrder) {
-  navigateTo(`/profile/order-history/store/${order.id}`);
+  navigateTo(localePath(`/profile/order-history/store/${order.id}`));
 }
 </script>
   

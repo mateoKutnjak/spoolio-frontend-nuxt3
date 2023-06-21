@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-16 p-12 justify-between items-center">
+  <div class="flex flex-col gap-12 p-12 justify-between items-center">
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -118,8 +118,7 @@
     <div
       v-show="everythingSuccessful"
       class="
-      btn
-      btn-lg btn-block
+      btnbtn-block
       text-xl"
       :class="everythingSuccessful ? '': 'btn-disabled'"
       @click="onOkPressed"
@@ -127,8 +126,7 @@
     <div
       v-show="hasErrors"
       class="
-      btn
-      btn-lg btn-block
+      btn btn-block
       text-xl
       "
       @click="onReturnPressed"
@@ -147,6 +145,8 @@ import {
 import { useDialogStore } from "~~/stores/dialog";
 import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
+
+const localePath = useLocalePath();
 
 const dialogStore = useDialogStore();
 const modelingOrderStore = useModelingOrderStore();
@@ -282,7 +282,7 @@ onMounted(async () => {
 function onOkPressed() {
   dialogStore.close();
   modelingOrderStore.clear();
-  navigateTo("/blogs");
+  navigateTo(localePath("/"));
 }
 
 function onReturnPressed() {

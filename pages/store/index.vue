@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div class="pb-12 flex justify-between items-center">
       <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('products')) }}</div>
       <SearchBar

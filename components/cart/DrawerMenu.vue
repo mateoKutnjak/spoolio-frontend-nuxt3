@@ -1,5 +1,5 @@
 <template>
-  <div class="menu w-80 bg-base-100 text-base-content flex justify-between">
+  <div class="menu w-80 h-screen bg-base-100 text-base-content flex justify-between">
     <div class="flex flex-col h-full">
       <ul
         v-if="cartItems.size > 0"
@@ -14,6 +14,8 @@
           <h2 class="mt-1 text-xl">
             {{ capitalizeOnlyFirstLetter($t('cart_items')) }}
           </h2>
+          <div class="flex-1"></div>
+          <div class="btn btn-sm btn-error rounded-md" @click="cartStore.clear()"> {{ capitalizeOnlyFirstLetter($t('clear')) }}</div>
         </div>
         <div class="grow">
           <li
@@ -38,7 +40,7 @@
 
           </div>
           <div class="justify-center items-end gap-2 text-2xl font-bold">
-            <NuxtLink to="/store/checkout">
+            <NuxtLink :to="localePath('/store/checkout')">
               <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
               <ClientOnly>
                 <div

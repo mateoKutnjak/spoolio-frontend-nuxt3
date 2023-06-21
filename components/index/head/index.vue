@@ -20,12 +20,12 @@
             </div>
           </div>
           <NuxtLink
-            to="/services/printing"
+            :to="localePath('/services/printing')"
             class="btn btn-block btn-lg btn-primary text-base-100"
           >{{ $t('i_have_a_model').toUpperCase() }}</NuxtLink>
         </div>
         <NuxtLink
-          to="/services/modeling"
+          :to="localePath('/services/modeling')"
           class="btn btn-lg btn-outline text-stone-600 bg-white"
         >{{ $t('i_dont_have_a_model').toUpperCase() }}</NuxtLink>
       </div>

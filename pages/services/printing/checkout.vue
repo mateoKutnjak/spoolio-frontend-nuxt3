@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto flex flex-col gap-8 text-stone-600">
+  <div class="container mx-auto max-w-7xl flex flex-col gap-8 text-stone-600 px-0 md:px-12 py-8">
     <ServicesPrintingStepsPreview :step-active="1" />
     <FormKit
       type="form"
@@ -238,7 +238,7 @@ onMounted(async () => {
 const totalPrice = ref<number>(printOrderStore.getTotalPrice);
 
 function submitHandler() {
-  dialogStore.open("ServicesPrintingCreatingOrderDialog", {}, "2xl", false);
+  dialogStore.open("ServicesPrintingCreatingOrderDialog", {},undefined, "2xl", false);
 }
 </script>
 
