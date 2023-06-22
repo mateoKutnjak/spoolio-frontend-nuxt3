@@ -19,7 +19,7 @@
           <div class="flex flex-col gap-4">
             <BlogFeaturedCardCompact
               v-for="featuredBlog in featuredBlogsData.slice(3, 6)"
-              :key="featuredBlog"
+              :key="featuredBlog.id"
               :item="featuredBlog"
               @on-tag-clicked="(tag: IBlogTag) => onTagClicked(tag)"
             >
