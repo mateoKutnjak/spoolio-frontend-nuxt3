@@ -72,8 +72,26 @@ const isLoadingOverlayVisible = computed(() => {
   return loadingOverlayStore.isVisible;
 });
 
+function beforeWindowUnload(e: any) {
+  console.log(e);
+
+  if (!window.confirm("Do you want to leave? Your orders won't be saved.")) {
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = "";
+  }
+}
+
 onMounted(() => {
+  console.debug("onMounted: adding listeners (beforeunload, )");
+  window.addEventListener("beforeunload", beforeWindowUnload);
+
   drawerInput = document.getElementById("my-drawer");
+});
+
+onBeforeUnmount(() => {
+  console.debug("onBeforeUnmount: removing listeners (beforeunload, )");
+  window.removeEventListener("beforeunload", beforeWindowUnload);
 });
 
 watch([isDrawerOpened], (value, oldValue, onInvalidate) => {

@@ -55,7 +55,7 @@ import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 import { usePaymentStore } from "~~/stores/payment";
 
 definePageMeta({
-  layout: false,
+  layout: 'clean',
 });
 
 const { t } = useI18n();
