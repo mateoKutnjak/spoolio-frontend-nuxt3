@@ -16,6 +16,8 @@
       <FormKit
         type="form"
         id="quantity-form"
+        submit-label="Sign In"
+        @submit="submitHandler"
         :actions="false"
       >
         <FormKit
@@ -34,6 +36,12 @@
                 outer: '!m-0',
                 message: '!m-0, !px-1'
               }"
+        />
+        <FormKit
+          v-if="!emitLive"
+          type="submit"
+          :label="capitalizeOnlyFirstLetter($t('save'))"
+          :classes="{input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs', outer: '!m-0', }"
         />
       </FormKit>
     </div>
@@ -55,10 +63,11 @@
 <script lang="ts" setup>
 const emit = defineEmits(["onIncreaseValue", "onDecreaseValue", "onValueSet"]);
 
-const { max, min, initialValue } = defineProps<{
+const { max, min, initialValue, emitLive } = defineProps<{
   max: number;
   min: number;
   initialValue: number;
+  emitLive?: boolean;
 }>();
 
 const quantity = ref<number>(initialValue);
@@ -70,7 +79,10 @@ function increaseQuantity() {
   }
 
   quantity.value += 1;
-  emit("onIncreaseValue", quantity.value);
+
+  if (emitLive) {
+    emit("onIncreaseValue", quantity.value);
+  }
 }
 
 function decreaseQuantity() {
@@ -80,23 +92,41 @@ function decreaseQuantity() {
   }
 
   quantity.value -= 1;
-  emit("onDecreaseValue", quantity.value);
+
+  if (emitLive) {
+    emit("onDecreaseValue", quantity.value);
+  }
+}
+
+function submitHandler() {
+  if (!emitLive) {
+    emit("onValueSet", quantity.value);
+  }
 }
 
 watch(quantity, (v) => {
   const numberValue = Number(v);
   if (numberValue < min) {
     quantity.value = min;
-    emit("onValueSet", min);
+
+    if (emitLive) {
+      emit("onValueSet", min);
+    }
     return;
   }
   if (numberValue > max) {
     quantity.value = max;
-    emit("onValueSet", max);
+
+    if (emitLive) {
+      emit("onValueSet", max);
+    }
     return;
   }
   quantity.value = numberValue;
-  emit("onValueSet", Number(v));
+
+  if (emitLive) {
+    emit("onValueSet", Number(v));
+  }
 });
 </script>
 
