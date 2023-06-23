@@ -1,24 +1,29 @@
 <template>
   <div
-    v-if="data"
+    v-if="unit"
     class="space-x-1 text-stone-400 text-lg"
   >
-    <span>{{ data.x.toFixed(1) }}</span>
+    <span>{{ dimensionX }}</span>
     <span>x</span>
-    <span>{{ data.y.toFixed(1) }}</span>
+    <span>{{ dimensionY }}</span>
     <span>x</span>
-    <span>{{ data.z.toFixed(1) }}</span>
-    <span>{{ unit }}</span>
+    <span>{{ dimensionZ }}</span>
+    <span>{{ unit.length_unit }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Vector3 } from "three";
+import { IPrintOrderUnit } from "~~/constants/data";
 
-const { data, unit } = defineProps<{
-  data: Vector3 | undefined;
-  unit: string;
+const { unit } = defineProps<{
+  unit: IPrintOrderUnit;
 }>();
+
+const modelDimensions = vector3Parse(unit.model_dimensions);
+
+const dimensionX = ref((modelDimensions.x * unit.scale).toFixed(1));
+const dimensionY = ref((modelDimensions.y * unit.scale).toFixed(1));
+const dimensionZ = ref((modelDimensions.z * unit.scale).toFixed(1));
 </script>
 
 <style>

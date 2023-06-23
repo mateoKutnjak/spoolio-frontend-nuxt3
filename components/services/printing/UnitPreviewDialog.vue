@@ -15,8 +15,7 @@
             :key="unit.length_unit"
           /> -->
           <ServicesPrintingDimensionInfo
-            :data="vector3Parse(unit.model_dimensions)"
-            :unit="unit.length_unit"
+            :unit="unit"
           />
           <ServicesPrintingVolumeInfo
             :data="unit.model_volume"

@@ -38,7 +38,7 @@
               }"
         />
         <FormKit
-          v-if="!emitLive"
+          v-if="!emitLive && updated"
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('save'))"
           :classes="{input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs', outer: '!m-0', }"
@@ -71,6 +71,7 @@ const { max, min, initialValue, emitLive } = defineProps<{
 }>();
 
 const quantity = ref<number>(initialValue);
+const updated = ref(true);
 
 function increaseQuantity() {
   if (quantity.value + 1 > max) {
@@ -100,12 +101,16 @@ function decreaseQuantity() {
 
 function submitHandler() {
   if (!emitLive) {
+    updated.value = false;
     emit("onValueSet", quantity.value);
   }
 }
 
 watch(quantity, (v) => {
   const numberValue = Number(v);
+
+  updated.value = true;
+
   if (numberValue < min) {
     quantity.value = min;
 

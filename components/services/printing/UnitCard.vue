@@ -6,10 +6,7 @@
           MODEL {{ index+1 }}/{{ totalUnitCount }}
         </div>
         <div class="mt-2 text-stone-700 text-xl font-bold">{{ extractUrlFileStringUnion(unit.file).toUpperCase() }}</div>
-        <ServicesPrintingDimensionInfo
-          :data="vector3Parse(unit.model_dimensions)"
-          :unit="unit.length_unit"
-        />
+        <ServicesPrintingDimensionInfo :unit="unit" />
       </div>
 
       <div class="flex gap-1">
@@ -53,14 +50,14 @@
         />
       </div>
 
-      <div class="w-full h-min grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
+      <div class="w-full h-min grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 text-stone-600">
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
+          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
+          <div class="text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
+          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
+          <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="lucide:hash"
@@ -69,7 +66,7 @@
           </div>
         </div>
         <div>
-          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
+          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
           <ServicesPrintingUnitSinglePrice
             :unit="unit"
             :price="totalPrice / unit.quantity"
@@ -77,12 +74,12 @@
         </div>
 
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.spool.material.name }}</div>
+          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
+          <div class="text-xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
+          <div class="line-clamp-1 text-sm">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
+          <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="lucide:layers"
@@ -91,7 +88,7 @@
           </div>
         </div>
         <div>
-          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
+          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
           <ServicesPrintingUnitSinglePrice
             :unit="unit"
             :price="totalPrice"
@@ -99,12 +96,12 @@
         </div>
 
         <div>
-          <div class="text-stone-500">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
+          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
+          <div class="text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-stone-500 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
-          <div class="text-stone-700 text-xl font-bold">
+          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
+          <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="lucide:align-justify"
@@ -185,15 +182,15 @@ function getColorName(): string {
 }
 
 function increaseQuantity() {
-  printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity + 1 });
+  // printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity + 1 });
 }
 
 function decreaseQuantity() {
-  if (unit.quantity > 1) {
-    printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity - 1 });
-  } else {
-    printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
-  }
+  // if (unit.quantity > 1) {
+  //   printOrderStore.updateUnit(unit.localUrl, { quantity: unit.quantity - 1 });
+  // } else {
+  //   printOrderStore.updateUnit(unit.localUrl, { quantity: 1 });
+  // }
 }
 
 function setQuantity(q: number) {
