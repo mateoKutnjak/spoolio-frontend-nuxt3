@@ -35,7 +35,7 @@ async function postAttachmentFile(item: IAttachmentFile, contentType: string, ob
     });
 }
 
-function adjustPrice(item: IPrintOrderUnit) {
+export function adjustPrice(item: IPrintOrderUnit) {
     if (!item.estimated_price) {
         console.error(`Cannot calculate adjusted price. Estimated price is not defined for localUrl=${item.localUrl}`);
         return Number.POSITIVE_INFINITY;
@@ -48,7 +48,7 @@ function adjustPrice(item: IPrintOrderUnit) {
 
     const estimated_time_hours = item.estimated_time / 60 / 60;
 
-    return (item.estimated_price + estimated_time_hours * HOURLY_RATE_EUR) * PROFIT_MARGIN_MULTIPLIER
+    return (Number(item.estimated_price) + estimated_time_hours * HOURLY_RATE_EUR) * PROFIT_MARGIN_MULTIPLIER
 }
 
 export const usePrintOrderStore = defineStore('print-order', {
@@ -173,6 +173,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("infill", unit.infill.id.toString());
             formData.append("wall", unit.wall.id.toString());
             formData.append('wall_thickness', unit.wall_thickness.id.toString())
+            formData.append('printing_method', unit.printing_method.id.toString());
             formData.append('scale', unit.scale.toString())
             formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
@@ -357,6 +358,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("infill", unit.infill.id.toString());
             formData.append("wall", unit.wall.id.toString());
             formData.append('wall_thickness', unit.wall_thickness.id.toString());
+            formData.append('printing_method', unit.printing_method.id.toString());
             formData.append('scale', unit.scale.toString())
             formData.append('local_url', unit.localUrl);
             formData.append("file", unit.file);

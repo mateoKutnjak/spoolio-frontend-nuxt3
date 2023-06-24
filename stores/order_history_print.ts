@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants'
 import { IPaginatedResponse, IPrintOrder, IPrintOrderUnit } from '~~/constants/data';
 import { useAuthStore } from "../stores/auth";
+import { adjustPrice } from './print_order';
 
 export const usePrintOrderHistoryStore = defineStore('order-history-print', {
     state: () => ({
@@ -15,6 +16,23 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
         getPrintOrders: (state) => state,
         getPrintOrderById: (state) => {
             return (id: number) => state.print_orders.find((item) => item.id === id)
+        },
+        getPriceByLocalUrl: (state) => {
+            return (orderId: number, orderUnitId: number) => {
+                const order = state.print_orders.find(el => el.id === orderId)
+
+                if (!order) {
+                    throw createError(`Cannot calculate unit price. Order with id=${orderId} not found`);
+                }
+
+                const unit = order.units.find(el => el.id === orderUnitId)
+
+                if (!unit) {
+                    throw createError(`Cannot calculate unit price. Unit with id ${orderUnitId} not found`);
+                }
+
+                return unit.quantity * adjustPrice(unit);
+            }
         },
     },
 
@@ -48,7 +66,7 @@ export const usePrintOrderHistoryStore = defineStore('order-history-print', {
         async fetchPrintOrderById(id: number) {
 
             const config = useRuntimeConfig();
-            
+
 
             return promiseWithTimeout<IPrintOrder>(new Promise(async (resolve, reject) => {
                 customFetch<IPrintOrder>(`api/print-orders/orders/${id}/`, {

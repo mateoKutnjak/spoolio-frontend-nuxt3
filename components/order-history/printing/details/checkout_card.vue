@@ -1,6 +1,13 @@
 <template>
-  <div class="card compact px-3 pt-1 bg-base-100 rounded shadow border border-gray-400">
+  <div class="card compact px-3 pt-1 bg-base-100 rounded shadow border border-stone-400">
     <div class="card-body gap-4 justify-between">
+      <div class="card-title text-base text-gray-400 font-normal items-start">
+        <Icon
+          name="lucide:receipt"
+          size="22"
+        />
+        <div>{{ capitalizeOnlyFirstLetter($t('receipt')) }}</div>
+      </div>
       <table class="table table-compact w-full">
         <tbody class="text-gray-600 ">
           <tr>
@@ -24,17 +31,18 @@
         </tbody>
       </table>
       <NuxtLink
+        v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment"
         :to="localePath(`/payment/printing/${order.id}`)"
         class="btn btn-primary btn-block btn-l"
       >
-      {{ $t('pay_now').toUpperCase() }}
+        {{ $t('pay_now').toUpperCase() }}
       </NuxtLink>
     </div>
   </div>
 </template>
   
   <script lang="ts" setup>
-import { TAX_FRACTION } from "~~/constants/constants";
+import { OrderStatus, TAX_FRACTION } from "~~/constants/constants";
 import { IPrintOrder } from "~~/constants/data";
 
 const { order } = defineProps<{

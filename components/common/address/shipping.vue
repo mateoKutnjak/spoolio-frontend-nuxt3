@@ -1,5 +1,5 @@
 <template>
-  <div class="card compact px-3 pt-1 bg-base-100 rounded shadow border border-gray-400">
+  <div class="card compact px-3 pt-1 bg-base-100 rounded shadow border border-stone-400">
     <div class="card-body gap-4">
       <div class="card-title text-base text-gray-400 font-normal items-start">
         <Icon

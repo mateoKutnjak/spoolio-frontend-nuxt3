@@ -1,5 +1,5 @@
 <template>
-  <div class="card w-full rounded-none sm:rounded-xl bg-white px-2 py-1 shadow rounded-lg">
+  <div class="card w-full sm:rounded-xl bg-white px-2 py-1 shadow rounded-lg">
     <div class="card-body p-4 gap-8">
       <div class="flex flex-wrap gap-5 items-center justify-between">
         <div class="text-base font-mono font-bold link link-info">#{{printOrder?.id}}</div>
