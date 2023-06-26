@@ -1,5 +1,5 @@
 <template>
-  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border-2 border-stone-400">
+  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border border-stone-400">
     <div class="flex sm:flex-row flex-col justify-between">
       <div class="flex flex-col">
         <div class="text-stone-400">
@@ -15,16 +15,16 @@
           @click.stop="duplicateUnit"
         >
           <Icon
-            name="lucide:copy"
+            name="ph:copy"
             size="24"
           />
         </div>
         <div
-          class="btn btn-md btn-circle btn-ghost text-red-600"
+          class="btn btn-md btn-circle btn-ghost text-error"
           @click.stop="removeUnit"
         >
           <Icon
-            name="lucide:trash-2"
+            name="ph:trash"
             size="24"
           />
         </div>
@@ -35,7 +35,7 @@
     <div class="card sm:card-side gap-8">
       <div class="h-min flex flex-col gap-4 items-center">
         <nuxt-img
-          class="md:h-44 h-min aspect-square border-2 border-stone-400 rounded-md"
+          class="md:h-44 h-min aspect-square border border-stone-400 rounded-md"
           :src="unit.screenshotURL"
         >
         </nuxt-img>
@@ -60,7 +60,7 @@
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:hash"
+              name="ph:hash-bold"
               size="20"
             />{{ unit.infill.percentage * 100 }}%
           </div>
@@ -82,7 +82,7 @@
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:layers"
+              name="ph:stack-bold"
               size="20"
             />{{ unit.wall_thickness.thickness }}mm
           </div>
@@ -104,7 +104,7 @@
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:align-justify"
+              name="ph:list-bold"
               size="20"
             />{{ unit.wall.amount }}
           </div>

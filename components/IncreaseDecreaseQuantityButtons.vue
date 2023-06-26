@@ -6,7 +6,7 @@
       @click="value <= min ? () => null : decreaseValue()"
     >
       <Icon
-        name="lucide:minus"
+        name="ph:minus-bold"
         size="24"
       />
     </div>
@@ -21,7 +21,7 @@
       @click="value >= max ? () => null : increaseValue()"
     >
       <Icon
-        name="lucide:plus"
+        name="ph:plus-bold"
         size="24"
       />
     </button>

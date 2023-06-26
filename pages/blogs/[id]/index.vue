@@ -21,7 +21,7 @@
                 class="btn btn-outline gap-1"
               >
                 <Icon
-                  name="lucide:edit"
+                  name="ph:note-pencil"
                   size="20"
                   aria-hidden="true"
                 />{{ capitalizeOnlyFirstLetter($t('edit')) }}

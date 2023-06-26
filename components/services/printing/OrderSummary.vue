@@ -19,7 +19,7 @@
         class="mb-0.5 text-error"
       >
         <Icon
-          name="lucide:alert-circle"
+          name="ph:warning-circle"
           size="20"
         />
       </div>
@@ -33,7 +33,7 @@
         >
           <Icon
             class="text-warning"
-            name="lucide:alert-triangle"
+            name="ph:warning"
             size="20"
           />
           €{{totalPrice.toFixed(2) }}

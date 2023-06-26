@@ -12,8 +12,8 @@
       >
         <div class="mb-2 text-primary">
           <Icon
-            name="lucide:upload-cloud"
-            size="55"
+            name="ph:upload-simple-bold"
+            size="50"
             aria-hidden="true"
           />
         </div>
@@ -30,7 +30,7 @@
     </div>
     <div class="self-center flex gap-2 text-sm text-stone-500">
       <Icon
-        name="lucide:lock"
+        name="ph:lock-duotone"
         size="18"
       />
       {{ capitalizeOnlyFirstLetter($t('privacy')) }}:

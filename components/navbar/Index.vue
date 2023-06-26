@@ -71,8 +71,8 @@
 
             <Icon
               class="text-stone-700"
-              name="lucide:shopping-cart"
-              size="27"
+              name="ph:shopping-cart-duotone"
+              size="30"
               aria-hidden="true"
             />
           </div>

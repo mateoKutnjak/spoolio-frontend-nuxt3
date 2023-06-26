@@ -3,7 +3,7 @@
     <div class="card-body gap-4">
       <div class="card-title text-base text-gray-400 font-normal items-start">
         <Icon
-          name="lucide:map-pin"
+          name="ph:package-fill"
           size="22"
         />
         <div>{{ capitalizeOnlyFirstLetter($t('shipping_address')) }}</div>

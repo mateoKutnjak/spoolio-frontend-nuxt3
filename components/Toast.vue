@@ -3,24 +3,23 @@
     <Transition>
       <div
         v-show="isOpened"
-        class="toast toast-bottom toast-end px-12 py-8 z-50 text-base"
+        class="toast toast-bottom toast-end px-12 py-8 z-50 text-base whitespace-normal"
       >
-
-        <div class="w-full rounded-md shadow-lg font-bold bg-white text-stone-600">
+        <div class="max-w-lg rounded-md shadow-lg font-bold bg-stone-100 text-stone-600 border border-stone-300">
           <div class="flex">
             <div :class="`w-4 ${toastBgColor} rounded-tl-md rounded-bl-md`"></div>
-            <div class="px-5 py-4 flex gap-5 items-center">
+            <div :class="`px-5 py-4 flex gap-5 items-center `">
               <div class="justify-center items-center rounded-lg">
                 <Icon
                   :class="textColor"
                   :name="toastIconName"
-                  size="25"
+                  size="30"
                 />
                 <span class="sr-only">Check icon</span>
               </div>
               <div class="flex flex-col">
                 <div class="text-sm font-bold">{{ capitalizeOnlyFirstLetter(toastTitle) }}</div>
-                <div class="text-sm font-normal">{{message || ''}}</div>
+                <p class="break-words text-sm font-normal">{{message || ''}}</p>
               </div>
               <button
                 type="button"
@@ -30,7 +29,7 @@
                 @click="onCloseClicked"
               >
                 <Icon
-                  name="lucide:x"
+                  name="ph:x"
                   size="23"
                 />
               </button>
@@ -85,13 +84,13 @@ const textColor = computed(() => {
 const toastIconName = computed(() => {
   switch (type.value) {
     case ToastLevelType.debug:
-      return "lucide:alert-triangle";
+      return "ph:warning-fill";
     case ToastLevelType.error:
-      return "lucide:alert-circle";
+      return "ph:warning-circle-fill";
     case ToastLevelType.success:
-      return "lucide:check-circle";
+      return "ph:check-circle-fill";
     case ToastLevelType.info:
-      return "lucide:info";
+      return "ph:info-fill";
     default:
       return "bg-gray-700";
   }

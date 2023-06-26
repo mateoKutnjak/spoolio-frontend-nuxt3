@@ -23,7 +23,7 @@
             MODEL {{ index+1 }}/{{ order.unit_count }}
           </div>
           <a
-            class="text-info text-lg font-bold link link-info"
+            class="text-info font-bold link link-info"
             :href="extractUrlFileStringUnion(unit.file)"
           >{{ urlExtractFilename(extractUrlFileStringUnion(unit.file)).toUpperCase() }}</a>
           <ServicesPrintingDimensionInfo :unit="unit" />
@@ -36,7 +36,7 @@
           <div class="text-lg font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:hash"
+              name="ph:hash-bold"
               size="20"
             />{{ unit.infill.percentage * 100 }}%
           </div>
@@ -50,7 +50,7 @@
           <div class="text-lg font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:layers"
+              name="ph:stack-bold"
               size="20"
             />{{ unit.wall_thickness.thickness }}mm
           </div>
@@ -64,7 +64,7 @@
           <div class="text-lg font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
-              name="lucide:align-justify"
+              name="ph:list-bold"
               size="20"
             />{{ unit.wall.amount }}
           </div>

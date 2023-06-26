@@ -11,8 +11,8 @@
           @click="openDialog"
         >
           <Icon
-            name="lucide:edit-2"
-            size="18"
+            name="ph:note-pencil"
+            size="22"
           />
         </div>
       </div>
@@ -35,7 +35,7 @@
   >
     <Icon
       class="text-info mb-0.5"
-      name="lucide:plus-square"
+      name="ph:plus-square"
       size="18"
     />
     {{ capitalizeOnlyFirstLetter($t('add_billing_address')) }}

@@ -1,16 +1,16 @@
 <template>
   <div class="bg-stone-300/70 flex flex-col gap-6 items-start">
-    <div class="flex flex-col gap-1">
-      <div class="flex">
+    <div class="w-full flex flex-col gap-1">
+      <div class="w-full flex justify-between">
         <div class="text-md font-bold line-clamp-2">{{combination.product?.title || 'null'}}
 
         </div>
         <div
-          class="btn btn-ghost btn-sm btn-circle text-error"
+          class="btn btn-ghost btn-sm btn-circle text-stone-600"
           @click="onDeleteClicked"
         >
           <Icon
-            name="lucide:trash-2"
+            name="ph:x"
             size="20"
           />
         </div>

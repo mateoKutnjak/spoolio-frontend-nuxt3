@@ -12,7 +12,7 @@
           class="btn btn-circle btn-ghost btn-sm text-info"
         >
           <Icon
-            name="lucide:info"
+            name="ph:info"
             size="20"
           />
         </label>

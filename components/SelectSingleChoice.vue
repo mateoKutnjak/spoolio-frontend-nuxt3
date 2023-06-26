@@ -9,8 +9,8 @@
     >
       <Icon
         v-if="selectedOption && extractId(selectedOption) === extractId(option)"
-        name="lucide:check"
-        size="20"
+        name="ph:check-bold"
+        size="17"
       />
       {{ extractTitle(option) }}
     </div>

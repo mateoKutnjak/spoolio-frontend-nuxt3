@@ -1,8 +1,8 @@
 <template>
-  <div class="border border-stone-300 flex flex-col justify-center items-center text-stone-400">
+  <div class="border border-stone-300 flex flex-col gap-2 justify-center items-center text-stone-500">
     <Icon
-      name="lucide:image"
-      size="40"
+      name="octicon:telescope"
+      size="50"
     />
     <div class="font-sans text-sm">{{ capitalizeOnlyFirstLetter($t('image_not_found')) }}</div>
   </div>

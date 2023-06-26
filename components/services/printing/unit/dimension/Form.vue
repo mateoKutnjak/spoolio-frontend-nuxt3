@@ -9,13 +9,13 @@
           v-model="lockScale"
         />
         <Icon
-          name="lucide:lock"
-          class="swap-on text-gray-500"
+          name="ph:lock"
+          class="swap-on text-stone-600"
           size="20"
         />
         <Icon
-          name="lucide:unlock"
-          class="swap-off text-gray-400"
+          name="ph:lock-open"
+          class="swap-off text-stone-400"
           size="20"
         />
       </label>

@@ -14,7 +14,7 @@
       class="mb-0.5 text-error"
     >
       <Icon
-        name="lucide:alert-circle"
+        name="ph:warning-circle"
         size="20"
       />
     </div>
@@ -23,12 +23,12 @@
       class="flex gap-1 items-center justify-end"
     >
       <div
-        class="btn btn-ghost btn-sm gap-2 text-lg text-gray-700"
+        class="btn btn-ghost btn-sm text-lg"
         @click="notificationStore.show(`${capitalizeOnlyFirstLetter($t('minimum_price_for_printing_order_is'))} ${PRINT_ORDER_MIN_PRICE}€`)"
       >
         <Icon
           class="text-warning"
-          name="lucide:alert-triangle"
+          name="ph:warning"
           size="20"
         />
         €{{totalPrice.toFixed(2) }}

@@ -9,7 +9,7 @@
     >
       <Icon
         class="text-gray-500"
-        name="lucide:upload-cloud"
+        name="ph:upload-simple"
         size="30"
         aria-hidden="true"
       />

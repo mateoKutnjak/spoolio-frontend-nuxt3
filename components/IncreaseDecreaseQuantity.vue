@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex gap-1">
 
     <div
       class="btn btn-sm btn-circle btn-ghost"
@@ -7,8 +7,8 @@
       @click="quantity <= min ? () => null : decreaseQuantity()"
     >
       <Icon
-        name="lucide:minus"
-        size="24"
+        name="ph:minus-bold"
+        size="20"
       />
     </div>
 
@@ -31,7 +31,7 @@
           }"
           validation-visibility="live"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none rounded border-2 border-stone-400',
+                input: 'input input-bordered w-full input-sm !text-right !outline-none rounded border border-stone-400',
                 inner: '!p-0 m-0 border-none bg-transparent',
                 outer: '!m-0',
                 message: '!m-0, !px-1'
@@ -52,8 +52,8 @@
       @click="quantity >= max ? () => null : increaseQuantity()"
     >
       <Icon
-        name="lucide:plus"
-        size="24"
+        name="ph:plus-bold"
+        size="20"
       />
     </div>
 
@@ -71,7 +71,7 @@ const { max, min, initialValue, emitLive } = defineProps<{
 }>();
 
 const quantity = ref<number>(initialValue);
-const updated = ref(true);
+const updated = ref(false);
 
 function increaseQuantity() {
   if (quantity.value + 1 > max) {

@@ -7,15 +7,18 @@
       >
         <div class="p-4 pb-8 flex gap-4 items-center">
           <Icon
-            name="lucide:shopping-cart"
+            name="ph:shopping-cart-duotone"
             class="block h-6 w-6"
             aria-hidden="true"
           />
-          <h2 class="mt-1 text-xl">
+          <h2 class="mt-1 text-lg">
             {{ capitalizeOnlyFirstLetter($t('cart_items')) }}
           </h2>
           <div class="flex-1"></div>
-          <div class="btn btn-sm btn-error rounded-md" @click="cartStore.clear()"> {{ capitalizeOnlyFirstLetter($t('clear')) }}</div>
+          <div
+            class="btn btn-sm btn-error rounded-md"
+            @click="cartStore.clear()"
+          > {{ capitalizeOnlyFirstLetter($t('clear')) }}</div>
         </div>
         <div class="grow">
           <li

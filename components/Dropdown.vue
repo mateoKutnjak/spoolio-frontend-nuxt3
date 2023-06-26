@@ -12,7 +12,7 @@
           class="btn  btn-ghost btn-block gap-1 rounded-md justify-between pt-1"
           :class="`${backgroundColor} ${textColor} btn-${size}`"
         >{{ $t(extractName(selectedItem)) }}
-          <Icon name="lucide:chevron-down" />
+          <Icon name="ph:caret-down-bold" />
         </div>
       </MenuButton>
 

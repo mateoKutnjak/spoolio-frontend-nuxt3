@@ -23,12 +23,12 @@
           v-model="useCustomCombination"
         />
         <Icon
-          name="lucide:square"
+          name="ph:square"
           class="swap-off text-gray-500"
           size="20"
         />
         <Icon
-          name="lucide:check-square"
+          name="ph:check-square"
           class="swap-on text-gray-500"
           size="20"
         />

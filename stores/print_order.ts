@@ -62,11 +62,6 @@ export const usePrintOrderStore = defineStore('print-order', {
         units: [] as IPrintOrderUnit[],
         attachmentFiles: [] as IAttachmentFile[],
         attachmentImages: [] as IAttachmentImage[],
-
-        // * null - waiting
-        // * undefined - error
-        // * non-empty string - valid value
-        eta: null as string | undefined | null,
     }),
 
     getters: {
@@ -114,7 +109,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             }, 0)
         },
         getETA: (state) => {
-            return state.eta;
+            return state.print_order.eta;
         }
     },
 
@@ -139,7 +134,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 payment_method: this.print_order?.payment_method || '',
                 user_profile: authStore.getUser?.profile?.id,
                 estimated_price: this.getTotalPrice.toFixed(2),
-                estimated_time: Math.round(this.getETASeconds).toString()
+                estimated_time: Math.round(this.getETASeconds).toString(),
+                eta: this.print_order?.eta
             }
 
             return promiseWithTimeout<IPrintOrder>(new Promise<IPrintOrder>((resolve, reject) => {
@@ -215,12 +211,12 @@ export const usePrintOrderStore = defineStore('print-order', {
             if (!authStore.loggedIn) {
                 dialogStore.open('AuthForm', {}, 'Please log in to perform estimation')
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
-                this.eta = undefined;
+                this.print_order.eta = undefined;
                 return;
             }
 
             // * Null indicates loading
-            this.eta = null;
+            this.print_order.eta = null;
 
             console.debug("Websockets: Opening...")
 
@@ -246,7 +242,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     console.debug('Timeout on websocket waiting to receive data message. Closing websocket')
 
                     // * Null indicates error
-                    this.eta = undefined;
+                    this.print_order.eta = undefined;
 
                     close();
                 } else {
@@ -266,7 +262,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                             console.debug(`Websockets: Incomplete data message. Estimated ending time = ${estimated_ending_time}`)
 
                             // * Null indicates error
-                            this.eta = undefined;
+                            this.print_order.eta = undefined;
 
                             close();
                             return;
@@ -274,7 +270,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                         isDataWebsocketMessageReceived = true;
 
-                        this.eta = estimated_ending_time;
+                        this.print_order.eta = estimated_ending_time;
 
                         close();
                         break;
@@ -284,7 +280,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                         notificationStore.show(`Websocket error: ${errorMessage}`);
 
                         // * Null indicates error
-                        this.eta = undefined;
+                        this.print_order.eta = undefined;
 
                         break;
                     case 'close':
@@ -347,7 +343,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     estimated_price: Number.POSITIVE_INFINITY
                 })
 
-                this.eta = undefined;
+                this.print_order.eta = undefined;
 
                 return;
             }
@@ -387,7 +383,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             })
 
             // * Null indicates loading
-            this.eta = null;
+            this.print_order.eta = null;
 
             console.debug("Websockets: Opening...")
 
@@ -419,7 +415,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     })
 
                     // * Null indicates error
-                    this.eta = undefined;
+                    this.print_order.eta = undefined;
 
                     close();
                 } else {
@@ -465,7 +461,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                                 })
 
                                 // * Null indicates error
-                                this.eta = undefined;
+                                this.print_order.eta = undefined;
 
                                 close();
                             } else {
@@ -488,7 +484,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                             })
 
                             // * Null indicates error
-                            this.eta = undefined;
+                            this.print_order.eta = undefined;
 
                             close();
                             return;
@@ -501,7 +497,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                             estimated_price: estimated_price
                         })
 
-                        this.eta = estimated_ending_time;
+                        this.print_order.eta = estimated_ending_time;
 
                         close();
                         break;
@@ -517,7 +513,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                         })
 
                         // * Null indicates error
-                        this.eta = undefined;
+                        this.print_order.eta = undefined;
 
                         break;
                     case 'close':

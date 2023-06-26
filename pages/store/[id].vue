@@ -13,28 +13,26 @@
               style="object-fit: cover;"
             />
           </div>
-          <div class="text-gray-700 italic font-semibold">{{product?.productimage_set[currentImageIndex].comment}}</div>
-          <div class="flex gap-3 justify-center items-center">
+          <div class="text-stone-600 text-sm">{{product?.productimage_set[currentImageIndex].comment}}</div>
+          <div class="flex gap-3 justify-center items-center text-stone-600">
             <div
               class="btn btn-ghost btn-square"
               @click="onPreviousImage"
             >
               <Icon
-                class="text-gray-700"
-                name="lucide:chevron-left"
-                size="25"
+                name="ph:caret-left-bold"
+                size="22"
                 aria-hidden="true"
               />
             </div>
-            <div class="text-lg font-medium text-gray-700">{{currentImageIndex+1}} / {{product?.productimage_set.length}}</div>
+            <div class="text-lg font-medium">{{currentImageIndex+1}} / {{product?.productimage_set.length}}</div>
             <div
               class="btn btn-ghost btn-square"
               @click="onNextImage"
             >
               <Icon
-                class="text-gray-700"
-                name="lucide:chevron-right"
-                size="25"
+                name="ph:caret-right-bold"
+                size="22"
                 aria-hidden="true"
               />
             </div>
@@ -100,8 +98,8 @@
                 class="flex gap-2 items-center text-center mt-3 font-normal text-lg text-gray-700 dark:text-white"
               >
                 <Icon
-                  class="text-success"
-                  name="lucide:check-circle"
+                  class="text-success mb-0.5"
+                  name="ph:check-circle-fill"
                   size="25"
                 />{{ activeOptionsCombination?.sku }} {{ $t('in_stock') }}
               </div>
@@ -110,8 +108,8 @@
                 class="flex gap-2 items-center text-center mt-3 font-normal text-lg text-gray-700 dark:text-white"
               >
                 <Icon
-                  class="text-error"
-                  name="lucide:x-circle"
+                  class="text-error mb-0.5"
+                  name="ph:x-circle-fill"
                   size="25"
                 />
                 {{ capitalizeOnlyFirstLetter($t('out_of_stock')) }}
@@ -132,8 +130,8 @@
                 @click="addToCart"
               >
                 <Icon
-                  name="lucide:shopping-cart"
-                  size="22"
+                  name="ph:shopping-cart-fill"
+                  size="25"
                   aria-hidden="true"
                 />{{ capitalizeOnlyFirstLetter($t('add_to_cart')) }}
               </button>

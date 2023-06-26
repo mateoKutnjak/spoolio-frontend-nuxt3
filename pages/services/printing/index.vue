@@ -19,8 +19,8 @@
           @click="onClearOrder"
         >
           <Icon
-            name="lucide:trash-2"
-            size="18"
+            name="ph:trash"
+            size="22"
           />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
         </div>
       </div>
@@ -92,7 +92,7 @@
                   >
                     {{ capitalizeOnlyFirstLetter($t('checkout')).toUpperCase() }}
                     <Icon
-                      name="lucide:arrow-right"
+                      name="ph:arrow-right-bold"
                       size="20"
                     />
                     <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
@@ -157,7 +157,7 @@
             :to="localePath('/services/printing/checkout/')"
           >
             <Icon
-              name="lucide:shopping-cart"
+              name="ph:shopping-cart"
               size="27"
               aria-hidden="true"
             />

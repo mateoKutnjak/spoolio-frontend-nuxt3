@@ -319,6 +319,11 @@ export interface IPrintOrder {
     payment_method: string,
     estimated_price: number,
     estimated_time: number,
+
+    // * null - waiting
+    // * undefined - error
+    // * non-empty string - valid value
+    eta: string | undefined | null,
     status: string,
 }
 

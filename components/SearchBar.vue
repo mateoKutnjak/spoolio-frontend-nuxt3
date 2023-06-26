@@ -10,8 +10,8 @@
       <button class="btn btn-ghost rounded-full">
         <Icon
           class="text-[#888888]"
-          name="lucide:search"
-          size="25"
+          name="ph:magnifying-glass"
+          size="20"
         />
       </button>
     </div>

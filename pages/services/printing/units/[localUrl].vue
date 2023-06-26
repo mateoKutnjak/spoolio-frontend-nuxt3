@@ -42,9 +42,9 @@
             @click.prevent="$router.back()"
           >
             <Icon
-              name="lucide:check"
+              name="ph:check-bold"
               size="18"
-            />{{ capitalizeOnlyFirstLetter($t('save')) }}
+            />{{ $t('save').toUpperCase() }}
           </div>
         </div>
       </div>

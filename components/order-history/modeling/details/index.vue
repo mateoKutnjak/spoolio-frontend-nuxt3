@@ -52,9 +52,9 @@
             class="flex gap-4 items-start text-stone-600"
           >
             <Icon
-              class="mt-2.5"
-              name="lucide:paperclip"
-              size="16"
+              class="mt-1.5"
+              name="ph:paperclip"
+              size="25"
             />
             <div>
               <label class="label">

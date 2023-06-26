@@ -15,8 +15,8 @@
         @click="onRemoveFile"
       >
         <Icon
-          name="lucide:x"
-          size="22"
+          name="ph:x-bold"
+          size="18"
         />
       </button>
     </div>

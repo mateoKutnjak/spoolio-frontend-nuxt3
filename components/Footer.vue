@@ -38,33 +38,34 @@
       <p class="mt-1">obrt za proizvodnju i usluge <br /></p>
     </div>
     <div class="md:place-self-center md:justify-self-end">
-      <div class="grid grid-flow-col">
-        <a>
+      <div class="-mt-2 grid grid-flow-col gap-1">
+        <div class="btn btn-ghost btn-square">
           <Icon
-            class="text-[#888888] mr-4 pb-0.5"
-            name="lucide:youtube"
-            size="34"
+            class="text-[#FF0000]"
+            name="bxl:youtube"
+            size="35"
           />
-        </a>
-        <a>
+        </div>
+        <div class="btn btn-ghost btn-square">
           <Icon
-            class="text-[#888888] mr-2.5"
-            name="lucide:twitter"
-            size="30"
+            class="text-[#1DA1F2]"
+            name="bxl:twitter"
+            size="35"
           />
-        </a>
-        <a>
+        </div>
+        <div class="btn btn-ghost btn-square">
           <Icon
-            class="text-[#888888] pb-0.5"
-            name="lucide:facebook"
-            size="30"
+            class="text-[#4267B2]"
+            name="bxl:facebook-square"
+            size="33"
           />
-        </a>
+        </div>
       </div>
     </div>
   </footer>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+</script>
 <style>
 </style>

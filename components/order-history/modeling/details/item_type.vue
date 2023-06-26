@@ -3,8 +3,8 @@
     <div class="text-stone-600 text-sm">{{ capitalizeOnlyFirstLetter($t('item_type')) }}: </div>
     <div class="btn btn-sm btn-success rounded-full text-white gap-1 no-animation">
       <Icon
-        name="lucide:check"
-        size="20"
+        name="ph:check"
+        size="16"
       /> {{ item_type.name }}
     </div>
   </div>

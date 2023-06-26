@@ -54,7 +54,7 @@
           <NuxtLink :to="localePath('/services/printing')">
             <div class="btn btn-outline bg-white gap-2 border-gray-500 text-gray-500">
               <Icon
-                name="lucide:plus"
+                name="ph:plus"
                 size="22"
               />
               <div class="text-lg"> {{ capitalizeOnlyFirstLetter($t('new_printing_order')) }} </div>

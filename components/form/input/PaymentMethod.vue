@@ -16,8 +16,8 @@
           @click="onEdit"
         >
           <Icon
-            name="lucide:edit-2"
-            size="18"
+            name="ph:note-pencil"
+            size="22"
           />
         </div>
       </div>
@@ -25,7 +25,7 @@
     <div v-else>
       <div class="flex gap-2 items-center italic font-bold text-gray-500">
         <Icon
-          name="lucide:plus-square"
+          name="ph:plus-square"
           size="20"
         />
         {{ capitalizeOnlyFirstLetter($t('add_payment_method')) }}
@@ -39,7 +39,7 @@ import { storeToRefs } from "pinia";
 import { useNotificationStore } from "~~/stores/notification";
 import { usePrintOrderStore } from "~~/stores/print_order";
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const notificationStore = useNotificationStore();
 const printOrderStore = usePrintOrderStore();
@@ -52,7 +52,7 @@ onMounted(() => {
 
 function onEdit() {
   notificationStore.show(
-    capitalizeOnlyFirstLetter(t('no_other_payment_options_available')),
+    capitalizeOnlyFirstLetter(t("no_other_payment_options_available")),
     ToastLevelType.info
   );
 }

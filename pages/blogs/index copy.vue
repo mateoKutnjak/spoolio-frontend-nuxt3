@@ -108,7 +108,10 @@
         ></FacebookLoader>
       </div>
     </div>
-    <EmptyPlaceholder v-else />
+    <EmptyPlaceholder
+      v-else
+      class="text-stone-500"
+    />
   </div>
 </template>
 

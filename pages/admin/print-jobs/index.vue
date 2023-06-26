@@ -7,7 +7,7 @@
     >
       <div class="w-full p-6 flex gap-4 items-center text-stone-600">
         <Icon
-          name="lucide:printer"
+          name="ph:printer-thin"
           size="50"
         />
         <div class="flex flex-col">
@@ -29,7 +29,7 @@
           {{ capitalizeOnlyFirstLetter($t('not_available')) }}
           <Icon
             class="text-error"
-            name="lucide:x-circle"
+            name="ph:x-circle-fill"
             size="30"
           />
         </div>
@@ -40,7 +40,7 @@
           {{ capitalizeOnlyFirstLetter($t('available')) }}
           <Icon
             class="text-success"
-            name="lucide:check-circle"
+            name="ph:check-circle-fill"
             size="30"
           />
         </div>
@@ -85,7 +85,7 @@
               </td>
               <td class="relative">
                 <DropdownChoice
-                  menu-button-icon="lucide:more-vertical"
+                  menu-button-icon="ph:dots-three-outline-vertical-fill"
                   :choices="OrderStatus.printingJobStatuses.map(el => el.display_name)"
                   :preselected="OrderStatus.all[printJob.status].display_name"
                   @on-item-chosen="item => onStatusChosen(item, printJob)"

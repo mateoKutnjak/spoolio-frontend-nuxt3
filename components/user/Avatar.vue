@@ -1,9 +1,9 @@
 <template>
   <div class="avatar">
-    <div class="shadow w-12 h-12 rounded-full bg-base-100/80">
+    <div class="w-12 h-12 rounded-full bg-base-100/80">
       <Icon
-        class="w-12 h-12 p-2 text-gray-500"
-        name="lucide:user-2"
+        class="w-12 h-12 p-2 text-stone-500"
+        name="ph:user-circle"
         aria-hidden="true"
       />
     </div>

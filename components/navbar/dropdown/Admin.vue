@@ -10,9 +10,9 @@
           :key="user?.id"
         >
           <Icon
-            class="text-stone-700 mt-1"
-            name="lucide:shield"
-            size="27"
+            class="text-stone-700"
+            name="ph:shield-duotone"
+            size="30"
             aria-hidden="true"
           />
         </div>
@@ -35,7 +35,7 @@
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="lucide:boxes"
+                name="ph:list-checks"
                 size="20"
                 aria-hidden="true"
               />{{ capitalizeOnlyFirstLetter($t('print_jobs')) }}

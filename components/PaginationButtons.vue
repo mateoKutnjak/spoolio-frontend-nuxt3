@@ -16,8 +16,8 @@
         class="btn btn-ghost btn-square btn-disabled rounded-md bg-transparent text-gray-600"
       >
         <Icon
-          name="lucide:more-horizontal"
-          size="20"
+          name="ph:dots-three"
+          size="25"
         />
       </button>
       <button
@@ -30,7 +30,7 @@
         class="btn btn-ghost btn-square rounded-md text-gray-600"
         @click="$emit('onPageSelected', currentPage-1)"
       >{{currentPage}}</button>
-      <button class="btn btn-ghost bg-primary/80 btn-square rounded-md text-gray-600">{{currentPage+1}}</button>
+      <button class="btn btn-primary btn-square rounded-md">{{currentPage+1}}</button>
       <button
         v-if="currentPage+1 < maxPages"
         class="btn btn-ghost btn-square rounded-md text-gray-600"
@@ -46,7 +46,7 @@
         class="btn btn-ghost btn-square btn-disabled bg-transparent rounded-md text-gray-600"
       >
         <Icon
-          name="lucide:more-horizontal"
+          name="ph:dots-three"
           size="20"
         />
       </button>
@@ -57,7 +57,7 @@
       >
         <Icon
           name="lucide:chevron-last"
-          size="25"
+          size="20"
         />
       </button>
     </div>

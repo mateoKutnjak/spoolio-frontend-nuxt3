@@ -20,9 +20,9 @@
             </div>
             <div v-else>
               <Icon
-                class="text-stone-700 mt-1"
-                name="lucide:user-2"
-                size="27"
+                class="text-stone-700"
+                name="ph:user-circle-duotone"
+                size="32"
                 aria-hidden="true"
               />
             </div>
@@ -50,8 +50,8 @@
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="lucide:log-in"
-                size="20"
+                name="ph:sign-in"
+                size="22"
                 aria-hidden="true"
               />{{ capitalizeOnlyFirstLetter($t('sign_in')) }}
             </div>
@@ -62,8 +62,8 @@
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="lucide:user-plus-2"
-                size="24"
+                name="ph:user-plus-duotone"
+                size="22"
                 aria-hidden="true"
               />{{ capitalizeOnlyFirstLetter($t('sign_up')) }}
             </div>
@@ -78,7 +78,7 @@
               <MenuItem as="div">
               <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
                 <Icon
-                  name="lucide:clipboard-list"
+                  name="ph:clipboard-text-duotone"
                   size="20"
                   aria-hidden="true"
                 />{{ capitalizeOnlyFirstLetter($t('order_history')) }}
@@ -90,7 +90,7 @@
 
               <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
                 <Icon
-                  name="lucide:user-2"
+                  name="ph:user"
                   size="20"
                   aria-hidden="true"
                 />{{ capitalizeOnlyFirstLetter($t('profile')) }}
@@ -103,7 +103,7 @@
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
-                name="lucide:log-out"
+                name="ph:sign-out"
                 size="20"
                 aria-hidden="true"
               />{{ capitalizeOnlyFirstLetter($t('logout')) }}

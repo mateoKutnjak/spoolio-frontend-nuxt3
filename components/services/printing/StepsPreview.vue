@@ -10,7 +10,7 @@
     <Icon
       class="text-primary"
       size="22"
-      name="lucide:arrow-right"
+      name="ph:arrow-right-bold"
     />
     <div>
       <span
@@ -22,7 +22,7 @@
     <Icon
       class="text-primary"
       size="22"
-      name="lucide:arrow-right"
+      name="ph:arrow-right-bold"
     />
     <div>
       <span

@@ -3,7 +3,7 @@
     <div class="card-body gap-4 justify-between">
       <div class="card-title text-base text-gray-400 font-normal items-start">
         <Icon
-          name="lucide:receipt"
+          name="ph:receipt-fill"
           size="22"
         />
         <div>{{ capitalizeOnlyFirstLetter($t('receipt')) }}</div>

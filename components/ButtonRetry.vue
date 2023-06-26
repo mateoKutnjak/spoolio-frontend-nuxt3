@@ -5,8 +5,8 @@
   >
     <Icon
       class="mb-0.5"
-      name="lucide:alert-triangle"
-      size="17"
+      name="ph:arrows-clockwise-bold"
+      size="15"
     />
     <div class="text-base">
       {{ capitalizeOnlyFirstLetter($t('retry')) }}
