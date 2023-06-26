@@ -82,10 +82,30 @@
                 />
                 <div
                   v-if="printOrderStore.getUnits.length"
-                  class="py-2 px-4 rounded-lg shadow flex flex-col gap-1 jusify-between md:items-end items-center bg-white"
+                  class="py-2 px-4 rounded-lg shadow flex flex-col gap-2 jusify-between md:items-end items-center bg-white"
                 >
-                  <ServicesPrintingOrderETA :eta="eta" />
-                  <ServicesPrintingOrderPrice :total-price="totalPrice" />
+                  <div class="overflow-x-auto">
+                    <table class="table table-xs">
+                      <tbody>
+                        <tr>
+                          <th class="text-right">
+                            <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
+                          </th>
+                          <td class="text-right">
+                            <ServicesPrintingOrderETA :eta="eta" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <th class="text-right">
+                            <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
+                          </th>
+                          <td class="text-right">
+                            <ServicesPrintingOrderPrice :total-price="totalPrice" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <NuxtLink
                     :class="`btn btn-sm gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'btn-primary text-white' : 'btn-disabled'}`"
                     :to="localePath('/services/printing/checkout/')"

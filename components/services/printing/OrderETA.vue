@@ -1,29 +1,24 @@
 <template>
-  <div class="flex gap-2 items-center">
-    <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
-
-    <div v-if="eta === null">
-      <Icon
-        class="text-gray-500 -my-10"
-        name="eos-icons:three-dots-loading"
-        size="50"
-      />
-    </div>
-    <div v-else-if="eta === undefined">
-      <ButtonRetry @on-click="printOrderStore.estimatePrintJobsOnly()" />
-    </div>
-    <div
-      v-else
-      class="btn btn-ghost btn-sm text-lg"
-      @click="onClick"
-    >
-      <Icon
-        class="text-info"
-        name="ph:question"
-        size="20"
-      />{{ reformatDateShort(eta) }}
-    </div>
-
+  <div v-if="eta === null">
+    <Icon
+      class="text-gray-500 -my-10"
+      name="eos-icons:three-dots-loading"
+      size="50"
+    />
+  </div>
+  <div v-else-if="eta === undefined">
+    <ButtonRetry @on-click="printOrderStore.estimatePrintJobsOnly()" />
+  </div>
+  <div
+    v-else
+    class="btn btn-ghost btn-sm text-lg"
+    @click="onClick"
+  >
+    <Icon
+      class="text-info"
+      name="ph:question"
+      size="20"
+    />{{ reformatDateShort(eta) }}
   </div>
 </template>
 

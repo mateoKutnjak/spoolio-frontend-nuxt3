@@ -18,7 +18,12 @@
           <div
             class="btn btn-sm btn-error rounded-md"
             @click="cartStore.clear()"
-          > {{ capitalizeOnlyFirstLetter($t('clear')) }}</div>
+          >
+            <Icon
+              name="ph:trash"
+              size="18"
+            /> {{ capitalizeOnlyFirstLetter($t('clear')) }}
+          </div>
         </div>
         <div class="grow">
           <li
