@@ -8,15 +8,9 @@
   </div>
   <div
     v-else-if="totalPrice === Number.POSITIVE_INFINITY"
-    class="text-error"
+    class="text-stone-500 text-xl"
   >
-    <div class="p-1">
-      <Icon
-        class="text-error"
-        name="ph:warning-circle-fill"
-        size="20"
-      />
-    </div>
+    -
   </div>
   <div
     v-else-if="totalPrice <= PRINT_ORDER_MIN_PRICE"
