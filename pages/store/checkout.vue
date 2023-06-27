@@ -123,16 +123,35 @@
                   </table>
                 </div>
                 <div class="flex flex-col gap-4">
-                  <FormKit
-                    type="checkbox"
-                    :label="capitalizeOnlyFirstLetter($t('i_agree_to_terms_and_conditions_and_privacy_policy'))"
-                    name="Terms and Conditions"
-                    validation="accepted"
-                    validation-visibility="submit"
-                    :validation-messages="{
-                      accepted: 'Please accept Terms and Conditions'
-                    }"
-                  />
+
+                  <div class="flex gap-1">
+                    <FormKit
+                      type="checkbox"
+                      name="Terms and Conditions"
+                      validation="accepted"
+                      validation-visibility="submit"
+                      :validation-messages="{
+                        accepted: 'Please accept Terms and Conditions'
+                      }"
+                      :classes="{
+                        messages: '-mr-96'
+                      }"
+                    />
+                    <div class="flex gap-1 mt-1 ml-1">
+                      <span>
+                        {{ capitalizeOnlyFirstLetter($t('i_agree_with')) }}
+                      </span>
+                      <span class="link link-primary">
+                        {{ $t('terms_and_conditions') }}
+                      </span>
+                      <span>
+                        {{ $t('and') }}
+                      </span>
+                      <span class="link link-primary">
+                        {{ $t('privacy_policy__instrumental') }}
+                      </span>
+                    </div>
+                  </div>
                   <FormKit
                     type="submit"
                     :label="$t('pay_now').toUpperCase()"
@@ -234,7 +253,13 @@ onMounted(async () => {
 });
 
 function submitHandler() {
-  dialogStore.open("StoreCheckoutCreatingOrderDialog", {}, undefined, "lg", true);
+  dialogStore.open(
+    "StoreCheckoutCreatingOrderDialog",
+    {},
+    undefined,
+    "lg",
+    true
+  );
 }
 </script>
 
