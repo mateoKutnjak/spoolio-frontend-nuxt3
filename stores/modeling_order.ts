@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { CONTENT_TYPE_MODELING_ORDER, HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IAttachmentFile, IAttachmentImage, IModelingOrder, IModelingOrderItemAttribute, IModelingOrderItemType } from '~~/constants/data';
+import { IAttachmentFile, IAttachmentImage, IModelingOrder, IModelingOrderItemAttribute, IModelingOrderItemType, IModelingOrderOrderType } from '~~/constants/data';
 import { useAuthStore } from './auth';
 import { ofetch } from 'ofetch';
 
@@ -11,6 +11,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             comment: '',
             item_type: null as IModelingOrderItemType | null,
             item_attributes: [] as IModelingOrderItemAttribute[],
+            order_type: null as IModelingOrderOrderType | null,
         },
 
         attachmentFiles: [] as IAttachmentFile[],
@@ -18,6 +19,8 @@ export const useModelingOrderStore = defineStore('modeling-order', {
 
         itemTypes: [] as IModelingOrderItemType[],
         itemAttributes: [] as IModelingOrderItemAttribute[],
+
+        orderTypes: [] as IModelingOrderOrderType[],
     }),
 
     getters: {
@@ -26,6 +29,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
         getContactEmail: (state) => state.modeling_order.contact_email,
         getItemTypes: (state) => state.itemTypes,
         getItemAttributes: (state) => state.itemAttributes,
+        getOrderTypes: (state) => state.orderTypes,
     },
 
     actions: {
@@ -36,6 +40,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 comment: '',
                 item_type: null as IModelingOrderItemType | null,
                 item_attributes: [] as IModelingOrderItemAttribute[],
+                order_type: null as IModelingOrderOrderType | null,
             }
         },
 
@@ -51,6 +56,7 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                 user_profile: authStore.getUser?.profile?.id,
                 item_attributes: this.modeling_order.item_attributes.map(el => el.id),
                 item_type: this.modeling_order.item_type?.id || null,
+                order_type: this.modeling_order.order_type?.id || null,
             }
 
             return promiseWithTimeout<IModelingOrder>(new Promise<IModelingOrder>((resolve, reject) => {
@@ -170,6 +176,22 @@ export const useModelingOrderStore = defineStore('modeling-order', {
                     method: 'GET',
                 }).then((response: IModelingOrderItemAttribute[]) => {
                     this.itemAttributes = response;
+                    resolve(response);
+                }).catch((err) => {
+                    reject(err);
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetchOrderTypes() {
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout(new Promise((resolve, reject) => {
+                ofetch<IModelingOrderOrderType[]>('api/modeling-orders/order-types/', {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IModelingOrderOrderType[]) => {
+                    this.orderTypes = response;
                     resolve(response);
                 }).catch((err) => {
                     reject(err);

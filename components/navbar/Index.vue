@@ -117,10 +117,26 @@ const globalsStore = useGlobalsStore();
 const isLoginDialogShown = ref(false);
 const isRegisterDialogShown = ref(false);
 
-const initialLanguage = globalsStore.getLanguage;
+let currentLocale = locale.value;
+let currentLanguage;
 
-// TODO this wont support more than two languages
-const languageCheckbox = ref(initialLanguage === Language.croatian);
+switch (currentLocale) {
+  case Language.croatian.localeName:
+    currentLanguage = Language.croatian;
+    break;
+  case Language.english.localeName:
+    currentLanguage = Language.english;
+    break;
+  default:
+    currentLanguage = Language.croatian;
+    break;
+}
+
+globalsStore.setLanguage(currentLanguage);
+
+const languageCheckbox = ref(
+  currentLanguage.localeName !== Language.croatian.localeName
+);
 
 const getUser = computed(() => {
   return authStore.getUser;

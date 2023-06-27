@@ -1,28 +1,54 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="btn btn-sm gap-1 shadow border-none"
-      :class="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 ? 'btn-success text-white' : 'btn-outline bg-white'"
+      class="px-5 btn btn-lg btn-ghost gap-2 items-center rounded-md text-base !font-bold text-stone-500"
+      :class="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 ? 'border-4 border-primary hover:border-4 hover:border-primary' : 'border-stone-400 hover:border-stone-400'"
       v-for="option in options"
       :key="extractId(option)"
       @click="onItemClicked(option)"
     >
+
       <Icon
         v-if="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 "
-        name="ph:check-bold"
-        size="17"
+        class="mb-0.5 text-primary"
+        name="ph:check-square-fill"
+        size="20"
       />
-      {{ extractTitle(option) }}
+      <Icon
+        v-else
+        class="mb-0.5 text-stone-400"
+        name="ph:square"
+        size="20"
+      />
+
+      <div class="flex flex-col items-start">
+        <div :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'text-stonr-700' : 'text-stone-400'">
+          {{ extractTitle(option) }}
+        </div>
+        <div
+          v-if="extractDescription"
+          class="text-xs text-stone-400 font-normal"
+        >
+          {{ extractDescription(option) }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { options, preselectOptions, extractId, extractTitle } = defineProps<{
+const {
+  options,
+  preselectOptions,
+  extractId,
+  extractTitle,
+  extractDescription,
+} = defineProps<{
   options: any[];
   preselectOptions?: any[];
   extractId: Function;
   extractTitle: Function;
+  extractDescription?: Function;
 }>();
 
 const emit = defineEmits(["onSelectionChange"]);

@@ -1,7 +1,54 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-8">
-    <div class="flex flex-col gap-8">
-      <div class="text-4xl">{{ capitalizeOnlyFirstLetter($t('describe_what_you_want_us_to_create_for_you')) }}</div>
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
+    <div class="flex flex-col gap-6 text-stone-700">
+      <div class="text-4xl font-bold">{{ $t('_3d_modeling').toUpperCase() }}</div>
+      <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('describe_your_problem_and_request_a_quote_for_the_3d_modeling_service')) }}</div>
+      <div></div>
+
+      <div class="flex flex-col gap-1">
+        <div class="text-sm text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
+        <SelectSingleChoice
+          v-if="orderTypes.length > 0"
+          :options="orderTypes"
+          :preselect-option="orderTypes[0]"
+          :extract-id="(item: IModelingOrderOrderType) => item.id"
+          :extract-title="(item: IModelingOrderOrderType) => capitalizeOnlyFirstLetter($t(item.name))"
+          :extract-icon-name="(item: IModelingOrderOrderType) => item.icon_name"
+          @on-selection-change="l => orderTypeSelectionChange(l)"
+        />
+        <div class="text-stone-400 text-sm max-w-xl">
+          <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_the_design_of_a_new_model_it_is_recommended_to_attach_drawings_with_measurements_along_with_a_detailed_description_of_the_desired_item')) }}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="text-sm text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
+        <SelectSingleChoice
+          v-if="itemTypes.length > 0"
+          :options="itemTypes"
+          :preselect-option="itemTypes[0]"
+          :extract-id="(option: IModelingOrderItemType) => option.id"
+          :extract-title="(option: IModelingOrderItemType) => capitalizeOnlyFirstLetter($t(option.name))"
+          :extract-icon-name="(item: IModelingOrderItemType) => item.icon_name"
+          @on-selection-change="l => itemTypeSelectionChange(l)"
+        />
+        <div class="text-stone-400 text-sm max-w-xl">
+          <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_mechanical_items_it_is_preferable_to_state_mark_where_precise_tolerances_are_important_joints_with_other_pieces_and_on_which_segments_greater_forces_are_present')) }}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="text-sm text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
+        <SelectMultiChoice
+          v-if="itemAttributes.length > 0"
+          :options="itemAttributes"
+          :extract-id="(option: IModelingOrderItemAttribute) => option.id"
+          :extract-title="(option: IModelingOrderItemAttribute) => capitalizeOnlyFirstLetter($t(option.name))"
+          :extract-description="(option: IModelingOrderItemAttribute) => capitalizeOnlyFirstLetter($t(option.description || ''))"
+          @on-selection-change="l => itemAttributeSelectionChange(l)"
+        />
+      </div>
+
       <FormKit
         type="form"
         id="modeling-order-form"
@@ -22,13 +69,6 @@
                   :validation-messages="{
                 required: 'Leave your contact email'
               }"
-                  :classes="{
-                    input: 'rounded-xl px-2',
-                    wrapper: 'shadow-xs rounded-xl',
-                    inner: 'rounded-xl',
-                    outer: 'rounded-xl mb-3',
-                    message: 'px-5 pt-1 mb-0'
-                  }"
                 />
                 <div
                   v-show="user"
@@ -47,11 +87,7 @@
                   required: 'Please describe your problem'
                 }"
                 :classes="{
-                  input: 'h-64 rounded-xl p-3 resize-none',
-                  wrapper: 'shadow-sm rounded-xl',
-                  inner: 'rounded-xl',
-                  outer: 'rounded-xl mb-0',
-                  message: 'px-5 pt-1'
+                  input: 'h-64',
                 }"
               />
             </div>
@@ -66,41 +102,6 @@
             </div>
           </div>
 
-          <div class="overflow-x-auto">
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_type')) }}:</div>
-                  </td>
-                  <td>
-                    <SelectSingleChoice
-                      v-if="itemTypes.length > 0"
-                      :options="itemTypes"
-                      :preselect-option="itemTypes[0]"
-                      :extract-id="(option: IModelingOrderItemType) => option.id"
-                      :extract-title="(option: IModelingOrderItemType) => option.name"
-                      @on-selection-change="l => itemTypeSelectionChange(l)"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('item_attributes')) }}:</div>
-                  </td>
-                  <td>
-                    <SelectMultiChoice
-                      v-if="itemAttributes.length > 0"
-                      :options="itemAttributes"
-                      :extract-id="(option: IModelingOrderItemAttribute) => option.id"
-                      :extract-title="(option: IModelingOrderItemAttribute) => option.name"
-                      @on-selection-change="l => itemAttributeSelectionChange(l)"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
           <div class="divider p-0 m-0"></div>
           <ServicesModelingAttachmentFiles />
           <ServicesModelingAttachmentImages />
@@ -137,6 +138,7 @@ import {
   IAttachmentImage,
   IModelingOrderItemAttribute,
   IModelingOrderItemType,
+  IModelingOrderOrderType,
 } from "~~/constants/data";
 import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
@@ -154,13 +156,14 @@ const notificationStore = useNotificationStore();
 
 if (
   !modelingOrderStore.getItemTypes.length ||
-  !modelingOrderStore.getItemAttributes.length
+  !modelingOrderStore.getItemAttributes.length ||
+  !modelingOrderStore.getOrderTypes.length
 ) {
   loadingOverlayStore.show();
 }
 
 const { user } = storeToRefs(authStore);
-const { modeling_order, itemTypes, itemAttributes } =
+const { modeling_order, itemTypes, itemAttributes, orderTypes } =
   storeToRefs(modelingOrderStore);
 
 onMounted(async () => {
@@ -173,9 +176,15 @@ onMounted(async () => {
       modelingOrderStore.updateOrder({ item_type: res[0] });
     })
     .catch((err) => notificationStore.showFetchError(err));
+
   await modelingOrderStore
     .fetchItemAttributes()
     .then(() => console.debug("Item attributes fetched"))
+    .catch((err) => notificationStore.showFetchError(err));
+
+  await modelingOrderStore
+    .fetchOrderTypes()
+    .then(() => console.debug("Order types fetched"))
     .catch((err) => notificationStore.showFetchError(err));
 });
 
@@ -230,7 +239,13 @@ function onFilesAdded(files: File[]) {
 }
 
 async function submitHandler() {
-  dialogStore.open("ServicesModelingCreatingOrderDialog", {}, undefined, "2xl", false);
+  dialogStore.open(
+    "ServicesModelingCreatingOrderDialog",
+    {},
+    undefined,
+    "2xl",
+    false
+  );
 }
 
 function onUseDefaultContactEmail() {
@@ -249,15 +264,22 @@ function itemTypeSelectionChange(itemType: IModelingOrderItemType) {
   modelingOrderStore.updateOrder({ item_type: itemType });
 }
 
-watch([itemTypes, itemAttributes], ([newA, newB], [oldA, oldB]) => {
-  // Disable loading overlay when all data is fetched
+function orderTypeSelectionChange(orderType: IModelingOrderOrderType) {
+  modelingOrderStore.updateOrder({ order_type: orderType });
+}
 
-  if (newA.length && newB.length) {
-    loadingOverlayStore.close();
-  } else {
-    loadingOverlayStore.show();
+watch(
+  [itemTypes, itemAttributes, orderTypes],
+  ([newA, newB, newC], [oldA, oldB, oldC]) => {
+    // Disable loading overlay when all data is fetched
+
+    if (newA.length && newB.length && newC.length) {
+      loadingOverlayStore.close();
+    } else {
+      loadingOverlayStore.show();
+    }
   }
-});
+);
 </script>
 
 <style>

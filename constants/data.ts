@@ -343,16 +343,25 @@ export interface IModelingOrder {
     status: string,
     item_type: IModelingOrderItemType,
     item_attributes: IModelingOrderItemAttribute[],
+    order_type: IModelingOrderOrderType,
+}
+
+export interface IModelingOrderOrderType {
+    id: number,
+    name: string,
+    icon_name: string,
 }
 
 export interface IModelingOrderItemType {
     id: number,
     name: string,
+    icon_name: string,
 }
 
 export interface IModelingOrderItemAttribute {
     id: number,
     name: string,
+    description: string | null,
 }
 
 // ***************** //

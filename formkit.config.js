@@ -3,7 +3,7 @@ import { createAutoAnimatePlugin } from '@formkit/addons'
 
 const textClassification = {
     label: 'w-full lock mb-2 text-sm font-medium text-gray-800',
-    inner: 'w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none overflow-hidden',
+    inner: 'w-full bg-gray-50 border border-stone-400/80 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none overflow-hidden',
     input: 'w-full bg-transparent focus:outline-none px-2',
     wrapper: 'shadow-xs',
     outer: 'mb-3',
