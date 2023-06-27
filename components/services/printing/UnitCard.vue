@@ -6,7 +6,10 @@
           MODEL {{ index+1 }}/{{ totalUnitCount }}
         </div>
         <div class="mt-2 text-stone-700 text-xl font-bold">{{ extractUrlFileStringUnion(unit.file).toUpperCase() }}</div>
-        <ServicesPrintingDimensionInfo :unit="unit" />
+        <ServicesPrintingDimensionInfo
+          class="text-sm"
+          :unit="unit"
+        />
       </div>
 
       <div class="flex gap-1">
