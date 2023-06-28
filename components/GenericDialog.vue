@@ -36,6 +36,12 @@
               :class="`w-full max-w-${widthClass}`"
               class="transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
+              <DialogTitle
+                v-if="message"
+                class="text-lg font-bold uppercase text-stone-700 px-2 py-2 pb-4"
+              >
+                {{ message }}
+              </DialogTitle>
               <component
                 :is="component"
                 v-bind="componentProps"

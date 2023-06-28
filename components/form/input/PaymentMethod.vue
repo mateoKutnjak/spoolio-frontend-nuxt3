@@ -1,26 +1,22 @@
 <template>
-  <div class="card compact px-2 bg-base-100 rounded-none border border-gray-400">
+  <div
+    class="btn btn-block btn-ghost btn-lg gap-6 rounded-md border border-stone-400/80 text-stone-500"
+    @click="onEdit"
+  >
     <div
-      class="card-body"
       v-if="print_order?.payment_method && Object.keys(print_order.payment_method).length"
+      class="w-full flex gap-6 font-normal items-center"
     >
-      <div class="flex gap-3 font-normal items-center">
-        <Icon
-          name="noto-v1:credit-card"
-          size="26"
-        />
-        <div>{{print_order.payment_method}}</div>
-        <div class="flex-1"></div>
-        <div
-          class="btn btn-ghost btn-circle btn-sm text-primary"
-          @click="onEdit"
-        >
-          <Icon
-            name="ph:note-pencil"
-            size="22"
-          />
-        </div>
-      </div>
+      <Icon
+        name="ph:money"
+        size="30"
+      />
+      <div class="font-bold text-sm">{{print_order.payment_method}}</div>
+      <div class="flex-1"></div>
+      <Icon
+        name="ph:note-pencil-bold"
+        size="25"
+      />
     </div>
     <div v-else>
       <div class="flex gap-2 items-center italic font-bold text-gray-500">
@@ -28,7 +24,7 @@
           name="ph:plus-square"
           size="20"
         />
-        {{ capitalizeOnlyFirstLetter($t('add_payment_method')) }}
+        {{ capitalizeOnlyFirstLetter($t('choose') + ' ' + $t('payment_method')) }}
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-body gap-8 p-2 py-0">
+  <div class="p-4">
     <FormKit
       type="form"
       id="profile-form"
@@ -7,20 +7,18 @@
       :actions="false"
       :incomplete-message="false"
     >
-      <div class="flex gap-3 justify-between items-start">
-        <FormKit
-          type="text"
-          name="Contact email"
-          v-model="email_ref"
-          validation="required|email"
-          validation-visibility="blur"
-        />
-        <div
+      <FormKit
+        type="text"
+        name="Contact email"
+        v-model="email_ref"
+        validation="required|email"
+        validation-visibility="blur"
+      />
+      <!-- <div
           v-if="user"
           class="btn btn-ghost link link-info text-sm"
           @click="onUseDefaultClicked"
-        >{{ capitalizeOnlyFirstLetter($t('use_default')) }}</div>
-      </div>
+        >{{ capitalizeOnlyFirstLetter($t('use_default')) }}</div> -->
       <div class="pt-2">
         <FormKit
           type="submit"
@@ -41,7 +39,7 @@ import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
@@ -63,7 +61,10 @@ function onUseDefaultClicked() {
   } else if (user.value?.email) {
     email_ref.value = user.value.email;
   } else {
-    notificationStore.show(capitalizeOnlyFirstLetter(t('cannot_do_that')), ToastLevelType.error);
+    notificationStore.show(
+      capitalizeOnlyFirstLetter(t("cannot_do_that")),
+      ToastLevelType.error
+    );
   }
 }
 

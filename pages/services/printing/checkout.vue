@@ -10,72 +10,57 @@
     >
       <div class="relative flex flex-col lg:flex-row gap-6">
         <div class="flex-1 flex flex-col gap-4">
-          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
-            <div class="card-body gap-5">
-              <div class="card-title font-normal text-gray-700">1. {{ capitalizeOnlyFirstLetter($t('contact_email')) }}<div class="pt-1">
-                </div>
-              </div>
-              <FormKit
-                :type="contactEmailInput"
-                name="Contact email"
-                v-model="contact_email_ref"
-                dialogComponent="FormContactEmail"
-                validation="required|email"
-                validation-visibility="submit"
-                @input="(value) => print_order.contact_email = value"
+          <FormKit
+            :type="contactEmailInput"
+            name="Contact email"
+            v-model="contact_email_ref"
+            dialogComponent="FormContactEmail"
+            validation="required|email"
+            validation-visibility="submit"
+            @input="(value) => print_order.contact_email = value"
+          />
+          <div class="p-5 flex flex-col gap-2 border border-stone-400/80 rounded-md">
+            <div class="mb-2 flex gap-3 items-center text-stone-500">
+              <Icon
+                name="ph:house"
+                size="30"
               />
+              <div class="font-bold"> {{ capitalizeOnlyFirstLetter($t('addresses')) }}</div>
             </div>
-          </div>
-          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
-            <div class="card-body gap-5">
-              <div class="card-title font-normal text-gray-700">
-                2. {{ capitalizeOnlyFirstLetter($t('addresses')) }}
-              </div>
-              <div class="flex flex-col">
-                <FormKit
-                  :type="shippingAddressInput"
-                  name="Shipping address"
-                  v-model="shipping_address_ref"
-                  dialogComponent="FormShippingAddress"
-                  validation="required"
-                  validation-visibility="submit"
-                  @input="(value) => print_order.shipping_address = value"
-                />
-                <FormKit
-                  :type="billingAddressInput"
-                  name="Billing address"
-                  v-model="billing_address_ref"
-                  dialogComponent="FormBillingAddress"
-                  validation="required"
-                  validation-visibility="submit"
-                  @input="(value) => print_order.billing_address = value"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="card compact px-5 pt-5 shadow border bg-base-100 rounded-none">
-            <div class="card-body gap-4">
-              <div class="card-title font-normal text-gray-700">3. {{ capitalizeOnlyFirstLetter($t('shipping_method')) }}</div>
+            <div class="grid gap-6 sm:grid-cols-2 grid-cols-1">
               <FormKit
-                :type="shippingMethodInput"
-                name="Shipping method"
-                v-model="shipping_method_ref"
-                dialogComponent="FormShippingMethod"
+                :type="shippingAddressInput"
+                name="Shipping address"
+                v-model="shipping_address_ref"
+                dialogComponent="FormShippingAddress"
                 validation="required"
                 validation-visibility="submit"
-                @input="(value) => print_order.shipping_method = value"
+                @input="(value) => print_order.shipping_address = value"
+              />
+              <FormKit
+                :type="billingAddressInput"
+                name="Billing address"
+                v-model="billing_address_ref"
+                dialogComponent="FormBillingAddress"
+                validation="required"
+                validation-visibility="submit"
+                @input="(value) => print_order.billing_address = value"
               />
             </div>
           </div>
-          <div class="card compact px-5 py-5 shadow border bg-base-100 rounded-none">
-            <div class="card-body gap-4">
-              <div class="card-title font-normal text-gray-700">4. {{ capitalizeOnlyFirstLetter($t('payment_method')) }}</div>
-              <FormInputPaymentMethod />
-            </div>
-          </div>
+          <FormKit
+            :type="shippingMethodInput"
+            name="Shipping method"
+            v-model="shipping_method_ref"
+            dialogComponent="FormShippingMethod"
+            validation="required"
+            validation-visibility="submit"
+            @input="(value) => print_order.shipping_method = value"
+          />
+          <FormInputPaymentMethod />
         </div>
         <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
-          <div class="card shadow-md border bg-white rounded-none">
+          <div class="card shadow-md border border-stone-400/80 rounded-md bg-white">
             <div class="card-body">
               <div class="flex flex-col gap-10">
                 <div class="flex flex-col gap-4">

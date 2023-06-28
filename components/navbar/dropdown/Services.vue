@@ -1,8 +1,8 @@
 <template>
-  <div class="z-20">
+  <div class="">
     <Menu
       as="div"
-      class="relative inline-block text-left"
+      class="z-20 relative inline-block text-left"
     >
       <MenuButton>
         <div class="btn btn-ghost text-gray-700">{{ $t('services') }}</div>

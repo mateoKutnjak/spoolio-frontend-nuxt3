@@ -73,6 +73,7 @@ export default {
                 // definition for our target sectionKey.
                 ...boxClassification,
                 input: boxClassification.input.replace('rounded-sm', 'rounded-full'),
+                label: 'w-full lock mb-2 text-sm font-normal text-stone-600',
             },
             range: {
                 inner: 'max-w-md',

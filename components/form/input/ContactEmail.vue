@@ -1,41 +1,40 @@
 <template>
   <div
-    v-if="contact_email"
-    class="card compact px-2 bg-base-100 rounded-none border border-gray-400"
-  >
-    <div class="card-body">
-      <div class="card-title text-base text-gray-700 font-normal justify-start items-center">
-        <div class="font-normal">{{contact_email}}</div>
-        <div class="flex-1"></div>
-        <div
-          class="btn btn-ghost btn-circle btn-sm text-primary"
-          @click="openDialog"
-        >
-        <Icon
-            name="ph:note-pencil"
-            size="22"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    v-else
-    class="btn btn-outline rounded-none flex gap-2 items-bottom italic font-bold text-gray-500"
+    class="btn btn-block btn-ghost btn-lg no-animation gap-6 rounded-md border border-stone-400/80 text-stone-500"
     @click="openDialog"
   >
     <Icon
-      class="text-info mb-0.5"
-      name="ph:plus-square"
-      size="18"
+      name="ph:envelope-simple"
+      size="30"
     />
-    {{ capitalizeOnlyFirstLetter($t('add_contact_email')) }}
+    <div
+      v-if="contact_email"
+      class="py-5 font-bold text-sm"
+    >
+      {{contact_email}}
+    </div>
+    <div
+      v-else
+      class="py-5 text-sm font-bold mt-0.5"
+    > {{ capitalizeOnlyFirstLetter($t('add') + " " + $t('contact_email'))  }}</div>
+    <div class="flex-1"></div>
+    <Icon
+      v-if="contact_email"
+      name="ph:note-pencil-bold"
+      size="25"
+    />
+    <Icon
+      v-else
+      name="ph:caret-right-bold"
+      size="22"
+    />
   </div>
-
 </template>
     
     <script lang="ts" setup>
 import { useDialogStore } from "~~/stores/dialog";
+
+const { t } = useI18n();
 
 const dialogStore = useDialogStore();
 
@@ -48,14 +47,18 @@ onMounted(() => {
 });
 
 function openDialog() {
-  dialogStore.open(context.node.props.dialogComponent, {
-    contact_email: contact_email.value,
-    enableUseDefault: true,
-    onSaved: (obj: string) => {
-      context.node.input(obj);
-      contact_email.value = obj;
+  dialogStore.open(
+    context.node.props.dialogComponent,
+    {
+      contact_email: contact_email.value,
+      enableUseDefault: true,
+      onSaved: (obj: string) => {
+        context.node.input(obj);
+        contact_email.value = obj;
+      },
     },
-  });
+    (t("add") + " " + t("contact_email")).toUpperCase()
+  );
 }
 </script>
     

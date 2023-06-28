@@ -1,8 +1,5 @@
 <template>
   <div class="card-body gap-6 py-6 pt-4">
-    <div class="card-title">
-      {{ capitalizeOnlyFirstLetter($t('shipping_method')) }}
-    </div>
     <div>
       <RadioGroup v-model="selected">
         <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>

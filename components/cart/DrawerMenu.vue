@@ -16,7 +16,7 @@
           </h2>
           <div class="flex-1"></div>
           <div
-            class="btn btn-sm btn-error rounded-md"
+            class="btn btn-sm btn-error btn-outline rounded-md hover:!text-white"
             @click="cartStore.clear()"
           >
             <Icon
