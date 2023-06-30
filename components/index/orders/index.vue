@@ -7,7 +7,7 @@
         <div class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('create_your_account_so_you_can_easily_track_orders_and_save_all_your_3d_models_for_reprints_or_finishing')) }}</div>
         <div
           class="btn btn-primary text-white"
-          @click="dialogStore.open('RegisterForm', {})"
+          @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
         >{{ $t('sign_up').toUpperCase() }}</div>
       </div>
       <div class="bg-gray-400">

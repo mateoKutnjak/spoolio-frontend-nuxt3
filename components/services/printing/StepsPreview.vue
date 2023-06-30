@@ -1,6 +1,6 @@
 <template>
   <div class="md:px-0 px-12 flex gap-5 items-center">
-    <div class="flex items-">
+    <div class="flex gap-1 items-center">
       <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 0 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
@@ -12,7 +12,7 @@
       size="22"
       name="ph:arrow-right-bold"
     />
-    <div class="flex">
+    <div class="flex gap-1 items-center">
       <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 1 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
@@ -24,7 +24,7 @@
       size="22"
       name="ph:arrow-right-bold"
     />
-    <div class="flex">
+    <div class="flex gap-1 items-center">
       <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 2 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"

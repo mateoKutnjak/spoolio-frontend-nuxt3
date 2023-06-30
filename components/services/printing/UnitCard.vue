@@ -1,5 +1,5 @@
 <template>
-  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border border-stone-400">
+  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border border-stone-400 bg-white">
     <div class="flex sm:flex-row flex-col justify-between">
       <div class="flex flex-col">
         <div class="text-stone-400">

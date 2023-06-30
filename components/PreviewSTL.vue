@@ -53,8 +53,7 @@ const { width, height } = useElementSize(root);
 
 const aspectRatio = computed(() => width.value / height.value);
 
-printOrderStore.updateUnit(unit.localUrl, {scale_display: unit.scale})
-
+printOrderStore.updateUnit(unit.localUrl, { scale_display: unit.scale });
 
 const scale_display = computed(
   () => printOrderStore.getUnitByLocalUrl(unit.localUrl)?.scale_display
@@ -155,7 +154,11 @@ if (mesh.geometry.boundingBox) {
 
 const model_rotation = vector3Parse(unit.model_rotation);
 
-mesh.rotation.set(model_rotation.x, model_rotation.y, model_rotation.z);
+mesh.rotation.set(
+  (model_rotation.x / 360) * 2 * Math.PI,
+  (model_rotation.y / 360) * 2 * Math.PI,
+  (model_rotation.z / 360) * 2 * Math.PI
+);
 
 // *** ADD OBJECT TO SCENE *** //
 
@@ -203,7 +206,11 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
     console.error("Bounding box not calculated after rotation changes");
   }
 
-  mesh.rotation.set(rotationVector.x, rotationVector.y, rotationVector.z);
+  mesh.rotation.set(
+    (rotationVector.x / 360) * 2 * Math.PI,
+    (rotationVector.y / 360) * 2 * Math.PI,
+    (rotationVector.z / 360) * 2 * Math.PI
+  );
 });
 
 watch(scale_display, (value, oldValue) => {

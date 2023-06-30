@@ -45,8 +45,8 @@
           />
         </div>
       </div>
-      <div class="overflow-x-visible">
-        <table class="table w-full">
+      <div class="overflow-x-visible border border-stone-400/80 rounded-md">
+        <table class="table w-full bg-white rounded-md">
           <thead>
             <tr>
               <th>{{ capitalizeOnlyFirstLetter($t('job_id')) }}</th>
@@ -58,7 +58,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="">
             <tr
               v-for="printJob in printingJobStore.getByPrinterId(printer.id)"
               :key="printJob.id"

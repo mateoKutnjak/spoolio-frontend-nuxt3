@@ -9,10 +9,10 @@
         :class="disabled ? 'btn-disabled' : ''"
       >
         <div
-          class="btn  btn-ghost btn-block gap-1 rounded-md pt-1"
+          class="btn  btn-ghost btn-block gap-1 rounded-md bg-white border-stone-400/80"
           :class="`${backgroundColor} ${textColor} btn-${size}`"
         >
-          <div class="w-full flex justify-between">{{ $t(extractName(selectedItem)) }}
+          <div class="w-full flex gap-2 justify-between">{{ $t(extractName(selectedItem)) }}
             <Icon name="ph:caret-down-bold" />
           </div>
         </div>

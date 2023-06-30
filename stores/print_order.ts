@@ -209,7 +209,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             const notificationStore = useNotificationStore();
 
             if (!authStore.loggedIn) {
-                dialogStore.open('AuthForm', {}, 'Please log in to perform estimation')
+                dialogStore.open('AuthForm', {})
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
                 this.print_order.eta = undefined;
                 return;
@@ -335,7 +335,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             const notificationStore = useNotificationStore();
 
             if (!authStore.loggedIn) {
-                dialogStore.open('AuthForm', {}, 'Please log in to perform estimation')
+                dialogStore.open('AuthForm', {})
                 notificationStore.show('Please log in to use this feature', ToastLevelType.info);
 
                 this.updateUnit(unit.localUrl, {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full btn btn-block btn-ghost btn-lg no-animation gap-6 rounded-md border border-stone-400/80 text-stone-500"
+    class="bg-white h-full btn btn-block btn-ghost btn-lg no-animation gap-6 rounded-md border border-stone-400/80 text-stone-500"
     @click="openDialog"
   >
     <Icon

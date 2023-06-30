@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div :style="`background-color: ${BACKGROUND_COLOR};`">
     <Toast />
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { BACKGROUND_COLOR } from "~~/constants/constants";
+
 function beforeWindowUnload(e: any) {
   console.log(e);
 

@@ -7,7 +7,7 @@
     >
       <label
         for="dropzone-file"
-        class="h-full flex flex-col gap-1 items-center justify-center px-12 bg-stone-200/50 w-full border-2 border-primary border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-stone-200 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg py-12"
+        class="h-full flex flex-col gap-1 items-center justify-center px-12 bg-white w-full border-2 border-primary border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-stone-200/20 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg py-12"
         @drop="event => emit('onDrop', event)"
       >
         <div class="mb-2 text-primary">

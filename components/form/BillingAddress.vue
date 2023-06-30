@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <!-- <div class="card-title flex justify-between font-normal">
       {{ capitalizeOnlyFirstLetter($t('billing_address')) }}
       <div

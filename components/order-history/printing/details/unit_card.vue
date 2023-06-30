@@ -1,5 +1,5 @@
 <template>
-  <div class="card  lg:card-side bg-base-100 rounded-md shadow border border-stone-400">
+  <div class="card  lg:card-side bg-base-100 rounded-md border border-stone-400/80">
     <div class="relative lg:m-4 lg:w-40 h-40 lg:order-last  flex justify-center items-center">
       <nuxt-img
         class="h-40"

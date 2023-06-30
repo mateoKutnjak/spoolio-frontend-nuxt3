@@ -9,16 +9,16 @@
 
     <div class="flex gap-2 justify-end pt-5">
       <div
-        class="btn btn-ghost rounded-sm border-gray-500 text-gray-700"
+        class="btn btn-ghost btn-outline rounded-md"
         @click="onNegative"
       >
         {{ capitalizeOnlyFirstLetter($t('cancel')) }}
       </div>
       <div
-        class="btn btn-primary rounded-sm"
+        class="btn btn-primary rounded-md"
         @click="onPositive"
       >
-      {{ capitalizeOnlyFirstLetter($t('confirm')) }}
+        {{ capitalizeOnlyFirstLetter($t('confirm')) }}
       </div>
     </div>
   </div>

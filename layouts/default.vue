@@ -6,14 +6,14 @@
         type="checkbox"
         class="drawer-toggle"
       />
-      <div
-        class="drawer-content"
-        :style="`background-color: white;`"
-      >
+      <div class="drawer-content">
         <div class="flex flex-col h-screen">
           <Navbar />
           <Toast />
-          <div class="w-full flex-1 flex flex-col gap-12">
+          <div
+            class="w-full flex-1 flex flex-col gap-12"
+            :style="`background-color: ${BACKGROUND_COLOR};`"
+          >
             <!-- <Breadcrumbs class="px-12" /> -->
             <slot />
           </div>

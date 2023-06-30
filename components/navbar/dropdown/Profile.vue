@@ -46,7 +46,7 @@
           >
             <MenuItem
               as="div"
-              @click="dialogStore.open('LoginForm', {})"
+              @click="dialogStore.open('LoginForm', {}, $t('sign_in').toUpperCase())"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon
@@ -58,7 +58,7 @@
             </MenuItem>
             <MenuItem
               as="div"
-              @click="dialogStore.open('RegisterForm', {})"
+              @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
             >
             <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
               <Icon

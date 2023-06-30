@@ -39,7 +39,7 @@
           v-model="dimensionX"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none',
+                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
                 inner: '!p-0 m-0 border-none bg-transparent',
                 outer: 'w-full !m-0',
               }"
@@ -52,7 +52,7 @@
           v-model="dimensionY"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none',
+                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
                 inner: '!p-0 m-0 border-none bg-transparent',
                 outer: 'w-full !m-0',
               }"
@@ -65,7 +65,7 @@
           v-model="dimensionZ"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none',
+                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
                 inner: '!p-0 m-0 border-none bg-transparent',
                 outer: 'w-full !m-0',
               }"
@@ -91,8 +91,8 @@
             :max="100.00"
             step="any"
             :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border border-stone-300',
-                inner: '!p-0 m-0 border-none bg-transparent',
+                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-400/80',
+                inner: '!p-0 m-0 border-none bg-white',
                 outer: 'w-full !m-0',
               }"
           />

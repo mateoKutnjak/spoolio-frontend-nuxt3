@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <!-- <div class="card-title flex justify-between font-normal text-gray-700">
       <div
         v-if="enableUseDefault"
@@ -92,7 +92,7 @@
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('save'))"
           :classes="{
-            input: 'btn btn-primary btn-block'
+            input: 'btn btn-primary btn-block '
           }"
         />
       </div>

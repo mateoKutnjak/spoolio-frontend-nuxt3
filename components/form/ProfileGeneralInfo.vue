@@ -1,5 +1,5 @@
 <template>
-  <div class="card-body gap-8">
+  <div class="flex flex-col gap-8">
     <div class="card-title flex justify-between">
       {{ capitalizeOnlyFirstLetter($t('general_info')) }}
     </div>
@@ -23,7 +23,7 @@
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('save'))"
           :classes="{
-                    input: 'btn btn-primary btn-block'
+                    input: 'btn btn-primary btn-block btn-sm'
                 }"
         />
       </div>

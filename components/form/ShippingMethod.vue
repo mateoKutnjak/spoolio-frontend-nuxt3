@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 flex flex-col gap-6">
+  <div class="flex flex-col gap-6">
     <SelectSingleChoice
       :options="shippingMethods"
       :preselect-option="shipping_method"

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-body gap-8 px-6 py-2">
+  <div class="flex flex-col gap-6">
     <FormKit
       type="form"
       id="login-form"

@@ -19,7 +19,7 @@
             validation-visibility="submit"
             @input="(value) => print_order.contact_email = value"
           />
-          <div class="p-5 flex flex-col gap-2 border border-stone-400/80 rounded-md">
+          <div class="bg-white p-5 flex flex-col gap-2 border border-stone-400/80 rounded-md">
             <div class="mb-2 flex gap-3 items-center text-stone-500">
               <Icon
                 name="ph:house"
@@ -83,26 +83,26 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-4 text-sm">
                   <table class="table table-compact w-full">
                     <tbody class="">
                       <tr class="border-none">
-                        <td class="pl-0 py-1 pb-0 text-base text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
-                        <td class="py-1 pb-0 text-lg border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
+                        <td class="pl-0 py-1 pb-0 text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
+                        <td class="py-1 pb-0 ttext-base border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none">
-                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
-                        <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
+                        <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
+                        <td class="py-1 pb-0 text-base border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none">
-                        <td class="pl-0 py-1 pt-0 text-base border-b border-stone-400/80 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
-                        <td class="py-1 pt-0 text-lg border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
+                        <td class="pl-0 py-1 pt-0 border-b border-stone-400/80 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
+                        <td class="py-1 pt-0 text-base border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none">
-                        <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
+                        <td class="pl-0 py-2 text-start border-transparent bg-transparent">
                           <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
                         </td>
-                        <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
+                        <td class="py-2 text-base text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
                       </tr>
                     </tbody>
                   </table>

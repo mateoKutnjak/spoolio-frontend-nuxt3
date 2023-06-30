@@ -1,5 +1,5 @@
 <template>
-  <div class="card-body gap-8 px-6 py-2">
+  <div class="flex flex-col gap-8">
     <Tabs
       class="self-center"
       :tabs="tabs"

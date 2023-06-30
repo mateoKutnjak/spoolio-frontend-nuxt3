@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="px-5 btn btn-lg btn-ghost gap-2 justify-start items-center rounded-md text-base !font-bold text-stone-500"
+      class="px-5 btn btn-lg btn-ghost gap-2 justify-start items-center rounded-md text-base !font-bold text-stone-500 bg-white"
       :class="(selectedOption && extractId(selectedOption) === extractId(option) ? 'border-4 border-primary btn-disabled ' : '` border-stone-400 hover:border-stone-400 ') + (fullWidth ? 'btn-block ' : ' ') + (enableUnselectedBorder ? ' ' : 'border-none ')"
       v-for="option in options"
       :key="extractId(option)"

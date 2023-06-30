@@ -42,10 +42,12 @@
               >
                 {{ message }}
               </DialogTitle>
-              <component
-                :is="component"
-                v-bind="componentProps"
-              ></component>
+              <div class="p-4">
+                <component
+                  :is="component"
+                  v-bind="componentProps"
+                ></component>
+              </div>
               <!-- <slot></slot> -->
             </DialogPanel>
           </TransitionChild>

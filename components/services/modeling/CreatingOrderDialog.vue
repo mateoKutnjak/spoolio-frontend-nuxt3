@@ -118,7 +118,7 @@
     <div
       v-show="everythingSuccessful"
       class="
-      btnbtn-block
+      btn btn-block btn-primary rounded-md
       text-xl"
       :class="everythingSuccessful ? '': 'btn-disabled'"
       @click="onOkPressed"

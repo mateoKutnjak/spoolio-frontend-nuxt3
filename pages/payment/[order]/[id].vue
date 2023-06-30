@@ -20,7 +20,7 @@
 
     <form
       id="payment-form"
-      class="w-4/5 md:w-2/3 lg:w-1/2 xl:w-1/3 flex flex-col items-center"
+      class="w-4/5 md:w-2/3 lg:w-1/2 xl:w-1/3 flex flex-col items-center bg-white"
     >
 
       <div
@@ -55,7 +55,7 @@ import { useStoreOrderHistoryStore } from "~~/stores/order_history_store";
 import { usePaymentStore } from "~~/stores/payment";
 
 definePageMeta({
-  layout: 'clean',
+  layout: "clean",
 });
 
 const { t } = useI18n();

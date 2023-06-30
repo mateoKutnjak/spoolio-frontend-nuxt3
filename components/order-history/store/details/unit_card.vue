@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-base-100 rounded-none sm:rounded-lg shadow">
+  <div class="card bg-base-100 rounded-none sm:rounded-lg border border-stone-400/80">
     <div class="card-body gap-5">
       <div class="flex flex-col gap-5">
         <div class="flex gap-4 justify-between items-center">

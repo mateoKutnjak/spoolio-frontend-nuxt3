@@ -15,7 +15,7 @@
       >
         <div class="flex-1 text-stone-600 font-bold text-xl">{{ $t('print_order').toUpperCase() }}</div>
         <div
-          class="btn btn-error btn-sm btn-outline rounded-md hover:!text-white"
+          class="btn btn-error btn-sm btn-outline bg-white rounded-md hover:!text-white"
           @click="onClearOrder"
         >
           <Icon
@@ -82,7 +82,7 @@
                 />
                 <div
                   v-if="printOrderStore.getUnits.length"
-                  class="card-body p-6 flex flex-col gap-2 border border-stone-400/80 rounded-md"
+                  class="card-body p-6 flex flex-col gap-2 border border-stone-400/80 rounded-md bg-white"
                 >
                   <div class="overflow-x-auto">
                     <table class="table table-xs">

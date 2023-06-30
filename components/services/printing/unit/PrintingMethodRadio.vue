@@ -3,13 +3,13 @@
     <div
       v-for="printingMethod in printingMethods"
       :key="printingMethod.id"
-      class="p-4 grid grid-cols-2 gap-2 rounded-md bg-stone-200"
-      :class="selectedMethod?.id === printingMethod.id ? 'border-4 border-primary' : 'border-4 border-transparent grayscale'"
+      class="p-4 grid grid-cols-2 gap-2 rounded-md bg-white"
+      :class="selectedMethod?.id === printingMethod.id ? 'border-4 border-primary' : 'border-4 border-stone-300/80 grayscale'"
       @click="selectedMethod = printingMethod"
     >
       <nuxt-img
         v-if="printingMethod.printer_type_picture"
-        class="rounded-none sm:rounded sm:aspect-square"
+        class="rounded-none sm:rounded sm:aspect-square "
         :src="printingMethod.printer_type_picture"
         style="object-fit: scale-down;"
       />

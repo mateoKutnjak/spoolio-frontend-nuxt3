@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="px-5 btn btn-lg btn-ghost gap-2 items-center rounded-md text-base !font-bold "
+      class="px-5 btn btn-lg btn-ghost gap-2 items-center rounded-md text-base !font-bold bg-white"
       :class="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 ? 'text-stone-500 border-4 border-primary hover:border-4 hover:border-primary' : 'text-stone-400 border-stone-400 hover:border-stone-400'"
       v-for="option in options"
       :key="extractId(option)"
