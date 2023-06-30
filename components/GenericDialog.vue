@@ -38,7 +38,7 @@
             >
               <DialogTitle
                 v-if="message"
-                class="text-lg font-bold uppercase text-stone-700 px-2 py-2 pb-4"
+                class="text-lg font-bold uppercase text-stone-600 px-4 py-2 pb-4"
               >
                 {{ message }}
               </DialogTitle>

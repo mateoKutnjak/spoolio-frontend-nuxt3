@@ -9,7 +9,7 @@
       :incomplete-message="false"
     >
       <div class="relative flex flex-col lg:flex-row gap-6">
-        <div class="flex-1 flex flex-col gap-4">
+        <div class="md:px-0 px-6 flex-1 flex flex-col gap-4">
           <FormKit
             :type="contactEmailInput"
             name="Contact email"
@@ -59,18 +59,22 @@
           />
           <FormInputPaymentMethod />
         </div>
-        <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
-          <div class="card shadow-md border border-stone-400/80 rounded-md bg-white">
+        <aside class="md:px-0 px-6 flex-1 md:sticky order-first md:order-last top-8 h-full">
+          <div class="card border border-stone-400/80 rounded-md bg-white">
             <div class="card-body">
-              <div class="flex flex-col gap-10">
-                <div class="flex flex-col gap-4">
-                  <div class="">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
-                  <div class="flex gap-4 overflow-x-auto pb-1">
+              <div class="flex flex-col gap-5">
+                <div class="card-title">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
+                <div class="p-4 pt-2 flex flex-col gap-1 border border-stone-400/80 rounded-md">
+                  <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
+                  <div class="flex gap-4 overflow-x-auto">
                     <div
                       v-for="unit in units"
                       :key="unit.localUrl"
-                      class="relative w-24 h-24 border-gray-400 rounded-none"
-                    > <nuxt-img :src="unit.screenshotURL">
+                      class="relative w-24 h-24 border border-gray-400 rounded-md"
+                    > <nuxt-img
+                        class="rounded-md"
+                        :src="unit.screenshotURL"
+                      >
 
                       </nuxt-img>
                       <div class="absolute bottom-1 right-2 font-bold text-sm text-gray-600">
@@ -80,30 +84,23 @@
                   </div>
                 </div>
                 <div class="flex flex-col gap-4">
-                  <div class="card-title">{{ capitalizeOnlyFirstLetter($t('summary')) }}</div>
                   <table class="table table-compact w-full">
                     <tbody class="">
-                      <tr>
-                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('items_price')) }}</td>
-                        <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">€{{ (totalPrice).toFixed(2) }}</td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pb-0 text-base text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
+                        <td class="py-1 pb-0 text-lg border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
                       </tr>
-                      <tr>
-                        <td class="pl-0 py-1 py-0 text-base text-start border-b-2 border-gray-500 bg-transparent">
-                          <div class="flex gap-1"><strong>{{ capitalizeOnlyFirstLetter($t('subtotal')) }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_excluded')) }})</div>
-                        </td>
-                        <td class="py-1 pt-0 text-lg text-end border-b-2 border-gray-500 bg-transparent"> <strong>€{{ (totalPrice).toFixed(2) }}</strong></td>
-                      </tr>
-                      <tr>
-                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`${capitalizeOnlyFirstLetter($t('tax'))} (${taxPercentage * 100}%)`}}</td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pb-0 text-base border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
                         <td class="py-1 pb-0 text-lg border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
-                      <tr>
-                        <td class="pl-0 py-1 pt-0 text-base border-b-2 border-gray-500 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
-                        <td class="py-1 pt-0 text-lg border-b-2 border-gray-500 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pt-0 text-base border-b border-stone-400/80 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
+                        <td class="py-1 pt-0 text-lg border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
-                      <tr>
+                      <tr class="border-none">
                         <td class="pl-0 py-2 text-base text-start border-transparent bg-transparent">
-                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_included')) }})</div>
+                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
                         </td>
                         <td class="py-2 text-lg text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
                       </tr>
@@ -111,7 +108,7 @@
                   </table>
                 </div>
                 <div class="flex flex-col gap-4">
-                  <div class="flex gap-1">
+                  <div class="flex gap-1 items-start">
                     <FormKit
                       type="checkbox"
                       name="Terms and Conditions"
@@ -124,7 +121,7 @@
                         messages: '-mr-96'
                       }"
                     />
-                    <div class="flex gap-1 mt-1 ml-1">
+                    <div class="space-x-1 ml-2 mt-0.5">
                       <span>
                         {{ capitalizeOnlyFirstLetter($t('i_agree_with')) }}
                       </span>

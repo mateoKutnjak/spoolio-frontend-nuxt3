@@ -11,7 +11,7 @@
       </div>
       <div
         v-if="printOrderStore.getUnits.length"
-        class="py-2 px-4 rounded-lg shadow flex gap-6 jusify-between md:items-center items-start bg-white"
+        class="px-12 md:px-0 flex gap-6 jusify-between md:items-center items-start"
       >
         <div class="flex-1 text-stone-600 font-bold text-xl">{{ $t('print_order').toUpperCase() }}</div>
         <div
@@ -82,13 +82,13 @@
                 />
                 <div
                   v-if="printOrderStore.getUnits.length"
-                  class="py-2 px-4 rounded-lg shadow flex flex-col gap-2 jusify-between md:items-end items-center bg-white"
+                  class="card-body p-6 flex flex-col gap-2 border border-stone-400/80 rounded-md"
                 >
                   <div class="overflow-x-auto">
                     <table class="table table-xs">
                       <tbody>
                         <tr>
-                          <th class="text-right">
+                          <th>
                             <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
                           </th>
                           <td class="text-right">
@@ -96,7 +96,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <th class="text-right">
+                          <th>
                             <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
                           </th>
                           <td class="text-right">
@@ -128,7 +128,7 @@
       </div>
       <div
         v-else
-        class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
+        class="px-12 md:px-0 mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <div class="flex flex-col gap-8">
           <div class="text-stone-600 font-bold text-2xl">{{$t('quick_3d_print').toUpperCase()}}</div>
@@ -163,7 +163,7 @@
         />
       </div>
     </div>
-    <div class="md:hidden mx-6 my-6 flex justify-end gap-3">
+    <div class="px-12 md:px-0 md:hidden mx-6 my-6 flex justify-end gap-3">
 
       <FileUploadFAB @change="change" />
       <div v-if="printOrderStore.units.length > 0">

@@ -53,13 +53,13 @@
         />
       </div>
 
-      <div class="w-full h-min grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 text-stone-600">
+      <div class="w-full h-min grid md:grid-cols-3 grid-cols-2 gap-3 text-stone-500">
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
+          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
           <div class="text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
+          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
@@ -69,7 +69,7 @@
           </div>
         </div>
         <div>
-          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
+          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
           <ServicesPrintingUnitSinglePrice
             :unit="unit"
             :price="totalPrice / unit.quantity"
@@ -77,11 +77,11 @@
         </div>
 
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
+          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
           <div class="text-xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="line-clamp-1 text-sm">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
+          <div class="text-stone-400 line-clamp-1 text-sm">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
@@ -91,7 +91,7 @@
           </div>
         </div>
         <div>
-          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
+          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
           <ServicesPrintingUnitSinglePrice
             :unit="unit"
             :price="totalPrice"
@@ -99,11 +99,11 @@
         </div>
 
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
+          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
           <div class="text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
+          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
           <div class="text-xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
@@ -113,7 +113,7 @@
           </div>
         </div>
         <NuxtLink :to="localePath(`/services/printing/units/${urlExtractFilename(unit.localUrl)}`)">
-          <div class="mt-4 btn btn-primary btn-sm text-white rounded-md">
+          <div class="mt-4 btn btn-primary btn-sm btn-block text-white rounded-md">
             {{ capitalizeOnlyFirstLetter($t('settings')).toUpperCase() }}
           </div>
         </NuxtLink>

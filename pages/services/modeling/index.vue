@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
-    <div class="flex flex-col gap-6 text-stone-700">
+    <div class="md:px-0 px-12 flex flex-col gap-6 text-stone-700">
       <div class="text-4xl font-bold">{{ $t('_3d_modeling').toUpperCase() }}</div>
       <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('describe_your_problem_and_request_a_quote_for_the_3d_modeling_service')) }}</div>
       <div></div>
@@ -14,6 +14,7 @@
           :extract-id="(item: IModelingOrderOrderType) => item.id"
           :extract-title="(item: IModelingOrderOrderType) => capitalizeOnlyFirstLetter($t(item.name))"
           :extract-icon-name="(item: IModelingOrderOrderType) => item.icon_name"
+          :enable-unselected-border="true"
           @on-selection-change="l => orderTypeSelectionChange(l)"
         />
         <div class="text-stone-400 text-sm max-w-xl">
@@ -30,6 +31,7 @@
           :extract-id="(option: IModelingOrderItemType) => option.id"
           :extract-title="(option: IModelingOrderItemType) => capitalizeOnlyFirstLetter($t(option.name))"
           :extract-icon-name="(item: IModelingOrderItemType) => item.icon_name"
+          :enable-unselected-border="true"
           @on-selection-change="l => itemTypeSelectionChange(l)"
         />
         <div class="text-stone-400 text-sm max-w-xl">
@@ -91,10 +93,11 @@
                 }"
               />
             </div>
-            <div class="card p-4 mb-5 bg-white shadow">
+            <div class="mb-5">
               <DragAndDropArea
                 class="h-full"
                 :title="capitalizeOnlyFirstLetter($t('choose_file_or_drag_it_here'))"
+                :hide-privacy-label="false"
                 subtitle=".TXT, .PDF, .JPG, .JPEG, .PNG"
                 @on-change="change"
                 @on-drop="drop"

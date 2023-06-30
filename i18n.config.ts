@@ -508,7 +508,7 @@ export default defineI18nConfig(() => ({
             save: 'spremi',
             saved: 'spremljeno',
             search: "pretraži…",
-            send_request: 'pošalji zahtjev',
+            send_request: 'pošalji upit',
             services: 'usluge',
             settings: 'postavke',
             shipped: 'poslano',

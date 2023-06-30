@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="px-5 btn btn-lg btn-ghost gap-2 items-center rounded-md text-base !font-bold text-stone-500"
-      :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'border-4 border-primary btn-disabled' : 'border-stone-400 hover:border-stone-400'"
+      class="px-5 btn btn-lg btn-ghost gap-2 justify-start items-center rounded-md text-base !font-bold text-stone-500"
+      :class="(selectedOption && extractId(selectedOption) === extractId(option) ? 'border-4 border-primary btn-disabled ' : '` border-stone-400 hover:border-stone-400 ') + (fullWidth ? 'btn-block ' : ' ') + (enableUnselectedBorder ? ' ' : 'border-none ')"
       v-for="option in options"
       :key="extractId(option)"
       @click="onItemClicked(option)"
@@ -35,11 +35,14 @@
           size="25"
         />
       </div>
-      <div class="flex flex-col">
-        <div :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'text-stonr-700' : 'text-stone-400'">
+      <div class="flex flex-col items-start ml-1">
+        <div :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'text-stone-600' : 'text-stone-400'">
           {{ extractTitle(option) }}
         </div>
-        <div v-if="extractDescription">
+        <div
+          v-if="extractDescription"
+          class="font-normal text-sm"
+        >
           {{ extractDescription(option) }}
         </div>
       </div>
@@ -55,6 +58,8 @@ const {
   extractTitle,
   extractDescription,
   extractIconName,
+  fullWidth,
+  enableUnselectedBorder,
 } = defineProps<{
   options: any[];
   preselectOption?: any;
@@ -62,6 +67,8 @@ const {
   extractTitle: Function;
   extractDescription?: Function;
   extractIconName?: Function;
+  fullWidth?: boolean;
+  enableUnselectedBorder?: boolean;
 }>();
 
 const emit = defineEmits(["onSelectionChange"]);

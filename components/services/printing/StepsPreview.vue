@@ -1,10 +1,10 @@
 <template>
-  <div class="flex gap-5 items-center">
-    <div>
-      <span
+  <div class="md:px-0 px-12 flex gap-5 items-center">
+    <div class="flex items-">
+      <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 0 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#1</span>
+      >#1</div>
       <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models')) }}</span>
     </div>
     <Icon
@@ -12,11 +12,11 @@
       size="22"
       name="ph:arrow-right-bold"
     />
-    <div>
-      <span
+    <div class="flex">
+      <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 1 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#2</span>
+      >#2</div>
       <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('delivery_and_payment')) }}</span>
     </div>
     <Icon
@@ -24,11 +24,11 @@
       size="22"
       name="ph:arrow-right-bold"
     />
-    <div>
-      <span
+    <div class="flex">
+      <div
         class="text-primary font-bold mr-2"
         :class="stepActive === 2 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#3</span>
+      >#3</div>
       <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('finish_order')) }}</span>
     </div>
   </div>

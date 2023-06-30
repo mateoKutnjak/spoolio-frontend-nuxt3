@@ -11,10 +11,16 @@
       v-if="shipping_method && Object.keys(shipping_method).length"
       class="py-5 flex flex-col items-start"
     >
-      <div class="font-bold text-base">
-        {{shipping_method.provider}}
+      <div class="flex gap-2 font-bold text-sm">
+        <div>
+          {{shipping_method.provider}}
+        </div>
+        •
+        <div>
+          €{{shipping_method.price}}
+        </div>
       </div>
-      <div class="text-base">
+      <div class="text-sm">
         {{ capitalizeOnlyFirstLetter($t(shipping_method.description)) }}
       </div>
     </div>
@@ -25,12 +31,6 @@
       {{ capitalizeOnlyFirstLetter($t('add') + " " + $t('shipping_method'))  }}
     </div>
     <div class="flex-1"></div>
-    <div
-      v-if="shipping_method && Object.keys(shipping_method).length"
-      class="text-lg font-bold"
-    >
-      €{{shipping_method.price}}
-    </div>
     <Icon
       v-if="shipping_method && Object.keys(shipping_method).length"
       name="ph:note-pencil-bold"

@@ -28,7 +28,10 @@
         />
       </label>
     </div>
-    <div class="self-center flex gap-2 text-sm text-stone-500">
+    <div
+      v-if="hidePrivacyLabel"
+      class="self-center flex gap-2 text-sm text-stone-500"
+    >
       <Icon
         name="ph:lock-duotone"
         size="18"
@@ -40,9 +43,10 @@
 </template>
 
 <script lang="ts" setup>
-const { title, subtitle } = defineProps<{
+const { title, subtitle, hidePrivacyLabel } = defineProps<{
   title: string;
   subtitle: string;
+  hidePrivacyLabel?: boolean;
 }>();
 const emit = defineEmits(["onDrop", "onChange"]);
 </script>

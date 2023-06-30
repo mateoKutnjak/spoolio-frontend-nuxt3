@@ -21,7 +21,7 @@
           <div
             v-for="tag in item.tags"
             :key="tag.id"
-            class="btn btn-outline btn-xs rounded-sm text-stone-700"
+            class="btn btn-outline btn-xs rounded-md text-stone-700"
             @click.prevent="emit('onTagClicked', tag)"
           >{{ tag.name }}</div>
         </div>

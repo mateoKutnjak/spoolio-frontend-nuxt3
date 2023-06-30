@@ -9,10 +9,12 @@
         :class="disabled ? 'btn-disabled' : ''"
       >
         <div
-          class="btn  btn-ghost btn-block gap-1 rounded-md justify-between pt-1"
+          class="btn  btn-ghost btn-block gap-1 rounded-md pt-1"
           :class="`${backgroundColor} ${textColor} btn-${size}`"
-        >{{ $t(extractName(selectedItem)) }}
-          <Icon name="ph:caret-down-bold" />
+        >
+          <div class="w-full flex justify-between">{{ $t(extractName(selectedItem)) }}
+            <Icon name="ph:caret-down-bold" />
+          </div>
         </div>
       </MenuButton>
 
