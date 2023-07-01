@@ -27,23 +27,34 @@
         <span class="text-lg text-stone-600">{{ capitalizeOnlyFirstLetter($t('if_your_item_exceeds_the_size_of_the_printers_workspace_the_item_is_printed_in_several_pieces_that_are_then_glued_together')) }}.</span>
       </div>
     </div>
-    <div
-      v-if="data"
-      class="grid grid-cols-2 gap-2 border border-primary divide-x divide-primary rounded bg-white shadow"
+    <carousel
+      :items-to-show="2"
+      class="bg-white border border-primary rounded shadow"
     >
-      <div
+      <slide
         v-for="printerType, index in data"
         :key="printerType.id"
         :id="`slide${index}`"
-        class=""
+        class="divide-x divide-primary"
       >
         <IndexPrintersPrinterType :printer-type="printerType" />
-      </div>
-    </div>
+        <div
+          v-if="data && index < data?.length-1"
+          class="divider w-0 h-full m-0 divider-primary"
+        ></div>
+      </slide>
+
+      <template #addons>
+        <navigation />
+      </template>
+    </carousel>
   </div>
 </template>
       
       <script lang="ts" setup>
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+
 import { usePrinterTypeStore } from "~~/stores/printer_type";
 
 const printerTypeStore = usePrinterTypeStore();
