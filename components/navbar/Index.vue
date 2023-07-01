@@ -82,22 +82,6 @@
       </div>
     </div>
   </div>
-
-  <GenericDialog
-    title="Login"
-    :show="isLoginDialogShown"
-    @on-close-clicked="isLoginDialogShown=false"
-  >
-    <LoginForm />
-  </GenericDialog>
-
-  <GenericDialog
-    title="Sign up"
-    :show="isRegisterDialogShown"
-    @on-close-clicked="isRegisterDialogShown=false"
-  >
-    <RegisterForm />
-  </GenericDialog>
 </template>
   
   <script lang="ts" setup>
@@ -113,9 +97,6 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 const drawerStore = useDrawerStore();
 const globalsStore = useGlobalsStore();
-
-const isLoginDialogShown = ref(false);
-const isRegisterDialogShown = ref(false);
 
 let currentLocale = locale.value;
 let currentLanguage;
