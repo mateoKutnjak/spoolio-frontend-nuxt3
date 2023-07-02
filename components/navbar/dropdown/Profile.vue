@@ -9,14 +9,18 @@
         :class="authStore.loggedIn ? 'hover:bg-transparent' : ''"
       >
         <div
-          :class="authStore.loggedIn ? 'ring ring-primary ring-offset-base-100 ring-offset-2' : ''"
           class="w-8 rounded-full "
           :key="user?.id"
         >
           <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
           <ClientOnly>
             <div v-if="authStore.loggedIn">
-              <nuxt-img src="https://placeimg.com/192/192/people" />
+              <div class="avatar placeholder">
+                <div class="-mt-1 -ml-1 bg-primary text-neutral-content rounded-full w-10 bg-gradient-to-r from-secondary to-primary">
+                  <span class="text-md text-white">{{ userProfileInitials(authStore.getUser?.profile) }}</span>
+                </div>
+              </div>
+
             </div>
             <div v-else>
               <Icon
