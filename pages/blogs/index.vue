@@ -2,13 +2,13 @@
   <div class="pb-12">
     <BlogTopCard
       v-if="featuredBlogsData"
-      :blog="featuredBlogsData?.length ? featuredBlogsData[0] : null"
+      :blog="featuredBlogsData?.length ? featuredBlogsData[0] : undefined"
     />
     <div class="mx-auto md:px-12 max-w-7xl mt-12 flex flex-col gap-12">
       <div v-if="featuredBlogsData">
-        <div class="pb-4 text-stone-700 text-2xl font-bold">Featured</div>
+        <div class="pb-4 text-stone-700 text-3xl font-bold">{{ capitalizeOnlyFirstLetter($t('featured')) }}</div>
         <div class="flex md:flex-row flex-col gap-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4 gap-6">
             <BlogFeaturedCard
               v-for="featuredBlog in featuredBlogsData.slice(1, 3)"
               :key="featuredBlog.id"
@@ -31,11 +31,11 @@
         v-if="blogTagsData"
         class="flex flex-wrap gap-12 "
       >
-        <div class="px-4 md:px-0 mt-1 text-stone-700 text-2xl font-bold">Categories</div>
+        <div class="px-4 md:px-0 mt-1 text-stone-700 text-3xl font-bold">{{ capitalizeOnlyFirstLetter($t('categories')) }}</div>
         <Tabs
           :tabs="tags"
-          :selected-tab-index="tags.findIndex(el => el.title === tagSelected?.name)"
-          :key="tagSelected"
+          :selected-tab-index="Math.max(tags.findIndex(el => el.title === tagSelected?.name), 0)"
+          :key="tagSelected?.id"
           @on-tab-clicked="tab => onTabClicked(tab)"
         />
       </div>
