@@ -52,7 +52,7 @@
               as="div"
               @click="dialogStore.open('LoginForm', {}, $t('sign_in').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
               <Icon
                 name="ph:sign-in"
                 size="22"
@@ -64,7 +64,7 @@
               as="div"
               @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
               <Icon
                 name="ph:user-plus-duotone"
                 size="22"
@@ -80,7 +80,7 @@
           >
             <NuxtLink :to="localePath('/profile/order-history/')">
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
                 <Icon
                   name="ph:clipboard-text-duotone"
                   size="20"
@@ -92,7 +92,7 @@
             <MenuItem as="div">
             <NuxtLink :to="localePath('/profile/')">
 
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
                 <Icon
                   name="ph:user"
                   size="20"
@@ -105,7 +105,7 @@
               as="div"
               @click="logout"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
               <Icon
                 name="ph:sign-out"
                 size="20"

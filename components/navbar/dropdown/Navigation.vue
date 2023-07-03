@@ -31,7 +31,7 @@
             >
 
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start text-gray-700 font-normal">
+              <div class="btn btn-ghost btn-block justify-start text-gray-700 font-normal rounded-md">
                 {{$t(item.name)}}
               </div>
               </MenuItem>
