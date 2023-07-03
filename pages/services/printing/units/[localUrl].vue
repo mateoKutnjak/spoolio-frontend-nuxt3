@@ -1,25 +1,26 @@
 <template>
   <div class="container mx-auto max-w-7xl px-12 py-12">
     <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-12">
+      <div class="flex flex-col gap-8">
         <ButtonBack class="text-primary" />
 
-        <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 lg:gap-12 justify-between items-start lg:items-end">
+        <div class="flex flex-wrap justify-between gap-8 items-center">
+
           <div class="text-lg font-bold text-stone-700 line-clamp-1">{{ extractUrlFileStringUnion(unit.file).toUpperCase()
         }}</div>
+          <div class="flex-1"></div>
+          <IncreaseDecreaseQuantity
+            class="w-36"
+            :max="MAX_PRINT_QUANTITY"
+            :min="1"
+            :initial-value="unit.quantity"
+            :emit-live="false"
+            @on-decrease-value="decreaseQuantity"
+            @on-increase-value="increaseQuantity"
+            @on-value-set="(q) => setQuantity(q) "
+          />
+
           <div class="flex flex-col gap-1 items-center">
-            <div class="text-sm text-stone-700">{{ capitalizeFirstLetter($t('quantity')) }}</div>
-            <IncreaseDecreaseQuantityButtons
-              :max="MAX_PRINT_QUANTITY"
-              :min="1"
-              :initialValue="quantity"
-              @on-decrease-value="decreaseQuantity"
-              @on-increase-value="increaseQuantity"
-              @on-value-set="(q) => setQuantity(q)"
-            />
-          </div>
-          <div class="flex flex-col gap-1 items-center">
-            <div class="text-sm text-stone-700">{{ capitalizeFirstLetter($t('price')) }}</div>
             <div v-if="price === Number.NEGATIVE_INFINITY">
               <Icon
                 class="text-gray-500 -my-6"
@@ -38,7 +39,7 @@
             </div>
           </div>
           <div
-            class="btn btn-primary btn-sm gap-1 text-white"
+            class="btn btn-primary btn-wide btn-sm gap-1 text-white"
             @click.prevent="$router.back()"
           >
             <Icon

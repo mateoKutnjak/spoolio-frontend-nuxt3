@@ -5,7 +5,7 @@
         v-if="cartItems.size > 0"
         class="p-4 h-full flex flex-col"
       >
-        <div class="p-4 pb-8 flex gap-4 items-center">
+        <div class="p-4 pb-8 flex gap-2 items-center">
           <Icon
             name="ph:shopping-cart-duotone"
             class="block h-6 w-6"

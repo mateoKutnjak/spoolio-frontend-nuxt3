@@ -32,17 +32,18 @@
         :title="option.title"
       />
     </div>
-    <div class="w-full flex justify-between items-start">
-      <IncreaseDecreaseQuantityButtons
-        :key="quantity"
+    <div class="w-full flex justify-between items-center">
+      <IncreaseDecreaseQuantity
+        class="w-36"
         :max="MAX_CART_ITEMS"
         :min="1"
-        :initialValue="quantity"
+        :initial-value="quantity"
+        :emit-live="true"
         @on-decrease-value="decreaseQuantity"
         @on-increase-value="increaseQuantity"
         @on-value-set="(q) => setQuantity(q) "
       />
-      <div class="text-xl font-bold mt-2">€{{(combination.price * quantity).toFixed(2) }}</div>
+      <div class="text-xl font-bold mt-1">€{{(combination.price * quantity).toFixed(2) }}</div>
     </div>
   </div>
 </template>
