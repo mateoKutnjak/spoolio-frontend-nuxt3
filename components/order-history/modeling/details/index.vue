@@ -1,55 +1,77 @@
 <template>
   <div class="container mx-auto">
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-12">
       <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
         <div class="text-3xl">{{ `${capitalizeOnlyFirstLetter($t('modeling_order'))} #${order.id}`}}</div>
         <div class="text-xl text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
         <OrderStatusView :raw-status="order.status" />
       </div>
       <div class="px-6 lg:px-0">
-        <ul class="space-y-8">
-          <li class="flex gap-4 items-center text-stone-600">
-            <Icon
-              name="material-symbols:circle"
-              size="12"
+
+        <div class="grid grid-cols-1 gap-4">
+
+          <div class="flex flex-col gap-1">
+            <div class="text-sm text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
+            <SelectSingleChoice
+              v-if="order.order_type"
+              :options="[order.order_type]"
+              :preselect-option="order.order_type"
+              :extract-id="(item: IModelingOrderOrderType) => item.id"
+              :extract-title="(item: IModelingOrderOrderType) => capitalizeOnlyFirstLetter($t(item.name))"
+              :extract-icon-name="(item: IModelingOrderOrderType) => item.icon_name"
+              :enable-unselected-border="true"
             />
-            <span>{{ capitalizeOnlyFirstLetter($t('contact_email')) }}</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="text-sm text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
+            <SelectSingleChoice
+              :options="[order.item_type]"
+              :preselect-option="order.item_type"
+              :extract-id="(item: IModelingOrderItemType) => item.id"
+              :extract-title="(item: IModelingOrderItemType) => capitalizeOnlyFirstLetter($t(item.name))"
+              :extract-icon-name="(item: IModelingOrderItemType) => item.icon_name"
+              :enable-unselected-border="true"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <div class="text-sm text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
+            <SelectMultiChoice
+              class="btn-disabled"
+              :options="order.item_attributes"
+              :preselect-options="order.item_attributes"
+              :extract-id="(option: IModelingOrderItemAttribute) => option.id"
+              :extract-title="(option: IModelingOrderItemAttribute) => capitalizeOnlyFirstLetter($t(option.name))"
+              :extract-description="(option: IModelingOrderItemAttribute) => capitalizeOnlyFirstLetter($t(option.description || ''))"
+              @on-selection-change="l => itemAttributeSelectionChange(l)"
+            />
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="flex flex-col gap-1">
+            <div class="text-sm text-stone-500 font-semibold">{{ $t('contact_email').toUpperCase() }}</div>
             <input
-              class="input input-bordered input-sm w-full max-w-xs"
+              class="input input-bordered input-sm w-full max-w-sm"
               readonly
               :placeholder="order.contact_email"
             />
-          </li>
-          <li class="flex gap-4 items-start text-stone-600">
-            <Icon
-              class="mt-1.5"
-              name="material-symbols:circle"
-              size="12"
-            />
-            <span>{{ capitalizeOnlyFirstLetter($t('description')) }}</span>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <div class="text-sm text-stone-500 font-semibold">{{ $t('description').toUpperCase() }}</div>
             <textarea
-              class="textarea input-bordered w-full max-w-2xl"
+              class="textarea input-bordered w-full max-w-7xl"
               :placeholder="order.comment"
               readonly
             ></textarea>
-          </li>
-          <li class="flex gap-4 items-center text-stone-600">
-            <Icon
-              name="material-symbols:circle"
-              size="12"
-            />
-            <OrderHistoryModelingDetailsItemType :item_type="order.item_type" />
-          </li>
-          <li class="flex gap-4 items-center text-stone-600">
-            <Icon
-              name="material-symbols:circle"
-              size="12"
-            />
-            <OrderHistoryModelingDetailsItemAttributes :item_attributes="order.item_attributes" />
-          </li>
+          </div>
+
+          <div class="divider"></div>
+
           <li
             v-if="attachment_files_data?.length"
-            class="flex gap-4 items-start text-stone-600"
+            class="flex gap-2 items-start text-stone-600"
           >
             <Icon
               class="mt-1.5"
@@ -90,12 +112,11 @@
               </div>
             </div>
           </li>
-        </ul>
-
+        </div>
       </div>
       <OrderHistoryModelingDetailsCheckoutCard
         v-if="OrderStatus.all[order.status] == OrderStatus.awaitingPayment"
-        class="w-min self-center"
+        class="w-full self-center"
         :order="order"
       />
     </div>
@@ -104,7 +125,12 @@
   
   <script lang="ts" setup>
 import { OrderStatus } from "~~/constants/constants";
-import { IModelingOrder } from "~~/constants/data";
+import {
+  IModelingOrder,
+  IModelingOrderItemAttribute,
+  IModelingOrderItemType,
+  IModelingOrderOrderType,
+} from "~~/constants/data";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 
 const modelingOrderHistoryStore = useModelingOrderHistoryStore();

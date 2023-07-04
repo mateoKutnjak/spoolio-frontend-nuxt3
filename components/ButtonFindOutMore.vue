@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     class="text-primary"
-    :to="localePath('to')"
+    :to="localePath(to)"
   >
     <div class="flex gap-2">
 

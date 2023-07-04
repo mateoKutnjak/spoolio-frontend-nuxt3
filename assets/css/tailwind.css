@@ -17,6 +17,10 @@
     text-transform: none;
   }
 
+  .btn-primary {
+    @apply bg-gradient-to-tr from-primary-focus to-primary
+  }
+
   body {
   /* font-family: "Raleway" ; */
     font-family: 'Roboto';
