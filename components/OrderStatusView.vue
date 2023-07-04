@@ -2,7 +2,7 @@
   <div class="flex justify-end">
     <div
       v-if="rawStatus"
-      class="w-fit whitespace-nowrap px-4 py-1.5 text-white text-sm font-bold rounded-full"
+      class="w-fit whitespace-nowrap px-4 py-1.5 text-white text-sm font-bold rounded-full shadow-md border border-stone-400"
       :style="`background-color: ${ OrderStatus.all[rawStatus].colorHex}`"
     >{{ capitalizeOnlyFirstLetter($t(OrderStatus.all[rawStatus].server_name)) }}</div>
   </div>

@@ -69,8 +69,8 @@
                   validation="email|required"
                   validation-visibility="submit"
                   :validation-messages="{
-                required: 'Leave your contact email'
-              }"
+                    required: 'Leave your contact email'
+                  }"
                 />
                 <div
                   v-show="user"
@@ -105,7 +105,6 @@
             </div>
           </div>
 
-          <div class="divider p-0 m-0"></div>
           <ServicesModelingAttachmentFiles />
           <ServicesModelingAttachmentImages />
           <div class="flex justify-center mt-4">

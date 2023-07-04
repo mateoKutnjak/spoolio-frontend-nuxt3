@@ -6,7 +6,7 @@ export class Language {
     }
 }
 
-export const BACKGROUND_COLOR = "#F2F2F2"; // * color of stone-300/70
+export const BACKGROUND_COLOR = "#F7F7F7"; // * color of stone-300/70
 
 // * Restrict non-auth user to access anything but index page => /
 export const RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS = false;

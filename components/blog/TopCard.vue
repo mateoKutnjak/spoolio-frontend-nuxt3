@@ -25,7 +25,7 @@
         <div class="text-stone-50 text-6xl font-bold drop-shadow-md">{{ blog.title }}</div>
         <div class="mb-4 text-stone-50 text-xl font-medium drop-shadow-xl">{{ blog.subtitle }}</div>
         <NuxtLink :to="localePath(`/blogs/${blog.id}`)">
-          <div class="btn btn-primary btn-wide shadow-md">Read Article
+          <div class="btn btn-primary btn-wide shadow-md"> {{ capitalizeFirstLetter($t('read_article')) }}
           </div>
         </NuxtLink>
       </div>

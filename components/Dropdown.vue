@@ -9,7 +9,7 @@
         :class="disabled ? 'btn-disabled' : ''"
       >
         <div
-          class="btn  btn-ghost btn-block gap-1 rounded-md bg-white border-stone-400/80"
+          class="btn  btn-ghost btn-block gap-1 rounded-md bg-white border-stone-300/80"
           :class="`${backgroundColor} ${textColor} btn-${size}`"
         >
           <div class="w-full flex gap-2 justify-between">{{ $t(extractName(selectedItem)) }}
@@ -26,7 +26,7 @@
         leave-from-class="transform scale-100 opacity-100"
         leave-to-class="transform scale-95 opacity-0"
       >
-        <MenuItems class="z-20 absolute left-0 w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems class="z-20 absolute left-0 mt-1 w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div class="px-1 py-1">
             <div
               v-for="item, index in items"

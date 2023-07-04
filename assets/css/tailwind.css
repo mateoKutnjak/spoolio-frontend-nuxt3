@@ -17,8 +17,16 @@
     text-transform: none;
   }
 
+  .btn {
+    @apply rounded-md
+  }
+
   .btn-primary {
     @apply bg-gradient-to-tr from-primary-focus to-primary
+  }
+
+  .btn-circle {
+    @apply rounded-full
   }
 
   body {

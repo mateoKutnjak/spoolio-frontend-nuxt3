@@ -9,14 +9,14 @@
         :class="authStore.loggedIn ? 'hover:bg-transparent' : ''"
       >
         <div
-          class="w-8 rounded-full "
+          class="w-10 rounded-full "
           :key="user?.id"
         >
           <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
           <ClientOnly>
             <div v-if="authStore.loggedIn">
               <div class="avatar placeholder">
-                <div class="-mt-1 -ml-1 bg-primary text-neutral-content rounded-full w-10 bg-gradient-to-r from-secondary to-primary">
+                <div class=" bg-primary text-neutral-content rounded-full w-10 bg-gradient-to-r from-secondary to-primary">
                   <span class="text-md text-white">{{ userProfileInitials(authStore.getUser?.profile) }}</span>
                 </div>
               </div>
@@ -24,7 +24,7 @@
             </div>
             <div v-else>
               <Icon
-                class="text-stone-700"
+                class="text-stone-700 mt-1"
                 name="ph:user-circle-duotone"
                 size="32"
                 aria-hidden="true"
@@ -52,7 +52,7 @@
               as="div"
               @click="dialogStore.open('LoginForm', {}, $t('sign_in').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
               <Icon
                 name="ph:sign-in"
                 size="22"
@@ -64,7 +64,7 @@
               as="div"
               @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
               <Icon
                 name="ph:user-plus-duotone"
                 size="22"
@@ -80,7 +80,7 @@
           >
             <NuxtLink :to="localePath('/profile/order-history/')">
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
                 <Icon
                   name="ph:clipboard-text-duotone"
                   size="20"
@@ -92,7 +92,7 @@
             <MenuItem as="div">
             <NuxtLink :to="localePath('/profile/')">
 
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
                 <Icon
                   name="ph:user"
                   size="20"
@@ -105,7 +105,7 @@
               as="div"
               @click="logout"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
               <Icon
                 name="ph:sign-out"
                 size="20"

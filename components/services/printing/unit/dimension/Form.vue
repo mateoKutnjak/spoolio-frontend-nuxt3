@@ -91,7 +91,7 @@
             :max="100.00"
             step="any"
             :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-400/80',
+                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-300',
                 inner: '!p-0 m-0 border-none bg-white',
                 outer: 'w-full !m-0',
               }"

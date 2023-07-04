@@ -17,17 +17,20 @@
       class="h-full"
     >
       <div class="h-full flex flex-col gap-2">
-        <nuxt-img
-          v-if="item?.picture"
-          class="h-[15rem] w-full md:rounded-lg rounded-none object-cover"
-          :src="item.picture"
-        />
-        <EmptyImagePlaceholder
-          v-else
-          class="h-[15rem] w-full rounded-lg"
-        />
-        <div class="md:px-0 px-4 flex flex-col gap-2">
-          <div class="text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
+        <div class="h-[15rem]">
+          <nuxt-img
+            v-if="item?.picture"
+            class="h-[15rem] w-full md:rounded-lg rounded-none object-cover"
+            :src="item.picture"
+          />
+          <EmptyImagePlaceholder
+            v-else
+            class="h-[15rem] w-full rounded-lg"
+          />
+        </div>
+
+        <div class="h-full md:px-0 px-4 flex flex-col gap-2">
+          <div class="mt-2 text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
           <div class="text-2xl font-bold text-stone-600">{{ item.title }}</div>
           <div class="text-stone-600 text-sm">{{ item.subtitle }}</div>
           <div class="flex-1"></div>
@@ -35,7 +38,7 @@
             <div
               v-for="tag in item.tags"
               :key="tag.id"
-              class="btn btn-outline btn-xs rounded-md text-stone-700"
+              class="link font-bold text-stone-600 rounded text-sm"
               @click.prevent="emit('onTagClicked', tag)"
             >{{ tag.name }}</div>
           </div>

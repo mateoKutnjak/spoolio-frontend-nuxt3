@@ -31,8 +31,8 @@
           }"
           validation-visibility="live"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none rounded border border-stone-400',
-                inner: '!p-0 m-0 border-none bg-transparent',
+                input: 'input input-bordered w-full input-sm !text-right !outline-none rounded border border-stone-300 shadow',
+                inner: '!p-0 m-0 border-none bg-white',
                 outer: '!m-0',
                 message: '!m-0, !px-1'
               }"
