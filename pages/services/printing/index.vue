@@ -82,7 +82,7 @@
                 />
                 <div
                   v-if="printOrderStore.getUnits.length"
-                  class="card-body p-6 flex flex-col gap-2 border border-stone-400/80 rounded-md bg-white"
+                  class="card-body p-6 flex flex-col gap-2 shadow-md rounded-md bg-white border border-stone-300"
                 >
                   <div class="overflow-x-auto">
                     <table class="table table-xs">

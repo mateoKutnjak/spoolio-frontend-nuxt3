@@ -1,11 +1,11 @@
 <template>
-  <div class="px-12 py-6 flex flex-col gap-2 sm:rounded-md rounded-none border border-stone-400 bg-white">
+  <div class="px-10 py-6 flex flex-col gap-2 sm:rounded-lg rounded-none border border-stone-300 shadow-md bg-white">
     <div class="flex sm:flex-row flex-col justify-between">
       <div class="flex flex-col">
         <div class="text-stone-400">
           MODEL {{ index+1 }}/{{ totalUnitCount }}
         </div>
-        <div class="mt-2 text-stone-700 text-xl font-bold">{{ extractUrlFileStringUnion(unit.file).toUpperCase() }}</div>
+        <div class="text-stone-600 text-lg font-bold">{{ extractUrlFileStringUnion(unit.file) }}</div>
         <ServicesPrintingDimensionInfo
           class="text-sm"
           :unit="unit"
