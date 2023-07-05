@@ -1,7 +1,6 @@
 <template>
   <div
-    class="btn btn-sm text-info rounded-full bg-stone-200 !rounded-full"
-    :class="selected ? 'border-2 border-info' : ' btn-ghost'"
+    class="btn btn-xs btn-outline text-stone-600 !rounded-full"
     @click.prevent="emit('onTagClicked', tag)"
   >{{ capitalizeOnlyFirstLetter($t(tag.name)) }}</div>
 </template>
@@ -9,9 +8,8 @@
 <script lang="ts" setup>
 import { IBlogTag } from "~~/constants/data";
 
-const { tag, selected } = defineProps<{
+const { tag } = defineProps<{
   tag: IBlogTag;
-  selected: boolean;
 }>();
 
 const emit = defineEmits(["onTagClicked"]);

@@ -29,7 +29,7 @@
     </div>
     <carousel
       :items-to-show="2"
-      class="bg-white border border-primary rounded shadow"
+      class="bg-white border border-primary rounded"
     >
       <slide
         v-for="printerType, index in data"

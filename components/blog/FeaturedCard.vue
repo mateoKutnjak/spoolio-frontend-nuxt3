@@ -27,17 +27,24 @@
           class="h-[15rem] w-full rounded-lg"
         />
         <div class="h-full md:px-0 px-4 flex flex-col gap-2">
-          <div class="mt-2 text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
-          <div class="text-3xl font-bold text-stone-600">{{ item.title }}</div>
+          <div class="mt-1 flex gap-3 items-center font-sans">
+            <div class="avatar placeholder">
+              <div class="bg-stone-300 text-neutral-content rounded-full w-8">
+                <span class="text-sm">{{ userProfileInitials(item.author?.profile) }}</span>
+              </div>
+            </div>
+            <div class="text-sm text-stone-500">{{ reformatDate(item.created_at) }}</div>
+          </div>
+          <div class="mt-1 text-3xl font-bold text-stone-600">{{ item.title }}</div>
           <div class="text-stone-600 text-sm">{{ item.subtitle }}</div>
           <div class="flex-1"></div>
           <div class="mt-3 card-actions justify-start">
-            <div
+            <BlogTag
               v-for="tag in item.tags"
               :key="tag.id"
-              class="link font-bold text-stone-600 rounded text-sm"
-              @click.prevent="emit('onTagClicked', tag)"
-            >{{ tag.name }}</div>
+              :tag="tag"
+              @on-tag-clicked="emit('onTagClicked', tag)"
+            />
 
           </div>
         </div>

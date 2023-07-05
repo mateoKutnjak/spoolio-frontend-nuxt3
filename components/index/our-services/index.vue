@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-10 px-12 md:px-0">
     <div class="text-3xl font-bold text-stone-600">{{ $t('our_services').toUpperCase() }}</div>
     <div class="flex flex-col lg:flex-row gap-8">
-      <div class="flex-1 flex flex-col rounded border border-primary items-center bg-white shadow">
+      <div class="flex-1 flex flex-col rounded border border-primary items-center bg-white">
         <div class="py-4 text-3xl font-bold text-stone-600">{{ capitalizeFirstLetter($t('_3d_printing')) }}</div>
         <div class="w-full grid grid-cols-2 border-t border-b border-primary divide-x divide-primary">
           <div
@@ -27,11 +27,11 @@
           </div>
           <NuxtLink
             :to="localePath('/services/modeling')"
-            class="btn btn-lg btn-outline text-stone-600 border-stone-300 shadow-md"
+            class="btn btn-lg btn-outline text-stone-600 border-stone-300 shadow"
           >{{ $t('i_dont_have_a_model').toUpperCase() }}</NuxtLink>
         </div>
       </div>
-      <div class="flex flex-col rounded border border-primary items-center bg-white shadow">
+      <div class="flex flex-col rounded border border-primary items-center bg-white">
         <div class="py-4 text-3xl font-bold text-stone-600">{{ capitalizeFirstLetter($t('_3d_modeling')) }}</div>
         <div class="px-12 pt-6 w-full flex-1 flex flex-col gap-4 justify-center border-t border-b border-primary divide-primary">
           <ul class="text-primary text-lg list-inside list-disc space-y-1">
@@ -61,7 +61,7 @@
             </div>
             <NuxtLink
               :to="localePath('/services/modeling')"
-              class="btn btn-lg btn-outline text-stone-600 border-stone-300 shadow-md"
+              class="btn btn-lg btn-outline text-stone-600 border-stone-300 shadow"
             >{{ $t('_3d_modeling').toUpperCase() }}</NuxtLink>
           </div>
         </div>

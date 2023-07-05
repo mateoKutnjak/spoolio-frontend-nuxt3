@@ -14,16 +14,23 @@
   >
     <NuxtLink :to="localePath(`/blogs/${item.id}`)">
       <div class="md:px-0 px-4 flex flex-col gap-2">
-        <div class="text-sm text-stone-600">{{ reformatDateShort(item.created_at) }}</div>
-        <div class="text-xl font-bold text-stone-600">{{ item.title }}</div>
+        <div class="mt-1 flex gap-3 items-center font-sans">
+          <div class="avatar placeholder">
+            <div class="bg-stone-300 text-neutral-content rounded-full w-8">
+              <span class="text-sm">{{ userProfileInitials(item.author?.profile) }}</span>
+            </div>
+          </div>
+          <div class="text-sm text-stone-500">{{ reformatDate(item.created_at) }}</div>
+        </div>
+        <div class="font-bold text-stone-600">{{ item.title }}</div>
         <div class="mb-2 text-stone-600 text-sm">{{ item.subtitle }}</div>
         <div class="flex gap-1">
-          <div
+          <BlogTag
             v-for="tag in item.tags"
             :key="tag.id"
-            class="link font-bold text-stone-600 rounded text-sm"
-            @click.prevent="emit('onTagClicked', tag)"
-          >{{ tag.name }}</div>
+            :tag="tag"
+            @on-tag-clicked="emit('onTagClicked', tag)"
+          />
         </div>
       </div>
     </NuxtLink>

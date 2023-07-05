@@ -5,23 +5,21 @@
         v-show="isOpened"
         class="toast toast-bottom toast-end px-12 py-8 z-50 text-base whitespace-normal"
       >
-        <div class="max-w-lg rounded-md shadow-xl font-bold bg-stone-50 text-stone-600 border border-stone-100">
+        <div
+          class="max-w-lg rounded-md shadow-xl font-bold text-white"
+          :class="`${toastBgColor}`"
+        >
           <div class="flex">
-            <div
-              class="w-3"
-              :class="`${toastBgColor} rounded-tl-md rounded-bl-md`"
-            ></div>
             <div :class="`px-5 py-4 flex gap-5 items-center `">
               <div class="justify-center items-center rounded-lg">
                 <Icon
-                  :class="textColor"
                   :name="toastIconName"
                   size="30"
                 />
                 <span class="sr-only">Check icon</span>
               </div>
               <div class="flex flex-col">
-                <div class="text-sm font-bold">{{ capitalizeOnlyFirstLetter(toastTitle) }}</div>
+                <!-- <div class="text-base font-bold">{{ capitalizeOnlyFirstLetter(toastTitle) }}</div> -->
                 <div class="break-words text-sm font-normal">{{message || ''}}</div>
               </div>
               <button
