@@ -23,7 +23,7 @@
             {{reformatDate(blog?.created_at)}}
           </div>
         </div>
-        <div class="py-0 font-['Josefin_Sans']">
+        <div class="py-0 font-['Poppins']">
           <h2 class="card-title text-xl text-stone-700 pb-1">{{blog.title}}</h2>
           <p class="text-stone-500 text-base">{{blog.subtitle}}</p>
         </div>
