@@ -52,8 +52,9 @@
               as="div"
               @click="dialogStore.open('LoginForm', {}, $t('sign_in').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
               <Icon
+                class="mb-[2px]"
                 name="ph:sign-in"
                 size="22"
                 aria-hidden="true"
@@ -64,8 +65,9 @@
               as="div"
               @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
               <Icon
+                class="mb-[2px]"
                 name="ph:user-plus-duotone"
                 size="22"
                 aria-hidden="true"
@@ -80,8 +82,9 @@
           >
             <NuxtLink :to="localePath('/profile/order-history/')">
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
                 <Icon
+                  class="mb-[2px]"
                   name="ph:clipboard-text-duotone"
                   size="20"
                   aria-hidden="true"
@@ -92,8 +95,9 @@
             <MenuItem as="div">
             <NuxtLink :to="localePath('/profile/')">
 
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
                 <Icon
+                  class="mb-[2px]"
                   name="ph:user"
                   size="20"
                   aria-hidden="true"
@@ -105,8 +109,9 @@
               as="div"
               @click="logout"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 font-normal rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
               <Icon
+                class="mb-[2px]"
                 name="ph:sign-out"
                 size="20"
                 aria-hidden="true"

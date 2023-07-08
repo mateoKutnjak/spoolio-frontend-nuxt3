@@ -16,16 +16,16 @@
         />
       </NuxtLink>
     </div>
-    <div class="navbar-center hidden lg:flex">
+    <div class="navbar-center hidden lg:flex gap-1">
       <NuxtLink :to="localePath('/blogs')">
-        <button class="btn btn-ghost text-gray-700">{{$t('projects')}}</button>
+        <button class="btn btn-ghost">{{$t('projects')}}</button>
       </NuxtLink>
       <NavbarDropdownServices :navigation="servicesNavigation" />
       <NuxtLink :to="localePath('/store')">
-        <button class="btn btn-ghost text-gray-700">{{$t('store')}}</button>
+        <button class="btn btn-ghost">{{$t('store')}}</button>
       </NuxtLink>
       <NuxtLink :to="localePath('/about')">
-        <button class="btn btn-ghost text-gray-700">{{$t('about')}}</button>
+        <button class="btn btn-ghost ">{{$t('about')}}</button>
       </NuxtLink>
     </div>
     <div class="navbar-end">

@@ -5,7 +5,7 @@
       class="z-20 relative inline-block text-left"
     >
       <MenuButton>
-        <div class="btn btn-ghost text-gray-700">{{ $t('services') }}</div>
+        <div class="btn btn-ghost ">{{ $t('services') }}</div>
       </MenuButton>
 
       <transition
@@ -25,7 +25,7 @@
             >
 
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start text-gray-700 font-normal rounded-md">
+              <div class="btn btn-ghost btn-block justify-start !font-medium rounded-md">
                 {{$t(item.name)}}
               </div>
               </MenuItem>
