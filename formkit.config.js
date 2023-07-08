@@ -3,15 +3,15 @@ import { createAutoAnimatePlugin } from '@formkit/addons'
 
 const textClassification = {
     label: 'w-full lock mb-2 text-sm font-medium text-gray-800',
-    inner: 'w-full bg-gray-50 border border-stone-400/80 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none overflow-hidden',
+    inner: 'w-full bg-gray-50 border border-stone-400/80 text-gray-900 text-lg font-medium rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none overflow-hidden',
     input: 'w-full bg-transparent focus:outline-none px-2',
     wrapper: 'shadow-xs',
     outer: 'mb-3',
     message: 'flex px-5 pt-1 mb-0'
 }
 const selectClassification = {
-    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5 focus:outline-none overflow-hidden',
-    label: 'w-full lock mb-2 text-sm font-medium text-gray-800',
+    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-lg font-medium  rounded block w-full p-2.5 focus:outline-none overflow-hidden',
+    label: 'w-full lock mb-2 text-lg font-medium text-gray-800',
     selectIcon: 'bg-green-500',
     suffixIcon: 'mx-5',
 }
@@ -26,7 +26,7 @@ const boxClassification = {
     options: 'flex gap-6'
 }
 const buttonClassification = {
-    input: 'btn btn-primary rounded-md font-bold text-base',
+    input: 'btn btn-primary rounded-md font-bold text-xl',
 }
 
 export default {

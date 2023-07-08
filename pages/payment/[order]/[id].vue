@@ -3,7 +3,7 @@
 
     <div class="flex flex-col items-center">
 
-      <div class="text-gray-600 font-base ">
+      <div class="text-gray-600 text-xl ">
         Powered by
       </div>
       <Icon
@@ -13,7 +13,7 @@
       />
     </div>
 
-    <div class="text-gray-500 font-base">
+    <div class="text-gray-500 text-2xl">
       {{ capitalizeOnlyFirstLetter($t('you_are_paying_amount_of')) }}
       <strong>{{ amountToPay.toFixed(2) }} EUR </strong>
     </div>

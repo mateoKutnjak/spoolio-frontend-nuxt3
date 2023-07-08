@@ -3,7 +3,7 @@
     <Transition>
       <div
         v-show="isOpened"
-        class="toast toast-bottom toast-end px-12 py-8 z-50 text-base whitespace-normal"
+        class="toast toast-bottom toast-end px-12 py-8 z-50  whitespace-normal"
       >
         <div
           class="max-w-lg rounded-md shadow-xl font-bold text-white"
@@ -20,18 +20,18 @@
               </div>
               <div class="flex flex-col">
                 <!-- <div class="text-base font-bold">{{ capitalizeOnlyFirstLetter(toastTitle) }}</div> -->
-                <div class="break-words text-sm font-normal">{{message || ''}}</div>
+                <div class="break-words text-lg font-semibold">{{message || ''}}</div>
               </div>
               <button
                 type="button"
-                class="btn btn-ghost btn-sm btn-square"
+                class="btn btn-ghost btn-square text-white"
                 data-dismiss-target="#toast-success"
                 aria-label="Close"
                 @click="onCloseClicked"
               >
                 <Icon
                   name="ph:x"
-                  size="23"
+                  size="30"
                 />
               </button>
             </div>

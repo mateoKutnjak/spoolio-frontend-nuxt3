@@ -10,15 +10,15 @@
         class="h-full flex flex-col gap-1 items-center justify-center px-12 bg-white w-full border-2 border-primary border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-stone-200/20 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg py-12"
         @drop="event => emit('onDrop', event)"
       >
-        <div class="mb-2 text-primary">
+        <div class="mb-5 text-primary">
           <Icon
             name="ph:upload-simple-bold"
             size="50"
             aria-hidden="true"
           />
         </div>
-        <div class="text-sm text-stone-700 font-semibold text-center">{{ title }}</div>
-        <p class="text-sm text-stone-700">{{ subtitle }}</p>
+        <div class="text-xl text-stone-700 font-semibold text-center">{{ title }}</div>
+        <p class="text-xl text-stone-700">{{ subtitle }}</p>
         <input
           id="dropzone-file"
           type="file"

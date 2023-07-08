@@ -9,7 +9,7 @@
     />
     <div
       v-if="contact_email"
-      class="py-5 font-bold text-sm"
+      class="font-bold text-lg"
     >
       {{contact_email}}
     </div>

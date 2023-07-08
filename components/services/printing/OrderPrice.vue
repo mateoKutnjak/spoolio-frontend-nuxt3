@@ -17,13 +17,13 @@
     class="flex gap-1 items-center justify-end"
   >
     <div
-      class="btn btn-ghost btn-sm text-lg"
+      class="btn btn-ghost text-2xl !font-bold"
       @click="notificationStore.show(`${capitalizeOnlyFirstLetter($t('minimum_price_for_printing_order_is'))} ${PRINT_ORDER_MIN_PRICE}€`)"
     >
       <Icon
-        class="text-warning"
+        class="text-warning mb-[2px]"
         name="ph:warning"
-        size="20"
+        size="28"
       />
       €{{totalPrice.toFixed(2) }}
     </div>
@@ -34,7 +34,7 @@
     class="flex gap-1 items-center justify-end"
   >
     <div
-      class="btn btn-ghost btn-sm text-lg !font-bold btn-disabled"
+      class="btn btn-ghost text-2xl !font-bold btn-disabled"
       @click="notificationStore.show(`${capitalizeOnlyFirstLetter($t('minimum_price_for_printing_order_is'))} ${PRINT_ORDER_MIN_PRICE}€`)"
     >
       €{{totalPrice.toFixed(2) }}

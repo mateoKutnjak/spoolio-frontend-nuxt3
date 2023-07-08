@@ -6,7 +6,7 @@
       <div></div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-sm text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
+        <div class="text-xl text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
         <SelectSingleChoice
           v-if="orderTypes.length > 0"
           :options="orderTypes"
@@ -17,13 +17,13 @@
           :enable-unselected-border="true"
           @on-selection-change="l => orderTypeSelectionChange(l)"
         />
-        <div class="text-stone-400 text-sm max-w-xl">
+        <div class="text-stone-400 text-lg max-w-lg">
           <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_the_design_of_a_new_model_it_is_recommended_to_attach_drawings_with_measurements_along_with_a_detailed_description_of_the_desired_item')) }}
         </div>
       </div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-sm text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
+        <div class="text-xl text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
         <SelectSingleChoice
           v-if="itemTypes.length > 0"
           :options="itemTypes"
@@ -34,13 +34,13 @@
           :enable-unselected-border="true"
           @on-selection-change="l => itemTypeSelectionChange(l)"
         />
-        <div class="text-stone-400 text-sm max-w-xl">
+        <div class="text-stone-400 text-lg max-w-lg">
           <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_mechanical_items_it_is_preferable_to_state_mark_where_precise_tolerances_are_important_joints_with_other_pieces_and_on_which_segments_greater_forces_are_present')) }}
         </div>
       </div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-sm text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
+        <div class="text-xl text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
         <SelectMultiChoice
           v-if="itemAttributes.length > 0"
           :options="itemAttributes"

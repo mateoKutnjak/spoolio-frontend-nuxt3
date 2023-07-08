@@ -12,7 +12,7 @@
           v-slot="{ selected }"
         >
           <div :class="[
-              'btn  px-3 text-base font-medium text-gray-600',
+              'btn  px-3 text-lg font-medium text-gray-600',
               'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none',
               selected
                 ? 'btn-primary'

@@ -1,8 +1,8 @@
 <template>
   <div class="card  lg:card-side bg-base-100 rounded-md border border-stone-400/80">
-    <div class="relative lg:m-4 lg:w-40 h-40 lg:order-last  flex justify-center items-center">
+    <div class="relative lg:m-4 lg:w-48 h-48 lg:order-last  flex justify-center items-center bg-[#EAEAEA]">
       <nuxt-img
-        class="h-40"
+        class="h-48"
         v-if="unit.screenshot"
         :src="unit.screenshot"
         style="object-fit: cover;"
@@ -26,53 +26,56 @@
             class="text-info font-bold link link-info"
             :href="extractUrlFileStringUnion(unit.file)"
           >{{ urlExtractFilename(extractUrlFileStringUnion(unit.file)).toUpperCase() }}</a>
-          <ServicesPrintingDimensionInfo :unit="unit" />
+          <ServicesPrintingDimensionInfo
+            class="text-xl"
+            :unit="unit"
+          />
         </div>
       </div>
 
       <div class="w-full h-min flex flex-wrap gap-12 text-stone-600">
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
-          <div class="text-lg font-bold">
+          <div class="text-base">{{ $t('infill') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="ph:hash-bold"
-              size="20"
+              size="28"
             />{{ unit.infill.percentage * 100 }}%
           </div>
         </div>
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
-          <div class="text-lg font-bold">{{ unit.spool.material.name }}</div>
+          <div class="text-base">{{ $t('material') }}</div>
+          <div class="text-2xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="line-clamp-1 text-sm">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
-          <div class="text-lg font-bold">
+          <div class="line-clamp-1 text-base">{{ $t('layer_height') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="ph:stack-bold"
-              size="20"
+              size="28"
             />{{ unit.wall_thickness.thickness }}mm
           </div>
         </div>
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
-          <div class="text-lg font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
+          <div class="text-base">{{ $t('color') }}</div>
+          <div class="text-2xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-sm line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
-          <div class="text-lg font-bold">
+          <div class="text-base line-clamp-1">{{ $t('outer_layers') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
               class="mb-1.5 mr-1 text-stone-400"
               name="ph:list-bold"
-              size="20"
+              size="28"
             />{{ unit.wall.amount }}
           </div>
         </div>
         <div class="flex-1"></div>
         <div>
-          <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('price')) }}</div>
-          <div class="text-xl font-bold">€{{ price.toFixed(2) }}</div>
+          <div class="text-base">{{ $t('price') }}</div>
+          <div class="text-3xl font-black">€{{ price.toFixed(2) }}</div>
         </div>
 
       </div>

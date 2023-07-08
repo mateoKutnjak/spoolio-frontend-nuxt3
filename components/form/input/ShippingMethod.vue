@@ -9,9 +9,9 @@
     />
     <div
       v-if="shipping_method && Object.keys(shipping_method).length"
-      class="py-5 flex flex-col items-start"
+      class="py-4 flex flex-col items-start"
     >
-      <div class="flex gap-2 font-bold text-sm">
+      <div class="flex gap-2 font-bold text-lg">
         <div>
           {{shipping_method.provider}}
         </div>
@@ -20,13 +20,13 @@
           €{{shipping_method.price}}
         </div>
       </div>
-      <div class="text-sm">
+      <div class="text-lg">
         {{ capitalizeOnlyFirstLetter($t(shipping_method.description)) }}
       </div>
     </div>
     <div
       v-else
-      class="py-5 text-sm font-bold mt-0.5"
+      class="text-lg font-bold mt-0.5"
     >
       {{ capitalizeOnlyFirstLetter($t('add') + " " + $t('shipping_method'))  }}
     </div>

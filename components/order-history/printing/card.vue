@@ -26,7 +26,7 @@ const printOrder = printOrderHistoryStore.getPrintOrderById(printOrderId);
 
 const total_price = computed(() => {
   if (!printOrder?.estimated_price || !printOrder?.shipping_method?.price) {
-    return '-';
+    return "-";
   }
   return (
     Number(printOrder?.estimated_price) * (1 + TAX_FRACTION) +

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn btn-xs btn-outline text-stone-600 !rounded-full"
+    class="btn btn-xs btn-outline text-stone-500 !font-medium !rounded-full"
     @click.prevent="emit('onTagClicked', tag)"
   >{{ capitalizeOnlyFirstLetter($t(tag.name)) }}</div>
 </template>

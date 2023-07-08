@@ -2,7 +2,7 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-12">
       <div class="px-6 lg:px-0 flex flex-col md:flex-row gap-4 lg:gap-8 justify-between items-start md:items-center">
-        <div class="text-3xl">{{ `${capitalizeOnlyFirstLetter($t('modeling_order'))} #${order.id}`}}</div>
+        <div class="text-4xl font-bold text-stone-600">{{ `${capitalizeOnlyFirstLetter($t('modeling_order'))} #${order.id}`}}</div>
         <div class="text-xl text-gray-500">{{ reformatDateTime(order.created_at) }}</div>
         <OrderStatusView :raw-status="order.status" />
       </div>
@@ -11,7 +11,7 @@
         <div class="grid grid-cols-1 gap-4">
 
           <div class="flex flex-col gap-1">
-            <div class="text-sm text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
+            <div class="text-lg text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
             <SelectSingleChoice
               v-if="order.order_type"
               :options="[order.order_type]"
@@ -23,7 +23,7 @@
             />
           </div>
           <div class="flex flex-col gap-1">
-            <div class="text-sm text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
+            <div class="text-lg text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
             <SelectSingleChoice
               :options="[order.item_type]"
               :preselect-option="order.item_type"
@@ -35,7 +35,7 @@
           </div>
 
           <div class="flex flex-col gap-1">
-            <div class="text-sm text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
+            <div class="text-lg text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
             <SelectMultiChoice
               class="btn-disabled"
               :options="order.item_attributes"
@@ -50,18 +50,18 @@
           <div class="divider"></div>
 
           <div class="flex flex-col gap-1">
-            <div class="text-sm text-stone-500 font-semibold">{{ $t('contact_email').toUpperCase() }}</div>
+            <div class="text-lg text-stone-500 font-semibold">{{ $t('contact_email').toUpperCase() }}</div>
             <input
-              class="input input-bordered input-sm w-full max-w-sm"
+              class="input input-bordered w-full max-w-sm"
               readonly
               :placeholder="order.contact_email"
             />
           </div>
 
           <div class="flex flex-col gap-1">
-            <div class="text-sm text-stone-500 font-semibold">{{ $t('description').toUpperCase() }}</div>
+            <div class="text-lg text-stone-500 font-semibold">{{ $t('description').toUpperCase() }}</div>
             <textarea
-              class="textarea input-bordered w-full max-w-7xl"
+              class="textarea text-base font-medium input-bordered w-full max-w-7xl"
               :placeholder="order.comment"
               readonly
             ></textarea>
@@ -73,14 +73,9 @@
             v-if="attachment_files_data?.length"
             class="flex gap-2 items-start text-stone-600"
           >
-            <Icon
-              class="mt-1.5"
-              name="ph:paperclip"
-              size="25"
-            />
             <div>
               <label class="label">
-                <span class="label-text">{{ capitalizeOnlyFirstLetter($t('attachment_files')) }}</span>
+                <span class="text-lg text-stone-500 font-semibold uppercase">{{ capitalizeOnlyFirstLetter($t('attachment_files')) }}</span>
               </label>
               <div
                 class="flex gap-2 text-gray-500 items-center"

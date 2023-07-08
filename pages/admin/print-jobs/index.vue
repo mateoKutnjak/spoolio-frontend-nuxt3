@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12 text-lg">
     <div
       v-for="(printer, index) in printerStore.getPrinters"
       :key="printer.id"
@@ -58,7 +58,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody class="">
+          <tbody class="text-lg">
             <tr
               v-for="printJob in printingJobStore.getByPrinterId(printer.id)"
               :key="printJob.id"

@@ -18,7 +18,7 @@
     </div>
     <div class="navbar-center hidden lg:flex gap-1">
       <NuxtLink :to="localePath('/blogs')">
-        <button class="btn btn-ghost">{{$t('projects')}}</button>
+        <button class="btn btn-ghost ">{{$t('projects')}}</button>
       </NuxtLink>
       <NavbarDropdownServices :navigation="servicesNavigation" />
       <NuxtLink :to="localePath('/store')">

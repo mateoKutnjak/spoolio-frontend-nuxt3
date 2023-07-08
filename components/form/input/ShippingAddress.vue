@@ -8,13 +8,13 @@
       class="w-full py-5 flex flex-col gap-4"
     >
       <div class="flex text-sm font-normal justify-between items-center">
-        <div class="text-stone-400 font-bold text-sm">{{ $t('shipping').toUpperCase() }}</div>
+        <div class="text-stone-400 font-bold text-lg">{{ $t('shipping').toUpperCase() }}</div>
         <Icon
           name="ph:note-pencil-bold"
           size="25"
         />
       </div>
-      <div class="flex flex-col gap-1 text-start text-sm font-normal text-stone-500">
+      <div class="flex flex-col text-start text-lg font-medium text-stone-500">
         <strong>{{shipping_address.first_name}} {{shipping_address.last_name}}</strong>
         <p>{{shipping_address.address}} </p>
         <p>{{shipping_address.locality}} {{shipping_address.postal_code}}</p>

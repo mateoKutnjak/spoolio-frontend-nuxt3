@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xl font-bold">
+  <div class="font-bold">
     <div v-if="price === Number.NEGATIVE_INFINITY">
       <Icon
         class="text-gray-500 -my-10"

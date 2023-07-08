@@ -1,42 +1,32 @@
 <template>
-  <div class="md:px-0 px-12 flex gap-5 items-center">
-    <div class="flex gap-1 items-center">
+  <ul class="steps steps-vertical md:steps-horizontal pt-1 text-stone-600">
+    <li
+      v-for="step, index in steps"
+      :key="step"
+      class="step after:!hidden"
+      :class="`${currentStepIndex >= index ? 'step-primary' : ''}`"
+    >
+      <div class="uppercase pl-4 md:pl-0 text-xl font-medium">{{ step }}</div>
       <div
-        class="text-primary font-bold mr-2"
-        :class="stepActive === 0 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#1</div>
-      <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models')) }}</span>
-    </div>
-    <Icon
-      class="text-primary"
-      size="22"
-      name="ph:arrow-right-bold"
-    />
-    <div class="flex gap-1 items-center">
-      <div
-        class="text-primary font-bold mr-2"
-        :class="stepActive === 1 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#2</div>
-      <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('delivery_and_payment')) }}</span>
-    </div>
-    <Icon
-      class="text-primary"
-      size="22"
-      name="ph:arrow-right-bold"
-    />
-    <div class="flex gap-1 items-center">
-      <div
-        class="text-primary font-bold mr-2"
-        :class="stepActive === 2 ? 'btn btn-circle btn-sm btn-primary text-white' : ''"
-      >#3</div>
-      <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('finish_order')) }}</span>
-    </div>
-  </div>
+        class="col-start-1 row-start-1 z-[1] btn btn-circle text-stone-500"
+        :class="`${currentStepIndex >= index ? 'btn-primary' : ''}`"
+      >
+        <Icon
+          v-if="iconNames && iconNames.length > index"
+          :name="iconNames[index]"
+          size="30"
+        />
+      </div>
+    </li>
+  </ul>
+
 </template>
 
 <script lang="ts" setup>
-const { stepActive } = defineProps<{
-  stepActive: number;
+const { currentStepIndex, steps, iconNames } = defineProps<{
+  currentStepIndex: number;
+  steps: string[];
+  iconNames: string[];
 }>();
 </script>
 

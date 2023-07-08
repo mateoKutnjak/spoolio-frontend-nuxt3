@@ -1,12 +1,18 @@
 <template>
   <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div>{{ capitalizeOnlyFirstLetter($t('about')) }}</div>
-    <div
+    <!-- <div
       class="btn"
       @click="onClick"
     >show toast</div>
+    <div
+      class="btn"
+      @click="notificationStore.show(
+    'short text',
+    ToastLevelType.info
+  )"
+    >show toast</div> -->
   </div>
-
 </template>
   
   <script lang="ts" setup>

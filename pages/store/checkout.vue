@@ -64,8 +64,11 @@
         <aside class="flex-1 md:sticky order-first md:order-last top-8 h-full">
           <div class="card border border-stone-400/80 rounded-md bg-white">
             <div class="card-body gap-8">
-              <div class="card-title font-medium text-2xl text-gray-700">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
-              <div class="flex flex-col gap-10">
+              <div class="text-3xl font-semibold">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
+              <div class="
+                flex
+                flex-col
+                gap-10">
 
                 <div
                   v-for="cartItemId in cartItems.keys()"
@@ -80,31 +83,25 @@
                 <div class="divider m-0"></div>
 
                 <div class="flex flex-col gap-4 text-sm">
-                  <table class="table table-compact w-full">
+                  <table class="table table-compact w-full text-lg font-semibold text-stone-500">
                     <tbody class="">
-                      <tr>
-                        <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('items_price')) }}</td>
-                        <td class="py-1 pb-0 text-base border-transparent text-end bg-transparent">€{{ (cartStore.getCartTotalPrice).toFixed(2) }}</td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pb-0 text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
+                        <td class="py-1 pb-0 text-xl font-bold border-none text-end">€{{ (cartStore.getCartTotalPrice).toFixed(2) }}</td>
                       </tr>
-                      <tr>
-                        <td class="pl-0 py-0 text-start border-b-2 border-gray-500 bg-transparent">
-                          <div class="flex gap-1"><strong>{{ capitalizeOnlyFirstLetter($t('subtotal')) }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_excluded')) }})</div>
-                        </td>
-                        <td class="py-1 pt-0 text-base text-end border-b-2 border-gray-500 bg-transparent"> <strong>€{{ (cartStore.getCartTotalPrice).toFixed(2) }}</strong></td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
+                        <td class="py-1 pb-0 text-xl font-bold border-transparent text-end bg-transparent">€{{ (cartStore.getCartTotalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
-                      <tr>
-                        <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${capitalizeOnlyFirstLetter($t('tax'))} (${taxPercentage * 100}%)`}}</td>
-                        <td class="py-1 pb-0 text-base border-transparent text-end bg-transparent">€{{ (cartStore.getCartTotalPrice * taxPercentage).toFixed(2) }}</td>
+                      <tr class="border-none">
+                        <td class="pl-0 py-1 pt-0 border-b border-stone-400/80 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
+                        <td class="py-1 pt-0 text-xl font-bold border-b border-stone-400/80 text-end bg-transparent">€{{ Number(store_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
-                      <tr>
-                        <td class="pl-0 py-1 pt-0 border-b-2 border-gray-500 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
-                        <td class="py-1 pt-0 text-base border-b-2 border-gray-500 text-end bg-transparent">€{{ Number(store_order?.shipping_method?.price).toFixed(2) }}</td>
-                      </tr>
-                      <tr>
+                      <tr class="border-none text-2xl">
                         <td class="pl-0 py-2 text-start border-transparent bg-transparent">
-                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong>({{ capitalizeOnlyFirstLetter($t('vat_included')) }})</div>
+                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
                         </td>
-                        <td class="py-2 text-base text-end border-transparent bg-transparent"> <strong>€{{ (cartStore.getCartTotalPrice * (1+taxPercentage) + Number(store_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
+                        <td class="py-2 text-end border-transparent bg-transparent"> <strong>€{{ (cartStore.getCartTotalPrice * (1+taxPercentage) + Number(store_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -124,7 +121,7 @@
                         messages: '-mr-96'
                       }"
                     />
-                    <div class="flex gap-1 mt-1 ml-1">
+                    <div class="flex gap-1 ml-2 text-lg font-medium">
                       <span>
                         {{ capitalizeOnlyFirstLetter($t('i_agree_with')) }}
                       </span>

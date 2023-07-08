@@ -1,44 +1,40 @@
 <template>
   <div class="px-10 py-6 flex flex-col gap-2 sm:rounded-lg rounded-none border border-stone-300 shadow-md bg-white">
-    <div class="flex sm:flex-row flex-col justify-between">
-      <div class="flex flex-col">
-        <div class="text-stone-400">
+    <div class="flex sm:flex-row flex-col justify-between text-xl">
+      <div class="w-full flex flex-col">
+        <div class="flex justify-between items-center text-stone-400">
           MODEL {{ index+1 }}/{{ totalUnitCount }}
+          <div class="flex gap-1">
+            <div
+              class="btn btn-md btn-circle btn-ghost text-gray-400"
+              @click.stop="duplicateUnit"
+            >
+              <Icon
+                name="ph:copy"
+                size="24"
+              />
+            </div>
+            <div
+              class="btn btn-md btn-circle btn-ghost text-error"
+              @click.stop="removeUnit"
+            >
+              <Icon
+                name="ph:trash"
+                size="24"
+              />
+            </div>
+          </div>
         </div>
-        <div class="text-stone-600 text-lg font-bold">{{ extractUrlFileStringUnion(unit.file) }}</div>
-        <ServicesPrintingDimensionInfo
-          class="text-sm"
-          :unit="unit"
-        />
-      </div>
 
-      <div class="flex gap-1">
-        <div
-          class="btn btn-md btn-circle btn-ghost text-gray-400"
-          @click.stop="duplicateUnit"
-        >
-          <Icon
-            name="ph:copy"
-            size="24"
-          />
-        </div>
-        <div
-          class="btn btn-md btn-circle btn-ghost text-error"
-          @click.stop="removeUnit"
-        >
-          <Icon
-            name="ph:trash"
-            size="24"
-          />
-        </div>
+        <span class="text-stone-600 font-bold break-all text-2xl">{{ extractUrlFileStringUnion(unit.file) }}</span>
+        <ServicesPrintingDimensionInfo :unit="unit" />
       </div>
-
     </div>
 
     <div class="card sm:card-side gap-8">
       <div class="h-min flex flex-col gap-4 items-center">
         <nuxt-img
-          class="md:h-44 h-min aspect-square border border-stone-400 rounded-md"
+          class="md:h-44 aspect-square border border-stone-400 rounded-md"
           :src="unit.screenshotURL"
         >
         </nuxt-img>
@@ -53,62 +49,64 @@
         />
       </div>
 
-      <div class="w-full h-min grid md:grid-cols-3 grid-cols-2 gap-3 text-stone-500">
+      <div class="w-full h-min grid md:grid-cols-3 grid-cols-2 gap-3 text-stone-500 items-end">
         <div>
-          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('method')) }}</div>
-          <div class="text-xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
+          <div class="text-base text-stone-500">{{ $t('method') }}</div>
+          <div class="text-3xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
-          <div class="text-xl font-bold">
+          <div class="text-base text-stone-400">{{ $t('infill') }}</div>
+          <div class="text-3xl font-bold">
             <Icon
-              class="mb-1.5 mr-1 text-stone-400"
+              class="mb-1.5 mr-2 text-stone-400"
               name="ph:hash-bold"
-              size="20"
+              size="28"
             />{{ unit.infill.percentage * 100 }}%
           </div>
         </div>
         <div>
-          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('price_per_piece')) }}</div>
+          <div class="text-base text-stone-400 line-clamp-1">{{ $t('price_per_piece') }}</div>
           <ServicesPrintingUnitSinglePrice
+            class="text-3xl"
             :unit="unit"
             :price="totalPrice / unit.quantity"
           />
         </div>
 
         <div>
-          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('material')) }}</div>
-          <div class="text-xl font-bold">{{ unit.spool.material.name }}</div>
+          <div class="text-base text-stone-400">{{ $t('material') }}</div>
+          <div class="text-3xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="text-stone-400 line-clamp-1 text-sm">{{ capitalizeOnlyFirstLetter($t('layer_height')) }}</div>
-          <div class="text-xl font-bold">
+          <div class="text-stone-400 line-clamp-1 text-base">{{ $t('layer_height') }}</div>
+          <div class="text-3xl font-bold">
             <Icon
-              class="mb-1.5 mr-1 text-stone-400"
+              class="mb-1.5 mr-2 text-stone-400"
               name="ph:stack-bold"
-              size="20"
+              size="28"
             />{{ unit.wall_thickness.thickness }}mm
           </div>
         </div>
         <div>
-          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('total_price')) }}</div>
+          <div class="text-base text-stone-400 line-clamp-1">{{ $t('total_price') }}</div>
           <ServicesPrintingUnitSinglePrice
+            class="text-3xl"
             :unit="unit"
             :price="totalPrice"
           />
         </div>
 
         <div>
-          <div class="text-sm text-stone-400">{{ capitalizeOnlyFirstLetter($t('color')) }}</div>
-          <div class="text-xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
+          <div class="text-base text-stone-400">{{ $t('color') }}</div>
+          <div class="text-3xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-sm text-stone-400 line-clamp-1">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
-          <div class="text-xl font-bold">
+          <div class="text-base text-stone-400 line-clamp-1">{{ $t('outer_layers') }}</div>
+          <div class="text-3xl font-bold">
             <Icon
-              class="mb-1.5 mr-1 text-stone-400"
+              class="mb-1.5 mr-2 text-stone-400"
               name="ph:list-bold"
-              size="20"
+              size="28"
             />{{ unit.wall.amount }}
           </div>
         </div>

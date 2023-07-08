@@ -30,16 +30,16 @@
         </div>
 
         <div class="h-full md:px-0 px-4 flex flex-col gap-2">
-          <div class="mt-1 flex gap-3 items-center font-sans">
+          <div class="mt-2 flex gap-3 items-center font-sans">
             <div class="avatar placeholder">
-              <div class="bg-stone-300 text-neutral-content rounded-full w-8">
-                <span class="text-sm">{{ userProfileInitials(item.author?.profile) }}</span>
+              <div class="bg-stone-300 text-neutral-content rounded-full w-10">
+                <span class="text-base">{{ userProfileInitials(item.author?.profile) }}</span>
               </div>
             </div>
-            <div class="text-sm text-stone-500">{{ reformatDate(item.created_at) }}</div>
+            <div class="text-base text-stone-500">{{ reformatDate(item.created_at) }}</div>
           </div>
-          <div class="mt-1 text-2xl font-bold text-stone-600">{{ item.title }}</div>
-          <div class="text-stone-600 text-sm">{{ item.subtitle }}</div>
+          <div class="mt-1 text-2xl font-semibold text-stone-600">{{ item.title }}</div>
+          <div class="text-stone-500 text-base">{{ item.subtitle }}</div>
           <div class="flex-1"></div>
           <div class="mt-3 card-actions justify-start">
             <BlogTag

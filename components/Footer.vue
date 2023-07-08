@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer p-10 bg-base-100 text-base-content"
+    class="footer p-10 bg-base-100 text-lg"
     style="box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);"
   >
     <div>
@@ -28,14 +28,14 @@
       <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('privacy_policy')) }}</a>
     </div>
   </footer>
-  <footer class="footer px-10 py-4 border-t bg-base-100 text-base-content border-base-300">
+  <footer class="footer px-10 py-4 border-t bg-base-100 text-lg border-base-300">
     <div class="items-center grid-flow-col">
       <nuxt-img
-        width="90px"
+        width="110px"
         src="/img/logo-primary.svg"
         alt="logo"
       />
-      <p class="mt-1">obrt za proizvodnju i usluge <br /></p>
+      <p class="mt-1.5 ml-1 font-medium">obrt za proizvodnju i usluge <br /></p>
     </div>
     <div class="md:place-self-center md:justify-self-end">
       <div class="-mt-2 grid grid-flow-col gap-1">

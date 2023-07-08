@@ -3,15 +3,15 @@
     v-if="count"
     class="flex flex-col gap-5 items-center"
   >
-    <div class="w-full hidden md:block rounded-xl bg-white p-3 shadow-md rounded-lg">
+    <div class="w-full hidden md:block bg-white p-3 shadow-md rounded-lg text-base">
       <table class="table-auto w-full">
         <thead class="rounded-lg">
           <tr class="bg-base-200">
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">Id</th>
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('order_date')) }}</th>
-            <th class="px-4 pt-4 pb-3 text-center text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('order_details')) }}</th>
-            <th class="px-4 pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('price')) }}</th>
-            <th class="px-8 pt-4 pb-3 text-end text-xs uppercase">Status</th>
+            <th class="px-4 pt-4 pb-3 text-start uppercase">Id</th>
+            <th class="px-4 pt-4 pb-3 text-start uppercase">{{ capitalizeOnlyFirstLetter($t('order_date')) }}</th>
+            <th class="px-4 pt-4 pb-3 text-center uppercase">{{ capitalizeOnlyFirstLetter($t('order_details')) }}</th>
+            <th class="px-4 pt-4 pb-3 text-start uppercase">{{ capitalizeOnlyFirstLetter($t('price')) }}</th>
+            <th class="px-8 pt-4 pb-3 text-end uppercase">Status</th>
           </tr>
         </thead>
         <tbody>

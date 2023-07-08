@@ -3,13 +3,8 @@
     <div class="rating rating-sm rating-half">
       <input
         type="radio"
-        class="rating-hidden"
-        :checked="ratingValue < 0.25"
-      />
-      <input
-        type="radio"
         class="bg-primary mask mask-star-2 mask-half-1"
-        :checked="ratingValue >= 0.25 && ratingValue < 0.75"
+        :checked="ratingValue >= 0 && ratingValue < 0.75"
       />
       <input
         type="radio"

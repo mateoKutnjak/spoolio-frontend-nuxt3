@@ -1,21 +1,19 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-8">
+  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div class="flex flex-col gap-8 justify-between">
-      <div class="flex flex-col gap-5 sm:flex-row justify-between items-center">
-        <ServicesPrintingStepsPreview :step-active="0" />
-        <div class="flex gap-4 items-end">
-          <!-- <ListboxDimensionUnit class="self-end" /> -->
-          <!-- <ListboxRotationUnit class="self-end" /> -->
-
-        </div>
-      </div>
+      <ServicesPrintingStepsPreview
+        class="px-12 md:px-0"
+        :current-step-index="0"
+        :steps="[$t('import_3d_models'), $t('shipping') + ' ' + $t('and') + ' ' + $t('payment'), $t('finish_order')]"
+        :icon-names="['ph:file-arrow-up', 'ph:truck', 'ph:credit-card']"
+      />
       <div
         v-if="printOrderStore.getUnits.length"
-        class="px-12 md:px-0 flex gap-6 jusify-between md:items-center items-start"
+        class="px-12 md:px-0 flex sm:flex-row flex-col gap-6 jusify-between md:items-center items-start"
       >
-        <div class="flex-1 text-stone-600 font-bold text-xl">{{ $t('print_order').toUpperCase() }}</div>
+        <div class="flex-1 text-stone-600 font-bold text-3xl">{{ $t('print_order').toUpperCase() }}</div>
         <div
-          class="btn btn-error btn-sm btn-outline bg-white rounded-md hover:!text-white"
+          class="btn btn-error btn-outline bg-white rounded-md hover:!text-white"
           @click="onClearOrder"
         >
           <Icon
@@ -72,7 +70,7 @@
               </div>
 
             </div>
-            <aside class="lg:sticky order-last top-8 h-full lg:w-1/2">
+            <aside class="lg:sticky order-last top-8 h-full lg:w-2/3">
               <div class="flex flex-col gap-8">
                 <DragAndDropArea
                   :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
@@ -89,7 +87,7 @@
                       <tbody>
                         <tr>
                           <th>
-                            <div class="text-base text-gray-700 font-normal"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
+                            <div class="text-xl font-semibold"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
                           </th>
                           <td class="text-right">
                             <ServicesPrintingOrderETA :eta="eta" />
@@ -97,7 +95,7 @@
                         </tr>
                         <tr>
                           <th>
-                            <div class="text-base text-gray-700 font-normal mr-2"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
+                            <div class="text-xl font-semibold"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>
                           </th>
                           <td class="text-right">
                             <ServicesPrintingOrderPrice :total-price="totalPrice" />
@@ -107,7 +105,7 @@
                     </table>
                   </div>
                   <NuxtLink
-                    :class="`btn btn-sm gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'btn-primary text-white' : 'btn-disabled'}`"
+                    :class="`btn gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'btn-primary text-white' : 'btn-disabled'}`"
                     :to="localePath('/services/printing/checkout/')"
                   >
                     {{ capitalizeOnlyFirstLetter($t('checkout')).toUpperCase() }}
@@ -128,10 +126,10 @@
       </div>
       <div
         v-else
-        class="px-12 md:px-0 mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
+        class="px-12 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        <div class="flex flex-col gap-8">
-          <div class="text-stone-600 font-bold text-2xl">{{$t('quick_3d_print').toUpperCase()}}</div>
+        <div class="flex flex-col gap-8 text-2xl">
+          <div class="text-stone-600 font-bold text-4xl">{{$t('quick_3d_print').toUpperCase()}}</div>
           <ul class="list-inside space-y-2">
             <li class="flex gap-2 items-start">
               <span class="text-primary font-bold">1/</span>
@@ -163,7 +161,7 @@
         />
       </div>
     </div>
-    <div class="px-12 md:px-0 md:hidden mx-6 my-6 flex justify-end gap-3">
+    <!-- <div class="px-12 md:px-0 md:hidden mx-6 my-6 flex justify-end gap-3">
 
       <FileUploadFAB @change="change" />
       <div v-if="printOrderStore.units.length > 0">
@@ -184,7 +182,7 @@
           </NuxtLink>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

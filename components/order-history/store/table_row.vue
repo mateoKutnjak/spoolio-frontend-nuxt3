@@ -1,8 +1,8 @@
 <template>
   <tr class="w-full hover:bg-base-200/[0.3]">
     <td class="px-4 pt-4 pb-3 font-mono font-bold link link-info">#{{order?.id}}</td>
-    <td class="px-4 pt-4 pb-3 text-sm">{{ reformatDate(order?.created_at)}}</td>
-    <td class="px-4 pt-4 pb-3 text-sm text-center">
+    <td class="px-4 pt-4 pb-3 text-lg">{{ reformatDate(order?.created_at)}}</td>
+    <td class="px-4 pt-4 pb-3 text-lg text-center">
       <div
         class="dropdown dropdown-end"
         @click.stop
@@ -52,7 +52,7 @@
       </div>
     </td>
 
-    <td class="px-4 pt-4 pb-3 text-sm font-bold ">€{{ total_price }}</td>
+    <td class="px-4 pt-4 pb-3 text-lg font-bold ">€{{ total_price }}</td>
     <td class="px-4 pt-4 pb-3 text-end">
       <OrderStatusView :raw-status="order?.status" />
     </td>

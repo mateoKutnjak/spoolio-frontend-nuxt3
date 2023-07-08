@@ -18,7 +18,19 @@
   }
 
   .btn {
-    @apply rounded-md
+    @apply rounded-md text-xl !font-semibold
+  }
+
+  .btn-sm {
+    @apply text-lg
+  }
+
+  .btn-xs {
+    @apply text-sm
+  }
+
+  .btn-ghost {
+    @apply text-stone-600
   }
 
   .btn-primary {
@@ -31,6 +43,7 @@
 
   body {
   /* font-family: "Raleway" ; */
-    font-family: 'Roboto';
+    /* font-family: 'Roboto'; */
+    font-family: "Rajdhani";
   }
 }

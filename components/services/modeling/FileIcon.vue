@@ -21,7 +21,7 @@
       </button>
     </div>
     <div
-      class="btn btn-outline btn-ghost rounded-md border-stone-400/80  h-32 hover:bg-gray-200 hover:border-gray-300 bg-gray-50 shadow"
+      class="btn btn-outline btn-ghost rounded-md border-stone-400/80  h-40 w-44 hover:bg-gray-200 hover:border-gray-300 bg-gray-50 shadow"
       @click="onClickFile"
     >
       <div class="flex flex-col gap-2 items-center text-gray-500">
@@ -29,7 +29,7 @@
           :name="toIconName2()"
           size="45"
         />
-        <div class="text-center font-normal line-clamp-3 break-words w-28">{{ attachmentFile?.file.name }}</div>
+        <div class="text-center font-normal line-clamp-3 break-words w-36">{{ attachmentFile?.file.name }}</div>
       </div>
     </div>
   </div>

@@ -11,13 +11,13 @@
   </div>
   <div
     v-else
-    class="btn btn-ghost btn-sm text-lg"
+    class="btn btn-ghost text-xl !font-bold"
     @click="onClick"
   >
     <Icon
-      class="text-info"
+      class="text-info mb-[2px]"
       name="ph:question"
-      size="20"
+      size="28"
     />{{ reformatDateShort(eta) }}
   </div>
 </template>

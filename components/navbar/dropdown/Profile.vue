@@ -52,7 +52,7 @@
               as="div"
               @click="dialogStore.open('LoginForm', {}, $t('sign_in').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium text-lg rounded-md shadow-none">
               <Icon
                 class="mb-[2px]"
                 name="ph:sign-in"
@@ -65,7 +65,7 @@
               as="div"
               @click="dialogStore.open('RegisterForm', {}, $t('sign_up').toUpperCase())"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium text-lg rounded-md shadow-none">
               <Icon
                 class="mb-[2px]"
                 name="ph:user-plus-duotone"
@@ -82,7 +82,7 @@
           >
             <NuxtLink :to="localePath('/profile/order-history/')">
               <MenuItem as="div">
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium text-lg rounded-md shadow-none">
                 <Icon
                   class="mb-[2px]"
                   name="ph:clipboard-text-duotone"
@@ -95,7 +95,7 @@
             <MenuItem as="div">
             <NuxtLink :to="localePath('/profile/')">
 
-              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
+              <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium text-lg rounded-md shadow-none">
                 <Icon
                   class="mb-[2px]"
                   name="ph:user"
@@ -109,7 +109,7 @@
               as="div"
               @click="logout"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md shadow-none">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium text-lg rounded-md shadow-none">
               <Icon
                 class="mb-[2px]"
                 name="ph:sign-out"

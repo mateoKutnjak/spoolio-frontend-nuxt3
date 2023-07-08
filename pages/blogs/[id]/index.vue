@@ -1,18 +1,15 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto font-['Poppins']">
     <div class="flex flex-col items-stretch justify-between gap-4 p-8">
       <div class="flex flex-col gap-4 justify-between ">
         <div class="flex gap-4 justify-between">
-          <div class="flex gap-4">
-            <UserAvatar :user-data="blog?.author" />
-            <div class="grid text-gray-700">
-              <strong v-if="!hasAnyName">Anonymous</strong>
-              <strong v-else>{{(blog?.author?.profile?.first_name || '')}} {{blog?.author?.profile?.last_name || ''}}</strong>
-
-              <div>
-                {{reformatDate(blog?.created_at) }}
+          <div class="mt-2 flex gap-3 items-center font-sans">
+            <div class="avatar placeholder">
+              <div class="bg-stone-300 text-neutral-content rounded-full w-10">
+                <span class="text-base">{{ userProfileInitials(blog?.author?.profile) }}</span>
               </div>
             </div>
+            <div class="text-lg text-stone-500">{{ reformatDate(blog?.created_at) }}</div>
           </div>
           <div>
             <NuxtLink :to="localePath(`/blogs/${id}/edit`)">
@@ -30,8 +27,8 @@
           </div>
         </div>
         <div class="py-2">
-          <p class="prose text-3xl font-bold pb-2 pt-0">{{blog?.title}}</p>
-          <p class="prose text-xl pt-0 ">{{blog?.subtitle}}</p>
+          <p class="prose text-3xl font-semibold pb-2 pt-0">{{blog?.title}}</p>
+          <p class="prose text-stone-500 text-lg pt-0 ">{{blog?.subtitle}}</p>
         </div>
         <div
           v-if="blog?.picture"
@@ -44,7 +41,7 @@
         </div>
 
         <div
-          class="prose py-2"
+          class="prose text-lg py-2"
           v-html="$renderer.render(blog?.content || '')"
         ></div>
       </div>

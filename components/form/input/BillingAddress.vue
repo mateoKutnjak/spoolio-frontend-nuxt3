@@ -7,14 +7,14 @@
       v-if="billing_address && Object.keys(billing_address).length"
       class="w-full py-5 flex flex-col gap-4"
     >
-      <div class="flex text-sm font-normal justify-between items-center">
+      <div class="flex text-lg font-normal justify-between items-center">
         <div class="text-stone-400 font-bold">{{ $t('billing').toUpperCase() }}</div>
         <Icon
           name="ph:note-pencil-bold"
           size="25"
         />
       </div>
-      <div class="flex flex-col gap-1 text-start text-sm font-normal text-stone-500">
+      <div class="flex flex-col text-start text-lg font-medium text-stone-500">
         <strong v-if="billing_address.type == BILLING_ADDRESS_TYPE_INDIVIDUAL">{{billing_address.first_name}} {{billing_address.last_name}}</strong>
         <strong v-else>{{billing_address.company_name}}</strong>
         <p>{{billing_address.address}} </p>

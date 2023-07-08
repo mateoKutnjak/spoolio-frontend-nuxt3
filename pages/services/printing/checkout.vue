@@ -1,6 +1,11 @@
 <template>
-  <div class="container mx-auto max-w-7xl flex flex-col gap-8 text-stone-600 px-0 md:px-12 py-8">
-    <ServicesPrintingStepsPreview :step-active="1" />
+  <div class="container mx-auto max-w-7xl flex flex-col gap-8 text-stone-600 px-0 md:px-12 py-12">
+    <ServicesPrintingStepsPreview
+      class="px-12 md:px-0"
+      :current-step-index="1"
+      :steps="[$t('import_3d_models'), $t('shipping') + ' ' + $t('and') + ' ' + $t('payment'), $t('finish_order')]"
+      :icon-names="['ph:file-arrow-up', 'ph:truck', 'ph:credit-card']"
+    />
     <FormKit
       type="form"
       id="print-order-checkout-form"
@@ -63,9 +68,9 @@
           <div class="card border border-stone-400/80 rounded-md bg-white">
             <div class="card-body">
               <div class="flex flex-col gap-5">
-                <div class="card-title">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
+                <div class="text-3xl font-semibold">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
                 <div class="p-4 pt-2 flex flex-col gap-1 border border-stone-400/80 rounded-md">
-                  <div class="text-sm">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
+                  <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
                   <div class="flex flex-wrap gap-4 overflow-x-auto">
                     <div
                       v-for="unit in units"
@@ -84,25 +89,25 @@
                   </div>
                 </div>
                 <div class="flex flex-col gap-4 text-sm">
-                  <table class="table table-compact w-full">
+                  <table class="table table-compact w-full text-lg font-semibold text-stone-500">
                     <tbody class="">
                       <tr class="border-none">
                         <td class="pl-0 py-1 pb-0 text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
-                        <td class="py-1 pb-0 ttext-base border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
+                        <td class="py-1 pb-0 text-xl font-bold border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none">
                         <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
-                        <td class="py-1 pb-0 text-base border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
+                        <td class="py-1 pb-0 text-xl font-bold border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none">
                         <td class="pl-0 py-1 pt-0 border-b border-stone-400/80 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('shipping_fee')) }}</td>
-                        <td class="py-1 pt-0 text-base border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
+                        <td class="py-1 pt-0 text-xl font-bold border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
-                      <tr class="border-none">
+                      <tr class="border-none text-2xl">
                         <td class="pl-0 py-2 text-start border-transparent bg-transparent">
                           <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
                         </td>
-                        <td class="py-2 text-base text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
+                        <td class="py-2 text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -121,7 +126,7 @@
                         messages: '-mr-96'
                       }"
                     />
-                    <div class="space-x-1 ml-2 mt-0.5">
+                    <div class="space-x-1 ml-2 text-lg font-medium">
                       <span>
                         {{ capitalizeOnlyFirstLetter($t('i_agree_with')) }}
                       </span>

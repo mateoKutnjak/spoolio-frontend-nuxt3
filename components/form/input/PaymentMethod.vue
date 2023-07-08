@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white btn btn-block btn-ghost btn-lg gap-6 rounded-md border border-stone-400/80 text-stone-500"
+    class="bg-white btn btn-block btn-ghost btn-lg no-animation gap-6 rounded-md border border-stone-400/80 text-stone-500"
     @click="onEdit"
   >
     <div
@@ -11,7 +11,7 @@
         name="ph:money"
         size="30"
       />
-      <div class="font-bold text-sm">{{print_order.payment_method}}</div>
+      <div class="font-bold text-lg">{{print_order.payment_method}}</div>
       <div class="flex-1"></div>
       <Icon
         name="ph:note-pencil-bold"

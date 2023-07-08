@@ -33,7 +33,7 @@
               as="div"
               @click="navigateTo(localePath('/admin/print-jobs'))"
             >
-            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 !font-medium rounded-md">
+            <div class="btn btn-ghost btn-block justify-start gap-3 text-gray-700 text-lg !font-medium rounded-md">
               <Icon
                 name="ph:list-checks"
                 size="20"
