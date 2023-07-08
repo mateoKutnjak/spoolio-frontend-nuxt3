@@ -12,7 +12,7 @@
           style="object-fit: cover;"
         />
       </div>
-      <div class="card-body gap-3 justify-start py-2 sm:p-0">
+      <div class="flex flex-col gap-3 justify-start py-2 sm:p-0">
         <div class="flex gap-4 items-center font-sans">
           <div class="avatar placeholder">
             <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
@@ -23,9 +23,9 @@
             {{reformatDate(blog?.created_at)}}
           </div>
         </div>
-        <div class="py-0">
-          <h2 class="card-title text-xl text-gray-700 pb-1 font-sans">{{blog.title}}</h2>
-          <p class="text-gray-600 font-sans text-sm">{{blog.subtitle}}</p>
+        <div class="py-0 font-['Josefin_Sans']">
+          <h2 class="card-title text-xl text-stone-700 pb-1">{{blog.title}}</h2>
+          <p class="text-stone-500 text-base">{{blog.subtitle}}</p>
         </div>
       </div>
     </div>

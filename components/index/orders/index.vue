@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-6 justify-center px-12 md:px-0">
-    <div class="text-3xl font-bold text-stone-600">{{ $t('your_orders').toUpperCase() }}</div>
+    <div class="text-5xl font-bold text-stone-600">{{ $t('your_orders').toUpperCase() }}</div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="flex flex-col gap-6 items-start">

@@ -1,11 +1,11 @@
 <template>
   <NuxtLink
-    class="btn btn-ghost btn-sm text-primary"
+    class="btn btn-ghost text-primary"
     :to="localePath(to)"
   >
     <div class="flex gap-2 items-center">
 
-      <div class="mt-[1px] text-base font-bold">{{ capitalizeOnlyFirstLetter($t('find_out_more')) }}</div>
+      <div class="mt-[1px]">{{ capitalizeOnlyFirstLetter($t('find_out_more')) }}</div>
       <Icon
         name="ph:arrow-right-bold"
         size="22"

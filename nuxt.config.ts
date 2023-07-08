@@ -35,6 +35,9 @@ export default defineNuxtConfig({
                 wght: [100, 400],
                 ital: [100]
             },
+            Rajdhani: {
+                wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+            },
         }
     },
     formkit: {

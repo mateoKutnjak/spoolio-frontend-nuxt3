@@ -11,7 +11,7 @@
           <Navbar />
           <Toast />
           <div
-            class="w-full flex-1 flex flex-col gap-12"
+            class="w-full flex-1 flex flex-col gap-12 font-medium text-xl text-stone-700"
             :style="`background-color: ${BACKGROUND_COLOR};`"
           >
             <!-- <Breadcrumbs class="px-12" /> -->
