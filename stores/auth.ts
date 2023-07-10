@@ -39,6 +39,9 @@ export const useAuthStore = defineStore('auth', {
                     this.accessToken = response.access_token
                     this.refreshToken = response.refresh_token
                     this.user = response.user;
+                    console.log(this.accessToken)
+                    console.log(this.refreshToken)
+                    console.log(this.user)
                     resolve(response)
                 }).catch(err => {
                     reject(err)

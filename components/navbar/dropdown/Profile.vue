@@ -4,9 +4,10 @@
       as="div"
       class="relative inline-block text-left"
     >
+
       <MenuButton
         class="btn btn-ghost btn-square avatar"
-        :class="authStore.loggedIn ? 'hover:bg-transparent' : ''"
+        :class="isLoggedIn ? 'hover:bg-transparent' : ''"
       >
         <div
           class="w-10 rounded-full "
@@ -14,7 +15,7 @@
         >
           <!-- * ClientOnly tag added to remove Hydration node musmatch warning -->
           <ClientOnly>
-            <div v-if="authStore.loggedIn">
+            <div v-if="isLoggedIn">
               <div class="avatar placeholder">
                 <div class=" bg-primary text-neutral-content rounded-full w-10 bg-gradient-to-r from-secondary to-primary">
                   <span class="text-md text-white">{{ userProfileInitials(authStore.getUser?.profile) }}</span>
@@ -43,6 +44,10 @@
         leave-to-class="transform scale-95 opacity-0"
       >
         <MenuItems class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+          <MenuItem>
+          <div> {{ authStore.user }} </div>
+          </MenuItem>
 
           <div
             v-if="!authStore.loggedIn"
@@ -74,6 +79,7 @@
               />{{ capitalizeOnlyFirstLetter($t('sign_up')) }}
             </div>
             </MenuItem>
+
           </div>
 
           <div
@@ -141,6 +147,10 @@ const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 
 const { user } = storeToRefs(authStore);
+
+const isLoggedIn = computed(() => {
+  return authStore.accessToken;
+});
 
 function logout() {
   authStore.logout();
