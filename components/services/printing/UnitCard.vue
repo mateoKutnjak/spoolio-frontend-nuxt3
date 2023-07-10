@@ -51,62 +51,62 @@
 
       <div class="w-full h-min grid md:grid-cols-3 grid-cols-2 gap-3 text-stone-500 items-end">
         <div>
-          <div class="text-base text-stone-500">{{ $t('method') }}</div>
-          <div class="text-3xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
+          <div class="text-base">{{ $t('method') }}</div>
+          <div class="text-2xl font-bold">{{ unit.printing_method.name.toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-base text-stone-400">{{ $t('infill') }}</div>
-          <div class="text-3xl font-bold">
+          <div class="text-base">{{ $t('infill') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
-              class="mb-1.5 mr-2 text-stone-400"
+              class="mb-0.5 mr-2 "
               name="ph:hash-bold"
-              size="28"
+              size="25"
             />{{ unit.infill.percentage * 100 }}%
           </div>
         </div>
         <div>
-          <div class="text-base text-stone-400 line-clamp-1">{{ $t('price_per_piece') }}</div>
+          <div class="text-base  line-clamp-1">{{ $t('price_per_piece') }}</div>
           <ServicesPrintingUnitSinglePrice
-            class="text-3xl"
+            class="text-2xl"
             :unit="unit"
             :price="totalPrice / unit.quantity"
           />
         </div>
 
         <div>
-          <div class="text-base text-stone-400">{{ $t('material') }}</div>
-          <div class="text-3xl font-bold">{{ unit.spool.material.name }}</div>
+          <div class="text-base ">{{ $t('material') }}</div>
+          <div class="text-2xl font-bold">{{ unit.spool.material.name }}</div>
         </div>
         <div>
-          <div class="text-stone-400 line-clamp-1 text-base">{{ $t('layer_height') }}</div>
-          <div class="text-3xl font-bold">
+          <div class=" line-clamp-1 text-base">{{ $t('layer_height') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
-              class="mb-1.5 mr-2 text-stone-400"
+              class="mb-0.5 mr-2 text-stone-400"
               name="ph:stack-bold"
-              size="28"
+              size="25"
             />{{ unit.wall_thickness.thickness }}mm
           </div>
         </div>
         <div>
-          <div class="text-base text-stone-400 line-clamp-1">{{ $t('total_price') }}</div>
+          <div class="text-base line-clamp-1">{{ $t('total_price') }}</div>
           <ServicesPrintingUnitSinglePrice
-            class="text-3xl"
+            class="text-2xl"
             :unit="unit"
             :price="totalPrice"
           />
         </div>
 
         <div>
-          <div class="text-base text-stone-400">{{ $t('color') }}</div>
-          <div class="text-3xl font-bold">{{ unit.spool.color.name.toUpperCase() }}</div>
+          <div class="text-base ">{{ $t('color') }}</div>
+          <div class="text-2xl font-bold">{{ $t(unit.spool.color.name).toUpperCase() }}</div>
         </div>
         <div>
-          <div class="text-base text-stone-400 line-clamp-1">{{ $t('outer_layers') }}</div>
-          <div class="text-3xl font-bold">
+          <div class="text-base  line-clamp-1">{{ $t('outer_layers') }}</div>
+          <div class="text-2xl font-bold">
             <Icon
-              class="mb-1.5 mr-2 text-stone-400"
+              class="mb-0.5 mr-2 text-stone-400"
               name="ph:list-bold"
-              size="28"
+              size="25"
             />{{ unit.wall.amount }}
           </div>
         </div>

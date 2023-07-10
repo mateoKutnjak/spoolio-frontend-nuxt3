@@ -19,7 +19,7 @@
     <div
       v-for="tab, index in tabs"
       :key="tab.title"
-      class="btn !font-medium text-lg"
+      class="btn !font-medium btn-sm"
       :class="selected === index ? 'btn-primary' : 'btn-ghost'"
       @click="onTabClick(tab)"
     >

@@ -446,6 +446,28 @@ export interface IPrintingJob {
     status: string,
 }
 
+// ********* //
+// ** FAQ ** //
+// ********* //
+
+export interface IFaqCategory {
+    id: number,
+    name: string,
+    description: string,
+    picture: string,
+}
+
+export interface IFaqBlog {
+    id: number,
+    title: string,
+    subtitle: string,
+    content: string,
+    category: IBlogCategory,
+    created_at: string,
+    updated_at: string,
+    picture: string,
+}
+
 // ! ************************************************ //
 // ! ************************************************ //
 // ! ************************************************ //

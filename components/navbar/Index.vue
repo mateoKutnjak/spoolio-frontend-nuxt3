@@ -17,15 +17,18 @@
       </NuxtLink>
     </div>
     <div class="navbar-center hidden lg:flex gap-1">
+      <NavbarDropdownServices :navigation="servicesNavigation" />
       <NuxtLink :to="localePath('/blogs')">
         <button class="btn btn-ghost ">{{$t('projects')}}</button>
       </NuxtLink>
-      <NavbarDropdownServices :navigation="servicesNavigation" />
-      <NuxtLink :to="localePath('/store')">
+      <!-- <NuxtLink :to="localePath('/store')">
         <button class="btn btn-ghost">{{$t('store')}}</button>
-      </NuxtLink>
+      </NuxtLink> -->
       <NuxtLink :to="localePath('/about')">
         <button class="btn btn-ghost ">{{$t('about')}}</button>
+      </NuxtLink>
+      <NuxtLink :to="localePath('/faq')">
+        <button class="btn btn-ghost">faq</button>
       </NuxtLink>
     </div>
     <div class="navbar-end">
@@ -128,11 +131,12 @@ const getCartItems = computed(() => {
 });
 
 const navigation = [
-  { name: "projects", to: "/blogs" },
   { name: "_3d_printing", to: "/services/printing" },
   { name: "modeling", to: "/services/modeling" },
-  { name: "store", to: "/store" },
+  { name: "projects", to: "/blogs" },
+  // { name: "store", to: "/store" },
   { name: "about", to: "/about" },
+  { name: "faq", to: "/faq" },
 ];
 
 const servicesNavigation = [

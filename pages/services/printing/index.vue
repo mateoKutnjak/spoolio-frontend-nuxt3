@@ -2,7 +2,7 @@
   <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
     <div class="flex flex-col gap-8 justify-between">
       <ServicesPrintingStepsPreview
-        class="px-12 md:px-0"
+        class="px-12 md:px-0 pb-12 "
         :current-step-index="0"
         :steps="[$t('import_3d_models'), $t('shipping') + ' ' + $t('and') + ' ' + $t('payment'), $t('finish_order')]"
         :icon-names="['ph:file-arrow-up', 'ph:truck', 'ph:credit-card']"

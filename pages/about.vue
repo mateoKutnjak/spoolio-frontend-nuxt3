@@ -27,25 +27,25 @@
         <div class="text-4xl font-bold">{{ $t('how_we_work').toUpperCase() }}</div>
         <div class="space-x-1.5">
           <span>{{ capitalizeOnlyFirstLetter($t('currently_our_3d_printer_farm_covers')) }}</span>
-          <span class="font-bold link link-primary">{{ $t('fdm_technology') }}</span>
+          <NuxtLink to="/faq/"><span class="font-bold link link-primary">{{ $t('fdm_technology') }}</span></NuxtLink>
           <span>{{ $t('and') }}</span>
           <span>{{ $t('more_precise') }}</span>
-          <span class="font-bold link link-primary">{{ $t('sla_technology') }}</span>
+          <NuxtLink to="/faq/"><span class="font-bold link link-primary">{{ $t('sla_technology') }}</span></NuxtLink>
           <span>{{ $t('printing_genitiv') }},</span>
           <span>{{ $t('and_the_plan_is_to_expand_capacity_and_introduce_new_production_methods') }}</span>
         </div>
         <div class="space-x-1.5">
           <span>{{ capitalizeOnlyFirstLetter($t('we_are_working_on_automating_and_speeding_up_work_processes_to_make_the_experience_of_using_our_services_easier_for_users')) }}.</span>
           <span>{{ capitalizeOnlyFirstLetter($t('the_first_such_system_is')) }}</span>
-          <span class="font-bold link link-primary">{{ $t('quick_3d_print').toUpperCase() }}</span>
+          <NuxtLink to="/services/printing/"><span class="font-bold link link-primary">{{ $t('quick_3d_print').toUpperCase() }}</span></NuxtLink>
           <span>{{ $t('on_this_page_which_enables_automatic_price_calculation_billing_printing_and_delivery_of_your_finished_models_without_unnecessary_inquiries') }}.</span>
         </div>
         <div class="space-x-1.5">
           <span>{{ capitalizeOnlyFirstLetter($t('we_are_engineers_who_like_to_realize_various_ideas_from_simple_to_complex')) }}.</span>
           <span>{{ capitalizeOnlyFirstLetter($t('with_expertise_in')) }}</span>
-          <span class="font-bold link link-primary">{{ $t('_3d_designing_dativ').toUpperCase() }}</span>
+          <NuxtLink to="/services/modeling/"><span class="font-bold link link-primary">{{ $t('_3d_designing_dativ').toUpperCase() }}</span></NuxtLink>
           <span>{{ $t('and') }}</span>
-          <span class="font-bold link link-primary">{{ $t('_3d_printing_dativ').toUpperCase() }}</span>
+          <NuxtLink to="/services/printing/"><span class="font-bold link link-primary">{{ $t('_3d_printing_dativ').toUpperCase() }}</span></NuxtLink>
           <span>, {{ $t('we_have_knowledge_and_experience_in_the_fields_of') }}</span>
           <span class="font-bold">{{ $t('electronics_mechatronics_programming_and_prototyping_genitiv') }}.</span>
           <span>{{ $t('whatever_idea_you_have_feel_free_to_contact_us_so_that_we_can_find_a_solution_together') }}.</span>
