@@ -4,7 +4,12 @@
       type="form"
       id="login-form"
       @submit="submitHandler"
-      :actions="false"
+      :submit-label="capitalizeOnlyFirstLetter($t('sign_in'))"
+      :submit-attrs="{
+        inputClass: 'btn-block',
+        wrapperClass: 'mt-4',
+        ignore: false,
+      }"
     >
       <div class="flex flex-col gap-5">
         <div>
@@ -21,7 +26,7 @@
             v-model="password"
           />
         </div>
-        <FormKit
+        <!-- <FormKit
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('sign_in'))"
           :classes="{
@@ -30,7 +35,7 @@
           :input-class="{
             'loading': loading
           }"
-        />
+        /> -->
       </div>
     </FormKit>
     <!-- <GoogleAuthButton /> -->
@@ -66,7 +71,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
 
   loading.value = true;
 
-  authStore
+  await authStore
     .login(email.value, password.value)
     .then((loginRequestState) => {
       dialogStore.close();

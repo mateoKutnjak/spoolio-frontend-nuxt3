@@ -10,9 +10,13 @@
       v-if="selectedTab === 0"
       type="form"
       id="register-form"
-      submit-label="Sign In"
       @submit="submitHandler"
-      :actions="false"
+      :submit-label="capitalizeOnlyFirstLetter($t('sign_in'))"
+      :submit-attrs="{
+        inputClass: 'btn-block',
+        wrapperClass: 'mt-4',
+        ignore: false,
+      }"
     >
       <div class="flex flex-col gap-5">
         <div>
@@ -53,7 +57,7 @@
             }"
           />
         </div>
-        <FormKit
+        <!-- <FormKit
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('sign_up'))"
           :classes="{
@@ -62,7 +66,7 @@
           :input-class="{
             'loading': loading
           }"
-        />
+        /> -->
       </div>
     </FormKit>
     <FormKit
@@ -70,7 +74,12 @@
       type="form"
       id="login-form"
       @submit="submitHandlerLogin"
-      :actions="false"
+      :submit-label="capitalizeOnlyFirstLetter($t('sign_up'))"
+      :submit-attrs="{
+        inputClass: 'btn-block',
+        wrapperClass: 'mt-4',
+        ignore: false,
+      }"
     >
       <div class="flex flex-col gap-5">
         <div>
@@ -87,7 +96,7 @@
             v-model="passwordLogin"
           />
         </div>
-        <FormKit
+        <!-- <FormKit
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('sign_in'))"
           :classes="{
@@ -96,7 +105,7 @@
           :input-class="{
             'loading': loading
           }"
-        />
+        /> -->
       </div>
     </FormKit>
 
@@ -142,7 +151,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
 
   loading.value = true;
 
-  authStore
+  await authStore
     .register(
       email.value,
       password.value,
@@ -186,7 +195,7 @@ async function submitHandlerLogin(data: any, node: FormKitNode | undefined) {
 
   loadingLogin.value = true;
 
-  authStore
+  await authStore
     .login(emailLogin.value, passwordLogin.value)
     .then((loginRequestState) => {
       dialogStore.close();

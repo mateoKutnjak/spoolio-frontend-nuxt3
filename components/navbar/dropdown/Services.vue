@@ -5,7 +5,12 @@
       class="z-20 relative inline-block text-left"
     >
       <MenuButton>
-        <div class="btn btn-ghost ">{{ $t('services') }}</div>
+        <div class="btn btn-ghost -mr-1.5">{{ $t('services') }}
+          <Icon
+            name="ph:caret-down-bold"
+            size="18"
+          />
+        </div>
       </MenuButton>
 
       <transition
