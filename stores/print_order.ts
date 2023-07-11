@@ -357,7 +357,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('printing_method', unit.printing_method.id.toString());
             formData.append('scale', unit.scale.toString())
             formData.append('local_url', unit.localUrl);
-            formData.append("file", unit.file);
+            // formData.append("file", unit.file);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append('rotation_unit', unit.rotation_unit)
