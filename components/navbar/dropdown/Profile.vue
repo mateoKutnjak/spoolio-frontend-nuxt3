@@ -45,11 +45,7 @@
       >
         <MenuItems class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
 
-          <MenuItem>
-          <div> {{ authStore.user }} </div>
-          </MenuItem>
-
-          <div
+q          <div
             v-if="!authStore.loggedIn"
             class="px-2 py-2"
           >
