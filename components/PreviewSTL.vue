@@ -36,6 +36,7 @@ import { useGlobalsStore } from "~~/stores/globals";
 import { DimensionUnit, RotationUnit } from "~~/utils/enums";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
 import { IPrintOrderUnit } from "~~/constants/data";
+import { SimplifyModifier } from "three/examples/jsm/modifiers/SimplifyModifier";
 
 const { unit } = defineProps<{
   unit: IPrintOrderUnit;
@@ -112,20 +113,28 @@ const { load } = useSTLModel();
 const exporter = new STLExporter();
 console.log("exporter");
 console.log(exporter);
-const geometry = await load(unit.localUrl);
+const geometryOriginal = await load(unit.localUrl);
+
+const meshColor = unit.spool.color.value;
+
+const meshOriginal = new Mesh(
+  geometryOriginal,
+  new MeshStandardMaterial({ color: meshColor, roughness: 0.9, metalness: 0.5 })
+);
+
+const modifier = new SimplifyModifier();
+
+const mesh = meshOriginal.clone();
+mesh.material = meshOriginal.material.clone();
+mesh.material.flatShading = true;
+const count = Math.floor(mesh.geometry.attributes.position.count * 0.165); // number of vertices to remove
+mesh.geometry = modifier.modify(mesh.geometry, count);
+
+let geometry = mesh.geometry;
 
 // *** OBJECT SCALE *** //
 
 geometry.scale(unit.scale, unit.scale, unit.scale);
-
-// *** OBJECT MODELING *** //
-
-const meshColor = unit.spool.color.value;
-
-const mesh = new Mesh(
-  geometry,
-  new MeshStandardMaterial({ color: meshColor, roughness: 0.9, metalness: 0.5 })
-);
 
 geometry.computeBoundingBox();
 
