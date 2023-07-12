@@ -120,7 +120,7 @@
                 <DragAndDropArea
                   class="w-full"
                   :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
-                  subtitle=".STL (max 150MB)"
+                  :subtitle="`.STL (max ${MAX_FILE_SIZE_STL/1024/1024}MB)`"
                   @on-change="change"
                   @on-drop="drop"
                 />
@@ -494,7 +494,11 @@ function onFilesAdded(files: File[]) {
     } else {
       printOrderStore.add3dModelFile(
         element,
-        () => (itemInsertedLoading.value = false)
+        () => (itemInsertedLoading.value = false),
+        capitalizeOnlyFirstLetter(t("unsupported_file_type")) +
+          ". " +
+          capitalizeOnlyFirstLetter(t("supported_formats")) +
+          ": .STL"
       );
     }
   }

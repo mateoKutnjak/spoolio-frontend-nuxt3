@@ -581,9 +581,10 @@ export const usePrintOrderStore = defineStore('print-order', {
             this.estimatePrintJobsOnly()
         },
 
-        async add3dModelFile(file: File, onFinishedCallback: () => {}) {
+        async add3dModelFile(file: File, onFinishedCallback: () => {}, invalidFormatMessage: string) {
             if (!listContains(PRINT_ORDER_FILES_TYPES, file.type) && !listContains(PRINT_ORDER_FILES_SUFFIXES, urlExtractFileSuffix(file.name.toLowerCase()))) {
-                console.error(`Cannot add file type ${file.type} as 3d model. Supported models are ${PRINT_ORDER_FILES_TYPES}`);
+                const notificationStore = useNotificationStore();
+                notificationStore.show(`${invalidFormatMessage}`, ToastLevelType.error);
                 return;
             }
 
