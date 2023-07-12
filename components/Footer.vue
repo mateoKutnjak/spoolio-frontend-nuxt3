@@ -25,10 +25,20 @@
     <div>
       <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('legal')) }}</span>
       <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('terms_of_use')) }}</a>
-      <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('privacy_policy')) }}</a>
+      <NuxtLink
+        class="link link-hover"
+        :to="localePath('/privacy-policy')"
+      >{{ capitalizeOnlyFirstLetter($t('privacy_policy')) }}</NuxtLink>
     </div>
   </footer>
-  <footer class="footer px-10 py-4 border-t bg-base-100 text-lg border-base-300">
+  <footer class="
+        footer
+        px-10
+        py-4
+        border-t
+        bg-base-100
+        text-lg
+        border-base-300">
     <div class="items-center grid-flow-col">
       <nuxt-img
         width="110px"

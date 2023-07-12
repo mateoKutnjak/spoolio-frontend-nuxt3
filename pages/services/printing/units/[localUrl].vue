@@ -1,7 +1,7 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-12 py-12">
-    <div class="flex flex-col">
-      <div class="flex flex-col gap-8">
+  <div class="container mx-auto max-w-7xl px-12 py-16">
+    <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-12">
         <div class="flex md:flex-row flex-col gap-3">
           <ButtonBack class="text-primary" />
           <div class="flex-1"></div>
@@ -45,7 +45,7 @@
           <div class="flex flex-col gap-1 items-end">
             <div class="font-medium text-base text-stone-500"> {{ $t('total_price').toUpperCase() }} </div>
             <ServicesPrintingUnitSinglePrice
-              class="text-2xl"
+              class="text-3xl"
               :unit="unit"
               :price="price"
             />

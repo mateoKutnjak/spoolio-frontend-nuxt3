@@ -170,9 +170,10 @@
                       <span>
                         {{ $t('and') }}
                       </span>
-                      <span class="link link-primary">
-                        {{ $t('privacy_policy__instrumental') }}
-                      </span>
+                      <NuxtLink :to="localePath('/privacy-policy')"><span class="link link-primary">
+                          {{ $t('privacy_policy__instrumental') }}
+                        </span>
+                      </NuxtLink>
                     </div>
                   </div>
                   <FormKit
