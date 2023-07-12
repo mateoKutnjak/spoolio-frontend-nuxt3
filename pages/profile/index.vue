@@ -1,5 +1,6 @@
 <template>
   <div class="container mx-auto max-w-3xl px-0 md:px-12 py-12">
+    <div class="mb-4 text-3xl font-bold">{{ $t('order_settings').toUpperCase() }}</div>
     <div class="flex flex-col">
       <FormKit
         :type="contactEmailInput"
@@ -46,6 +47,14 @@
         </FormKit>
       </div>
     </div>
+    <div class="mt-8 mb-4 text-3xl font-bold">{{ $t('profile_settings').toUpperCase() }}</div>
+    <div class="flex flex-col">
+      <FormKit
+        :type="passwordChangeInput"
+        name="Password change"
+        dialogComponent="FormPasswordChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -61,6 +70,7 @@ import { IAddressBilling, IAddressShipping, IProfile } from "~~/constants/data";
 import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
 import BillingAddress from "~~/components/form/input/BillingAddress.vue";
 import ContactEmail from "~~/components/form/input/ContactEmail.vue";
+import PasswordChange from "~~/components/form/input/PasswordChange.vue";
 
 const contactEmailInput = createInput(ContactEmail, {
   props: ["dialogComponent"],
@@ -69,6 +79,9 @@ const shippingAddressInput = createInput(ShippingAddress, {
   props: ["dialogComponent"],
 });
 const billingAddressInput = createInput(BillingAddress, {
+  props: ["dialogComponent"],
+});
+const passwordChangeInput = createInput(PasswordChange, {
   props: ["dialogComponent"],
 });
 

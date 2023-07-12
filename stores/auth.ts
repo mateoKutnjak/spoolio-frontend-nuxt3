@@ -124,6 +124,36 @@ export const useAuthStore = defineStore('auth', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
+        async changePassword(old_password: string, new_password1: string, new_password2: string) {
+            const config = useRuntimeConfig();
+
+            return promiseWithTimeout(new Promise((resolve, reject) => {
+
+                if (!this.user || !this.accessToken) {
+                    reject('Not logged in')
+                }
+
+                // todo check user? nullable
+                customFetch(`auth/password/change/`, {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    },
+                    body: {
+                        // old_password: old_password,
+                        new_password1: new_password1,
+                        new_password2: new_password2,
+                    },
+                })
+                    .then((response: IProfile) => {
+                        resolve(response)
+                    }).catch(err => {
+                        reject(err)
+                    })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
         logout() {
             if (this.loggedIn) {
                 this.accessToken = undefined
