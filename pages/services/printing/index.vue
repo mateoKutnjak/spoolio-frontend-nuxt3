@@ -22,7 +22,8 @@
           />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
         </div>
       </div>
-      <div v-if="units.length > 0 || itemInsertedLoading">
+
+      <div>
         <div class="flex flex-col gap-8">
           <!-- <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
             <table class="table-auto w-full">
@@ -59,7 +60,10 @@
 
           <div class="flex lg:flex-row flex-col  gap-8">
             <div class="w-full relative flex flex-col md:flex-row gap-2">
-              <div class="w-full flex flex-col gap-4">
+              <div
+                v-if="units.length > 0"
+                class="w-full flex flex-col gap-4"
+              >
                 <ServicesPrintingUnitCard
                   v-for="item, index in units"
                   :key="item.localUrl"
@@ -67,6 +71,43 @@
                   :index="index"
                   @on-item-clicked="onItemClicked"
                 />
+                <ContentLoader
+                  v-if="itemInsertedLoading"
+                  class="w-full"
+                  width=""
+                  height="370"
+                  primary-color="#dddddd"
+                  secondary-color="#cccccc"
+                  :speed="1.5"
+                  preserveAspectRatio="xMidYMid meet"
+                ></ContentLoader>
+              </div>
+              <div v-else>
+                <div class="flex flex-col gap-8 text-2xl">
+                  <div class="text-stone-600 font-bold text-4xl">{{$t('quick_3d_print').toUpperCase()}}</div>
+                  <ul class="list-inside space-y-2">
+                    <li class="flex gap-2 items-start">
+                      <span class="text-primary font-bold">1/</span>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
+                        <NuxtLink :to="localePath('/services/modeling')"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
+                        </NuxtLink>
+                      </div>
+                    </li>
+                    <li class="flex gap-2 items-start">
+                      <span class="text-primary font-bold">2/</span>
+                      <div class="flex flex-wrap">
+                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('define_the_desired_characteristics')) }}</span>
+                      </div>
+                    </li>
+                    <li class="flex gap-2 items-start">
+                      <span class="text-primary font-bold">3/</span>
+                      <div class="flex flex-wrap">
+                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('automatically_find_out_the_price')) }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
             </div>
@@ -123,42 +164,6 @@
             </aside>
           </div>
         </div>
-      </div>
-      <div
-        v-else
-        class="px-12 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
-        <div class="flex flex-col gap-8 text-2xl">
-          <div class="text-stone-600 font-bold text-4xl">{{$t('quick_3d_print').toUpperCase()}}</div>
-          <ul class="list-inside space-y-2">
-            <li class="flex gap-2 items-start">
-              <span class="text-primary font-bold">1/</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
-                <NuxtLink :to="localePath('/services/modeling')"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
-                </NuxtLink>
-              </div>
-            </li>
-            <li class="flex gap-2 items-start">
-              <span class="text-primary font-bold">2/</span>
-              <div class="flex flex-wrap">
-                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('define_the_desired_characteristics')) }}</span>
-              </div>
-            </li>
-            <li class="flex gap-2 items-start">
-              <span class="text-primary font-bold">3/</span>
-              <div class="flex flex-wrap">
-                <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('automatically_find_out_the_price')) }}</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <DragAndDropArea
-          :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
-          subtitle=".STL (max 150MB)"
-          @on-change="change"
-          @on-drop="drop"
-        />
       </div>
     </div>
     <!-- <div class="px-12 md:px-0 md:hidden mx-6 my-6 flex justify-end gap-3">
