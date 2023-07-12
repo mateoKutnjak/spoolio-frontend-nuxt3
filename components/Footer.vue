@@ -20,7 +20,10 @@
         :to="localePath('/about')"
         class="link link-hover"
       >{{ capitalizeOnlyFirstLetter($t('about')) }}</NuxtLink>
-      <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('contact')) }}</a>
+      <NuxtLink
+        :to="localePath('/about')"
+        class="link link-hover"
+      >{{ capitalizeOnlyFirstLetter($t('contact')) }}</NuxtLink>
     </div>
     <div>
       <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('legal')) }}</span>
