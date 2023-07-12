@@ -12,8 +12,9 @@
         class="px-12 md:px-0 flex sm:flex-row flex-col gap-6 jusify-between md:items-center items-start"
       >
         <div class="flex-1 text-stone-600 font-bold text-3xl">{{ $t('print_order').toUpperCase() }}</div>
+
         <div
-          class="btn btn-error btn-outline bg-white rounded-md hover:!text-white"
+          class="btn btn-error btn-outline btn-sm bg-white rounded-md hover:!text-white"
           @click="onClearOrder"
         >
           <Icon
@@ -22,6 +23,10 @@
           />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
         </div>
       </div>
+      <div
+        v-else
+        class="px-12 md:px-0 text-stone-600 font-bold text-3xl"
+      >{{$t('quick_3d_print').toUpperCase()}}</div>
 
       <div>
         <div class="flex flex-col gap-8">
@@ -58,7 +63,7 @@
             />
           </div> -->
 
-          <div class="flex lg:flex-row flex-col  gap-8">
+          <div class="md:px-0 px-12 flex lg:flex-row flex-col items-start  gap-8">
             <div class="w-full relative flex flex-col md:flex-row gap-2">
               <div
                 v-if="units.length > 0"
@@ -84,7 +89,6 @@
               </div>
               <div v-else>
                 <div class="flex flex-col gap-8 text-2xl">
-                  <div class="text-stone-600 font-bold text-4xl">{{$t('quick_3d_print').toUpperCase()}}</div>
                   <ul class="list-inside space-y-2">
                     <li class="flex gap-2 items-start">
                       <span class="text-primary font-bold">1/</span>
@@ -111,9 +115,10 @@
               </div>
 
             </div>
-            <aside class="lg:sticky order-last top-8 h-full lg:w-2/3">
-              <div class="flex flex-col gap-8">
+            <aside class=" w-full lg:sticky order-last top-8 h-full lg:w-2/3">
+              <div class="w-full flex flex-col gap-8">
                 <DragAndDropArea
+                  class="w-full"
                   :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
                   subtitle=".STL (max 150MB)"
                   @on-change="change"
