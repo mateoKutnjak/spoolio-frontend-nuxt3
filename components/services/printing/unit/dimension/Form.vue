@@ -26,7 +26,7 @@
         :preselected-item="unit.length_unit"
         :extract-name="a => a"
         size="sm"
-        background-color="bg-stone-200"
+        background-color="bg-white"
         @on-item-clicked="onDimensionUnitSelected"
       />
     </div>

@@ -7,18 +7,26 @@ export const useFaqStore = defineStore('faq', {
         count: undefined as number | undefined,
         next: undefined as string | undefined,
         previous: undefined as string | undefined,
+        blog: null as IFaqBlog | null,
         faqBlogs: [] as IFaqBlog[],
         faqCategories: [] as IFaqCategory[],
     }),
 
     getters: {
         getPaginatedFaqBlogs: (state) => state.faqBlogs,
-        getFaqCategories: (state) => state.faqCategories
+        getFaqCategories: (state) => state.faqCategories,
+        getFaqCategoryById: (state) => {
+            return (categoryId: number) => state.faqCategories.find((item) => item.id === categoryId);
+        },
+        getFaqCategoryByName: (state) => {
+            return (categoryName: string) => state.faqCategories.find((item) => item.name === categoryName);
+        },
+        getBlog: (state) => state.blog,
     },
 
     actions: {
 
-        async fetchCategories() {
+        async fetchCategories(): Promise<IFaqCategory[]> {
 
             const config = useRuntimeConfig();
 
@@ -36,11 +44,11 @@ export const useFaqStore = defineStore('faq', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async fetchPaginated(limit: number = PAGE_SIZE, offset: number = 0, search: string = '', category: string = '', append: boolean = false) {
+        async fetchPaginated(limit: number = PAGE_SIZE, offset: number = 0, category: string = '', append: boolean = false): Promise<IPaginatedResponse<IFaqBlog>> {
 
             const config = useRuntimeConfig();
 
-            var url = `api/faq/blogs/?limit=${limit}&offset=${offset}&search=${search}&category=${category}`;
+            var url = `api/faq/blogs/?limit=${limit}&offset=${offset}&category=${category}`;
 
             return promiseWithTimeout<IPaginatedResponse<IFaqBlog>>(new Promise((resolve, reject) => {
                 customFetch<IPaginatedResponse<IFaqBlog>>(url, {
@@ -56,6 +64,26 @@ export const useFaqStore = defineStore('faq', {
                     } else {
                         this.faqBlogs = response.results;
                     }
+
+                    resolve(response)
+                }).catch(err => {
+                    reject(err)
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+
+        async fetch(id: number): Promise<IFaqBlog> {
+
+            const config = useRuntimeConfig();
+
+            var url = `api/faq/blogs/${id}/`;
+
+            return promiseWithTimeout<IFaqBlog>(new Promise((resolve, reject) => {
+                customFetch<IFaqBlog>(url, {
+                    baseURL: config.public.baseURL,
+                    method: 'GET',
+                }).then((response: IFaqBlog) => {
+                    this.blog = response;
 
                     resolve(response)
                 }).catch(err => {

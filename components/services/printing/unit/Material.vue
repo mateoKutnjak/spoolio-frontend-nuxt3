@@ -7,7 +7,7 @@
       :items="spools"
       :preselected-item="unit.spool_display"
       :extract-name="(el: IFilamentSpool) => el.material.name"
-      background-color="bg-stone-200"
+      background-color="bg-white"
       size="md"
       @on-item-clicked="onMaterialSelected"
     />

@@ -4,7 +4,7 @@
       name="octicon:telescope"
       size="230"
     />
-    <div class="font-sans text-stone-500 text-xl">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</div>
+    <div class="mt-8 font-sans text-stone-500 text-xl">{{ capitalizeOnlyFirstLetter($t('nothing_to_show')) }}</div>
   </div>
 </template>
 

@@ -69,6 +69,7 @@ import { useNotificationStore } from "~~/stores/notification";
 import { FacebookLoader } from "vue-content-loader";
 import { useBlogCategoryStore } from "~~/stores/blogCategory";
 import { IBlogCategory, IBlogTag, ITab } from "~~/constants/data";
+import { PAGE_SIZE } from "~~/constants/constants";
 
 const { t } = useI18n();
 
@@ -82,7 +83,7 @@ const { user } = storeToRefs(authStore);
 const showInitLoading = ref<boolean>(true);
 const showPageLoading = ref<boolean>(false);
 
-var limit = 10;
+var limit = PAGE_SIZE;
 var offset = 0;
 
 const categorySelected = ref<IBlogCategory | null>(null);

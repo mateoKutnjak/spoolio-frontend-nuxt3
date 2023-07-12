@@ -31,7 +31,7 @@ const {
   pending: faqCategoriesPending,
   error: faqCategoriesError,
   refresh: faqCategoriesRefresh,
-} = useAsyncData("faq_blogs", () => faqStore.fetchCategories());
+} = useAsyncData("faq_categories", () => faqStore.fetchCategories());
 </script>
 
 <style>
