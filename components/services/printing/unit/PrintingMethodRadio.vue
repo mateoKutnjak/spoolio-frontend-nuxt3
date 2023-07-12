@@ -44,7 +44,9 @@ const selectedMethod = ref<IPrintingMethod | null>(unit.printing_method);
 
 watch(selectedMethod, (value) => {
   if (value) {
-    printOrderStore.updateUnit(unit.localUrl, { printing_method: value });
+    printOrderStore.updateUnit(unit.localUrl, {
+      printing_method_display: value,
+    });
 
     if (!value.supported_materials || !value.supported_materials.length) {
       throw createError(
@@ -66,7 +68,7 @@ watch(selectedMethod, (value) => {
     }
 
     printOrderStore.updateUnit(unit.localUrl, {
-      spool: spoolWithFirstSupportedMaterial[0],
+      spool_display: spoolWithFirstSupportedMaterial[0],
     });
   }
 });

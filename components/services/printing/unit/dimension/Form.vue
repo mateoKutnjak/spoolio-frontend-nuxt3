@@ -3,7 +3,7 @@
     <div class="h-9 flex gap-1 justify-between items-end">
       <div class="mb-0.5 text-lg text-stone-600">{{ capitalizeOnlyFirstLetter($t('dimensions')) }}</div>
 
-      <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate -mt-0.5">
+      <!-- <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate -mt-0.5">
         <input
           type="checkbox"
           v-model="lockScale"
@@ -18,7 +18,7 @@
           class="swap-off text-stone-400"
           size="20"
         />
-      </label>
+      </label> -->
       <div class="flex-1"></div>
       <Dropdown
         class="w-fit"
@@ -77,7 +77,6 @@
     <FormKit
       type="form"
       id="dimension-form"
-      @submit="submitHandler"
       :actions="false"
     >
       <div class="flex flex-col gap-1">
@@ -86,7 +85,6 @@
           <FormKit
             type="number"
             v-model="scale"
-            :disabled="lockScale && submitted"
             :min="0.01"
             :max="100.00"
             step="any"
@@ -97,7 +95,7 @@
               }"
           />
         </div>
-        <FormKit
+        <!-- <FormKit
           v-if="!lockScale && !submitted"
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('save'))"
@@ -109,7 +107,7 @@
           :input-class="{
               'loading': slicerEstimationPending
             }"
-        />
+        /> -->
       </div>
     </FormKit>
   </div>
@@ -140,14 +138,14 @@ const scale = ref(unit.scale);
 const submitted = ref(true);
 
 function onDimensionUnitSelected(e: any) {
-  unit.length_unit = e;
+  unit.length_unit_display = e;
 }
 
-async function submitHandler() {
-  printOrderStore.updateUnit(unit.localUrl, { scale: scale.value });
+// async function submitHandler() {
+//   printOrderStore.updateUnit(unit.localUrl, { scale: scale.value });
 
-  submitted.value = true;
-}
+//   submitted.value = true;
+// }
 
 watch(scale, (value) => {
   printOrderStore.updateUnit(unit.localUrl, {

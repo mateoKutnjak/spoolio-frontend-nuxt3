@@ -29,7 +29,6 @@
     <FormKit
       type="form"
       id="rotation-form"
-      @submit="submitHandler"
       :actions="false"
     >
       <div class="flex flex-col gap-1">
@@ -72,7 +71,7 @@
               }"
           />
         </div>
-        <FormKit
+        <!-- <FormKit
           v-if="!useOptimalRotation && !submitted"
           type="submit"
           :label="capitalizeOnlyFirstLetter($t('save'))"
@@ -84,7 +83,7 @@
           :input-class="{
               'loading': slicerEstimationPending,
             }"
-        />
+        /> -->
       </div>
     </FormKit>
   </div>
@@ -122,24 +121,24 @@ const rotationZ = ref(rotations.z);
 
 const submitted = ref(true);
 
-async function submitHandler() {
-  console.log("Sumbit handler");
-  slicerEstimationPending.value = true;
+// async function submitHandler() {
+//   console.log("Sumbit handler");
+//   slicerEstimationPending.value = true;
 
-  await printOrderStore.updateUnit(unit.localUrl, {
-    model_rotation: vector3ToString(
-      new Vector3(rotationX.value, rotationY.value, rotationZ.value)
-    ),
-  });
+//   await printOrderStore.updateUnit(unit.localUrl, {
+//     model_rotation: vector3ToString(
+//       new Vector3(rotationX.value, rotationY.value, rotationZ.value)
+//     ),
+//   });
 
-  slicerEstimationPending.value = false;
+//   slicerEstimationPending.value = false;
 
-  submitted.value = true;
-}
+//   submitted.value = true;
+// }
 
 watch(useOptimalRotation, (value) => {
   if (value) {
-    unit.model_rotation = unit.optimal_rotation;
+    unit.model_rotation_display = unit.optimal_rotation;
 
     const optimal_rotation = vector3Parse(unit.optimal_rotation);
 
@@ -148,7 +147,7 @@ watch(useOptimalRotation, (value) => {
     rotationZ.value = optimal_rotation.z;
   }
 
-  printOrderStore.updateUnit(unit.localUrl, { use_optimal_rotation: value });
+  printOrderStore.updateUnit(unit.localUrl, { use_optimal_rotation_display: value });
 
   submitted.value = true;
 });

@@ -5,7 +5,7 @@
   >
     <Dropdown
       :items="spools"
-      :preselected-item="unit.spool"
+      :preselected-item="unit.spool_display"
       :extract-name="(el: IFilamentSpool) => el.material.name"
       background-color="bg-stone-200"
       size="md"
@@ -29,14 +29,14 @@ const { unit } = defineProps<{
 const spools = computed(() =>
   filamentSpoolStore.getSpoolsUniqueMaterials.filter((el) =>
     listContains(
-      unit.printing_method.supported_materials.map((el) => el.id),
+      unit.printing_method_display.supported_materials.map((el) => el.id),
       el.material.id
     )
   )
 );
 
 function onMaterialSelected(spool: IFilamentSpool) {
-  printOrderStore.updateUnit(unit.localUrl, { spool: spool });
+  printOrderStore.updateUnit(unit.localUrl, { spool_display: spool });
 }
 </script>
 

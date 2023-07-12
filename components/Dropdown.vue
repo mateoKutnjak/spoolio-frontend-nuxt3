@@ -12,7 +12,7 @@
           class="btn  btn-ghost btn-block gap-1 rounded-md bg-white border-stone-300/80"
           :class="`${backgroundColor} ${textColor} btn-${size}`"
         >
-          <div class="w-full flex gap-2 justify-between">{{ $t(extractName(selectedItem)) }}
+          <div class="w-full flex gap-2 items-center justify-between">{{ $t(extractName(selectedItem)) }}
             <Icon name="ph:caret-down-bold" />
           </div>
         </div>

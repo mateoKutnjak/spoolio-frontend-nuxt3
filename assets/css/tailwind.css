@@ -29,12 +29,8 @@
     @apply text-sm
   }
 
-  .btn-ghost {
-    @apply text-stone-600
-  }
-
-  .btn-primary {
-    @apply bg-gradient-to-tr from-primary-focus to-primary
+  .btn-outline {
+    @apply bg-white
   }
 
   .btn-circle {

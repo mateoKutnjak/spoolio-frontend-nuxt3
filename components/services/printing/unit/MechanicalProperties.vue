@@ -42,9 +42,9 @@
       >
         <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('infill')) }}</div>
         <Dropdown
-          :key="unit.infill.id"
+          :key="unit.infill_display.id"
           :items="infills"
-          :preselected-item="unit.infill"
+          :preselected-item="unit.infill_display"
           :extract-name="(el: IPrintOrderUnitInfill) => `${el.percentage * 100}%`"
           background-color="bg-stone-200"
           size="md"
@@ -58,9 +58,9 @@
       >
         <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('outer_layers')) }}</div>
         <Dropdown
-          :key="unit.wall.id"
+          :key="unit.wall_display.id"
           :items="walls"
-          :preselected-item="unit.wall"
+          :preselected-item="unit.wall_display"
           :extract-name="(el: IPrintOrderUnitWall) => `${el.amount}`"
           background-color="bg-stone-200"
           size="md"
@@ -138,45 +138,40 @@ watch(selectedInfillWallCombination, (value) => {
     selectedWall.value = value.wall;
 
     printOrderStore.updateUnit(unit.localUrl, {
-      infill_wall_combination: value,
+      infill_wall_combination_display: value,
+      infill_display: value.infill,
+      wall_display: value.wall,
     });
 
-    if (!useCustomCombination.value) {
-      // * With this check slicer will be called only once for changing two values
-      // * which can trigger slicer independently
+    // if (!useCustomCombination.value) {
+    //   // * With this check slicer will be called only once for changing two values
+    //   // * which can trigger slicer independently
 
-      printOrderStore.updateUnit(unit.localUrl, {
-        infill: value.infill,
-        wall: value.wall,
-      });
-    }
+    //   printOrderStore.updateUnit(unit.localUrl, {
+    //     infill_display: value.infill,
+    //     wall_display: value.wall,
+    //   });
+    // }
   }
 });
 
 watch(selectedInfill, (value) => {
   if (value) {
-    if (useCustomCombination.value) {
-      // * Without this check, slicer will be called twice when combinaiton changes
-      printOrderStore.updateUnit(unit.localUrl, { infill: value });
-    }
+    printOrderStore.updateUnit(unit.localUrl, { infill_display: value });
   }
 });
 
 watch(selectedWall, (value) => {
   if (value) {
-    if (useCustomCombination.value) {
-      // * Without this check, slicer will be called twice when combinaiton changes
-      printOrderStore.updateUnit(unit.localUrl, { wall: value });
-    }
+    printOrderStore.updateUnit(unit.localUrl, { wall_display: value });
   }
 });
 
 watch(selectedWallThickness, (value) => {
   if (value) {
-    if (useCustomCombination.value) {
-      // * Without this check, slicer will be called twice when combinaiton changes
-      printOrderStore.updateUnit(unit.localUrl, { wall_thickness: value });
-    }
+    printOrderStore.updateUnit(unit.localUrl, {
+      wall_thickness_display: value,
+    });
   }
 });
 </script>

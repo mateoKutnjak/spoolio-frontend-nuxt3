@@ -247,15 +247,31 @@ export interface IProductImage {
 export interface IPrintOrderUnit {
     id: number | undefined,
     comment: string,
+
+    quantity_display: number,
     quantity: number,
+
+    spool_display: IFilamentSpool,
     spool: IFilamentSpool,
+
+    infill_display: IPrintOrderUnitInfill,
     infill: IPrintOrderUnitInfill,
+
+    wall_display: IPrintOrderUnitWall,
     wall: IPrintOrderUnitWall,
+
+    wall_thickness_display: IPrintOrderUnitWallThickness,
     wall_thickness: IPrintOrderUnitWallThickness,
+
+    infill_wall_combination_display: IPrintOrderUnitInfillWallCombination,
     infill_wall_combination: IPrintOrderUnitInfillWallCombination,
-    scale: number,
+
     scale_display: number,
+    scale: number,
+
+    printing_method_display: IPrintingMethod,
     printing_method: IPrintingMethod,
+
     file: File | string,
     simplifiedFileUrl: string,
     localUrl: string,
@@ -264,11 +280,18 @@ export interface IPrintOrderUnit {
     order: number | undefined,
     model_dimensions: string,
     model_volume: number,
-    model_rotation: string,
+
     model_rotation_display: string,
+    model_rotation: string,
+
     optimal_rotation: string,
+    
+    use_optimal_rotation_display: boolean,
     use_optimal_rotation: boolean,
+
+    length_unit_display: string,
     length_unit: string,
+
     rotation_unit: string,
     screenshotURL: string,
     estimated_price: number,

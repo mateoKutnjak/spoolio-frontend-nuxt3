@@ -563,7 +563,12 @@ export const usePrintOrderStore = defineStore('print-order', {
         },
 
         addDuplicate(unit: IPrintOrderUnit) {
-            this.units.push(unit);
+            const unitClone = { ...unit };
+
+            unitClone.localUrl = URL.createObjectURL(unit.file as File);
+            unitClone.id = undefined;
+
+            this.units.push(unitClone);
 
             this.estimatePrintJobsOnly()
         },
@@ -606,14 +611,20 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const unit = <IPrintOrderUnit>{
                     id: undefined,
+                    quantity_display: 1,
                     quantity: 1,
+                    spool_display: filamentSpoolStore.getAll[0],
                     spool: filamentSpoolStore.getAll[0],
+                    infill_display: printOrderUnitInfillWallCombinationStore.getAll[0].infill, // ! Watch out must be part of same combination
                     infill: printOrderUnitInfillWallCombinationStore.getAll[0].infill, // ! Watch out must be part of same combination
+                    wall_display: printOrderUnitInfillWallCombinationStore.getAll[0].wall, // ! Watch out must be part of same combination
                     wall: printOrderUnitInfillWallCombinationStore.getAll[0].wall, // ! Watch out must be part of same combination
+                    wall_thickness_display: printOrderUnitWallStore.getWallThicknesses[0],
                     wall_thickness: printOrderUnitWallStore.getWallThicknesses[0],
+                    infill_wall_combination_display: printOrderUnitInfillWallCombinationStore.getAll[0],
                     infill_wall_combination: printOrderUnitInfillWallCombinationStore.getAll[0],
-                    scale: 1.0,
                     scale_display: 1.0,
+                    scale: 1.0,
                     estimated_price: Number.NEGATIVE_INFINITY,
                     estimated_time: Number.NEGATIVE_INFINITY,
                     file: file,
@@ -628,11 +639,14 @@ export const usePrintOrderStore = defineStore('print-order', {
                     model_rotation: vector3ToString(model_rotation),
                     model_rotation_display: vector3ToString(model_rotation),
                     optimal_rotation: vector3ToString(optimal_rotation),
+                    use_optimal_rotation_display: true,
                     use_optimal_rotation: true,
+                    length_unit_display: DimensionUnit[globalsStore.getDimensionUnit],
                     length_unit: DimensionUnit[globalsStore.getDimensionUnit],
                     rotation_unit: RotationUnit[globalsStore.getRotationUnit],
                     screenshotURL: URL.createObjectURL(blob),
                     screenshot: '',
+                    printing_method_display: printingMethodStore.getPrintingMethods[0],
                     printing_method: printingMethodStore.getPrintingMethods[0],
                 };
 

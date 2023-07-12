@@ -179,7 +179,7 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
     return;
   }
 
-  const colorStringValue = unit.spool.color.value;
+  const colorStringValue = unit.spool_display.color.value;
   const colorStringValueTrimmed = colorStringValue.substring(1);
   const parsed = parseInt(colorStringValueTrimmed, 16);
 
@@ -189,7 +189,7 @@ watch(printOrderStore.getUnits, (value, oldValue, onInvalidate) => {
   const bbox = mesh.geometry.boundingBox;
   const rotationVector = vector3Parse(item.model_rotation_display);
   const rotationUnit = item.rotation_unit;
-  const dimensionUnit = item.length_unit;
+  const dimensionUnit = item.length_unit_display;
 
   if (bbox) {
     drawPlane(

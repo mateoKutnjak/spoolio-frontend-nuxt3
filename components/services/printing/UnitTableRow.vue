@@ -223,37 +223,7 @@ watch(attachmentImages, (value, oldValue, onInvalidate) => {
 
 function duplicateUnit() {
   if (unit.file instanceof File) {
-    printOrderStore.addDuplicate(<IPrintOrderUnit>{
-      id: undefined,
-      quantity: unit.quantity,
-      spool: unit.spool,
-      infill: unit.infill,
-      infill_wall_combination: unit.infill_wall_combination,
-      wall: unit.wall,
-      wall_thickness: unit.wall_thickness,
-      scale: unit.scale,
-      scale_display: unit.scale,
-      estimated_price: unit.estimated_price,
-      file: unit.file,
-      simplifiedFileUrl: unit.simplifiedFileUrl,
-      comment: comment.value,
-      localUrl: URL.createObjectURL(unit.file),
-      attachmentFiles: [], // todo
-      attachmentImages: [], // todo
-      order: unit.order,
-      model_dimensions: unit.model_dimensions,
-      model_volume: unit.model_volume,
-      model_rotation: unit.model_rotation,
-      model_rotation_display: unit.model_rotation_display,
-      optimal_rotation: unit.optimal_rotation,
-      use_optimal_rotation: unit.use_optimal_rotation,
-      screenshotURL: unit.screenshotURL,
-      length_unit: unit.length_unit,
-      rotation_unit: unit.rotation_unit,
-      estimated_time: unit.estimated_time,
-      screenshot: unit.screenshot,
-      printing_method: unit.printing_method,
-    });
+    printOrderStore.addDuplicate(unit);
   } else {
     throw createError(
       `Cannot duplicate print order unit. Original unit.file is not of type File`
