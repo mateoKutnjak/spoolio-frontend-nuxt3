@@ -70,7 +70,18 @@
               <div class="flex flex-col gap-5">
                 <div class="text-3xl font-semibold">{{ capitalizeOnlyFirstLetter($t('order_summary')) }}</div>
                 <div class="p-4 pt-2 flex flex-col gap-1 border border-stone-400/80 rounded-md">
-                  <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
+                  <div class="flex gap-2 justify-between">
+                    <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('items')) }}</div>
+                    <NuxtLink to="/services/printing">
+                      <div class="btn btn-outline btn-info btn-xs text-base">
+                        <Icon
+                          name="ph:pencil"
+                          class="mb-0.5"
+                        />
+                        {{ capitalizeFirstLetter($t('edit')) }}
+                      </div>
+                    </NuxtLink>
+                  </div>
                   <div class="flex flex-wrap gap-4 overflow-x-auto">
                     <div
                       v-for="unit in units"
