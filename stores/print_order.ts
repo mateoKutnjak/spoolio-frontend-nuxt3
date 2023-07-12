@@ -121,6 +121,14 @@ export const usePrintOrderStore = defineStore('print-order', {
             this.attachmentImages.splice(0, this.attachmentImages.length);
         },
 
+        setBillingAddressSameAsShippingAddress() {
+            this.print_order.billing_address = <IAddressBilling>{
+                type: BILLING_ADDRESS_TYPE_INDIVIDUAL,
+            }
+
+            Object.assign(this.print_order.billing_address, this.print_order.shipping_address)
+        },
+
         async postOrder(): Promise<IPrintOrder> {
 
             const config = useRuntimeConfig();

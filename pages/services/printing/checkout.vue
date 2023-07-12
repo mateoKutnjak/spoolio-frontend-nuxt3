@@ -42,15 +42,38 @@
                 validation-visibility="submit"
                 @input="(value) => print_order.shipping_address = value"
               />
-              <FormKit
-                :type="billingAddressInput"
-                name="Billing address"
-                v-model="billing_address_ref"
-                dialogComponent="FormBillingAddress"
-                validation="required"
-                validation-visibility="submit"
-                @input="(value) => print_order.billing_address = value"
-              />
+              <div @click="() => null">
+                <FormKit
+                  :key="billing_address_ref"
+                  :disabled="useBillingSameAsShippingAddress"
+                  :type="billingAddressInput"
+                  name="Billing address"
+                  v-model="billing_address_ref"
+                  dialogComponent="FormBillingAddress"
+                  validation="required"
+                  validation-visibility="submit"
+                  @input="(value) => print_order.billing_address = value"
+                />
+              </div>
+            </div>
+            <div class="flex gap-1 items-end text-lg text-stone-500">
+              <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate">
+                <input
+                  type="checkbox"
+                  v-model="useBillingSameAsShippingAddress"
+                />
+                <Icon
+                  name="ph:square"
+                  class="swap-off text-gray-500"
+                  size="24"
+                />
+                <Icon
+                  name="ph:check-square"
+                  class="swap-on text-gray-500"
+                  size="24"
+                />
+              </label>
+              {{ capitalizeOnlyFirstLetter($t('billing_address_same_as_shipping_address')) }}
             </div>
           </div>
           <FormKit
@@ -211,6 +234,8 @@ const printOrderStore = usePrintOrderStore();
 const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
 
+const useBillingSameAsShippingAddress = ref(false);
+
 const contact_email_ref = computed(() => {
   return (
     print_order.value.contact_email ||
@@ -262,6 +287,12 @@ function submitHandler() {
     false
   );
 }
+
+watch(useBillingSameAsShippingAddress, (value) => {
+  if (value) {
+    printOrderStore.setBillingAddressSameAsShippingAddress();
+  }
+});
 </script>
 
 <style>

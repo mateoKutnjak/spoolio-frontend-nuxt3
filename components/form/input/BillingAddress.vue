@@ -1,7 +1,7 @@
 <template>
   <div
-    class="h-full btn btn-block btn-ghost btn-lg gap-4 rounded-md border border-stone-400/80 text-stone-500"
-    @click="openDialog"
+    class="h-full btn btn-block btn-ghost no-animation btn-lg gap-4 rounded-md border border-stone-400/80 text-stone-500"
+    @click="context.disabled ? () => null : openDialog()"
   >
     <div
       v-if="billing_address && Object.keys(billing_address).length"
