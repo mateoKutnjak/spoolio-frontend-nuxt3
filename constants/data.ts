@@ -257,6 +257,7 @@ export interface IPrintOrderUnit {
     scale_display: number,
     printing_method: IPrintingMethod,
     file: File | string,
+    simplifiedFileUrl: string,
     localUrl: string,
     attachmentFiles: IAttachmentFile[],
     attachmentImages: IAttachmentImage[],

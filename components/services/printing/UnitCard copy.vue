@@ -56,9 +56,7 @@
                   />
                 </div>
               </div>
-              <ServicesPrintingDimensionInfo
-                :unit="unit"
-              />
+              <ServicesPrintingDimensionInfo :unit="unit" />
               <ServicesPrintingVolumeInfo
                 :data="unit.model_volume"
                 :unit="unit.length_unit"
@@ -247,6 +245,7 @@ function duplicateUnit() {
       scale_display: unit.scale,
       estimatedPrice: unit.estimated_price,
       file: unit.file,
+      simplifiedFileUrl: unit.simplifiedFileUrl,
       comment: comment.value,
       localUrl: URL.createObjectURL(unit.file),
       attachmentFiles: [], // todo

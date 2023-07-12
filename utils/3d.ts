@@ -1,6 +1,9 @@
 import { AmbientLight, Box3, BufferAttribute, BufferGeometry, Color, HemisphereLight, InterleavedBufferAttribute, Material, Matrix4, Mesh, MeshStandardMaterial, PerspectiveCamera, Scene, SpotLight, Vector3, WebGLRenderer } from "three";
+import { SimplifyModifier } from "three/examples/jsm/modifiers/SimplifyModifier";
+import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
 
-export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: string | undefined, width: number, height: number, callback: (blob: Blob) => void) {
+
+export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: string | undefined, width: number, height: number, callback: (blob: Blob, simplifiedModelBlob: Blob) => void) {
     let experience = document.createElement('canvas') as HTMLCanvasElement
 
     const scene = new Scene();
@@ -38,6 +41,18 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
         new MeshStandardMaterial({ color: meshColor ?? '#EAEAEA', roughness: 0.9, metalness: 0.5 })
     );
 
+    const exporter = new STLExporter();
+    const modifier = new SimplifyModifier();
+
+    const meshSimplified = mesh.clone();
+    meshSimplified.material = mesh.material.clone();
+    meshSimplified.material.flatShading = true;
+    const count = Math.floor(meshSimplified.geometry.attributes.position.count * 0.1); // number of vertices to remove
+    meshSimplified.geometry = modifier.modify(meshSimplified.geometry, count);
+
+    const result = exporter.parse(meshSimplified, { binary: true });
+    const simplifiedBlob = new Blob([result], { type: "application/octet-stream" });
+
     geometry.computeBoundingBox();
 
     if (!mesh.geometry.boundingBox) {
@@ -63,7 +78,7 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
 
     experience.toBlob(blob => {
         if (blob) {
-            callback(blob);
+            callback(blob, simplifiedBlob);
         }
     });
 }

@@ -50,10 +50,57 @@
           <span class="font-bold">{{ $t('electronics_mechatronics_programming_and_prototyping_genitiv') }}.</span>
           <span>{{ $t('whatever_idea_you_have_feel_free_to_contact_us_so_that_we_can_find_a_solution_together') }}.</span>
         </div>
-        <div class="mt-12 space-x-1.5">
-          <span>{{ capitalizeOnlyFirstLetter($t('we_are_located_within_zicer_at_the_address')) }}</span>
-          <span class="font-bold">Paviljon 12, Avenija Dubrovnik 15, 10000, Zagreb.</span>
+
+      </div>
+      <div class="mt-24 grid md:grid-cols-2 grid-cols-1">
+        <div class="flex flex-col gap-4 text-md">
+          <div class="text-4xl font-bold">{{ $t('contact').toUpperCase() }}</div>
+          <div class="mt-12 flex gap-5 items-center">
+            <Icon
+              class="text-primary"
+              size="55"
+              name="ph:map-pin"
+            />
+            <div class="space-x-1.5 max-w-sm">
+              <span>{{ capitalizeOnlyFirstLetter($t('we_are_located_within_zicer_at_the_address')) }}</span>
+              <span class="font-bold">Paviljon 12, Avenija Dubrovnik 15, 10000, Zagreb.</span>
+            </div>
+          </div>
+          <div class="mt-8 flex gap-6 items-center">
+            <Icon
+              class="ml-[3px] text-primary"
+              size="50"
+              name="ph:envelope-simple"
+            />
+            <div class="space-x-1.5 max-w-sm">
+              <span class="font-bold">info.ur3d@gmail.com</span>
+            </div>
+          </div>
+          <div class="mt-8 flex gap-6 items-center">
+            <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
+              <Icon
+                class="text-primary"
+                size="35"
+                name="ph:youtube-logo-fill"
+              />
+            </div>
+            <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
+              <Icon
+                class="text-primary"
+                size="35"
+                name="ph:instagram-logo-bold"
+              />
+            </div>
+            <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
+              <Icon
+                class="text-primary"
+                size="35"
+                name="ph:tiktok-logo-bold"
+              />
+            </div>
+          </div>
         </div>
+        <div class=" bg-stone-200">Map goes here</div>
       </div>
     </div>
   </div>

@@ -267,6 +267,7 @@ function duplicateUnit() {
       scale_display: unit.scale,
       estimated_price: unit.estimated_price,
       file: unit.file,
+      simplifiedFileUrl: unit.simplifiedFileUrl,
       comment: comment.value,
       localUrl: URL.createObjectURL(unit.file),
       attachmentFiles: [], // todo

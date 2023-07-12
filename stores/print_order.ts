@@ -189,6 +189,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
                 customFetch<IPrintOrderUnit>('api/print-orders/units/', {
+
                     baseURL: config.public.baseURL,
                     method: 'POST',
                     body: formData,
@@ -198,7 +199,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     console.log(err);
                     reject(err)
                 });
-            }), HTTP_REQUEST_TIMEOUT);
+            }), HTTP_3D_MODEL_POST_REQUEST_TIMEOUT);
         },
 
         async estimatePrintJobsOnly() {
@@ -348,6 +349,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
+            const simplifiedFile = new File([await (await fetch(unit.simplifiedFileUrl)).blob()], 'simplified-file.stl');
+
             var formData = new FormData();
             formData.append("comment", unit.comment);
             formData.append("spool", unit.spool.id.toString());
@@ -357,7 +360,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('printing_method', unit.printing_method.id.toString());
             formData.append('scale', unit.scale.toString())
             formData.append('local_url', unit.localUrl);
-            formData.append("file", unit.file);
+            formData.append("file", simplifiedFile);
             formData.append('quantity', unit.quantity.toString());
             formData.append('length_unit', unit.length_unit)
             formData.append('rotation_unit', unit.rotation_unit)
@@ -599,7 +602,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             const localUrl = URL.createObjectURL(file);
             const { model_volume, model_dimensions, optimal_rotation, model_rotation } = await preprocess3dObject(localUrl);
 
-            create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, blob => {
+            create3dObjectScreenshot(localUrl, filamentSpoolStore.getAll[0].color.value, 400, 400, (blob, simplifiedModelBlob) => {
 
                 const unit = <IPrintOrderUnit>{
                     id: undefined,
@@ -614,6 +617,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                     estimated_price: Number.NEGATIVE_INFINITY,
                     estimated_time: Number.NEGATIVE_INFINITY,
                     file: file,
+                    simplifiedFileUrl: URL.createObjectURL(simplifiedModelBlob),
                     comment: "TODO",
                     localUrl: localUrl,
                     attachmentFiles: [],
@@ -648,8 +652,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            create3dObjectScreenshot(localUrl, unit.spool.color.value, 400, 400, blob => {
-                this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob) });
+            create3dObjectScreenshot(localUrl, unit.spool.color.value, 400, 400, (blob, simplifiedBlob) => {
+                this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob), simplifiedFileUrl: URL.createObjectURL(simplifiedBlob) });
             })
         },
 
