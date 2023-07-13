@@ -59,13 +59,22 @@
             size="35"
           />
         </div>
-        <div class="btn btn-ghost btn-square">
+        <a href="https://instagram.com/ur3d.printing?igshid=MzNlNGNkZWQ4Mg==">
+          <div class="btn btn-ghost btn-square">
+            <Icon
+              class="text-[#FF0000]"
+              name="skill-icons:instagram"
+              size="27"
+            />
+          </div>
+        </a>
+        <!-- <div class="btn btn-ghost btn-square">
           <Icon
             class="text-[#1DA1F2]"
             name="bxl:twitter"
             size="35"
           />
-        </div>
+        </div> -->
         <div class="btn btn-ghost btn-square">
           <Icon
             class="text-[#4267B2]"

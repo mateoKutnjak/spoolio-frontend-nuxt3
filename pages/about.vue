@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
-    <div class="flex flex-col">
+  <div class="container mx-auto max-w-5xl px-0 md:px-12 py-12">
+    <div class="md:px-0 px-12 flex flex-col">
       <div class="hero py-12">
         <div class="hero-content text-center">
           <div class="max-w-xl">
@@ -52,7 +52,7 @@
         </div>
 
       </div>
-      <div class="mt-24 grid md:grid-cols-2 grid-cols-1">
+      <div class="mt-24 grid lg:grid-cols-2 grid-cols-1 gap-8">
         <div class="flex flex-col gap-4 text-md">
           <div class="text-4xl font-bold">{{ $t('contact').toUpperCase() }}</div>
           <div class="mt-12 flex gap-5 items-center">
@@ -61,7 +61,7 @@
               size="55"
               name="ph:map-pin"
             />
-            <div class="space-x-1.5 max-w-sm">
+            <div class="space-x-1.5">
               <span>{{ capitalizeOnlyFirstLetter($t('we_are_located_within_zicer_at_the_address')) }}</span>
               <span class="font-bold">Paviljon 12, Avenija Dubrovnik 15, 10000, Zagreb.</span>
             </div>
@@ -84,13 +84,15 @@
                 name="ph:youtube-logo-fill"
               />
             </div>
-            <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
-              <Icon
-                class="text-primary"
-                size="35"
-                name="ph:instagram-logo-bold"
-              />
-            </div>
+            <a href="https://instagram.com/ur3d.printing?igshid=MzNlNGNkZWQ4Mg==">
+              <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
+                <Icon
+                  class="text-primary"
+                  size="35"
+                  name="ph:instagram-logo-bold"
+                />
+              </div>
+            </a>
             <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
               <Icon
                 class="text-primary"
@@ -100,13 +102,27 @@
             </div>
           </div>
         </div>
-        <div class=" bg-stone-200">Map goes here</div>
+        <div class="bg-stone-500 h-96 border-2 border-stone-400">
+
+          <GoogleMap
+            class="h-full mt-auto"
+            api-key="AIzaSyBHRj4P62539q9_eeXeg3q9yvbyZkRkyIc"
+            style="width: 100%; height: 100%"
+            :center="center"
+            :zoom="15"
+          >
+            <Marker :options="{ position: center }" />
+          </GoogleMap>
+        </div>
       </div>
     </div>
   </div>
 </template>
   
   <script lang="ts" setup>
+import { GoogleMap, Marker } from "vue3-google-map";
+
+const center = { lat: 45.77810874462445, lng: 15.9754442932817 };
 </script>
   <style>
 </style>

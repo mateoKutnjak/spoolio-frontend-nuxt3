@@ -634,6 +634,21 @@
     "@formkit/utils" "1.0.0-beta.12"
     "@formkit/validation" "1.0.0-beta.12"
 
+"@googlemaps/js-api-loader@^1.12.11":
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.16.2.tgz#3fe748e21243f8e8322c677a5525c569ae9cdbe9"
+  integrity sha512-psGw5u0QM6humao48Hn4lrChOM2/rA43ZCm3tKK9qQsEj1/VzqkCqnvGfEOshDbBQflydfaRovbKwZMF4AyqbA==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+
+"@googlemaps/markerclusterer@^2.0.6":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@googlemaps/markerclusterer/-/markerclusterer-2.3.1.tgz#51353197fbb41631384a10fe01fe93c9fe7e660b"
+  integrity sha512-3G6PK0lDZ6vWUiCZUz/C0yOdJWtsGRqsshei7QoQVxfmSm+o+xoQFkamW8AtEywuDlAPUrpu0ffZ9mSKeXflTw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    supercluster "^8.0.1"
+
 "@headlessui/vue@^1.7.4":
   version "1.7.7"
   resolved "https://registry.npmjs.org/@headlessui/vue/-/vue-1.7.7.tgz"
@@ -819,6 +834,13 @@
   integrity sha512-AaN8HSGdXmNqEqIb0IQPIQL+MI/8Xr1QTOcVnA6k0u2afqfYhlre05hSxRybOFpq34oF8EqMTrYovYZxEV1FLw==
   dependencies:
     lines-and-columns "^1.1.6"
+
+"@netlify/functions@^1.4.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-1.6.0.tgz#c373423e6fef0e6f7422ac0345e8bbf2cb692366"
+  integrity sha512-6G92AlcpFrQG72XU8YH8pg94eDnq7+Q0YJhb8x4qNpdGsvuzvrfHWBmqFGp/Yshmv4wex9lpsTRZOocdrA2erQ==
+  dependencies:
+    is-promise "^4.0.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -2801,7 +2823,7 @@ externality@^1.0.0:
     pathe "^1.0.0"
     ufo "^1.0.0"
 
-fast-deep-equal@^3.1.1:
+fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
@@ -3475,6 +3497,11 @@ is-primitive@^3.0.1:
   resolved "https://registry.npmjs.org/is-primitive/-/is-primitive-3.0.1.tgz"
   integrity sha512-GljRxhWvlCNRfZyORiH77FwdFwGcMO620o37EOYC0ORWdq+WYNVqW0w2Juzew4M+L81l6/QS3t5gkkihyRqv9w==
 
+is-promise@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-4.0.0.tgz#42ff9f84206c1991d26debf520dd5c01042dd2f3"
+  integrity sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==
+
 is-reference@1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/is-reference/-/is-reference-1.2.1.tgz"
@@ -3582,6 +3609,11 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+kdbush@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-4.0.2.tgz#2f7b7246328b4657dd122b6c7f025fbc2c868e39"
+  integrity sha512-WbCVYJ27Sz8zi9Q7Q0xHC+05iwkm3Znipc2XTlrnJbsHMYktW4hPhXUE8Ys1engBrvffoSCqbil1JQAa7clRpA==
 
 keygrip@~1.1.0:
   version "1.1.0"
@@ -5591,6 +5623,13 @@ sucrase@^3.32.0:
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
 
+supercluster@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/supercluster/-/supercluster-8.0.1.tgz#9946ba123538e9e9ab15de472531f604e7372df5"
+  integrity sha512-IiOea5kJ9iqzD2t7QJq/cREyLHTtSmUT6gQsweojg9WH2sYJqZK9SswTu6jrscO6D1G5v5vYZ9ru/eq85lXeZQ==
+  dependencies:
+    kdbush "^4.0.2"
+
 supports-color@^5.3.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz"
@@ -6153,6 +6192,15 @@ vue3-carousel@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.3.1.tgz#d001be7dea416dc2f4e66afc4d56af66696dc117"
   integrity sha512-86vUkNPBzL2PVuR9w6hUsI90ccFjLp+K8cSFpRTISf+SjUQY3fMHc5CFF5MUL62v1xYYm27zEBmQupO9VQx9Kw==
+
+vue3-google-map@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/vue3-google-map/-/vue3-google-map-0.15.0.tgz#83d996c23934ae06cd6d3e158fc2dd46ca7a18e1"
+  integrity sha512-Y0fyBa9feS3mFIsYnCdqGr2TQWtRAhs0Q2vTmrhD/kzyY9z7lqd5p8ZM+Axw7xsaUXP+NvvIdIP4TianIOubkQ==
+  dependencies:
+    "@googlemaps/js-api-loader" "^1.12.11"
+    "@googlemaps/markerclusterer" "^2.0.6"
+    fast-deep-equal "^3.1.3"
 
 vue3-google-signin@latest:
   version "1.3.0"
