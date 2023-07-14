@@ -1,10 +1,19 @@
 import { RESTRICTED_PAGES_STARTS_WITH, RESTRICT_ALL_NON_INDEX_PAGES_FOR_GUESTS, RESTRICT_PAGES_NON_ADMIN_STARTS_WITH } from "~~/constants/constants";
 import { useAuthStore } from "~~/stores/auth";
+import { usePrintOrderStore } from "~~/stores/print_order";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const authStore = useAuthStore();
 
     let redirectToHome = false;
+
+    if (to.path.includes('/services/printing/checkout')) {
+        const printOrderStore = usePrintOrderStore();
+        if (printOrderStore.units.length === 0) {
+            abortNavigation('Cannot proceed to checkout. No items found in print order.')
+            return;
+        }
+    }
 
     if (!authStore.loggedIn) {
 
