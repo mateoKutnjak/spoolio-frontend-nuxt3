@@ -42,7 +42,7 @@
         bg-base-100
         text-lg
         border-base-300">
-    <div class="items-center grid-flow-col">
+    <div class="w-full flex sm:flex-row flex-col sm:justify-start justify-center items-center">
       <nuxt-img
         width="110px"
         src="/img/logo-primary.svg"
