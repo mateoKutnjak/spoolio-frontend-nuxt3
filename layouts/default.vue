@@ -26,7 +26,7 @@
           for="my-drawer"
           class="drawer-overlay"
         ></label>
-        <CartDrawerMenu />
+        <!-- <CartDrawerMenu /> -->
       </div>
 
       <GenericDialog

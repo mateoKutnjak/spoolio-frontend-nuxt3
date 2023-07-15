@@ -61,7 +61,7 @@
 
           </label>
         </div>
-        <button
+        <!-- <button
           class="btn btn-ghost"
           :class="getCartItems.size > 0 ? '' : 'btn-square'"
           @click="toggleDrawer"
@@ -79,7 +79,7 @@
               aria-hidden="true"
             />
           </div>
-        </button>
+        </button> -->
         <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
         <NavbarDropdownProfile />
       </div>
