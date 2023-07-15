@@ -1,14 +1,14 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="px-5 btn btn-lg btn-ghost gap-2 items-center rounded-md text-xl !font-bold bg-white shadow-md hover:bg-stone-100"
+      class=" px-5 btn btn-lg btn-ghost btn-block sm:w-fit h-fit gap-2 items-center rounded-md text-xl !font-bold bg-white shadow-md hover:bg-stone-100"
       :class="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 ? 'text-stone-500 border-4 border-primary hover:border-4 hover:border-primary' : 'text-stone-400 border-4 border-transparent'"
       v-for="option in options"
       :key="extractId(option)"
       @click="onItemClicked(option)"
     >
 
-      <Icon
+      <!-- <Icon
         v-if="selectedOptions.findIndex((el) => extractId(el) === extractId(option)) > -1 "
         class="mb-0.5 text-primary"
         name="ph:check-square-fill"
@@ -19,9 +19,9 @@
         class="mb-0.5 text-stone-400"
         name="ph:square"
         size="20"
-      />
+      /> -->
 
-      <div class="flex flex-col items-start">
+      <div class="flex flex-col sm:items-start items-center overflow-x-scroll">
         <div>
           {{ extractTitle(option) }}
         </div>
