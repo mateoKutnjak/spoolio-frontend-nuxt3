@@ -1,9 +1,9 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-12 md:px-0">
     <div class="flex flex-col gap-6 justify-center">
-      <div class="mb-4 space-x-3 leading-loose">
-        <span class="text-7xl font-bold text-stone-600">{{ capitalizeFirstLetter($t('make_your_ideas_alive_with_our')) }}</span>
-        <span class="text-7xl font-bold text-primary">{{ capitalizeFirstLetter($t('_3d_print')) }}</span>
+      <div class="mb-4 leading-loose">
+        <span class="text-7xl font-bold text-stone-600">{{ capitalizeFirstLetter($t('make_your_ideas_alive_with_our') + " ") }}</span>
+        <span class="text-7xl font-bold text-primary">{{ capitalizeFirstLetter($t('_3d_print') + " ") }}</span>
         <span class="text-7xl font-bold text-stone-600">{{ capitalizeFirstLetter($t('services')) }}</span>
       </div>
       <div class="space-x-1">
