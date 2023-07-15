@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto max-w-5xl px-0 md:px-12 py-12">
-    <div class="md:px-0 px-12 flex flex-col">
+    <div class="px-12 flex flex-col">
       <div class="hero py-12">
         <div class="hero-content text-center">
           <div class="max-w-xl">
@@ -52,12 +52,12 @@
         </div>
 
       </div>
-      <div class="mt-24 grid lg:grid-cols-2 grid-cols-1 gap-8">
+      <div class="mt-24 grid lg:grid-cols-2 grid-cols-1 gap-12">
         <div class="flex flex-col gap-4 text-md">
           <div class="text-4xl font-bold">{{ $t('contact').toUpperCase() }}</div>
-          <div class="mt-12 flex gap-5 items-center">
+          <div class="mt-12 flex flex-col sm:flex-row  gap-5 items-center">
             <Icon
-              class="text-primary"
+              class="btn text-primary sm:h-full w-14 p-0 no-animation bg-transparent shadow-none border-none"
               size="55"
               name="ph:map-pin"
             />
@@ -66,9 +66,9 @@
               <span class="font-bold">Paviljon 12, Avenija Dubrovnik 15, 10000, Zagreb.</span>
             </div>
           </div>
-          <div class="mt-8 flex gap-6 items-center">
+          <div class="mt-8 flex sm:flex-row flex-col gap-6 items-center">
             <Icon
-              class="ml-[3px] text-primary"
+              class="ml-[3px] -mr-[3px] btn text-primary sm:h-full w-14 p-0 no-animation bg-transparent shadow-none border-none"
               size="50"
               name="ph:envelope-simple"
             />
@@ -76,7 +76,7 @@
               <span class="font-bold">info.ur3d@gmail.com</span>
             </div>
           </div>
-          <div class="mt-8 flex gap-6 items-center">
+          <div class="mt-12 flex flex-wrap sm:justify-start justify-center gap-6 items-center">
             <div class="btn btn-circle btn-outline border-4 border-primary btn-lg hover:bg-stone-200 hover:border-primary">
               <Icon
                 class="text-primary"
