@@ -22,10 +22,10 @@
       </div>
       <div :class="`absolute h-[25rem] top-0 left-0 right-0 bg-gradient-to-b from-transparent to-transparent/70`" />
       <div class="absolute max-w-7xl mx-auto mt-[25em] bottom-0 left-0 right-0 p-8 flex flex-col gap-1 justify-end">
-        <div class="text-stone-50 text-6xl font-medium drop-shadow-md">{{ blog.title }}</div>
-        <div class="mb-4 text-stone-50 text-xl font-normal drop-shadow-xl">{{ blog.subtitle }}</div>
+        <div class="text-stone-50 text-6xl font-medium drop-shadow-md line-clamp-3">{{ blog.title }}</div>
+        <div class="mb-4 text-stone-50 text-xl font-normal drop-shadow-xl line-clamp-2">{{ blog.subtitle }}</div>
         <NuxtLink :to="localePath(`/blogs/${blog.id}`)">
-          <div class="btn btn-primary btn-wide shadow-md !font-medium text-lg"> {{ capitalizeFirstLetter($t('read_article')) }}
+          <div class="btn btn-primary sm:btn-wide btn-block h-fit shadow-md !font-medium text-lg"> {{ capitalizeFirstLetter($t('read_article')) }}
           </div>
         </NuxtLink>
       </div>

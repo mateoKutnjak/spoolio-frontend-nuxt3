@@ -6,7 +6,7 @@
         :navigation="navigation"
       />
       <NuxtLink
-        class="btn btn-ghost"
+        class="btn btn-ghost sm:w-36 w-28"
         :to="localePath('/')"
       >
         <nuxt-img
