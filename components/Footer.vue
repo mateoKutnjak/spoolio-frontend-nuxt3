@@ -54,7 +54,7 @@
       <div class="-mt-2 grid grid-flow-col gap-1">
         <div class="btn btn-ghost btn-square">
           <Icon
-            class="text-[#FF0000]"
+            class="text-[#FF0000] mb-[1px]"
             name="bxl:youtube"
             size="35"
           />
@@ -64,7 +64,7 @@
             <Icon
               class="text-[#FF0000]"
               name="skill-icons:instagram"
-              size="27"
+              size="25"
             />
           </div>
         </a>
@@ -77,9 +77,9 @@
         </div> -->
         <div class="btn btn-ghost btn-square">
           <Icon
-            class="text-[#4267B2]"
+            class="text-[#4267B2] mb-[2px]"
             name="bxl:facebook-square"
-            size="33"
+            size="31"
           />
         </div>
       </div>
