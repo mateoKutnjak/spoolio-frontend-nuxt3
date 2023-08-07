@@ -22,12 +22,12 @@
             </div>
             <NuxtLink
               :to="localePath('/services/printing')"
-              class="btn btn-lg btn-block btn-primary text-base-100 shadow-md"
+              class="btn btn-lg btn-block btn-primary text-base-100"
             >{{ $t('i_have_a_model').toUpperCase() }}</NuxtLink>
           </div>
           <NuxtLink
             :to="localePath('/services/modeling')"
-            class="btn btn-lg btn-outline btn-block text-stone-600 border-stone-300 shadow"
+            class="btn btn-lg btn-outline btn-block text-stone-600 border-stone-400"
           >{{ $t('i_dont_have_a_model').toUpperCase() }}</NuxtLink>
         </div>
       </div>
@@ -61,7 +61,7 @@
             </div>
             <NuxtLink
               :to="localePath('/services/modeling')"
-              class="btn btn-lg btn-outline text-stone-600 border-stone-300 shadow"
+              class="btn btn-lg btn-outline text-stone-600 border-stone-400"
             >{{ $t('_3d_modeling').toUpperCase() }}</NuxtLink>
           </div>
         </div>

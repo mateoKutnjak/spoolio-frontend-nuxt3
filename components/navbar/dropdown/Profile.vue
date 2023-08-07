@@ -5,6 +5,7 @@
       class="relative inline-block text-left"
     >
 
+
       <MenuButton
         class="btn btn-ghost btn-square avatar"
         :class="isLoggedIn ? 'hover:bg-transparent' : ''"

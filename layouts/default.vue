@@ -8,11 +8,11 @@
       />
       <div class="drawer-content">
         <div class="flex flex-col h-screen">
-          <Navbar />
+          <Navbar ref="navbar" />
           <Toast />
           <div
             class="w-full flex-1 flex flex-col gap-12 font-medium text-xl text-stone-700"
-            :style="`background-color: ${BACKGROUND_COLOR};`"
+            :style="`background-color: ${BACKGROUND_COLOR}; margin-top: ${Math.floor(height)}px;`"
           >
             <!-- <Breadcrumbs class="px-12" /> -->
             <slot />
@@ -55,12 +55,16 @@ import { BACKGROUND_COLOR } from "~~/constants/constants";
 import { useDialogStore } from "~~/stores/dialog";
 import { useDrawerStore } from "../stores/drawer";
 import { useLoadingOverlayStore } from "~~/stores/loading_overlay";
+import { useElementSize } from "@vueuse/core";
 
 const dialogStore = useDialogStore();
 const drawerStore = useDrawerStore();
 const loadingOverlayStore = useLoadingOverlayStore();
 
 const { isDialogOpened, componentName } = storeToRefs(dialogStore);
+
+const navbar = ref(null);
+const { height } = useElementSize(navbar);
 
 var drawerInput: HTMLElement | null = null;
 
