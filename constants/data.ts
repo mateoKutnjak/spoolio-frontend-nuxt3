@@ -248,7 +248,6 @@ export interface IPrintOrderUnit {
     id: number | undefined,
     comment: string,
 
-    quantity_display: number,
     quantity: number,
 
     spool_display: IFilamentSpool,

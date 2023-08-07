@@ -176,7 +176,6 @@ async function onSaveChangesClicked() {
   }
 
   await printOrderStore.updateUnit(unit.localUrl, {
-    quantity: unit.quantity_display,
     spool: unit.spool_display,
     infill: unit.infill_display,
     wall: unit.wall_display,
@@ -205,7 +204,6 @@ async function onSaveChangesAndExitClicked() {
 
 onBeforeRouteLeave(() => {
   printOrderStore.updateUnit(unit.localUrl, {
-    quantity_display: unit.quantity,
     spool_display: unit.spool,
     infill_display: unit.infill,
     wall_display: unit.wall,

@@ -620,7 +620,6 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                 const unit = <IPrintOrderUnit>{
                     id: undefined,
-                    quantity_display: 1,
                     quantity: 1,
                     spool_display: filamentSpoolStore.getAll[0],
                     spool: filamentSpoolStore.getAll[0],
