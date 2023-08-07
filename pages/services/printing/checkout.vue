@@ -119,6 +119,9 @@
                       <div class="absolute bottom-1 right-2 font-bold text-sm text-gray-600">
                         x{{ unit.quantity }}
                       </div>
+                      <div class="absolute top-1 right-2 font-bold text-sm text-gray-600">
+                        {{ unit.printing_method.name }} - {{ unit.spool.material.name}}
+                      </div>
                     </div>
                   </div>
                 </div>
