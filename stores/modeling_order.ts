@@ -141,14 +141,8 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             this.attachmentImages.push(attachmentImage);
         },
 
-        removeAttachmentImage(attachmentImage: IAttachmentImage) {
-            var index = this.attachmentImages.map((el) => el.image).indexOf(attachmentImage.image);
-
-            if (index > -1) {
-                this.attachmentImages.splice(index, 1);
-            } else {
-                console.error("Item not found among attached images");
-            }
+        removeAttachmentImage(localUrl: string) {
+            this.attachmentImages = this.attachmentImages.filter(el => el.localUrl !== localUrl);
         },
 
         async fetchItemTypes(): Promise<IModelingOrderItemType[]> {

@@ -47,7 +47,7 @@ function onClickFile() {
 }
 
 function onRemoveFile() {
-  modelingOrderStore.removeAttachmentFileByLocalUrl(localUrl);
+  modelingOrderStore.removeAttachmentImage(localUrl);
 }
 
 function toIconName2() {
