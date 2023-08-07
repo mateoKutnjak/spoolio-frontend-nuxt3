@@ -9,7 +9,7 @@
       >
         <label
           tabindex="0"
-          class="btn btn-circle btn-ghost btn-sm text-info"
+          class="btn btn-circle btn-ghost btn-sm text-info z-0"
         >
           <Icon
             name="ph:info"
@@ -18,7 +18,7 @@
         </label>
         <div
           tabindex="0"
-          class="card dropdown-content shadow-md bg-base-100 rounded-box"
+          class="card dropdown-content shadow-md bg-base-100 rounded-box z-10"
         >
           <div class="card-body">
             <div class="flex flex-col gap-6 items-start">

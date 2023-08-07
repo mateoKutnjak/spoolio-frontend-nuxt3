@@ -31,9 +31,9 @@
         <TabPanel>
           <OrderHistoryModeling />
         </TabPanel>
-        <TabPanel>
+        <!-- <TabPanel>
           <OrderHistoryStore />
-        </TabPanel>
+        </TabPanel> -->
       </TabPanels>
     </TabGroup>
   </div>
@@ -61,7 +61,7 @@ storeOrderHistoryStore
   .fetchOrderHistoryPaginated()
   .catch((err) => notificationStore.showFetchError(err));
 
-const tabCategories = ["print_orders", "modeling_orders", "store_orders"];
+const tabCategories = ["print_orders", "modeling_orders" /*"store_orders"*/];
 </script>
 
 <style>
