@@ -160,7 +160,6 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     )
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo(localePath("/services/printing"));
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

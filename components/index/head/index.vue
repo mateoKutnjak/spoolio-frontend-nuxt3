@@ -15,7 +15,7 @@
         size="80"
       />
     </div>
-    <div class="flex flex-col gap-6 justify-center z-10">
+    <div class="flex flex-col gap-6 justify-center z-[1]">
       <div class="mb-4 leading-loose ">
         <span class="sm:text-7xl text-5xl font-bold text-stone-100">{{ capitalizeFirstLetter($t('make_your_ideas_alive_with_our') + " ") }}</span>
         <span class="sm:text-7xl text-5xl font-bold text-primary">{{ capitalizeFirstLetter($t('_3d_print') + " ") }}</span>

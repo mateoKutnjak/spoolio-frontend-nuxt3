@@ -412,9 +412,55 @@ watch(rotationUnit, (value) => {
   });
 });
 
+function clearFilesChrome(input: any) {
+  const dt = new DataTransfer();
+  dt.items.add(new File([], "a.txt"));
+  input.files = dt.files;
+
+  // This will remove the first item when selecting many files
+  input.onchange = () => {
+    const dt = new DataTransfer();
+
+    for (let file of input.files)
+      if (file !== input.files[0]) dt.items.add(file);
+
+    input.onchange = null; // remove event listener
+    input.files = dt.files; // this will trigger a change event
+  };
+}
+
+function clearFilesFirefox(input: any) {
+  const cd = new ClipboardEvent("").clipboardData;
+  cd!.items.add(new File(["a"], "a.txt"));
+  input.files = cd!.files;
+
+  // This will remove the fist item when selecting many files
+  input.onchange = () => {
+    const dt = new DataTransfer();
+
+    for (let file of input.files)
+      if (file !== input.files[0]) dt.items.add(file);
+
+    input.onchange = null; // remove event listener
+    input.files = dt.files; // this will trigger a change event
+  };
+}
+
 function change(e: any) {
   // * Gets triggered when user selects
   // * files after CLICKING on container
+
+  if (!isLoggedIn.value) {
+    dialogStore.open("AuthForm", {});
+    notificationStore.show(
+      "Please log in to use this feature",
+      ToastLevelType.info
+    );
+
+    clearFilesChrome(e.target);
+    clearFilesFirefox(e.target);
+    return;
+  }
 
   itemInsertedLoading.value = true;
 
@@ -476,6 +522,15 @@ function drop(e: any) {
 }
 
 function onFilesAdded(files: File[]) {
+  if (!isLoggedIn.value) {
+    dialogStore.open("AuthForm", {});
+    notificationStore.show(
+      "Please log in to use this feature",
+      ToastLevelType.info
+    );
+    return;
+  }
+
   for (let index = 0; index < files.length; index++) {
     const element = files[index];
 
