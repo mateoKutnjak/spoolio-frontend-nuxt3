@@ -1,5 +1,11 @@
 <template>
-  <div class="h-screen w-screen flex flex-col gap-12 justify-center items-center">
+  <div class="h-screen w-screen flex flex-col gap-12 p-12 items-center">
+    <div
+      class="btn btn-ghost self-start self-top"
+      @click="goBack"
+    >Go back</div>
+
+    <div class="flex-2"></div>
 
     <div class="flex flex-col items-center">
 
@@ -42,6 +48,8 @@
           class="loading loading-spinner"
         ></span>{{ capitalizeOnlyFirstLetter($t('pay')) }}</div>
     </form>
+
+    <div class="flex-1"></div>
   </div>
 </template>
 
@@ -277,6 +285,10 @@ function submitPayment() {
     .finally(() => {
       paymentProcessing.value = false;
     });
+}
+
+function goBack() {
+  navigateTo(`/profile/order-history/${order}/${id}`);
 }
 </script>
 

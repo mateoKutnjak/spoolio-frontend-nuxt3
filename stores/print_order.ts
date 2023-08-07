@@ -666,7 +666,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             })
         },
 
-        async updateScreenshot(localUrl: string, forceColor: string | undefined = undefined) {
+        async updateScreenshot(localUrl: string, callback: () => void) {
             const unit = this.getUnitByLocalUrl(localUrl);
 
             if (!unit) {
@@ -674,8 +674,9 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            await create3dObjectScreenshot(localUrl, forceColor || unit.spool.color.value, 400, 400, (blob, simplifiedBlob) => {
+            await create3dObjectScreenshot(localUrl, unit.spool.color.value, 400, 400, (blob, simplifiedBlob) => {
                 this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob), simplifiedFileUrl: URL.createObjectURL(simplifiedBlob) });
+                callback()
             })
         },
 
