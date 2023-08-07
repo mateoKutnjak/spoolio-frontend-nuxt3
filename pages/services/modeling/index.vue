@@ -61,23 +61,16 @@
         <div class="flex flex-col gap-2 pt-10">
           <div class="flex flex-col lg:flex-row gap-5">
             <div class="flex-1 flex flex-col">
-              <div class="flex gap-5 justify-start">
-                <FormKit
-                  type="text"
-                  v-model="modeling_order.contact_email"
-                  :placeholder="capitalizeOnlyFirstLetter($t('contact_email'))"
-                  validation="email|required"
-                  validation-visibility="submit"
-                  :validation-messages="{
+              <FormKit
+                type="text"
+                v-model="modeling_order.contact_email"
+                :placeholder="capitalizeOnlyFirstLetter($t('contact_email'))"
+                validation="email|required"
+                validation-visibility="submit"
+                :validation-messages="{
                     required: 'Leave your contact email'
                   }"
-                />
-                <div
-                  v-show="user"
-                  class="link link-info font-semibold pt-3"
-                  @click="onUseDefaultContactEmail"
-                >{{ capitalizeOnlyFirstLetter($t('use_default')) }}</div>
-              </div>
+              />
               <FormKit
                 type="textarea"
                 v-model="modeling_order.comment"
@@ -169,6 +162,12 @@ const { modeling_order, itemTypes, itemAttributes, orderTypes } =
   storeToRefs(modelingOrderStore);
 
 onMounted(async () => {
+  if (user.value?.profile?.email) {
+    modeling_order.value.contact_email = user.value?.profile?.email;
+  } else if (user.value?.email) {
+    modeling_order.value.contact_email = user.value?.email;
+  }
+
   await modelingOrderStore
     .fetchItemTypes()
     .then((res: IModelingOrderItemType[]) => {
@@ -248,12 +247,6 @@ async function submitHandler() {
     "2xl",
     false
   );
-}
-
-function onUseDefaultContactEmail() {
-  if (user.value?.profile?.email) {
-    modeling_order.value.contact_email = user.value?.profile?.email;
-  }
 }
 
 function itemAttributeSelectionChange(
