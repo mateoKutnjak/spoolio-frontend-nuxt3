@@ -496,10 +496,12 @@ function onFilesAdded(files: File[]) {
         element,
         (localUrl: string) => {
           itemInsertedLoading.value = false;
+
           navigateTo(
-            `/services/printing/units/${urlExtractFilename(localUrl)}`
+            localePath(
+              `/services/printing/units/${urlExtractFilename(localUrl)}`
+            )
           );
-          return;
         },
         capitalizeOnlyFirstLetter(t("unsupported_file_type")) +
           ". " +

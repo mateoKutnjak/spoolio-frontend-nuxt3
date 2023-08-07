@@ -581,7 +581,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             this.estimatePrintJobsOnly()
         },
 
-        async add3dModelFile(file: File, onFinishedCallback: () => {}, invalidFormatMessage: string) {
+        async add3dModelFile(file: File, onFinishedCallback: (localUrl: string) => void, invalidFormatMessage: string) {
             if (!listContains(PRINT_ORDER_FILES_TYPES, file.type) && !listContains(PRINT_ORDER_FILES_SUFFIXES, urlExtractFileSuffix(file.name.toLowerCase()))) {
                 const notificationStore = useNotificationStore();
                 notificationStore.show(`${invalidFormatMessage}`, ToastLevelType.error);
@@ -658,16 +658,15 @@ export const usePrintOrderStore = defineStore('print-order', {
                     printing_method_display: printingMethodStore.getPrintingMethods[0],
                     printing_method: printingMethodStore.getPrintingMethods[0],
                 };
-
-                onFinishedCallback();
-
                 // ! First add unit to pinia state, then call slicer because slicer 
                 // ! manipulates some  data of pinia state regarding this particular unit
                 this.addUnit(unit);
+
+                onFinishedCallback(localUrl);
             })
         },
 
-        updateScreenshot(localUrl: string) {
+        async updateScreenshot(localUrl: string, forceColor: string | undefined = undefined) {
             const unit = this.getUnitByLocalUrl(localUrl);
 
             if (!unit) {
@@ -675,7 +674,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 return;
             }
 
-            create3dObjectScreenshot(localUrl, unit.spool.color.value, 400, 400, (blob, simplifiedBlob) => {
+            await create3dObjectScreenshot(localUrl, forceColor || unit.spool.color.value, 400, 400, (blob, simplifiedBlob) => {
                 this.updateUnit(localUrl, { screenshotURL: URL.createObjectURL(blob), simplifiedFileUrl: URL.createObjectURL(simplifiedBlob) });
             })
         },

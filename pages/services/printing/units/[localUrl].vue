@@ -188,6 +188,11 @@ async function onSaveChangesClicked() {
     use_optimal_rotation: unit.use_optimal_rotation_display,
     length_unit: unit.length_unit_display,
   });
+
+  await printOrderStore.updateScreenshot(unit.localUrl);
+
+  // This is put because of the bug caused by updateScreenshot when leabing the page
+  await new Promise((r) => setTimeout(r, 200));
 }
 
 async function onSaveChangesAndExitClicked() {
