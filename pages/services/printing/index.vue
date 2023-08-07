@@ -494,7 +494,13 @@ function onFilesAdded(files: File[]) {
     } else {
       printOrderStore.add3dModelFile(
         element,
-        () => (itemInsertedLoading.value = false),
+        (localUrl: string) => {
+          itemInsertedLoading.value = false;
+          navigateTo(
+            `/services/printing/units/${urlExtractFilename(localUrl)}`
+          );
+          return;
+        },
         capitalizeOnlyFirstLetter(t("unsupported_file_type")) +
           ". " +
           capitalizeOnlyFirstLetter(t("supported_formats")) +
