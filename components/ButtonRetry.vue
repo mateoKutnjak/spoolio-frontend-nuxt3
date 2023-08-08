@@ -1,15 +1,15 @@
 <template>
   <div
-    class="btn btn-sm btn-error gap-2 rounded-md text-white font-thin items-center"
+    class="btn btn-sm btn-primary btn-outline gap-2 rounded-md hover:!text-white font-thin items-center"
     @click.stop="emit('onClick')"
   >
-    <Icon
+    <!-- <Icon
       class="mb-0.5"
       name="ph:arrows-clockwise-bold"
       size="15"
-    />
+    /> -->
     <div class="text-base">
-      {{ capitalizeOnlyFirstLetter($t('retry')) }}
+      {{ $t('calculate').toUpperCase() }}
     </div>
   </div>
 </template>

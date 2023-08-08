@@ -13,6 +13,12 @@
     -
   </div>
   <div
+    v-else-if="isNaN(totalPrice)"
+    class="text-stone-500 text-xl"
+  >
+    -
+  </div>
+  <div
     v-else-if="totalPrice <= PRINT_ORDER_MIN_PRICE"
     class="flex gap-1 items-center justify-end"
   >

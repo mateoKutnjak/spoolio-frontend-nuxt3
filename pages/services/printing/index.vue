@@ -131,14 +131,14 @@
                   <div class="overflow-x-auto">
                     <table class="table table-xs">
                       <tbody>
-                        <tr>
+                        <!-- <tr>
                           <th>
                             <div class="text-xl font-semibold"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
                           </th>
                           <td class="text-right">
                             <ServicesPrintingOrderETA :eta="eta" />
                           </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                           <th>
                             <div class="text-xl font-semibold"> {{ capitalizeOnlyFirstLetter($t('total_price')) }}: </div>

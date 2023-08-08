@@ -379,7 +379,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append('model_rotation', unit.model_rotation)
             formData.append('optimal_rotation', unit.optimal_rotation);
             formData.append('use_optimal_rotation', unit.use_optimal_rotation.toString())
-            formData.append('other_units', JSON.stringify(this.units.filter(el => el.localUrl !== unit.localUrl && el.estimated_time).map(el => {
+            formData.append('other_units', JSON.stringify(this.units.filter(el => el.localUrl !== unit.localUrl && el.estimated_time !== Number.NEGATIVE_INFINITY && el.estimated_time !== Number.POSITIVE_INFINITY).map(el => {
                 return {
                     quantity: el.quantity,
                     material: el.spool.material,
@@ -568,7 +568,7 @@ export const usePrintOrderStore = defineStore('print-order', {
         addUnit(unit: IPrintOrderUnit) {
             this.units.push(unit);
 
-            this.estimateSlicerAndPrintJobs(unit)
+            // this.estimateSlicerAndPrintJobs(unit)
         },
 
         addDuplicate(unit: IPrintOrderUnit) {
@@ -634,8 +634,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     infill_wall_combination: printOrderUnitInfillWallCombinationStore.getAll[0],
                     scale_display: 1.0,
                     scale: 1.0,
-                    estimated_price: Number.NEGATIVE_INFINITY,
-                    estimated_time: Number.NEGATIVE_INFINITY,
+                    estimated_price: Number.POSITIVE_INFINITY,
+                    estimated_time: Number.POSITIVE_INFINITY,
                     file: file,
                     simplifiedFileUrl: URL.createObjectURL(simplifiedModelBlob),
                     comment: "TODO",

@@ -141,10 +141,21 @@
                         <td class="py-1 pt-0 text-xl font-bold border-b border-stone-400/80 text-end bg-transparent">€{{ Number(print_order?.shipping_method?.price).toFixed(2) }}</td>
                       </tr>
                       <tr class="border-none text-2xl">
-                        <td class="pl-0 py-2 text-start border-transparent bg-transparent">
-                          <div class="flex gap-1"><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
+                        <td class="pl-0 py-2 border-b border-stone-400/80 text-start bg-transparent">
+                          <div class="flex gap-1 "><strong>{{ $t('total_price').toUpperCase() }}</strong></div>
                         </td>
-                        <td class="py-2 text-end border-transparent bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
+                        <td class="py-2 text-end border-b border-stone-400/80 bg-transparent"> <strong>€{{ (totalPrice * (1+taxPercentage) + Number(print_order?.shipping_method?.price)).toFixed(2) }}</strong></td>
+                      </tr>
+                      <tr class="border-none text-2xl">
+                        <td class="pl-0 py-2 text-start border-transparent bg-transparent">
+                          <div class="text-xl font-semibold"> {{ $t('eta').toUpperCase() }} ({{ $t('without_delivery') }}): </div>
+                        </td>
+                        <td class="py-2 text-end border-transparent bg-transparent"> <strong>
+                            <ServicesPrintingOrderETA
+                              class="-mr-4"
+                              :eta="eta"
+                            />
+                          </strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -239,6 +250,10 @@ const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
 
 const useBillingSameAsShippingAddress = ref(false);
+
+const eta = computed(() => {
+  return printOrderStore.getETA;
+});
 
 const contact_email_ref = computed(() => {
   return (
