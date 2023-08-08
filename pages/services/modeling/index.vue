@@ -18,7 +18,7 @@
           @on-selection-change="l => orderTypeSelectionChange(l)"
         />
         <div class="text-stone-400 text-lg max-w-lg">
-          <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_the_design_of_a_new_model_it_is_recommended_to_attach_drawings_with_measurements_along_with_a_detailed_description_of_the_desired_item')) }}
+          <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t(modeling_order?.order_type?.description || '')) }}
         </div>
       </div>
 

@@ -284,7 +284,7 @@ export interface IPrintOrderUnit {
     model_rotation: string,
 
     optimal_rotation: string,
-    
+
     use_optimal_rotation_display: boolean,
     use_optimal_rotation: boolean,
 
@@ -372,6 +372,7 @@ export interface IModelingOrder {
 export interface IModelingOrderOrderType {
     id: number,
     name: string,
+    description: string,
     icon_name: string,
 }
 
