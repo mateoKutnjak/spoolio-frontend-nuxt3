@@ -10,7 +10,7 @@ const textClassification = {
     message: 'flex px-5 pt-1 mb-0'
 }
 const selectClassification = {
-    input: 'bg-gray-50 border border-gray-300 text-gray-900 text-lg font-medium  rounded block w-full p-2.5 focus:outline-none overflow-hidden',
+    input: 'bg-gray-50 border border-stone-400/80 text-gray-900 text-lg placeholder-gray-400 data-[placeholder="true"]:text-gray-400 font-medium  rounded block w-full p-2.5 focus:outline-none overflow-hidden',
     label: 'w-full lock mb-2 text-lg font-medium text-gray-800',
     selectIcon: 'bg-green-500',
     suffixIcon: 'mx-5',
