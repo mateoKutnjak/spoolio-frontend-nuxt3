@@ -244,7 +244,7 @@ async function submitHandler() {
     "ServicesModelingCreatingOrderDialog",
     {},
     undefined,
-    "2xl",
+    "lg",
     false
   );
 }

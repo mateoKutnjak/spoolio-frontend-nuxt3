@@ -1,6 +1,24 @@
 <template>
-  <div class="flex flex-col gap-12 p-12 justify-between items-center">
-    <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-6 p-3 justify-between items-start">
+    <div
+      v-if="everythingSuccessful"
+      class="flex gap-3 items-center"
+    >
+      <Icon
+        name="ph:check-circle-fill"
+        size="40"
+        class="text-primary"
+      />
+      <div class="text-2xl font-bold uppercase">Upit uspješno poslan</div>
+    </div>
+    <div v-if="everythingSuccessful">
+      Vaš upit će biti pregledan unutar par dana te ćemo Vam se javiti na kontakt e-mail adresu sa ponudom.
+    </div>
+    <div v-show="everythingSuccessful && !isLoggedIn">Napravite svoj račun kako bi mogli jednostavno pratiti otvorene upite i narudžbe.</div>
+    <div
+      v-if="!everythingSuccessful"
+      class="flex flex-col gap-4"
+    >
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
           <Icon
@@ -111,26 +129,39 @@
       />
       <div>{{ errorMessage }}</div>
     </div>
-    <div
+    <!-- <div
       v-show="everythingSuccessful"
       class="text-lg text-center text-gray-600"
-    >{{ capitalizeOnlyFirstLetter($t('your_order_has_been_placed')) }}. {{ capitalizeOnlyFirstLetter($t('we_will_contact_you_as_soon_as_possible')) }}.</div>
+    >{{ capitalizeOnlyFirstLetter($t('your_order_has_been_placed')) }}. {{ capitalizeOnlyFirstLetter($t('we_will_contact_you_as_soon_as_possible')) }}.</div> -->
     <div
       v-show="everythingSuccessful"
-      class="
-      btn btn-block btn-primary rounded-md
-      text-xl"
-      :class="everythingSuccessful ? '': 'btn-disabled'"
-      @click="onOkPressed"
-    >{{ capitalizeOnlyFirstLetter($t('ok')) }}</div>
-    <div
-      v-show="hasErrors"
-      class="
-      btn btn-block
-      text-xl
-      "
-      @click="onReturnPressed"
-    >{{ capitalizeOnlyFirstLetter($t('return')) }}</div>
+      class="w-full flex flex-col gap-2"
+    >
+      <div
+        v-show="everythingSuccessful && !isLoggedIn"
+        class="
+          btn btn-block btn-primary rounded-md
+          text-xl hover:!text-white"
+        :class="everythingSuccessful ? '': 'btn-disabled'"
+        @click="onSignUpPressed"
+      >{{ capitalizeOnlyFirstLetter($t('sign_up')) }}</div>
+      <div
+        v-show="everythingSuccessful"
+        class="
+          btn btn-block btn-outline btn-primary rounded-md
+          text-xl hover:!text-white"
+        :class="everythingSuccessful ? '': 'btn-disabled'"
+        @click="onOkPressed"
+      >{{ capitalizeOnlyFirstLetter($t('close')) }}</div>
+      <div
+        v-show="hasErrors"
+        class="
+          btn btn-block
+          text-xl
+          "
+        @click="onReturnPressed"
+      >{{ capitalizeOnlyFirstLetter($t('return')) }}</div>
+    </div>
   </div>
 </template>
   
@@ -142,12 +173,14 @@ import {
   IAttachmentImage,
   IModelingOrder,
 } from "~~/constants/data";
+import { useAuthStore } from "~~/stores/auth";
 import { useDialogStore } from "~~/stores/dialog";
 import { useModelingOrderStore } from "~~/stores/modeling_order";
 import { useNotificationStore } from "~~/stores/notification";
 
 const localePath = useLocalePath();
 
+const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const modelingOrderStore = useModelingOrderStore();
 const notificationStore = useNotificationStore();
@@ -160,6 +193,8 @@ enum OrderStatus {
   success,
   error,
 }
+
+const isLoggedIn = computed(() => authStore.loggedIn);
 
 const orderStatus = ref(OrderStatus.initial);
 const attachmentsStatus = ref(OrderStatus.initial);
@@ -287,6 +322,12 @@ function onOkPressed() {
 
 function onReturnPressed() {
   dialogStore.close();
+}
+
+function onSignUpPressed() {
+  dialogStore.close();
+  navigateTo(localePath("/"));
+  dialogStore.open("AuthForm", {});
 }
 </script>
   
