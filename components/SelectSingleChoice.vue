@@ -73,6 +73,10 @@ const {
 
 const emit = defineEmits(["onSelectionChange"]);
 
+if (preselectOption) {
+  emit("onSelectionChange", preselectOption);
+}
+
 const selectedOption = ref(
   preselectOption !== null ? preselectOption : (null as any | null)
 );
