@@ -254,7 +254,7 @@ function submitPayment() {
         // Show error to your customer (for example, insufficient funds)
         console.log(`Payment error = ${result.error.message}`);
 
-        navigateTo(localePath("/"));
+        navigateTo(localePath("/profile/order-history/"));
         notificationStore.show(
           result.error.message?.toString() || "Error occurred",
           ToastLevelType.error
@@ -270,7 +270,7 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          navigateTo(localePath("/"));
+          navigateTo(localePath("/profile/order-history/"));
           notificationStore.show(
             capitalizeOnlyFirstLetter(
               t("payment_successfull_check_your_email")
