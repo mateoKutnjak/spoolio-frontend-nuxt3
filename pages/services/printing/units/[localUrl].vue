@@ -6,7 +6,7 @@
           <ButtonBack class="text-primary" />
           <div class="flex-1"></div>
           <div
-            class="btn btn-sm btn-outline"
+            class="btn btn-primary btn-sm gap-1 text-white"
             @click.prevent="onSaveChangesClicked"
           >
             <Icon
@@ -14,7 +14,7 @@
               size="18"
             />{{ ($t('save') + ' ' + $t('and') + ' ' + $t('continue_editing')).toUpperCase() }}
           </div>
-          <div
+          <!-- <div
             class="btn btn-primary btn-sm gap-1 text-white"
             @click.prevent="onSaveChangesAndExitClicked"
           >
@@ -22,7 +22,7 @@
               name="ph:check-bold"
               size="18"
             />{{ ($t('save') + " " + $t('and') + " " + $t('exit')).toUpperCase() }}
-          </div>
+          </div> -->
         </div>
         <div class="grid md:grid-cols-4 grid-cols-2 gap-8 items-center">
 
@@ -175,7 +175,7 @@ async function onSaveChangesClicked() {
     throw createError(`onSaveChangesClicked: unit = ${unit}`);
   }
 
-  await printOrderStore.updateUnit(unit.localUrl, {
+  printOrderStore.updateUnit(unit.localUrl, {
     spool: unit.spool_display,
     infill: unit.infill_display,
     wall: unit.wall_display,
