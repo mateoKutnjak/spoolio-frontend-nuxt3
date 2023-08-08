@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-12 p-12 justify-between">
+  <div class="flex flex-col gap-12 p-4 justify-between">
     <div class="flex flex-col gap-4">
       <div class="flex gap-8 items-center">
         <div class="h-14 w-14">
@@ -112,11 +112,7 @@
       v-show="(orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success) || orderStatus === OrderStatus.error || unitsStatus === OrderStatus.error"
     >
       <div
-        class="flex-1 btn btn-outline text-xl rounded-sm"
-        @click="onReturnPressed"
-      >{{ capitalizeOnlyFirstLetter($t('later')) }}</div>
-      <div
-        class="flex-1 btn btn-primary text-xl rounded-sm"
+        class="flex-1 btn btn-primary text-xl"
         :class="orderStatus === OrderStatus.success && unitsStatus === OrderStatus.success  ? '': 'btn-disabled'"
         @click="onOkPressed"
       >{{ $t('pay_now').toUpperCase() }}</div>

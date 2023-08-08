@@ -56,6 +56,7 @@
 <script lang="ts" setup>
 import { loadStripe, StripeCardElement } from "@stripe/stripe-js";
 import { PAYMENT_ORDER_NAMES, TAX_FRACTION } from "~~/constants/constants";
+import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { useModelingOrderHistoryStore } from "~~/stores/order_history_modeling";
 import { usePrintOrderHistoryStore } from "~~/stores/order_history_print";
@@ -98,6 +99,7 @@ if (!numericId) {
 
 const config = useRuntimeConfig();
 
+const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const paymentStore = usePaymentStore();
 
@@ -270,12 +272,18 @@ function submitPayment() {
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
 
-          navigateTo(localePath("/profile/order-history/"));
-          notificationStore.show(
-            capitalizeOnlyFirstLetter(
-              t("payment_successfull_check_your_email")
-            ),
-            ToastLevelType.success
+          dialogStore.open(
+            "DialogSuccess",
+            {
+              title: "success",
+              message: "payment_successfull_check_your_email",
+              onClose: () => {
+                navigateTo(localePath("/profile/order-history/"));
+              },
+            },
+            undefined,
+            undefined,
+            false
           );
 
           // Order update happens with stripe webhooks on server

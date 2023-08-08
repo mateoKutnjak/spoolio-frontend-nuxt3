@@ -1,12 +1,27 @@
 <template>
-  <div :style="`background-color: ${BACKGROUND_COLOR};`">
-    <Toast />
-    <slot />
+  <div>
+    <div :style="`background-color: ${BACKGROUND_COLOR};`">
+      <Toast />
+      <slot />
+
+    </div>
+    <GenericDialog
+      :component-name="componentName"
+      :show="isDialogOpened"
+      @on-close-clicked="dialogStore.close()"
+    >
+    </GenericDialog>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { BACKGROUND_COLOR } from "~~/constants/constants";
+import { useDialogStore } from "~~/stores/dialog";
+
+const dialogStore = useDialogStore();
+
+const { isDialogOpened, componentName } = storeToRefs(dialogStore);
 
 function beforeWindowUnload(e: any) {
   console.log(e);

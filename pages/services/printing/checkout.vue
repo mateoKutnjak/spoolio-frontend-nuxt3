@@ -287,7 +287,7 @@ function submitHandler() {
     "ServicesPrintingCreatingOrderDialog",
     {},
     undefined,
-    "2xl",
+    "lg",
     false
   );
 }

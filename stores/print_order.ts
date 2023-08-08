@@ -513,10 +513,10 @@ export const usePrintOrderStore = defineStore('print-order', {
                         close();
                         break;
                     case 'error':
-                        const errorMessage = parsedData.error;
+                        const errorMessage = parsedData.error as string;
                         console.error(`Websocket error: ${errorMessage}`)
 
-                        dialogStore.open('DialogError', { message: errorMessage });
+                        dialogStore.open('DialogError', { message: errorMessage.replaceAll(' ', "_").toLowerCase() });
 
                         // * Positive infinity indicates ERROR
                         this.updateUnit(unit.localUrl, {
