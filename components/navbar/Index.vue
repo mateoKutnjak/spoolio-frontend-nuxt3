@@ -1,8 +1,8 @@
 <template>
-  <div class="navbar bg-base-100 shadow fixed top-0 z-10">
-    <div class="navbar-start">
+  <div class="navbar bg-base-100 shadow fixed top-0 z-10 md:px-20">
+    <div class="navbar-start flex">
       <NavbarDropdownNavigation
-        class="lg:hidden"
+        class="md:hidden"
         :navigation="navigation"
       />
       <NuxtLink
@@ -10,13 +10,13 @@
         :to="localePath('/')"
       >
         <nuxt-img
-          width="112px"
+          width="80px"
           src="/img/ur3d-primary.svg"
           alt="logo"
         />
       </NuxtLink>
     </div>
-    <div class="navbar-center hidden lg:flex gap-1">
+    <div class="navbar-center hidden md:flex gap-1">
       <NavbarDropdownServices :navigation="servicesNavigation" />
       <NuxtLink :to="localePath('/blogs')">
         <button class="btn btn-ghost ">{{$t('projects')}}</button>
@@ -31,58 +31,53 @@
         <button class="btn btn-ghost">faq</button>
       </NuxtLink>
     </div>
-    <div class="navbar-end">
-      <div class="flex items-center">
-
-        <div>
-          <label
-            class="btn btn-square btn-ghost swap swap-rotate"
-            :class="getCartItems.size > 0 ? '' : 'btn-square'"
-          >
-
-            <!-- this hidden checkbox controls the state -->
-            <input
-              type="checkbox"
-              v-model="languageCheckbox"
-            />
-
-            <Icon
-              :class="'swap-on'"
-              name="emojione:flag-for-united-states"
-              size="27"
-              aria-hidden="true"
-            />
-            <Icon
-              :class="'swap-off'"
-              name="emojione:flag-for-croatia"
-              size="27"
-              aria-hidden="true"
-            />
-
-          </label>
-        </div>
-        <!-- <button
-          class="btn btn-ghost"
+    <div class="navbar-end flex">
+        <label
+          class="btn btn-square btn-ghost swap swap-rotate"
           :class="getCartItems.size > 0 ? '' : 'btn-square'"
-          @click="toggleDrawer"
         >
-          <div class="flex items-center gap-1 ">
-            <span
-              v-show="getCartItems.size > 0"
-              class="indicator-item indicator-middle badge badge-primary text-white text-xs"
-            >{{cartStore.getCartTotalQuantity}}</span>
 
-            <Icon
-              class="text-stone-700"
-              name="ph:shopping-cart-duotone"
-              size="30"
-              aria-hidden="true"
-            />
-          </div>
-        </button> -->
-        <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
-        <NavbarDropdownProfile />
-      </div>
+          <!-- this hidden checkbox controls the state -->
+          <input
+            type="checkbox"
+            v-model="languageCheckbox"
+          />
+
+          <Icon
+            :class="'swap-on'"
+            name="emojione:flag-for-united-states"
+            size="27"
+            aria-hidden="true"
+          />
+          <Icon
+            :class="'swap-off'"
+            name="emojione:flag-for-croatia"
+            size="27"
+            aria-hidden="true"
+          />
+
+        </label>
+      <!-- <button
+        class="btn btn-ghost"
+        :class="getCartItems.size > 0 ? '' : 'btn-square'"
+        @click="toggleDrawer"
+      >
+        <div class="flex items-center gap-1 ">
+          <span
+            v-show="getCartItems.size > 0"
+            class="indicator-item indicator-middle badge badge-primary text-white text-xs"
+          >{{cartStore.getCartTotalQuantity}}</span>
+
+          <Icon
+            class="text-stone-700"
+            name="ph:shopping-cart-duotone"
+            size="30"
+            aria-hidden="true"
+          />
+        </div>
+      </button> -->
+      <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
+      <NavbarDropdownProfile />
     </div>
   </div>
 </template>

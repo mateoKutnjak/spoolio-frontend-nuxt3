@@ -9,6 +9,7 @@
           <Icon
             name="ph:caret-down-bold"
             size="18"
+            class="ml-1"
           />
         </div>
       </MenuButton>
