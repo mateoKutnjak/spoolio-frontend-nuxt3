@@ -68,7 +68,7 @@ export default defineNuxtConfig({
     }, // * this configuration resolvers warning and error: "resolveComponent can only be used in render() or setup()""
     app: {
         head: {
-            title: "Spoolio",
+            title: "UR3D",
             meta: [
                 { name: 'description', content: 'Create anything' }
             ],

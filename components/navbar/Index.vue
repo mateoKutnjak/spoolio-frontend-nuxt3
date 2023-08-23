@@ -1,83 +1,85 @@
 <template>
-  <div class="navbar bg-base-100 shadow fixed top-0 z-10 md:px-20">
-    <div class="navbar-start flex">
-      <NavbarDropdownNavigation
-        class="md:hidden"
-        :navigation="navigation"
-      />
-      <NuxtLink
-        class="btn btn-ghost sm:w-36 w-28"
-        :to="localePath('/')"
-      >
-        <nuxt-img
-          width="80px"
-          src="/img/ur3d-primary.svg"
-          alt="logo"
+  <div class="navbar bg-base-100 shadow fixed top-0 z-10">
+    <div class="container mx-auto">
+      <div class="navbar-start flex">
+        <NavbarDropdownNavigation
+          class="md:hidden"
+          :navigation="navigation"
         />
-      </NuxtLink>
-    </div>
-    <div class="navbar-center hidden md:flex gap-1">
-      <NavbarDropdownServices :navigation="servicesNavigation" />
-      <NuxtLink :to="localePath('/blogs')">
-        <button class="btn btn-ghost ">{{$t('projects')}}</button>
-      </NuxtLink>
-      <!-- <NuxtLink :to="localePath('/store')">
-        <button class="btn btn-ghost">{{$t('store')}}</button>
-      </NuxtLink> -->
-      <NuxtLink :to="localePath('/about')">
-        <button class="btn btn-ghost ">{{$t('about')}}</button>
-      </NuxtLink>
-      <NuxtLink :to="localePath('/faq')">
-        <button class="btn btn-ghost">faq</button>
-      </NuxtLink>
-    </div>
-    <div class="navbar-end flex">
-        <label
-          class="btn btn-square btn-ghost swap swap-rotate"
-          :class="getCartItems.size > 0 ? '' : 'btn-square'"
+        <NuxtLink
+          class="btn btn-ghost w-fit-content px-8 md:px-0"
+          :to="localePath('/')"
         >
-
-          <!-- this hidden checkbox controls the state -->
-          <input
-            type="checkbox"
-            v-model="languageCheckbox"
+          <nuxt-img
+            width="80px"
+            src="/img/ur3d-primary.svg"
+            alt="logo"
           />
+        </NuxtLink>
+      </div>
+      <div class="navbar-center hidden text-base-content md:flex gap-1">
+        <NavbarDropdownServices :navigation="servicesNavigation" />
+        <NuxtLink :to="localePath('/blogs')">
+          <button class="btn btn-ghost">{{$t('projects')}}</button>
+        </NuxtLink>
+        <!-- <NuxtLink :to="localePath('/store')">
+          <button class="btn btn-ghost">{{$t('store')}}</button>
+        </NuxtLink> -->
+        <NuxtLink :to="localePath('/about')">
+          <button class="btn btn-ghost">{{$t('about')}}</button>
+        </NuxtLink>
+        <NuxtLink :to="localePath('/faq')">
+          <button class="btn btn-ghost">faq</button>
+        </NuxtLink>
+      </div>
+      <div class="navbar-end flex">
+          <label
+            class="btn btn-square btn-ghost swap swap-rotate"
+            :class="getCartItems.size > 0 ? '' : 'btn-square'"
+          >
 
-          <Icon
-            :class="'swap-on'"
-            name="emojione:flag-for-united-states"
-            size="27"
-            aria-hidden="true"
-          />
-          <Icon
-            :class="'swap-off'"
-            name="emojione:flag-for-croatia"
-            size="27"
-            aria-hidden="true"
-          />
+            <!-- this hidden checkbox controls the state -->
+            <input
+              type="checkbox"
+              v-model="languageCheckbox"
+            />
 
-        </label>
-      <!-- <button
-        class="btn btn-ghost"
-        :class="getCartItems.size > 0 ? '' : 'btn-square'"
-        @click="toggleDrawer"
-      >
-        <div class="flex items-center gap-1 ">
-          <span
-            v-show="getCartItems.size > 0"
-            class="indicator-item indicator-middle badge badge-primary text-white text-xs"
-          >{{cartStore.getCartTotalQuantity}}</span>
+            <Icon
+              :class="'swap-on'"
+              name="emojione:flag-for-united-states"
+              size="27"
+              aria-hidden="true"
+            />
+            <Icon
+              :class="'swap-off'"
+              name="emojione:flag-for-croatia"
+              size="27"
+              aria-hidden="true"
+            />
 
-          <Icon
-            class="text-stone-700"
-            name="ph:shopping-cart-duotone"
-            size="30"
-            aria-hidden="true"
-          />
-        </div>
-      </button> -->
-      <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
-      <NavbarDropdownProfile />
+          </label>
+        <!-- <button
+          class="btn btn-ghost"
+          :class="getCartItems.size > 0 ? '' : 'btn-square'"
+          @click="toggleDrawer"
+        >
+          <div class="flex items-center gap-1 ">
+            <span
+              v-show="getCartItems.size > 0"
+              class="indicator-item indicator-middle badge badge-primary text-white text-xs"
+            >{{cartStore.getCartTotalQuantity}}</span>
+
+            <Icon
+              class="text-stone-700"
+              name="ph:shopping-cart-duotone"
+              size="30"
+              aria-hidden="true"
+            />
+          </div>
+        </button> -->
+        <NavbarDropdownAdmin v-if="authStore.user?.is_staff || false" />
+        <NavbarDropdownProfile />
+      </div>
     </div>
   </div>
 </template>

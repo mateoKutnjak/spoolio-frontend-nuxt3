@@ -15,6 +15,19 @@ module.exports = {
     ],
     theme: {
         extend: {},
+        container: {
+            // or have default horizontal padding
+            padding: '40px',
+
+            // default breakpoints but with 40px removed
+            screens: {
+                sm: '600px',
+                md: '728px',
+                lg: '984px',
+                xl: '1240px',
+                '2xl': '1496px'
+            },
+        }
     },
     plugins: [
         formKitTailwind,
@@ -27,7 +40,7 @@ module.exports = {
         themes: [
             {
                 mytheme: {
-                    "primary": "#e17d4e",
+                    "primary": "#EF7745",
                     "secondary": "#C05321",
                     "accent": "#0FA3B1",
                     "neutral": "#D9E5D6",
@@ -35,8 +48,9 @@ module.exports = {
                     'info': '#4489C5',
                     "success": '#679436',
                     "warning": '#dcab18',
-                    "base-100": "#ffffff",
-
+                    "base-100": "#FFFAF9",
+                    "base-content": "#191816",
+                    
                     ".btn": {
                         "font-weight": 500
                     },

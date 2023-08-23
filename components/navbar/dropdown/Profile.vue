@@ -26,8 +26,8 @@
             </div>
             <div v-else>
               <Icon
-                class="text-stone-700 mt-1"
-                name="ph:user-circle-duotone"
+                class="text-base-content mt-1"
+                name="ic:baseline-person-outline"
                 size="32"
                 aria-hidden="true"
               />
