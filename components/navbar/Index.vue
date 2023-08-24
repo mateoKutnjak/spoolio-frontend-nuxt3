@@ -1,6 +1,6 @@
 <template>
   <div class="navbar bg-base-100 shadow fixed top-0 z-10">
-    <div class="container mx-auto">
+    <div class="container mx-auto flex">
       <div class="navbar-start flex">
         <NavbarDropdownNavigation
           class="md:hidden"
