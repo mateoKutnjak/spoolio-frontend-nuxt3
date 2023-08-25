@@ -73,7 +73,8 @@ export default defineNuxtConfig({
                 { name: 'description', content: 'Create anything' }
             ],
             link: [
-                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+                { rel: 'icon', type: 'image/svg+xml', href:'/img/ur3d-logo-duo.svg' }
             ]
         },
         pageTransition: {
