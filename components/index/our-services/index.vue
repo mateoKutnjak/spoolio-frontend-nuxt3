@@ -7,14 +7,12 @@
   </div>
 
   <div class="z-10 flex flex-col gap-10">
-    <div>
+    <div class="xl:text-7xl xl:pb-10 md:text-6xl md:pb-8 sm:text-5xl sm:pb-5 font-bold text-content-100 uppercase">
       Usluga 3D printanja
     </div>
-    <div class="flex md:flex-row flex-col gap-10">
-      <div class="h-40 flex-1 border-2 border-primary">
-      </div>
-      <div class="h-40 flex-1 border-2 border-primary">
-      </div>
+    <div class="flex md:flex-row flex-col md:space-x-4">
+      <OurServiceCard src="/services_FDM.png" alt="FDM Service"/>
+      <OurServiceCard src="/services_SLA.png" alt="SLA Service"/>
     </div>
   </div>
 </template>
