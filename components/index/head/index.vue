@@ -10,7 +10,7 @@
     <div class="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-0 text-primary text-2xl font-bold">
       <div>{{ $t('services') }}</div>
       <Icon
-        class="text-primary -mt-2 mb-2"
+        class="text-primary -mt-2 mb-3"
         name="ic:round-keyboard-arrow-down"
         size="40"
       />

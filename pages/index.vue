@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div class="flex flex-col gap-24">
+    <div class="flex flex-col">
       <IndexHead />
       <IndexOurServices />
       <IndexWorkshop />

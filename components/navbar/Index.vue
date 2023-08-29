@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-base-100 shadow fixed top-0 z-10">
+  <div class="navbar bg-base-100 shadow fixed top-0 z-20">
     <div class="container mx-auto flex">
       <div class="navbar-start flex">
         <NavbarDropdownNavigation
