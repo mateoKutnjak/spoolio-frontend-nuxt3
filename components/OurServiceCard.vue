@@ -2,7 +2,7 @@
     <div class="flex-1 rounded-md bg-accent">
         <nuxt-img
             class="w-full"
-            :src="getImageUrl(src)"
+            :src="getImageSrc(src)"
             :alt="alt"
           />
         <div class="px-10 py-8">
@@ -45,6 +45,11 @@
     function getImageUrl(path: string){
         const url = `../img${path}`;
         return new URL(url, import.meta.url).href;
+    }
+
+    function getImageSrc(path: string){
+        const src = `/img${path}`;
+        return src;
     }
 
 </script>

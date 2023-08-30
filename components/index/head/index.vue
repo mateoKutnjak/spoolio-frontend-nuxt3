@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-5 px-0 h-screen w-full mb-32">
     <nuxt-img
-      class="absolute left-0 right-0 bottom-0 h-full w-full object-cover"
+      class="absolute left-0 right-0 bottom-0 h-full w-full object-cover border-primary border-b-4"
       src="/img/index_head.jpeg"
       alt="logo"
     />
