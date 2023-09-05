@@ -41,29 +41,43 @@
     <div class="flex flex-col gap-6 justify-center text-xl">
       
       <div class="space-x-1.5 tracking-wide">
-        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('for_every_technology_we_have_list_of')) }}</span>
-        <span class="font-bold text-stone-600">{{ $t('supported_materials') }}</span>
-        <span class="text-stone-600">{{ $t('and') }}</span>
-        <span class="font-bold text-stone-600">{{ $t('maximum_size_limit_of_models') }}.</span>
+        <span class="text-base-content md:text-2xl">{{ capitalizeOnlyFirstLetter($t('for_every_technology_we_have_list_of')) }}</span>
+        <span class="font-bold text-base-content md:text-2xl">{{ $t('supported_materials') }}</span>
+        <span class="text-base-content md:text-2xl">{{ $t('and') }}</span>
+        <span class="font-bold text-base-content md:text-2xl">{{ $t('maximum_size_limit_of_models') }}.</span>
       </div>
-      <div class="space-x-1.5 tracking-wide">
-        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('if_your_item_exceeds_the_size_of_the_printers_workspace_the_item_is_printed_in_several_pieces_that_are_then_glued_together')) }}.</span>
+      <div class="space-x-1.5 tracking-wide pt-5">
+        <span class="text-base-content md:text-2xl">{{ capitalizeOnlyFirstLetter($t('if_your_item_exceeds_the_size_of_the_printers_workspace_the_item_is_printed_in_several_pieces_that_are_then_glued_together')) }}.</span>
       </div>
     </div>
 
     <div class="flex flex-col justify-center">
-      <NuxtLink
+      <div class="flex justify-end">
+        <NuxtLink
+            :to="localePath('/services/modeling')"
+            class="btn sm:btn-lg btn-outline xl:!text-2xl sm:!text-xl xl:!h-16 text-primary border-4 border-primary mb-3 xl:max-w-md lg:max-w-sm justify-between grow"
+          >
+          OGRANIČENJA U DIZAJNU
+          <Icon
+            class="text-primary ml-4"
+            name="mdi:chevron-right"
+            size="35"
+          />
+        </NuxtLink>
+      </div>
+      <div class="flex justify-end">
+        <NuxtLink
           :to="localePath('/services/modeling')"
-          class="btn sm:btn-lg btn-outline xl:!text-2xl sm:!text-xl xl:!h-16 text-primary border-4 border-primary mb-3"
-        >
-        OGRANIČENJA U DIZAJNU
-      </NuxtLink>
-      <NuxtLink
-        :to="localePath('/services/modeling')"
-        class="btn sm:btn-lg btn-outline xl:!text-2xl sm:!text-xl xl:!h-16 text-primary border-4 border-primary"
-        >
-        LISTA PODRŽANIH MATERIJALA
-      </NuxtLink>
+          class="btn sm:btn-lg btn-outline xl:!text-2xl sm:!text-xl xl:!h-16 text-primary border-4 border-primary xl:max-w-md lg:max-w-sm justify-between grow"
+          >
+            LISTA PODRŽANIH MATERIJALA
+          <Icon
+            class="text-primary ml-4"
+            name="mdi:chevron-right"
+            size="35"
+          />
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
