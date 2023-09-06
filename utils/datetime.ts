@@ -1,4 +1,4 @@
-function parseDate(rawDate: string): Date {
+export function parseDate(rawDate: string): Date {
     return new Date(rawDate)
 }
 

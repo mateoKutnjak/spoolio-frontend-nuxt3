@@ -1,88 +1,99 @@
 <template>
   <footer
-    class="footer p-10 bg-base-100 text-lg"
-    style="box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);"
+    class="pt-9 pb-4 bg-base-content text-base-100 border-t-4 border-primary"
   >
-    <div>
-      <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('services')) }}</span>
-      <NuxtLink
-        :to="localePath('/services/printing')"
-        class="link link-hover"
-      >{{ capitalizeOnlyFirstLetter($t('printing')) }}</NuxtLink>
-      <NuxtLink
-        :to="localePath('/services/modeling')"
-        class="link link-hover"
-      >{{ capitalizeOnlyFirstLetter($t('modeling')) }}</NuxtLink>
-    </div>
-    <div>
-      <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('company')) }}</span>
-      <NuxtLink
-        :to="localePath('/about')"
-        class="link link-hover"
-      >{{ capitalizeOnlyFirstLetter($t('about')) }}</NuxtLink>
-      <NuxtLink
-        :to="localePath('/about')"
-        class="link link-hover"
-      >{{ capitalizeOnlyFirstLetter($t('contact')) }}</NuxtLink>
-    </div>
-    <div>
-      <span class="footer-title">{{ capitalizeOnlyFirstLetter($t('legal')) }}</span>
-      <a class="link link-hover">{{ capitalizeOnlyFirstLetter($t('terms_of_use')) }}</a>
-      <NuxtLink
-        class="link link-hover"
-        :to="localePath('/privacy-policy')"
-      >{{ capitalizeOnlyFirstLetter($t('privacy_policy')) }}</NuxtLink>
-    </div>
-  </footer>
-  <footer class="
-        footer
-        px-10
-        py-4
-        border-t
-        bg-base-100
-        text-lg
-        border-base-300">
-    <div class="w-full flex sm:flex-row flex-col sm:justify-start justify-center items-center">
-      <nuxt-img
-        width="110px"
-        src="/img/logo-primary.svg"
-        alt="logo"
-      />
-      <p class="mt-1.5 ml-1 font-medium">obrt za proizvodnju i usluge <br /></p>
-    </div>
-    <div class="md:place-self-center md:justify-self-end">
-      <div class="-mt-2 grid grid-flow-col gap-1">
-        <div class="btn btn-ghost btn-square">
-          <Icon
-            class="text-[#FF0000] mb-[1px]"
-            name="bxl:youtube"
-            size="35"
+    <div class="container mx-auto">
+      
+      <div class="flex flex-row justify-between pb-8 border-b-2 border-base-100">
+    
+        <div class="flex flex-col w-[65%]">
+          <nuxt-img
+            width="150px"
+            src="/img/ur3d-light.svg"
+            alt="logo"
+            class="pb-16 mt-1"
           />
-        </div>
-        <a href="https://instagram.com/ur3d.printing?igshid=MzNlNGNkZWQ4Mg==">
-          <div class="btn btn-ghost btn-square">
-            <Icon
-              class="text-[#FF0000]"
-              name="skill-icons:instagram"
-              size="25"
-            />
+
+          <div class="flex justify-between">
+
+            <div class="flex flex-col mr-5">
+              <div class="text-xl font-bold pb-4">KONTAKT</div>
+              <div class="flex mb-2">
+                <Icon
+                    class="text-base-100 mr-3 self-center"
+                    name="mdi:email-outline"
+                    size="22"
+                />
+                <div class="text-lg self-center">info.ur3d@gmail.com</div>
+              </div>
+              <div class="flex">
+                <Icon
+                    class="text-base-100 mr-3 self-center"
+                    name="mdi:phone"
+                    size="22"
+                />
+                <div class="text-lg self-center">(+385) 99 240 3536</div>
+              </div>
+            </div>
+
+            <div class="flex flex-col mr-5">
+              <div class="text-xl font-bold pb-4">USLUGE</div>
+              <div class="text-lg mb-2">3D Printanje</div>
+              <div class="text-lg">3D Modeliranje</div>
+            </div>
+
+            <div class="flex flex-col mr-5">
+              <div class="text-xl font-bold pb-4">TVRTKA</div>
+              <div class="text-lg mb-2">O nama</div>
+              <div class="text-lg">Politika Privatnosti</div>
+            </div>
+
           </div>
-        </a>
-        <!-- <div class="btn btn-ghost btn-square">
-          <Icon
-            class="text-[#1DA1F2]"
-            name="bxl:twitter"
-            size="35"
-          />
-        </div> -->
-        <div class="btn btn-ghost btn-square">
-          <Icon
-            class="text-[#4267B2] mb-[2px]"
-            name="bxl:facebook-square"
-            size="31"
-          />
+        
+        </div>
+
+        <div class="self-end w-[30%] pl-10">
+          <div class="font-bold">Podaci o obrtu</div>
+          <div class="text-sm">Spoolio, obrt za proizvodnju i usluge, vl. Bojan Spahija</div>
+          <div class="text-sm">Međimurska ulica 5, 10000 Zagreb</div>
+          <div class="text-sm mb-6">OIB: 89843153481, Broj obrtnice: 21010148579</div>
+
+          <div class="font-bold">Račun</div>
+          <div class="text-sm">Hrvatska poštanska banka d.d.</div>
+          <div class="text-sm">IBAN: HR5423900011101301106</div>
         </div>
       </div>
+
+      <div class="flex mt-4 justify-between">
+        <div class="flex">
+          <Icon
+            class="text-base-100 mr-3 self-center"
+            name="bx:bxl-youtube"
+            size="35"
+          />
+          <Icon
+            class="text-base-100 mr-3 self-center"
+            name="mdi:instagram"
+            size="35"
+          />
+          <Icon
+            class="text-base-100 mr-3 self-center"
+            name="ic:baseline-tiktok"
+            size="35"
+          />
+        </div>
+        
+        <div class="flex">
+          <Icon
+            class="text-base-100 mr-1 self-center"
+            name="material-symbols:copyright-outline"
+            size="20"
+          />
+          <div class="self-center font-bold text-lg">2023 by UR3D</div>
+        </div>
+
+      </div>
+    
     </div>
   </footer>
 </template>

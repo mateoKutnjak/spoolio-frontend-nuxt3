@@ -46,7 +46,7 @@
         <span class="text-base-content md:text-2xl">{{ $t('and') }}</span>
         <span class="font-bold text-base-content md:text-2xl">{{ $t('maximum_size_limit_of_models') }}.</span>
       </div>
-      <div class="space-x-1.5 tracking-wide pt-5">
+      <div class="space-x-1.5 tracking-wide pt-1">
         <span class="text-base-content md:text-2xl">{{ capitalizeOnlyFirstLetter($t('if_your_item_exceeds_the_size_of_the_printers_workspace_the_item_is_printed_in_several_pieces_that_are_then_glued_together')) }}.</span>
       </div>
     </div>

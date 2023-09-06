@@ -464,10 +464,13 @@ function change(e: any) {
 
   itemInsertedLoading.value = true;
 
+  console.log(itemInsertedLoading);
+
   var files = Array.from<File>(e.target.files);
 
   if (!files.length) {
     itemInsertedLoading.value = false;
+    console.log(itemInsertedLoading);
     return;
   }
 
