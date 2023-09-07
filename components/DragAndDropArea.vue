@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col gap-6">
+  <div class="h-full flex flex-col">
     <div
       class="flex flex-col h-full"
       @dragover.prevent
@@ -7,18 +7,22 @@
     >
       <label
         for="dropzone-file"
-        class="h-full flex flex-col gap-1 items-center justify-center px-12 bg-white w-full border-2 border-primary border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-stone-200/20 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg py-12"
+        class=" relative h-full min-h-[220px] max-h-[350px] flex flex-col items-center justify-center px-5 pb-14 pt-8 bg-base-100 w-full border-4 border-primary border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-stone-200/20 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 rounded-lg"
         @drop="event => emit('onDrop', event)"
       >
-        <div class="mb-5 text-primary">
-          <Icon
-            name="ph:upload-simple-bold"
-            size="50"
-            aria-hidden="true"
-          />
+        <Icon
+          class="mb-5 text-primary"
+          name="material-symbols:upload-file-outline"
+          size="65"
+          aria-hidden="true"
+        />        
+        <div class="text-3xl font-bold text-center mb-1">{{ title }}</div>
+        <p class="text-lg text-gray-400 font-bold">{{ subtitle }}</p>
+
+        <div class="absolute right-0 bottom-0 pr-8 pb-4">
+          test
         </div>
-        <div class="text-xl text-stone-700 font-semibold text-center">{{ title }}</div>
-        <p class="text-xl text-stone-700">{{ subtitle }}</p>
+
         <input
           id="dropzone-file"
           type="file"
@@ -30,13 +34,14 @@
     </div>
     <div
       v-if="hidePrivacyLabel"
-      class="self-center flex gap-2 text-sm text-stone-500"
+      class="self-end flex text-sm text-gray-500 mt-2"
     >
       <Icon
-        name="ph:lock-duotone"
+        class="mr-1"
+        name="ic:outline-lock"
         size="18"
       />
-      {{ capitalizeOnlyFirstLetter($t('privacy')) }}:
+      <div class="font-bold mr-1">{{ capitalizeOnlyFirstLetter($t('privacy')) }}:</div>
       {{ capitalizeOnlyFirstLetter($t('all_files_are_encrypted')) }}
     </div>
   </div>

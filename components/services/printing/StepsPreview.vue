@@ -1,5 +1,5 @@
 <template>
-  <ul class="steps steps-vertical md:steps-horizontal pt-1 text-stone-600">
+  <ul class="steps steps-vertical w-full md:steps-horizontal pt-1 text-stone-600">
     <li
       v-for="step, index in steps"
       :key="step"

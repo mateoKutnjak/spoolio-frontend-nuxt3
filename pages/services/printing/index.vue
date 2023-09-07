@@ -1,70 +1,40 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
+  <div class="container mx-auto mt-[68px] mb-32 px-0 md:px-12 pt-12">
+    <div v-if="units.length < 1" class="flex mb-28">
+      <div class="text-lg text-gray-500">HOME</div>
+      <div class="text-lg text-gray-500 mx-3">/</div>
+      <div class="text-lg text-gray-500">3D ISPIS</div>
+    </div>
     <div class="flex flex-col gap-8 justify-between">
-      <ServicesPrintingStepsPreview
-        class="px-12 md:px-0 pb-12 "
-        :current-step-index="0"
-        :steps="[$t('import_3d_models'), $t('shipping') + ' ' + $t('and') + ' ' + $t('payment'), $t('finish_order')]"
-        :icon-names="['ph:file-arrow-up', 'ph:truck', 'ph:credit-card']"
-      />
-      <div
-        v-if="printOrderStore.getUnits.length"
-        class="px-12 md:px-0 flex sm:flex-row flex-col gap-6 jusify-between md:items-center items-start"
-      >
-        <div class="flex-1 text-stone-600 font-bold text-3xl">{{ $t('print_order').toUpperCase() }}</div>
-
+      <div v-if="printOrderStore.getUnits.length">
+        <ServicesPrintingStepsPreview
+          class="px-12 md:px-0 pb-12"
+          :current-step-index="0"
+          :steps="[$t('import_3d_models'), $t('shipping') + ' ' + $t('and') + ' ' + $t('payment'), $t('finish_order')]"
+          :icon-names="['ph:file-arrow-up', 'ph:truck', 'ph:credit-card']"
+        />
         <div
-          class="btn btn-error btn-outline btn-sm bg-white rounded-md hover:!text-white"
-          @click="onClearOrder"
+          class="px-12 md:px-0 flex sm:flex-row flex-col gap-6 jusify-between md:items-center items-start"
         >
-          <Icon
-            name="ph:trash"
-            size="22"
-          />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
+          <div class="flex-1 text-base-content font-bold text-3xl">{{ $t('print_order').toUpperCase() }}</div>
+
+          <div
+            class="btn btn-error btn-outline btn-sm bg-white rounded-md hover:!text-white"
+            @click="onClearOrder"
+          >
+            <Icon
+              name="ph:trash"
+              size="22"
+            />{{ capitalizeOnlyFirstLetter($t('clear_order')).toUpperCase() }}
+          </div>
         </div>
       </div>
-      <div
-        v-else
-        class="px-12 md:px-0 text-stone-600 font-bold text-3xl"
-      >{{$t('quick_3d_print').toUpperCase()}}</div>
 
       <div>
-        <div class="flex flex-col gap-8">
-          <!-- <div class="w-full hidden lg:block bg-white p-3 shadow-md rounded-lg">
-            <table class="table-auto w-full">
-              <thead class="rounded-lg">
-                <tr class="bg-stone-300/60">
-                  <th class="pt-4 pb-3 text-start text-xs uppercase"></th>
-                  <th class="pt-4 pb-3 text-start text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('unit_details')) }}</th>
-                  <th class="pt-4 pb-3 text-center text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('attributes')) }}</th>
-                  <th class="pt-4 pb-3 text-center text-xs uppercase">{{ capitalizeOnlyFirstLetter($t('price')) }}</th>
-                  <th class="pt-4 pb-3 text-end text-xs uppercase"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ServicesPrintingUnitTableRow
-                  v-for="item in units"
-                  :key="item.localUrl"
-                  :unit="item"
-                  @on-item-clicked="onItemClicked"
-                />
-              </tbody>
-            </table>
-            <ContentLoader
-              v-if="itemInsertedLoading"
-              class="pb-6"
-              viewBox="0 0 800 150"
-            ></ContentLoader>
-            <DragAndDropArea
-              :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
-              subtitle=".STL (max 150 MB)"
-              @on-change="change"
-              @on-drop="drop"
-            />
-          </div> -->
+        <div class="flex flex-col">
 
-          <div class="md:px-0 px-12 flex lg:flex-row flex-col items-start  gap-8">
-            <div class="w-full relative flex flex-col md:flex-row gap-2">
+          <div class="md:px-0 px-12 flex lg:flex-row flex-col justify-between">
+            <div class="w-full lg:w-[50%] lg:mr-10 relative flex flex-col md:flex-row">
               <div
                 v-if="units.length > 0"
                 class="w-full flex flex-col gap-4"
@@ -87,40 +57,51 @@
                   preserveAspectRatio="xMidYMid meet"
                 ></ContentLoader>
               </div>
-              <div v-else>
-                <div class="flex flex-col gap-8 text-2xl">
-                  <ul class="list-inside space-y-2">
-                    <li class="flex gap-2 items-start">
-                      <span class="text-primary font-bold">1/</span>
-                      <div class="flex flex-wrap gap-2">
-                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }}</span>
-                        <NuxtLink :to="localePath('/services/modeling')"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
-                        </NuxtLink>
-                      </div>
-                    </li>
-                    <li class="flex gap-2 items-start">
-                      <span class="text-primary font-bold">2/</span>
-                      <div class="flex flex-wrap">
-                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('define_the_desired_characteristics')) }}</span>
-                      </div>
-                    </li>
-                    <li class="flex gap-2 items-start">
-                      <span class="text-primary font-bold">3/</span>
-                      <div class="flex flex-wrap">
-                        <span class="text-stone-600">{{ capitalizeOnlyFirstLetter($t('automatically_find_out_the_price')) }}</span>
-                      </div>
-                    </li>
-                  </ul>
+              <div v-else class="flex flex-col justify-between">
+                <div class="px-12 md:px-0 text-basis-content font-bold text-5xl mb-14">
+                  {{$t('quick_3d_print').toUpperCase()}}
+                </div>
+                <div class="flex flex-col text-2xl text-basis-content">
+                  <div class="flex pb-7">
+                    <Icon
+                      class="text-primary mr-4 self-center shrink-0"
+                      name="material-symbols:counter-1-outline"
+                      size="40"
+                    />
+                    <div class="flex self-center flex-wrap">
+                      <div class="mr-1">{{ capitalizeOnlyFirstLetter($t('import_3d_models_in_one_of_the_supported_formats')) }} </div>
+                      <NuxtLink :to="localePath('/services/modeling')"><span class="link link-primary font-bold">({{ $t('i_dont_have_a_model').toUpperCase() }})</span>
+                      </NuxtLink>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap pb-7">
+                    <Icon
+                      class="text-primary mr-4 self-center"
+                      name="material-symbols:counter-2-outline"
+                      size="40"
+                    />
+                    <div class="self-center">{{ capitalizeOnlyFirstLetter($t('define_the_desired_characteristics')) }}</div>
+                  </div>
+                  <div class="flex flex-wrap pb-7">
+                    <Icon
+                      class="text-primary mr-4 self-center"
+                      name="material-symbols:counter-3-outline"
+                      size="40"
+                    />
+                    <div class="self-center">{{ capitalizeOnlyFirstLetter($t('automatically_find_out_the_price')) }} </div>
+                  </div>
                 </div>
               </div>
 
             </div>
-            <aside class=" w-full lg:sticky order-last top-8 h-full lg:w-2/3">
-              <div class="w-full flex flex-col gap-8">
+            
+            <aside class="grow max-h-[400px] lg:sticky top-[100px] order-last">
+              <div class="w-full h-full flex flex-col gap-8">
                 <DragAndDropArea
                   class="w-full"
                   :title="capitalizeOnlyFirstLetter($t('add_3d_model_or_drag_and_drop'))"
-                  :subtitle="`.STL (max ${MAX_FILE_SIZE_STL/1024/1024}MB)`"
+                  :subtitle="`Podržani format: STL (max ${MAX_FILE_SIZE_STL/1024/1024}MB)`"
+                  :hidePrivacyLabel="true"
                   @on-change="change"
                   @on-drop="drop"
                 />
@@ -464,13 +445,10 @@ function change(e: any) {
 
   itemInsertedLoading.value = true;
 
-  console.log(itemInsertedLoading);
-
   var files = Array.from<File>(e.target.files);
 
   if (!files.length) {
     itemInsertedLoading.value = false;
-    console.log(itemInsertedLoading);
     return;
   }
 

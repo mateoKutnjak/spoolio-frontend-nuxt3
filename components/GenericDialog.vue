@@ -42,6 +42,7 @@
               >
                 {{ message }}
               </DialogTitle>
+              <button className="h-0 w-0 overflow-hidden"/>
               <div class="p-4">
                 <component
                   :is="component"
