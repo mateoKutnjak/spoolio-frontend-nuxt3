@@ -3,13 +3,13 @@
       href=""
       @click.prevent="$router.back()"
     >
-      <div class="flex gap-2 items-center">
+      <div class="flex gap-1 items-center">
         <Icon
-          class=""
+          class="self-center"
           name="ph:arrow-left-bold"
-          size="22"
+          size="20"
         />
-        <div class="mt-[2px] text-sm font-bold">{{ $t('go_back').toUpperCase() }}</div>
+        <div class="self-center mt-[2px] ml-[2px] text-sm font-bold">{{ $t('go_back').toUpperCase() }}</div>
       </div>
     </a></div>
 </template>

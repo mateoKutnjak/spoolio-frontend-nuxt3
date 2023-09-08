@@ -11,7 +11,7 @@
           <Navbar ref="navbar" />
           <Toast />
           <div
-            class="w-full flex-1 flex flex-col gap-12 font-medium text-xl text-base-content bg-base-100"
+            class="mt-[68px] w-full flex-1 flex flex-col gap-12 font-medium text-xl text-base-content bg-base-100"
           >
             <!-- <Breadcrumbs class="px-12" /> -->
             <slot />

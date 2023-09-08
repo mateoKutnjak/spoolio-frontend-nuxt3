@@ -1,60 +1,93 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-12 py-16">
-    <div class="flex flex-col gap-8">
-      <div class="flex flex-col gap-12">
-        <div class="flex md:flex-row flex-col gap-3">
-          <ButtonBack class="text-primary" />
-          <div class="flex-1"></div>
-          <div
-            class="btn btn-primary btn-sm gap-1 text-white"
-            @click.prevent="onSaveChangesClicked"
-          >
-            <Icon
-              name="ph:floppy-disk-fill"
-              size="18"
-            />{{ ($t('save') + ' ' + $t('and') + ' ' + $t('continue_editing')).toUpperCase() }}
-          </div>
-          <!-- <div
-            class="btn btn-primary btn-sm gap-1 text-white"
-            @click.prevent="onSaveChangesAndExitClicked"
-          >
-            <Icon
-              name="ph:check-bold"
-              size="18"
-            />{{ ($t('save') + " " + $t('and') + " " + $t('exit')).toUpperCase() }}
-          </div> -->
-        </div>
-        <div class="grid md:grid-cols-4 grid-cols-2 gap-8 items-center">
+  <div class="container mx-auto">
+    <div class="flex flex-col relative">
 
-          <div class="text-2xl font-bold text-stone-700 line-clamp-1">{{ extractUrlFileStringUnion(unit.file).toUpperCase()
-        }}</div>
-          <div class="flex-1"></div>
-          <div class="flex flex-col gap-1 items-center">
-            <div class="font-medium text-base text-stone-500"> {{ $t('quantity').toUpperCase() }} </div>
-            <IncreaseDecreaseQuantity
-              class="w-36"
-              :max="MAX_PRINT_QUANTITY"
-              :min="1"
-              :initial-value="unit.quantity"
-              :emit-live="false"
-              @on-decrease-value="decreaseQuantity"
-              @on-increase-value="increaseQuantity"
-              @on-value-set="(q) => setQuantity(q) "
-            />
-          </div>
-          <div class="flex flex-col gap-1 items-end">
-            <div class="font-medium text-base text-stone-500"> {{ $t('total_price').toUpperCase() }} </div>
-            <ServicesPrintingUnitSinglePrice
-              class="text-3xl"
-              :unit="unit"
-              :price="price"
-            />
+      <!-- Command Bar Part -->
+
+      <div class="flex flex-col lg:gap-1 gap-2 border-b-2 border-primary pt-8 pb-5 sticky top-[68px] bg-base-100 z-10">
+
+        <ButtonBack class="text-primary" />
+
+        <div class="flex justify-between">
+
+          <div class="flex lg:flex-row flex-col lg:gap-20 lg:grow justify-between">
+            <div class="text-2xl font-bold line-clamp-1 max-w-[400px] lg:self-end mb-5 lg:mb-0 truncate">{{ extractUrlFileStringUnion(unit.file).toUpperCase()}}</div>
+            
+            <div class="flex md:flex-row flex-col gap-5 lg:mr-16">
+              <div class="flex md:flex-col gap-1 items-center">
+                <div class="font-medium text-base text-stone-500"> {{ $t('quantity').toUpperCase() }}</div>
+                <IncreaseDecreaseQuantity
+                  class="w-36"
+                  :max="MAX_PRINT_QUANTITY"
+                  :min="1"
+                  :initial-value="unit.quantity"
+                  :emit-live="false"
+                  @on-decrease-value="decreaseQuantity"
+                  @on-increase-value="increaseQuantity"
+                  @on-value-set="(q) => setQuantity(q) "
+                />
+              </div>
+
+              <div class="flex md:flex-col items-center">
+                <div class="font-medium text-base text-stone-500"> {{ $t('price').toUpperCase() }} </div>
+                <ServicesPrintingUnitSinglePrice
+                  class="text-3xl"
+                  :unit="unit"
+                  :price="price"
+                />
+              </div>
+            </div>
+
+            <div class="lg:flex hidden lg:flex-row flex-col gap-1 items-end">
+              <div
+                class="btn btn-primary btn-sm gap-1 text-white"
+                @click.prevent="onSaveChangesClicked"
+              >
+                <Icon
+                  name="ph:floppy-disk-fill"
+                  size="18"
+                />{{ ($t('save')).toUpperCase() }}
+              </div>
+              <div
+                class="btn btn-primary btn-sm gap-1 text-white"
+                @click.prevent="onSaveChangesClicked"
+              >
+                <Icon
+                  name="ph:floppy-disk-fill"
+                  size="18"
+                />{{ ($t('delete')).toUpperCase() }}
+              </div>
+            </div>
+
           </div>
 
+          <div class="flex lg:hidden md:flex-row flex-col gap-1 items-end self-end">
+            <div
+              class="btn btn-primary btn-sm gap-1 text-white"
+              @click.prevent="onSaveChangesClicked"
+            >
+              <Icon
+                name="ph:floppy-disk-fill"
+                size="18"
+              />{{ ($t('save')).toUpperCase() }}
+            </div>
+            <div
+              class="btn btn-primary btn-sm gap-1 text-white"
+              @click.prevent="onSaveChangesClicked"
+            >
+              <Icon
+                name="ph:floppy-disk-fill"
+                size="18"
+              />{{ ($t('delete')).toUpperCase() }}
+            </div>
+          </div>
+                  
         </div>
       </div>
 
-      <div class="py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Content Part -->
+
+      <div class="py-12 mx-[4px] grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div class="flex flex-col gap-4">
           <div class="border border-primary">
             <client-only class="border border-primary">
