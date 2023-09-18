@@ -1,27 +1,27 @@
 <template>
-  <div class="flex flex-col gap-2">
-    <div class="h-9 flex gap-1 justify-between items-end">
-      <div class="mb-0.5 text-lg text-stone-600">{{ capitalizeOnlyFirstLetter($t('dimensions')) }}</div>
+  <div class="flex flex-col gap-2 max-w-[450px]">
 
-      <!-- <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate -mt-0.5">
-        <input
-          type="checkbox"
-          v-model="lockScale"
+    <div class="flex justify-between mb-2">
+      <div class="text-xl self-center font-bold text-base-content pr-2">{{ $t('dimensions').toUpperCase() }}:</div>
+
+      <div class="flex px-2">
+        <FormKit
+          type="number"
+          v-model="scale"
+          :min="0.01"
+          :max="100.00"
+          step="any"
+          :classes="{
+              input: 'input input-bordered input-sm !text-right !outline-none border !border-gray-400 !text-lg',
+              inner: '!p-0 m-0 border-none bg-basis-100',
+              outer: 'w-[60px] !m-0 self-center',
+            }"
         />
-        <Icon
-          name="ph:lock"
-          class="swap-on text-stone-600"
-          size="20"
-        />
-        <Icon
-          name="ph:lock-open"
-          class="swap-off text-stone-400"
-          size="20"
-        />
-      </label> -->
-      <div class="flex-1"></div>
+        <p class="self-center ml-2">%</p>
+      </div>
+
       <Dropdown
-        class="w-fit"
+        class="w-[100px] h-full"
         :items="dimensionUnits"
         :preselected-item="unit.length_unit"
         :extract-name="a => a"
@@ -29,87 +29,53 @@
         background-color="bg-white"
         @on-item-clicked="onDimensionUnitSelected"
       />
+      
     </div>
 
-    <div class="flex flex-col gap-1">
+    <!-- X, Y, Z Scale -->
+    <div class="flex gap-5 justify-between">
       <div class="flex gap-2 items-center">
-        <strong class="text-xs"> X </strong>
+        <p class="text-md"> X </p>
         <FormKit
           type="number"
           v-model="dimensionX"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
+                input: 'input input-bordered input-sm !text-center !outline-none !border-gray-400 !text-lg',
                 inner: '!p-0 m-0 border-none bg-transparent',
-                outer: 'w-full !m-0',
+                outer: 'w-[100px] !m-0',
               }"
         />
       </div>
       <div class="flex gap-2 items-center">
-        <strong class="text-xs"> Y </strong>
+        <p class="text-md"> Y </p>
         <FormKit
           type="number"
           v-model="dimensionY"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
+                input: 'input input-bordered w-full input-sm !text-center !outline-none !border-gray-400 !text-lg',
                 inner: '!p-0 m-0 border-none bg-transparent',
-                outer: 'w-full !m-0',
+                outer: 'w-[100px] !m-0',
               }"
         />
       </div>
       <div class="flex gap-2 items-center">
-        <strong class="text-xs"> Z </strong>
+        <p class="text-md"> Z </p>
         <FormKit
           type="number"
           v-model="dimensionZ"
           :disabled="true"
           :classes="{
-                input: 'input input-bordered w-full input-sm !text-right !outline-none !border-stone-400/80',
+                input: 'input input-bordered w-full input-sm !text-center !outline-none !border-gray-400 !text-lg',
                 inner: '!p-0 m-0 border-none bg-transparent',
-                outer: 'w-full !m-0',
+                outer: 'w-[100px] !m-0',
               }"
         />
       </div>
 
-    </div>
 
-    <FormKit
-      type="form"
-      id="dimension-form"
-      :actions="false"
-    >
-      <div class="flex flex-col gap-1">
-        <div class="flex gap-2 items-center">
-          <strong class="text-xs"> Scale </strong>
-          <FormKit
-            type="number"
-            v-model="scale"
-            :min="0.01"
-            :max="100.00"
-            step="any"
-            :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-300',
-                inner: '!p-0 m-0 border-none bg-white',
-                outer: 'w-full !m-0',
-              }"
-          />
-        </div>
-        <!-- <FormKit
-          v-if="!lockScale && !submitted"
-          type="submit"
-          :label="capitalizeOnlyFirstLetter($t('save'))"
-          :disabled="submitted"
-          :classes="{
-            input: 'btn btn-sm btn-block mt-2 rounded-lg text-xs text-white', 
-            outer: '!m-0', 
-          }"
-          :input-class="{
-              'loading': slicerEstimationPending
-            }"
-        /> -->
-      </div>
-    </FormKit>
+    </div>
   </div>
 </template>
   

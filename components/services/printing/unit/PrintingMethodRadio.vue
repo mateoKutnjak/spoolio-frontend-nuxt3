@@ -3,7 +3,7 @@
     <div
       v-for="printingMethod in printingMethods"
       :key="printingMethod.id"
-      class="p-4 grid grid-cols-2 gap-2 rounded-md bg-white"
+      class="p-4 grid grid-cols-2 gap-2 rounded-md bg-transpare"
       :class="selectedMethod?.id === printingMethod.id ? 'border-4 border-primary' : 'border-4 border-stone-300/80 grayscale'"
       @click="selectedMethod = printingMethod"
     >
@@ -14,9 +14,9 @@
         style="object-fit: scale-down;"
       />
       <div class="flex flex-col justify-center">
-        <div class="text-primary text-2xl font-bold">{{ printingMethod.name }}</div>
+        <div class="text-primary text-3xl font-bold">{{ printingMethod.name }}</div>
         <span
-          class="hyphens-auto"
+          class="hyphens-auto text-sm text-gray-400"
           lang="de"
         >{{ printingMethod.full_name }}</span>
       </div>

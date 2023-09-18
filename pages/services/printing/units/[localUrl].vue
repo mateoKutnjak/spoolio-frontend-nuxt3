@@ -88,8 +88,10 @@
       <!-- Content Part -->
 
       <div class="py-12 mx-[4px] grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div class="flex flex-col gap-4">
-          <div class="border border-primary">
+
+        <!-- Left side -->
+        <div class="flex flex-col gap-8">
+          <div class="border-2 border-primary rounded-md">
             <client-only class="border border-primary">
               <PreviewSTL
                 class="p-0 border-gray-400 aspect-video"
@@ -97,18 +99,20 @@
               />
             </client-only>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-8">
             <ServicesPrintingUnitDimensionForm :unit="unit" />
             <ServicesPrintingUnitOrientationForm :unit="unit" />
           </div>
 
         </div>
+
+        <!-- Right side -->
         <div class="flex flex-col gap-2">
 
-          <div class="text-stone-700 font-bold">{{ $t('printing_method').toUpperCase() }}</div>
+          <div class="text-base-content font-bold text-2xl">{{ $t('printing_method').toUpperCase() }}</div>
           <ServicesPrintingMethodRadio :unit="unit" />
 
-          <div class="mt-4 text-stone-700 font-bold">{{ $t('material').toUpperCase() }}</div>
+          <div class="mt-4 text-base-content font-bold text-2xl">{{ $t('material').toUpperCase() }}</div>
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col">
               <div class="text-stone-400 text-sm">{{ capitalizeOnlyFirstLetter($t('type_of_plastics')) }}</div>
@@ -126,7 +130,7 @@
             </div>
           </div>
 
-          <div class="mt-4 text-stone-700 font-bold">{{ $t('mechanical_properties').toUpperCase() }}</div>
+          <div class="mt-4 text-base-content font-bold text-2xl">{{ $t('mechanical_properties').toUpperCase() }}</div>
           <ServicesPrintingUnitMechanicalProperties :unit="unit" />
         </div>
       </div>

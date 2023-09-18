@@ -1,13 +1,13 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 max-w-[450px]">
 
-    <div class="h-9 flex gap-1 items-end">
-      <div class="mb-0.5 text-lg text-stone-600">{{ capitalizeOnlyFirstLetter($t('orientation')) }}</div>
+    <div class="flex gap-1 mb-2">
+      <div class="text-xl self-end font-bold text-base-content pr-2">{{ $t('orientation').toUpperCase() }}:</div>
       <div
         class="tooltip tooltip-bottom"
         :data-tip="capitalizeOnlyFirstLetter($t('optimal_orientation'))"
       >
-        <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate -mt-0.5">
+        <label class="btn btn-sm btn-ghost btn-circle swap swap-rotate">
           <input
             type="checkbox"
             v-model="useOptimalRotation"
@@ -31,59 +31,46 @@
       id="rotation-form"
       :actions="false"
     >
-      <div class="flex flex-col gap-1">
+      <div class="flex gap-1 justify-between">
         <div class="flex gap-2 items-center">
-          <strong class="text-xs"> X </strong>
+          <p class="text-md"> X </p>
           <FormKit
             type="number"
             v-model="rotationX"
             :disabled="useOptimalRotation"
             :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-300',
-                inner: '!p-0 m-0 border-none bg-white',
-                outer: 'w-full !m-0',
+                input: 'input input-bordered w-full input-sm !text-center !outline-none border !border-gray-400 !text-lg',
+                inner: '!p-0 m-0 border-none bg-transparent',
+                outer: 'w-[100px] !m-0',
               }"
           />
         </div>
         <div class="flex gap-2 items-center">
-          <strong class="text-xs"> Y </strong>
+          <p class="text-md"> Y </p>
           <FormKit
             type="number"
             v-model="rotationY"
             :disabled="useOptimalRotation"
             :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-300',
-                inner: '!p-0 m-0 border-none bg-white',
-                outer: 'w-full !m-0',
+                input: 'input input-bordered w-full input-sm !text-center !outline-none border !border-gray-400 !text-lg',
+                inner: '!p-0 m-0 border-none bg-transparent',
+                outer: 'w-[100px] !m-0',
               }"
           />
         </div>
         <div class="flex gap-2 items-center">
-          <strong class="text-xs"> Z </strong>
+          <p class="text-md"> Z </p>
           <FormKit
             type="number"
             v-model="rotationZ"
             :disabled="useOptimalRotation"
             :classes="{
-                input: 'input input-bordered w-full input-sm !text-right  !outline-none border !border-stone-300',
-                inner: '!p-0 m-0 border-none bg-white',
-                outer: 'w-full !m-0',
+                input: 'input input-bordered w-full input-sm !text-center !outline-none border !border-gray-400 !text-lg',
+                inner: '!p-0 m-0 border-none bg-transparent',
+                outer: 'w-[100px] !m-0',
               }"
           />
         </div>
-        <!-- <FormKit
-          v-if="!useOptimalRotation && !submitted"
-          type="submit"
-          :label="capitalizeOnlyFirstLetter($t('save'))"
-          :disabled="submitted"
-          :classes="{
-            input: `btn btn-sm btn-block mt-2 rounded-lg text-xs text-white` , 
-            outer: '!m-0', 
-          }"
-          :input-class="{
-              'loading': slicerEstimationPending,
-            }"
-        /> -->
       </div>
     </FormKit>
   </div>

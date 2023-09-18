@@ -62,7 +62,7 @@ const color = ref<number>();
 
 const scene = new Scene();
 
-setSceneBackground(scene, new Color("#EAEAEA"));
+setSceneBackground(scene, new Color("#FFFAF9"));
 
 function setRenderer() {
   if (experience.value) {
@@ -120,7 +120,7 @@ const meshColor = unit.spool.color.value;
 
 const mesh = new Mesh(
   geometry,
-  new MeshStandardMaterial({ color: meshColor, roughness: 0.9, metalness: 0.5 })
+  new MeshStandardMaterial({ color: meshColor, roughness: 1, metalness: 0.5 })
 );
 
 geometry.computeBoundingBox();
