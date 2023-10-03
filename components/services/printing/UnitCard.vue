@@ -42,7 +42,7 @@
           :max="MAX_PRINT_QUANTITY"
           :min="1"
           :initial-value="unit.quantity"
-          :emit-live="false"
+          :emit-live="true"
           @on-decrease-value="decreaseQuantity"
           @on-increase-value="increaseQuantity"
           @on-value-set="(q) => setQuantity(q) "

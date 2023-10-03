@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { HTTP_REQUEST_TIMEOUT } from '~~/constants/constants';
-import { IPrinterType } from '~~/constants/data';
+import { IPrinterType, IPrintingMethod } from '~~/constants/data';
 
 export const usePrinterTypeStore = defineStore('printer-type', {
     state: () => ({
@@ -9,6 +9,9 @@ export const usePrinterTypeStore = defineStore('printer-type', {
 
     getters: {
         getAll: (state) => state.printerTypes,
+        getByMethodId: (state) => (id : number) => {
+            return state.printerTypes.find(printerType => printerType.printing_method.id === id);
+        }
     },
 
     actions: {

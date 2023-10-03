@@ -222,6 +222,7 @@ import { useAuthStore } from "~~/stores/auth";
 import {
   IAddressBilling,
   IAddressShipping,
+  IPrintOrderUnit,
   IShippingMethod,
 } from "~~/constants/data";
 
@@ -285,6 +286,13 @@ const shipping_method_ref = computed(() => {
 });
 
 onMounted(async () => {
+  
+  await printOrderStore
+    .estimatePrintJobsOnly()
+    .then(() => {
+      console.log("Estimated time calculated!");
+    });
+  
   await shippingMethodStore
     .fetchShippingMethods()
     .then(() => {
@@ -293,6 +301,11 @@ onMounted(async () => {
     .catch((err) => notificationStore.showFetchError(err));
 
   console.log("Shipping method fetched successfuly TODO");
+
+  const units_test = printOrderStore.getUnits as IPrintOrderUnit[];
+  units_test.forEach((u) => {
+    console.log("Unit quantity: %o, Unit estimated time: %o", u.quantity, u.estimated_time/3600);
+  })
 });
 
 const totalPrice = ref<number>(printOrderStore.getTotalPrice);

@@ -281,6 +281,7 @@ export interface IPrintOrderUnit {
     model_volume: number,
 
     model_rotation_display: string,
+    model_xyz_rotation: string | undefined,
     model_rotation: string,
 
     optimal_rotation: string,
@@ -296,6 +297,28 @@ export interface IPrintOrderUnit {
     estimated_price: number,
     estimated_time: number,
     screenshot: string,
+
+    plane_data: IPrintOrderUnitPlanes | undefined
+    show_faces: boolean | undefined
+    pricing_list: IPricing[] | undefined
+}
+
+// Print Order Planes
+export interface IPrintOrderUnitPlanes {
+    border_planes: number[],
+    border_groups: number[],
+    unique_planes: {
+        planes: {normal: Vector3, constant: number}[],
+        ids: number[]
+    }
+}
+
+// Pricing
+export interface IPricing {
+    unit_price: number,
+    q_from: number,
+    q_to: number,
+    prep_cost: number
 }
 
 export interface IPrintOrderUnitInfill {

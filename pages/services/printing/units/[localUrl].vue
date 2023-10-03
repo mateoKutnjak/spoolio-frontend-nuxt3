@@ -21,7 +21,7 @@
                   :max="MAX_PRINT_QUANTITY"
                   :min="1"
                   :initial-value="unit.quantity"
-                  :emit-live="false"
+                  :emit-live="true"
                   @on-decrease-value="decreaseQuantity"
                   @on-increase-value="increaseQuantity"
                   @on-value-set="(q) => setQuantity(q) "
@@ -93,13 +93,13 @@
         <div class="flex flex-col gap-8">
           <div class="border-2 border-primary rounded-md">
             <client-only class="border border-primary">
-              <PreviewSTL
-                class="p-0 border-gray-400 aspect-video"
+              <PreviewSTL2
+                class="p-0 aspect-video"
                 :unit="unit"
               />
             </client-only>
           </div>
-          <div class="grid grid-cols-1 gap-8">
+          <div class="grid grid-cols-1 gap-10">
             <ServicesPrintingUnitDimensionForm :unit="unit" />
             <ServicesPrintingUnitOrientationForm :unit="unit" />
           </div>
@@ -212,6 +212,8 @@ async function onSaveChangesClicked() {
     throw createError(`onSaveChangesClicked: unit = ${unit}`);
   }
 
+  console.log(unit.model_xyz_rotation);
+
   printOrderStore.updateUnit(unit.localUrl, {
     spool: unit.spool_display,
     infill: unit.infill_display,
@@ -220,7 +222,7 @@ async function onSaveChangesClicked() {
     infill_wall_combination: unit.infill_wall_combination_display,
     scale: unit.scale_display,
     printing_method: unit.printing_method_display,
-    model_rotation: unit.model_rotation_display,
+    model_rotation: unit.model_xyz_rotation,
     use_optimal_rotation: unit.use_optimal_rotation_display,
     length_unit: unit.length_unit_display,
   });

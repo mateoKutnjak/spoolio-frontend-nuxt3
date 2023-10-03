@@ -132,7 +132,7 @@
                     </table>
                   </div>
                   <NuxtLink
-                    :class="`btn gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY && eta !== undefined && eta !== null ? 'btn-primary text-white' : 'btn-disabled'}`"
+                    :class="`btn gap-1 rounded-md ${units.length && totalPrice !== Number.NEGATIVE_INFINITY && totalPrice !== Number.POSITIVE_INFINITY ? 'btn-primary text-white' : 'btn-disabled'}`"
                     :to="localePath('/services/printing/checkout/')"
                   >
                     {{ capitalizeOnlyFirstLetter($t('checkout')).toUpperCase() }}

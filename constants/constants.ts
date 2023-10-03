@@ -68,7 +68,7 @@ export const PRINT_ORDER_UNIT_FIELDS_SLICER_ESTIMATION = ['rotation', 'infill', 
 
 // * Parameters of print unit which when changed
 // * need to perform ONLY print job ETA estimation
-export const PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION = ['quantity']
+export const PRINT_ORDER_UNIT_FIELDS_JOB_ETA_ESTIMATION = [] // ['quantity']
 
 // * Billing address types
 
