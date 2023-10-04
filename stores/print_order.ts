@@ -502,6 +502,7 @@ export const usePrintOrderStore = defineStore('print-order', {
 
                         console.log("Estimated price: %o", estimated_price);
                         console.log("Price list: %o", pricing_list);
+                        
                         this.updateUnit(unit.localUrl, {
                             estimated_time: estimated_time,
                             estimated_price: estimated_price,

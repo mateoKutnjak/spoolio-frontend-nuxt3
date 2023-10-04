@@ -226,6 +226,8 @@ async function onSaveChangesClicked() {
     use_optimal_rotation: unit.use_optimal_rotation_display,
     length_unit: unit.length_unit_display,
   });
+
+  await printOrderStore.updateScreenshot(unit.localUrl, () => {return}); 
 }
 
 async function onSaveChangesAndExitClicked() {

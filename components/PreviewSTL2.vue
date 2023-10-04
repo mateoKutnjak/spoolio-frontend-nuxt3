@@ -200,6 +200,7 @@ import { radToDeg } from "three/src/math/MathUtils";
       controls.enableDamping = true;
   
       controls.autoRotate = true;
+      controls.target.set(0,0,volume_box.max.z/2);
       controls.update();
       
       controls.addEventListener('start', stopAutoRotate);
@@ -287,14 +288,12 @@ import { radToDeg } from "three/src/math/MathUtils";
     mesh.geometry.boundingBox?.getCenter(center);
     mesh.geometry.center();
     mesh.updateMatrix();
-
-    volume_box.setFromObject(mesh);
-    positionCameraOnObject(camera, mesh.geometry.boundingBox);
   } 
   
   // *** OBJECT ROTATION *** //
 
-  refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box);
+  refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+  
   model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
   model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
   model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
@@ -318,7 +317,8 @@ import { radToDeg } from "three/src/math/MathUtils";
     // ROTATION ORDER 
     setRotOrder(rot_order, value, oldValue);
     
-    refreshObject(mesh, value, rot_order, face_rot, face_angle, scale_display.value, volume_box);
+    refreshObject(mesh, value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+    controls.target.set(0,0,volume_box.max.z/2);
     model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
     model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
     model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
@@ -362,7 +362,8 @@ import { radToDeg } from "three/src/math/MathUtils";
   
   watch(scale_display, (value, oldValue) => {
     if (value){
-      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, value, volume_box);
+      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, value, volume_box, camera, 1);
+      controls.target.set(0,0,volume_box.max.z/2);
       model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
       model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
       model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
@@ -378,10 +379,10 @@ import { radToDeg } from "three/src/math/MathUtils";
   });
   
   const loop = () => {
-    controls.update();
-
+    
     if (updateObject){
-      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box);
+      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+      controls.target.set(0,0,volume_box.max.z/2);
       model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
       model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
       model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
@@ -391,6 +392,7 @@ import { radToDeg } from "three/src/math/MathUtils";
       });
       updateObject = false;
     }
+    controls.update();
   
     renderer.render(scene, camera);
     requestAnimationFrame(loop);
@@ -398,13 +400,6 @@ import { radToDeg } from "three/src/math/MathUtils";
   
   function setSceneBackground(scene: Scene, color: Color) {
     scene.background = color;
-  }
-  
-  function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
-    let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
-    camera.position.x = largestDimension * 0.5;
-    camera.position.y = largestDimension * 0.5;
-    camera.position.z = largestDimension * 2.5;
   }
   
   function drawPlane() {

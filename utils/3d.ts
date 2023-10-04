@@ -1,4 +1,4 @@
-import { AmbientLight, Float32BufferAttribute, Quaternion, Plane, Euler, Triangle, Box3, BufferAttribute, BufferGeometry, Color, HemisphereLight, InterleavedBufferAttribute, Material, Matrix4, Mesh, MeshStandardMaterial, PerspectiveCamera, Scene, SpotLight, Vector3, WebGLRenderer, Object3D } from "three";
+import { AmbientLight, Float32BufferAttribute, Quaternion, Plane, Euler, Triangle, Box3, BufferAttribute, BufferGeometry, Color, HemisphereLight, InterleavedBufferAttribute, Material, Matrix4, Mesh, MeshStandardMaterial, PerspectiveCamera, Scene, SpotLight, Vector3, WebGLRenderer, Object3D, Camera } from "three";
 import { SimplifyModifier } from "three/examples/jsm/modifiers/SimplifyModifier";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
 import { radToDeg } from "three/src/math/MathUtils";
@@ -8,7 +8,7 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
     let experience = document.createElement('canvas') as HTMLCanvasElement
 
     const scene = new Scene();
-    scene.background = new Color("#EAEAEA");
+    scene.background = new Color("#FFFAF9");
 
     const ambientLight = new AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
@@ -27,10 +27,12 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
     scene.add(spotLight2);
 
     const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 1);
+    //camera.position.set(0, 0, 1);
+    camera.up = new Vector3(0, 0, 1);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     scene.add(camera);
+    
 
     // *** OBJECT LOADING *** //
 
@@ -54,19 +56,28 @@ export async function create3dObjectScreenshot(stlFileUrl: string, meshColor: st
     const result = exporter.parse(meshSimplified, { binary: true });
     const simplifiedBlob = new Blob([result], { type: "application/octet-stream" });
 
-    geometry.computeBoundingBox();
-
-    if (!mesh.geometry.boundingBox) {
-        return;
+    var center = new Vector3();
+    mesh.geometry.computeBoundingBox();
+    if (mesh.geometry.boundingBox) {
+      mesh.geometry.boundingBox?.getCenter(center);
+      mesh.geometry.center();
+      mesh.updateMatrix();
+    }else{
+      return;
     }
 
-    centerObject(mesh, mesh.geometry.boundingBox);
-    positionCameraOnObject(camera, mesh.geometry.boundingBox);
+    const volume_box = new Box3();
+    // GET BOUNDING VOLUME
+    volume_box.setFromObject(mesh);
 
+    positionCameraOnObject(camera, volume_box, 0);
+
+    //centerObject(mesh, mesh.geometry.boundingBox);
     scene.add(mesh);
 
-    // *********************** //
 
+    // *********************** //
+    
     const renderer = new WebGLRenderer({
         canvas: experience,
         alpha: true,
@@ -152,13 +163,14 @@ function centerObject(mesh: Mesh<BufferGeometry, Material>, bbox: Box3) {
     );
 }
 
-function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3) {
-    let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
-    camera.position.x = largestDimension * 0.5;
-    camera.position.y = largestDimension * 0.5;
-    camera.position.z = largestDimension * 2;
+function positionCameraOnObject(camera: PerspectiveCamera, bbox: Box3, lookZ: number) {
+    //let largestDimension = Math.max(bbox.max.x, bbox.max.y, bbox.max.z);
+    camera.position.x = bbox.max.x * 2;
+    camera.position.y = bbox.max.y * 2;
+    camera.position.z = bbox.max.z + 0.2*(bbox.max.z - bbox.min.z);
 
-    camera.lookAt(new Vector3())
+    camera.lookAt(new Vector3(0,0,lookZ));
+    camera.updateProjectionMatrix();
 }
 
 export function vector3ToString(obj: Vector3 | undefined): string {
@@ -517,6 +529,7 @@ export function scaleObject(mesh: Mesh, current_scale: number){
     move = setToSurface(mesh);
     mesh.translateOnAxis(move.axis, move.amount*current_scale);
     mesh.updateWorldMatrix(true, true);    
+    mesh.updateMatrix();
   }
 }
 
@@ -547,7 +560,9 @@ export function refreshObject(
   face_rot: Vector3,
   face_angle: number,
   scale: number,
-  volume_box: Box3
+  volume_box: Box3,
+  camera: PerspectiveCamera,
+  lookZ: number
   ) 
   {
   if (mesh){    
@@ -577,10 +592,16 @@ export function refreshObject(
     //SCALE OBJECT & PLACE ON SURFACE
     scaleObject(mesh, scale);
 
-    // GET BOUNDING VOLUME
     volume_box.setFromObject(mesh);
-  }
+
+    if (lookZ){
+      lookZ = volume_box.max.z/2;
+    }
+    
+    positionCameraOnObject(camera, volume_box, lookZ);
+  }  
 }
+
 
 export function setRotOrder(rot_order: number[], rotation: number[], prev_rotation: number[]){
   
