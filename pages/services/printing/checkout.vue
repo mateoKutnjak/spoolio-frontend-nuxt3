@@ -308,6 +308,17 @@ onMounted(async () => {
   })
 });
 
+onUnmounted(async () => {
+
+  await printOrderStore
+    .clearCheckoutJobs()
+    .then(() => {
+      console.log("Clear Jobs Request Sent!");
+    });
+  
+
+});
+
 const totalPrice = ref<number>(printOrderStore.getTotalPrice);
 
 function submitHandler() {

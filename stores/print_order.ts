@@ -132,6 +132,41 @@ export const usePrintOrderStore = defineStore('print-order', {
             Object.assign(this.print_order.billing_address, this.print_order.shipping_address)
         },
 
+        async clearCheckoutJobs(){
+
+            let job_ids : number[];
+            job_ids = [];
+            this.units.forEach((u) => {
+                if (u.job_ids){
+                    u.job_ids.forEach((id) => job_ids.push(id));                    
+                }                
+            });
+            
+            if (job_ids.length == 0){
+                return;
+            }
+            
+            const config = useRuntimeConfig();
+
+            const body = {
+                job_ids: job_ids
+            };
+
+            return new Promise((resolve, reject) => {
+                customFetch<IAttachmentFile>('api/print-jobs/clear_checkout/', {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    body: body,
+                }).then((response) => {
+                    console.log(response);
+                    resolve(response)
+                }).catch(err => {
+                    console.log(err);
+                    reject(err)
+                });
+            });            
+        },
+
         async postOrder(): Promise<IPrintOrder> {
 
             const config = useRuntimeConfig();
@@ -269,6 +304,7 @@ export const usePrintOrderStore = defineStore('print-order', {
                 switch (parsedData.type) {
                     case 'data':
                         const estimated_ending_time = parsedData.data?.estimated_ending_time;
+                        const job_ids = parsedData.data?.job_ids;
 
                         if (!estimated_ending_time) {
                             console.debug(`Websockets: Incomplete data message. Estimated ending time = ${estimated_ending_time}`)
@@ -283,6 +319,11 @@ export const usePrintOrderStore = defineStore('print-order', {
                         isDataWebsocketMessageReceived = true;
 
                         this.print_order.eta = estimated_ending_time;
+
+                        for (let i = 0; i < this.units.length; i++){
+                            this.units[i].job_ids = job_ids[i];
+                            console.log("Unit no. %d = %o", i, job_ids[i]);
+                        }
 
                         close();
                         break;
@@ -667,7 +708,8 @@ export const usePrintOrderStore = defineStore('print-order', {
                     printing_method: printingMethodStore.getPrintingMethods[0],
                     plane_data: unit_planes,
                     show_faces: false,
-                    pricing_list: undefined
+                    pricing_list: undefined,
+                    job_ids: undefined,
                 };
                 // ! First add unit to pinia state, then call slicer because slicer 
                 // ! manipulates some  data of pinia state regarding this particular unit

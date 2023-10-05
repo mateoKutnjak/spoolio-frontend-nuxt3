@@ -301,6 +301,7 @@ export interface IPrintOrderUnit {
     plane_data: IPrintOrderUnitPlanes | undefined
     show_faces: boolean | undefined
     pricing_list: IPricing[] | undefined
+    job_ids: number[] | undefined
 }
 
 // Print Order Planes
