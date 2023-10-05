@@ -314,8 +314,7 @@ onUnmounted(async () => {
     .clearCheckoutJobs()
     .then(() => {
       console.log("Clear Jobs Request Sent!");
-    });
-  
+    });  
 
 });
 
