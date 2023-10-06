@@ -158,7 +158,6 @@ export const usePrintOrderStore = defineStore('print-order', {
                     method: 'POST',
                     body: body,
                 }).then((response) => {
-                    console.log(response);
                     resolve(response)
                 }).catch(err => {
                     console.log(err);
@@ -232,6 +231,11 @@ export const usePrintOrderStore = defineStore('print-order', {
 
             // todo what to do with this
             formData.append("order", orderId.toString());
+            if (unit.job_ids){
+                formData.append("job_ids", unit.job_ids.toString());
+            }else{
+                formData.append("job_ids", '[]');
+            }            
 
             return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {
                 customFetch<IPrintOrderUnit>('api/print-orders/units/', {
