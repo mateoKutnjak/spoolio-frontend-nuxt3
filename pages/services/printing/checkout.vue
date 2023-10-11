@@ -85,6 +85,13 @@
             validation-visibility="submit"
             @input="(value) => print_order.shipping_method = value"
           />
+          <FormKit
+            :type="paymentMethodInput"
+            name="Payment method"
+            dialogComponent="FormPaymentMethod"
+            validation="required"
+            validation-visibility="submit"            
+          />
           <FormInputPaymentMethod />
         </div>
         <aside class="md:px-0 px-6 flex-1 md:sticky order-first md:order-last top-8 h-full">
@@ -216,6 +223,7 @@ import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
 import BillingAddress from "~~/components/form/input/BillingAddress.vue";
 import ContactEmail from "~~/components/form/input/ContactEmail.vue";
 import ShippingMethod from "~~/components/form/input/ShippingMethod.vue";
+import PaymentMethod from "~~/components/form/input/PaymentMethod.vue";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "~~/stores/auth";
@@ -236,6 +244,9 @@ const contactEmailInput = createInput(ContactEmail, {
   props: ["dialogComponent"],
 });
 const shippingMethodInput = createInput(ShippingMethod, {
+  props: ["dialogComponent"],
+});
+const paymentMethodInput = createInput(PaymentMethod, {
   props: ["dialogComponent"],
 });
 
