@@ -16,6 +16,7 @@
       <div class="relative flex flex-col lg:flex-row gap-6">
         <div class="md:px-0 px-6 flex-1 flex flex-col gap-4">
           <FormKit
+            outer-class="!mb-0"
             :type="contactEmailInput"
             name="Contact email"
             v-model="contact_email_ref"
@@ -77,6 +78,7 @@
             </div>
           </div>
           <FormKit
+            outer-class="!mb-0"
             :type="shippingMethodInput"
             name="Shipping method"
             v-model="shipping_method_ref"
@@ -85,14 +87,10 @@
             validation-visibility="submit"
             @input="(value) => print_order.shipping_method = value"
           />
-          <FormKit
-            :type="paymentMethodInput"
-            name="Payment method"
-            dialogComponent="FormPaymentMethod"
-            validation="required"
-            validation-visibility="submit"            
+          <FormPaymentMethod
+            :payment="paymentMethod"
+            @click="onPaymentEdit"
           />
-          <FormInputPaymentMethod />
         </div>
         <aside class="md:px-0 px-6 flex-1 md:sticky order-first md:order-last top-8 h-full">
           <div class="card border border-stone-400/80 rounded-md bg-white">
@@ -223,7 +221,6 @@ import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
 import BillingAddress from "~~/components/form/input/BillingAddress.vue";
 import ContactEmail from "~~/components/form/input/ContactEmail.vue";
 import ShippingMethod from "~~/components/form/input/ShippingMethod.vue";
-import PaymentMethod from "~~/components/form/input/PaymentMethod.vue";
 import { useDialogStore } from "~~/stores/dialog";
 import { useNotificationStore } from "~~/stores/notification";
 import { useAuthStore } from "~~/stores/auth";
@@ -233,6 +230,7 @@ import {
   IPrintOrderUnit,
   IShippingMethod,
 } from "~~/constants/data";
+import { loadStripe, PaymentMethod, StripeCardCvcElement, StripeCardExpiryElement, StripeCardNumberElement } from "@stripe/stripe-js";
 
 const shippingAddressInput = createInput(ShippingAddress, {
   props: ["dialogComponent"],
@@ -246,9 +244,16 @@ const contactEmailInput = createInput(ContactEmail, {
 const shippingMethodInput = createInput(ShippingMethod, {
   props: ["dialogComponent"],
 });
-const paymentMethodInput = createInput(PaymentMethod, {
-  props: ["dialogComponent"],
+
+const config = useRuntimeConfig();
+
+const stripe = await loadStripe(config.stripePublishableApiKey, {
+  apiVersion: "2022-11-15",
 });
+
+let card_num = null as StripeCardNumberElement | null;
+let card_exp = null as StripeCardExpiryElement | null;
+let card_cvc = null as StripeCardCvcElement | null;
 
 const taxPercentage = 0.25;
 
@@ -262,6 +267,9 @@ const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
 
 const useBillingSameAsShippingAddress = ref(false);
+
+let paymentCreated = false;
+let paymentMethod = null as PaymentMethod | null;
 
 const eta = computed(() => {
   return printOrderStore.getETA;
@@ -317,6 +325,49 @@ onMounted(async () => {
   units_test.forEach((u) => {
     console.log("Unit quantity: %o, Unit estimated time: %o", u.quantity, u.estimated_time/3600);
   })
+
+  if (!stripe) {
+    throw createError(
+      "Payment system could not be initialized. Please try again"
+    );
+  }else{
+    var elements = stripe.elements();
+    var style = {
+      base: {
+        color: "#32325d",
+      },
+    };
+
+    card_num = elements.create("cardNumber", { style: style });
+    card_exp = elements.create("cardExpiry", { style: style });
+    card_cvc = elements.create("cardCvc", { style: style });
+
+    card_num.on("change", ({ error }) => {
+      let displayError = document.getElementById("card-num-error");
+      if (error) {
+        displayError!.textContent = error.message;
+      } else {
+        displayError!.textContent = "";
+      }
+    });
+    card_exp.on("change", ({ error }) => {
+      let displayError = document.getElementById("card-exp-error");
+      if (error) {
+        displayError!.textContent = error.message;
+      } else {
+        displayError!.textContent = "";
+      }
+    });
+    card_cvc.on("change", ({ error }) => {
+      let displayError = document.getElementById("card-cvc-error");
+      if (error) {
+        displayError!.textContent = error.message;
+      } else {
+        displayError!.textContent = "";
+      }
+    });
+  }
+  
 });
 
 onUnmounted(async () => {
@@ -330,6 +381,49 @@ onUnmounted(async () => {
 });
 
 const totalPrice = ref<number>(printOrderStore.getTotalPrice);
+
+function saveCard(){
+  console.log("Saved card data!");
+  if (card_num){
+    stripe!.createPaymentMethod({
+      type: 'card',
+      card: card_num            
+    })
+    .then((result) => {
+      if (result.error) {
+        // Show error to your customer (for example, insufficient funds)
+        console.log(`Payment error = ${result.error.message}`);
+
+        notificationStore.show(
+          result.error.message?.toString() || "Error occurred",
+          ToastLevelType.error
+        );
+        paymentMethod = null;
+      } else {
+        paymentMethod = result.paymentMethod;
+        console.log(paymentMethod);
+        dialogStore.close();
+      }
+    })
+  }
+  
+}
+
+function onPaymentEdit(){
+  console.log(paymentMethod);
+  dialogStore.openEmits(
+    "FormPaymentMethod2",
+    {
+      card_num: card_num,
+      card_exp: card_exp,
+      card_cvc: card_cvc
+    },
+    undefined,
+    "lg",
+    true,
+    saveCard
+  );
+}
 
 function submitHandler() {
   dialogStore.open(

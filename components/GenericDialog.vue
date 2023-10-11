@@ -47,6 +47,7 @@
                 <component
                   :is="component"
                   v-bind="componentProps"
+                  @action="componentEmits"
                 ></component>
               </div>
               <!-- <slot></slot> -->
@@ -78,6 +79,7 @@ const {
   message,
   widthClass,
   closeOnClickOutside,
+  componentEmits
 } = storeToRefs(dialogStore);
 
 const component = ref();
