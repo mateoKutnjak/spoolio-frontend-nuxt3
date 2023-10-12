@@ -1,38 +1,49 @@
 <template>
     <form
       id="payment-form"
-      class="w-full flex flex-col items-center bg-white gap-2"
+      class="w-full flex flex-col items-center bg-base-100 gap-2"
     >
-      <div
-        id="card-num"
-        class="w-full p-4 bg-gray-200 rounded-md"
-      >
+      <div class="w-full flex flex-col">
+        <div>Card Number</div>
+        <div
+          id="card-num"
+          class="w-full p-4 bg-white rounded-md border border-gray-200"
+        >
+        </div>
+        <div
+          id="card-num-error"
+          role="alert"
+        ></div>
       </div>
-      <div
-        id="card-num-error"
-        role="alert"
-      ></div>
-      <div
-        id="card-exp"
-        class="w-full p-4 bg-gray-200 rounded-md"
-      >
+
+      <div class="w-full flex flex-col">
+        <div>Expiration Date</div>
+        <div
+          id="card-exp"
+          class="w-full p-4 bg-white rounded-md border border-gray-200"
+        >
+        </div>
+        <div
+          id="card-exp-error"
+          role="alert"
+        ></div>
       </div>
-      <div
-        id="card-exp-error"
-        role="alert"
-      ></div>
-      <div
-        id="card-cvc"
-        class="w-full p-4 bg-gray-200 rounded-md"
-      >
+
+      <div class="w-full flex flex-col">
+        <div>CVC</div>
+        <div
+          id="card-cvc"
+          class="w-full p-4 bg-white rounded-md border border-gray-200"
+        >
+        </div>
+        <div
+          id="card-cvc-error"
+          role="alert"
+        ></div>
       </div>
-      <div
-        id="card-cvc-error"
-        role="alert"
-      ></div>
 
       <div
-        class="btn btn-primary btn-block mt-5"
+        class="btn btn-primary btn-block mt-5 border-2"
         id="submit"
         @click="onSubmit"       
       >

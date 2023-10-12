@@ -88,7 +88,8 @@
             @input="(value) => print_order.shipping_method = value"
           />
           <FormPaymentMethod
-            :payment="paymentMethod"
+            :payment_num="payment_num"
+            :payment_card="payment_card"
             @click="onPaymentEdit"
           />
         </div>
@@ -271,6 +272,9 @@ const useBillingSameAsShippingAddress = ref(false);
 let paymentCreated = false;
 let paymentMethod = null as PaymentMethod | null;
 
+const payment_num = ref('');
+const payment_card = ref('');
+
 const eta = computed(() => {
   return printOrderStore.getETA;
 });
@@ -331,16 +335,31 @@ onMounted(async () => {
       "Payment system could not be initialized. Please try again"
     );
   }else{
-    var elements = stripe.elements();
-    var style = {
+    const style = {
       base: {
-        color: "#32325d",
+        iconColor: '#EF7745',
+        color: '#191816',
+        fontWeight: '500',
+        fontFamily: 'Rajdhani',
+        fontSize: '16px',
+        fontSmoothing: 'antialiased',
+        ':-webkit-autofill': {
+          color: '#191816',
+        },
+        '::placeholder': {
+          color: '#b3b2af',
+        },
       },
-    };
+      invalid: {
+        iconColor: '#e75f6b',
+        color: '#e75f6b',
+      },
+    }  
+    var elements = stripe.elements();
 
-    card_num = elements.create("cardNumber", { style: style });
-    card_exp = elements.create("cardExpiry", { style: style });
-    card_cvc = elements.create("cardCvc", { style: style });
+    card_num = elements.create("cardNumber", {style: style});
+    card_exp = elements.create("cardExpiry", {style: style});
+    card_cvc = elements.create("cardCvc", {style: style});
 
     card_num.on("change", ({ error }) => {
       let displayError = document.getElementById("card-num-error");
@@ -399,9 +418,15 @@ function saveCard(){
           ToastLevelType.error
         );
         paymentMethod = null;
+        payment_num.value = '';
+        payment_card.value = '';  
       } else {
         paymentMethod = result.paymentMethod;
-        console.log(paymentMethod);
+        if (paymentMethod.card){
+          payment_num.value = paymentMethod.card.last4;
+          payment_card.value = paymentMethod.card.brand;          
+        }        
+        console.log("Parent num: %s", payment_num.value);
         dialogStore.close();
       }
     })
@@ -410,7 +435,6 @@ function saveCard(){
 }
 
 function onPaymentEdit(){
-  console.log(paymentMethod);
   dialogStore.openEmits(
     "FormPaymentMethod2",
     {
