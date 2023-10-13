@@ -135,10 +135,10 @@
                   <table class="table table-compact w-full text-lg font-semibold text-stone-500">
                     <tbody class="">
                       <tr class="border-none">
-                        <td class="pl-0 py-1 pb-0 text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }} ({{ $t('vat_excluded') }})</td>
+                        <td class="pl-0 py-1 pb-0 text-start">{{ capitalizeOnlyFirstLetter($t('items_price')) }}</td>
                         <td class="py-1 pb-0 text-xl font-bold border-none text-end">€{{ (totalPrice).toFixed(2) }}</td>
                       </tr>
-                      <tr class="border-none">
+                      <tr v-if="taxPercentage > 0" class="border-none">
                         <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${taxPercentage * 100}%)`}}</td>
                         <td class="py-1 pb-0 text-xl font-bold border-transparent text-end bg-transparent">€{{ (totalPrice * taxPercentage).toFixed(2) }}</td>
                       </tr>
@@ -215,8 +215,10 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { PAYMENT_ORDER_NAMES } from "~~/constants/constants";
 import { createInput } from "@formkit/vue";
 import { usePrintOrderStore } from "~~/stores/print_order";
+import { usePaymentStore } from "~~/stores/payment";
 import { useShippingMethodStore } from "~~/stores/shipping_method";
 import ShippingAddress from "~~/components/form/input/ShippingAddress.vue";
 import BillingAddress from "~~/components/form/input/BillingAddress.vue";
@@ -232,6 +234,8 @@ import {
   IShippingMethod,
 } from "~~/constants/data";
 import { loadStripe, PaymentMethod, StripeCardCvcElement, StripeCardExpiryElement, StripeCardNumberElement } from "@stripe/stripe-js";
+
+const order = "printing";
 
 const shippingAddressInput = createInput(ShippingAddress, {
   props: ["dialogComponent"],
@@ -256,13 +260,14 @@ let card_num = null as StripeCardNumberElement | null;
 let card_exp = null as StripeCardExpiryElement | null;
 let card_cvc = null as StripeCardCvcElement | null;
 
-const taxPercentage = 0.25;
+const taxPercentage = 0;
 
 const authStore = useAuthStore();
 const dialogStore = useDialogStore();
 const notificationStore = useNotificationStore();
 const shippingMethodStore = useShippingMethodStore();
 const printOrderStore = usePrintOrderStore();
+const paymentStore = usePaymentStore();
 
 const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
@@ -272,8 +277,12 @@ const useBillingSameAsShippingAddress = ref(false);
 let paymentCreated = false;
 let paymentMethod = null as PaymentMethod | null;
 
+let clientSecret = '';
+
 const payment_num = ref('');
 const payment_card = ref('');
+
+const localePath = useLocalePath();
 
 const eta = computed(() => {
   return printOrderStore.getETA;
@@ -309,6 +318,13 @@ const shipping_method_ref = computed(() => {
 });
 
 onMounted(async () => {
+
+  await paymentStore
+    .initPaymentIntent(order)
+    .then((data) => {
+      clientSecret = data.clientSecret;
+    })
+    .catch((err) => notificationStore.showFetchError(err));
   
   await printOrderStore
     .estimatePrintJobsOnly()
@@ -434,6 +450,71 @@ function saveCard(){
   
 }
 
+async function makePayment(orderId: number){
+  if (card_num && clientSecret && stripe){
+    if (clientSecret.length > 0){
+      await paymentStore
+        .modifyPaymentIntent(clientSecret, orderId)
+        .then((data) => {
+          if (clientSecret != data.clientSecret){
+            console.log("Client Secret Changed!");
+          }
+        })
+        .catch((err) => notificationStore.showFetchError(err));
+
+
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card_num
+        }
+      })
+      .then(function (result) {
+      if (result.error) {
+        // Show error to your customer (for example, insufficient funds)
+        console.log(`Payment error = ${result.error.message}`);
+
+        dialogStore.close();
+        navigateTo(localePath("/profile/order-history/"));
+        notificationStore.show(
+          result.error.message?.toString() || "Error occurred",
+          ToastLevelType.error
+        );
+      } else {
+        console.log(`PaymentIntent status = ${result.paymentIntent.status}`);
+
+        // The payment has been processed!
+        if (result.paymentIntent.status === "succeeded") {
+          // Show a success message to your customer
+          // There's a risk of the customer closing the window before callback
+          // execution. Set up a webhook or plugin to listen for the
+          // payment_intent.succeeded event that handles any business critical
+          // post-payment actions.
+
+          dialogStore.close();
+
+          dialogStore.open(
+            "DialogSuccess",
+            {
+              title: "success",
+              message: "payment_successfull_check_your_email",
+              onClose: () => {
+                navigateTo(localePath("/profile/order-history/"));
+              },
+            },
+            undefined,
+            undefined,
+            false
+          );
+
+          // Order update happens with stripe webhooks on server
+          }
+        }
+      
+      });
+    } 
+  }
+}
+
 function onPaymentEdit(){
   dialogStore.openEmits(
     "FormPaymentMethod2",
@@ -450,13 +531,18 @@ function onPaymentEdit(){
 }
 
 function submitHandler() {
-  dialogStore.open(
-    "ServicesPrintingCreatingOrderDialog",
-    {},
-    undefined,
-    "lg",
-    false
-  );
+  if (clientSecret){
+    if (clientSecret.length > 0){
+      dialogStore.openEmits(
+        "ServicesPrintingCreatingOrderDialog",
+        {},
+        undefined,
+        "lg",
+        false,
+        makePayment
+      );
+    }
+  }    
 }
 
 watch(useBillingSameAsShippingAddress, (value) => {

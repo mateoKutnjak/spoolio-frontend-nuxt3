@@ -137,6 +137,8 @@ const printOrderStore = usePrintOrderStore();
 
 const { print_order, units } = storeToRefs(printOrderStore);
 
+const emit = defineEmits(['makePayment']);
+
 enum OrderStatus {
   initial,
   progress,
@@ -209,6 +211,13 @@ onMounted(async () => {
     console.log("DONE result_id = " + unitResult.id);
   }
   unitsStatus.value = OrderStatus.success;
+
+  // ------------------------------------------------
+  // ---------------- PAYMENT -----------------------
+  // ------------------------------------------------
+
+  await emit('makePayment', rootOrderResult.id);
+
 });
 
 function onOkPressed() {

@@ -34,6 +34,50 @@ export const usePaymentStore = defineStore('payment', {
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
+
+        async initPaymentIntent(serviceType: string, currency: string = 'EUR') {
+
+            const config = useRuntimeConfig();
+
+            const body = {
+                service: serviceType,
+                currency: currency,
+            };
+
+            return promiseWithTimeout(new Promise<IPaymenIntent>((resolve, reject) => {
+                ofetch<IPaymenIntent>('api/init-payment-intent/', {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    body: body,
+                }).then((response: IPaymenIntent) => {
+                    resolve(response);
+                }).catch((err) => {
+                    reject(err);
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
+        
+        async modifyPaymentIntent(clientSecret: string, orderId: number) {
+
+            const config = useRuntimeConfig();
+
+            const body = {
+                client_secret: clientSecret,
+                order_id: orderId,
+            };
+
+            return promiseWithTimeout(new Promise<IPaymenIntent>((resolve, reject) => {
+                ofetch<IPaymenIntent>('api/modify-payment-intent/', {
+                    baseURL: config.public.baseURL,
+                    method: 'POST',
+                    body: body,
+                }).then((response: IPaymenIntent) => {
+                    resolve(response);
+                }).catch((err) => {
+                    reject(err);
+                })
+            }), HTTP_REQUEST_TIMEOUT);
+        },
     },
 })
 
