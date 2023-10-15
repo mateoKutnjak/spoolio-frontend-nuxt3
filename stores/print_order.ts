@@ -118,6 +118,12 @@ export const usePrintOrderStore = defineStore('print-order', {
 
     actions: {
 
+        clearJobIds(){
+            this.units.map((u) => {
+                u.job_ids = [];
+            });
+        },
+
         clear() {
             this.units.splice(0, this.units.length);
             this.attachmentFiles.splice(0, this.attachmentFiles.length);
@@ -232,9 +238,9 @@ export const usePrintOrderStore = defineStore('print-order', {
             // todo what to do with this
             formData.append("order", orderId.toString());
             if (unit.job_ids){
-                formData.append("job_ids", unit.job_ids.toString());
+                formData.append("job_ids", JSON.stringify(unit.job_ids));             
             }else{
-                formData.append("job_ids", '[]');
+                formData.append("job_ids", '');
             }            
 
             return promiseWithTimeout<IPrintOrderUnit>(new Promise((resolve, reject) => {

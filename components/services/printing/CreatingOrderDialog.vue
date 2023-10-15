@@ -137,7 +137,7 @@ const printOrderStore = usePrintOrderStore();
 
 const { print_order, units } = storeToRefs(printOrderStore);
 
-const emit = defineEmits(['makePayment']);
+const emit = defineEmits(['action']);
 
 enum OrderStatus {
   initial,
@@ -207,8 +207,11 @@ onMounted(async () => {
     }
 
     unitsUploadedCount.value++;
-
+    
     console.log("DONE result_id = " + unitResult.id);
+  }
+  if (unitsUploadedCount.value == units.value.length){
+    printOrderStore.clearJobIds();
   }
   unitsStatus.value = OrderStatus.success;
 
@@ -216,7 +219,8 @@ onMounted(async () => {
   // ---------------- PAYMENT -----------------------
   // ------------------------------------------------
 
-  await emit('makePayment', rootOrderResult.id);
+  console.log("Trying to emit makePayment")
+  await emit('action', rootOrderResult.id);
 
 });
 

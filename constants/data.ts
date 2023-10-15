@@ -442,6 +442,7 @@ export interface IStoreOrderUnit {
 // ************* //
 
 export interface IPaymenIntent {
+    intentId: string,
     clientSecret: string,
 }
 

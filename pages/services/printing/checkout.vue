@@ -273,10 +273,9 @@ const { user } = storeToRefs(authStore);
 const { print_order, units } = storeToRefs(printOrderStore);
 
 const useBillingSameAsShippingAddress = ref(false);
-
-let paymentCreated = false;
 let paymentMethod = null as PaymentMethod | null;
 
+let intentId = '';
 let clientSecret = '';
 
 const payment_num = ref('');
@@ -322,6 +321,7 @@ onMounted(async () => {
   await paymentStore
     .initPaymentIntent(order)
     .then((data) => {
+      intentId = data.intentId;
       clientSecret = data.clientSecret;
     })
     .catch((err) => notificationStore.showFetchError(err));
@@ -410,6 +410,7 @@ onUnmounted(async () => {
   await printOrderStore
     .clearCheckoutJobs()
     .then(() => {
+      printOrderStore.clearJobIds();
       console.log("Clear Jobs Request Sent!");
     });  
 
@@ -451,65 +452,64 @@ function saveCard(){
 }
 
 async function makePayment(orderId: number){
+  console.log("MAKING PAYMENT FOR ORDER %d", orderId);
   if (card_num && clientSecret && stripe){
     if (clientSecret.length > 0){
       await paymentStore
-        .modifyPaymentIntent(clientSecret, orderId)
+        .modifyPaymentIntent(intentId, orderId)
         .then((data) => {
-          if (clientSecret != data.clientSecret){
-            console.log("Client Secret Changed!");
-          }
+          console.log("Added amount and order data to payment!");
         })
         .catch((err) => notificationStore.showFetchError(err));
 
 
       await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: card_num
-        }
+        payment_method: paymentMethod?.id
       })
-      .then(function (result) {
-      if (result.error) {
-        // Show error to your customer (for example, insufficient funds)
-        console.log(`Payment error = ${result.error.message}`);
-
-        dialogStore.close();
-        navigateTo(localePath("/profile/order-history/"));
-        notificationStore.show(
-          result.error.message?.toString() || "Error occurred",
-          ToastLevelType.error
-        );
-      } else {
-        console.log(`PaymentIntent status = ${result.paymentIntent.status}`);
-
-        // The payment has been processed!
-        if (result.paymentIntent.status === "succeeded") {
-          // Show a success message to your customer
-          // There's a risk of the customer closing the window before callback
-          // execution. Set up a webhook or plugin to listen for the
-          // payment_intent.succeeded event that handles any business critical
-          // post-payment actions.
+      .then((result) => {
+        if (result.error) {
+          // Show error to your customer (for example, insufficient funds)
+          console.log(`Payment error = ${result.error.message}`);
 
           dialogStore.close();
-
-          dialogStore.open(
-            "DialogSuccess",
-            {
-              title: "success",
-              message: "payment_successfull_check_your_email",
-              onClose: () => {
-                navigateTo(localePath("/profile/order-history/"));
-              },
-            },
-            undefined,
-            undefined,
-            false
+          navigateTo(localePath("/profile/order-history/"));
+          notificationStore.show(
+            result.error.message?.toString() || "Error occurred",
+            ToastLevelType.error
           );
+        } else {
+          console.log(`PaymentIntent status = ${result.paymentIntent.status}`);
 
-          // Order update happens with stripe webhooks on server
+          // The payment has been processed!
+          if (result.paymentIntent.status === "requires_capture") {
+            // Show a success message to your customer
+            // There's a risk of the customer closing the window before callback
+            // execution. Set up a webhook or plugin to listen for the
+            // payment_intent.succeeded event that handles any business critical
+            // post-payment actions.
+
+            dialogStore.close();
+
+            dialogStore.open(
+              "DialogSuccess",
+              {
+                title: "success",
+                message: "payment_successfull_check_your_email",
+                onClose: () => {
+                  navigateTo(localePath("/profile/order-history/"));
+                },
+              },
+              undefined,
+              undefined,
+              false
+            );
+
+            // Order update happens with stripe webhooks on server
           }
         }
-      
+      })
+      .catch((err) => {
+        console.log(err);
       });
     } 
   }
@@ -538,7 +538,7 @@ function submitHandler() {
         {},
         undefined,
         "lg",
-        false,
+        true,
         makePayment
       );
     }
