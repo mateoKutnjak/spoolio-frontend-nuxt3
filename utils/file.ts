@@ -1,3 +1,5 @@
+import { split } from "postcss/lib/list";
+
 const filenameExtensionRegex = /(?:\.([^.]+))?$/;
 
 
@@ -56,7 +58,9 @@ export function urlExtractFilename(url: string): string {
     const splitted = url.split('/');
     const last = splitted[splitted.length - 1]
     const last2 = last.split('?')
-    return last2[0]
+    const baseName = last2[0];
+    const clear = baseName.substring(0, baseName.lastIndexOf('_')) + ".stl"
+    return clear
 }
 
 export function urlExtractFileSuffix(url: string): string {

@@ -14,7 +14,7 @@
             <td class="pl-0 py-1 pb-0 text-start bg-transparent">{{ capitalizeOnlyFirstLetter($t('items_price')) }}</td>
             <td class="py-1 pb-0 text-end bg-transparent">€{{ (Number(order.estimated_price)).toFixed(2) }}</td>
           </tr>
-          <tr>
+          <tr v-if="TAX_FRACTION > 0">
             <td class="pl-0 py-1 pb-0 border-transparent text-start bg-transparent">{{`${$t('tax').toUpperCase()} (${TAX_FRACTION * 100}%)`}}</td>
             <td class="py-1 pb-0 border-transparent text-end bg-transparent">€{{ (Number(order.estimated_price) * TAX_FRACTION).toFixed(2) }}</td>
           </tr>

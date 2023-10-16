@@ -538,7 +538,7 @@ function submitHandler() {
         {},
         undefined,
         "lg",
-        true,
+        false,
         makePayment
       );
     }

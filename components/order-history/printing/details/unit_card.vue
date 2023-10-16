@@ -93,7 +93,7 @@ const { unit, order, index } = defineProps<{
 }>();
 
 const price = computed(
-  () => adjustPrice(unit) * unit.quantity * (TAX_FRACTION + 1)
+  () => order.estimated_price / unit.quantity 
 );
 </script>
 

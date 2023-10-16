@@ -88,7 +88,7 @@ export const HOURLY_RATE_EUR = 0.3;
 // * Confirmation
 
 export const PAYMENT_ORDER_NAMES = ['printing', 'modeling', 'store'];
-export const TAX_FRACTION = 0.25;
+export const TAX_FRACTION = 0;
 
 // ! IMPORTANT ! For every change in server side (django choices) 
 // ! IMPORTANT ! adjust frontend enums (constants.vue)
