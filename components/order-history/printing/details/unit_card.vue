@@ -22,7 +22,7 @@
           <div class="text-stone-400">
             MODEL {{ index+1 }}/{{ order.unit_count }}
           </div>
-          <a class="font-bold">{{ urlExtractFilename(extractUrlFileStringUnion(unit.file)).toUpperCase() }}</a>
+          <a class="font-bold">{{ urlExtractEncFilename(extractUrlFileStringUnion(unit.file)).toUpperCase() }}</a>
           <ServicesPrintingDimensionInfo
             class="text-xl"
             :unit="unit"

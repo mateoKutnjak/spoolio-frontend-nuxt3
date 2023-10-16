@@ -58,9 +58,14 @@ export function urlExtractFilename(url: string): string {
     const splitted = url.split('/');
     const last = splitted[splitted.length - 1]
     const last2 = last.split('?')
-    const baseName = last2[0];
-    const clear = baseName.substring(0, baseName.lastIndexOf('_')) + ".stl"
-    return clear
+    const baseName = last2[0];    
+    return baseName
+}
+
+export function urlExtractEncFilename(url: string): string {
+    const baseName = urlExtractFilename(url);
+    const clear = baseName.substring(0, baseName.lastIndexOf('_')) + ".stl";
+    return clear;
 }
 
 export function urlExtractFileSuffix(url: string): string {
