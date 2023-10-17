@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="px-5 py-2 btn btn-lg btn-ghost btn-block sm:w-fit h-fit gap-2 sm:justify-start justify-center items-center rounded-md text-xl !font-bold text-stone-500 bg-white shadow-md hover:bg-stone-100"
+      class="px-5 py-2 btn btn-lg btn-ghost btn-block sm:w-fit h-fit gap-2 sm:justify-start justify-center items-center rounded-md text-xl !font-bold text-base-content bg-white shadow-md hover:bg-gray-100"
       :class="(selectedOption && extractId(selectedOption) === extractId(option) ? 'border-4 border-primary btn-disabled ' : '` border-4 border-transparent ') + (fullWidth ? 'btn-block ' : ' ') + (enableUnselectedBorder ? ' ' : 'border-none ')"
       v-for="option in options"
       :key="extractId(option)"
@@ -16,7 +16,7 @@
         />
         <Icon
           v-else
-          class="mb-0.5 text-stone-400"
+          class="mb-0.5 text-gray-400"
           name="ph:circle"
           size="20"
         />
@@ -30,13 +30,13 @@
         />
         <Icon
           v-else
-          class="mb-0.5 text-stone-400"
+          class="mb-0.5 text-gray-400"
           :name="extractIconName(option)"
           size="25"
         />
       </div>
-      <div class="flex flex-col items-start ml-1">
-        <div :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'text-stone-600' : 'text-stone-400'">
+      <div class="flex flex-col items-start ml-1 text-md">
+        <div :class="selectedOption && extractId(selectedOption) === extractId(option) ? 'text-base-content' : 'text-gray-400'">
           {{ extractTitle(option) }}
         </div>
         <div

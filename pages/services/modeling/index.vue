@@ -1,12 +1,18 @@
 <template>
-  <div class="container mx-auto max-w-7xl px-0 md:px-12 py-12">
-    <div class="md:px-0 px-12 flex flex-col gap-6 text-stone-700">
-      <div class="text-4xl font-bold">{{ $t('_3d_modeling').toUpperCase() }}</div>
-      <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('describe_your_problem_and_request_a_quote_for_the_3d_modeling_service')) }}</div>
-      <div></div>
+  <div class="container mx-auto mb-32 px-0 md:px-12 pt-12">
+    <div class="md:px-0 px-12 flex flex-col gap-9 text-stone-700">
+      <div class="flex mb-10">
+        <div class="text-lg text-gray-500">HOME</div>
+        <div class="text-lg text-gray-500 mx-3">/</div>
+        <div class="text-lg text-gray-500">3D MODELIRANJE</div>
+      </div>
+      <div class="mb-4">
+        <div class="text-basis-content font-bold text-5xl pb-4">{{ $t('_3d_modeling').toUpperCase() }}</div>
+        <div class="text-lg">{{ capitalizeOnlyFirstLetter($t('describe_your_problem_and_request_a_quote_for_the_3d_modeling_service')) }}</div>
+      </div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-xl text-stone-500 font-semibold">{{ $t('type_of_modeling').toUpperCase() }}</div>
+        <div class="text-2xl text-basis-content">{{ $t('type_of_modeling').toUpperCase() }}</div>
         <SelectSingleChoice
           v-if="orderTypes.length > 0"
           :options="orderTypes"
@@ -17,13 +23,13 @@
           :enable-unselected-border="true"
           @on-selection-change="l => orderTypeSelectionChange(l)"
         />
-        <div class="text-stone-400 text-lg max-w-lg">
+        <div class="text-gray-400 text-md w-fill">
           <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t(modeling_order?.order_type?.description || '')) }}
         </div>
       </div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-xl text-stone-500 font-semibold">{{ $t('item_type').toUpperCase() }}</div>
+        <div class="text-2xl text-base-content">{{ $t('item_type').toUpperCase() }}</div>
         <SelectSingleChoice
           v-if="itemTypes.length > 0"
           :options="itemTypes"
@@ -34,13 +40,10 @@
           :enable-unselected-border="true"
           @on-selection-change="l => itemTypeSelectionChange(l)"
         />
-        <div class="text-stone-400 text-lg max-w-lg">
-          <span class="font-bold"> {{ capitalizeOnlyFirstLetter($t('note')) }} </span>: {{ capitalizeOnlyFirstLetter($t('for_mechanical_items_it_is_preferable_to_state_mark_where_precise_tolerances_are_important_joints_with_other_pieces_and_on_which_segments_greater_forces_are_present')) }}
-        </div>
       </div>
 
       <div class="flex flex-col gap-1">
-        <div class="text-xl text-stone-500 font-semibold">{{ $t('item_attributes').toUpperCase() }}</div>
+        <div class="text-2xl text-base-content">{{ $t('item_attributes').toUpperCase() }}</div>
         <SelectMultiChoice
           v-if="itemAttributes.length > 0"
           :options="itemAttributes"
@@ -58,9 +61,10 @@
         :actions="false"
         :incomplete-message="false"
       >
-        <div class="flex flex-col gap-2 pt-10">
-          <div class="flex flex-col lg:flex-row gap-5">
-            <div class="flex-1 flex flex-col">
+        <div class="flex flex-col gap-2 pt-8">
+          <div class="text-xl">{{ $t('contact_email').toUpperCase() }}</div>
+          <div class="flex flex-col lg:flex-row gap-5">            
+            <div class="grow 2xl:grow-0 2xl:w-1/2 flex flex-col">                
               <FormKit
                 type="text"
                 v-model="modeling_order.contact_email"
@@ -71,35 +75,33 @@
                     required: 'Leave your contact email'
                   }"
               />
-              <FormKit
-                type="textarea"
-                v-model="modeling_order.comment"
-                rows="1"
-                :placeholder="capitalizeOnlyFirstLetter($t('description'))"
-                validation="required"
-                validation-visibility="submit"
-                :validation-messages="{
-                  required: 'Please describe your problem'
-                }"
-                :classes="{
-                  input: 'h-64',
-                }"
-              />
+              <div>
+                <div class="text-xl">{{ $t('description').toUpperCase() }}</div>
+                <FormKit
+                  type="textarea"
+                  v-model="modeling_order.comment"
+                  rows="1"
+                  :placeholder="capitalizeOnlyFirstLetter($t('description'))"
+                  validation-visibility="submit"
+                  :classes="{
+                    input: 'h-52 min-h-[150px] max-h-[240px]',
+                  }"
+                />
+              </div>
             </div>
-            <div class="mb-5">
-              <DragAndDropArea
+            <div class="mb-5 lg:w-1/3 xl:w-1/2 2xl:w-1/3 w-full">
+              <DragAndDropArea2
                 class="h-full"
                 :title="capitalizeOnlyFirstLetter($t('choose_file_or_drag_it_here'))"
                 :hide-privacy-label="false"
-                subtitle=".TXT, .PDF, .JPG, .JPEG, .PNG"
+                subtitle=".TXT, .PDF, .JPG, .JPEG, .PNG, .STL"
                 @on-change="change"
                 @on-drop="drop"
               />
             </div>
           </div>
 
-          <ServicesModelingAttachmentFiles />
-          <ServicesModelingAttachmentImages />
+          <ServicesModelingAttachments />
           <div class="flex justify-center mt-4">
             <FormKit
               type="submit"

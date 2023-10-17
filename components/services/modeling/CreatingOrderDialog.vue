@@ -221,12 +221,13 @@ const everythingSuccessful = computed(() => {
   );
 });
 
+var rootOrderResult: IModelingOrder;
+
 onMounted(async () => {
   orderStatus.value = OrderStatus.progress;
 
   await new Promise((r) => setTimeout(r, 1000));
 
-  var rootOrderResult: IModelingOrder;
   try {
     rootOrderResult = await modelingOrderStore.postOrder();
     orderStatus.value = OrderStatus.success;
@@ -324,10 +325,14 @@ function onReturnPressed() {
   dialogStore.close();
 }
 
+function closeAuth(){
+  navigateTo(localePath("/"));
+}
+
 function onSignUpPressed() {
   dialogStore.close();
-  navigateTo(localePath("/"));
-  dialogStore.open("AuthForm", {});
+  // navigateTo(localePath("/"));
+  dialogStore.openEmits("AuthForm", {orderId: rootOrderResult.id, orderType: "modeling"}, undefined, "md", true, closeAuth);
 }
 </script>
   

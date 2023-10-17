@@ -139,6 +139,8 @@ const invitationToken = ref<string>(""); // FormKit - cannot be wuthout args - u
 
 const loading = ref(false);
 
+const props = defineProps(['orderId', 'orderType']);
+
 const tabs = [
   <ITab>{ title: capitalizeOnlyFirstLetter(t("sign_up")) },
   <ITab>{ title: capitalizeOnlyFirstLetter(t("sign_in")) },
@@ -156,7 +158,9 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       email.value,
       password.value,
       confirmPassword.value,
-      invitationToken.value
+      invitationToken.value,
+      props.orderId ? props.orderId : null,
+      props.orderType ? props.orderType: null
     )
     .then((loginRequestState) => {
       dialogStore.close();

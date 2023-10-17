@@ -34,7 +34,7 @@ export const CONTENT_TYPE_PRODUCT = 'product';
 export const TOAST_DURATION_MEDIUM = 5000;
 
 export const MODELING_ORDER_ATTACHMENT_FILE_TYPES = [
-    'application/pdf', 'text/plain', 'model/stl', 'application/zip',
+    'application/pdf', 'text/plain', 'model/x.stl-binary', 'application/zip', 
 ]
 export const MODELING_ORDER_ATTACHMENT_IMAGE_TYPES = [
     'image/jpeg', 'image/jpg', 'image/png',

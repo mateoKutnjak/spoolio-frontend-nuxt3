@@ -49,18 +49,24 @@ export const useAuthStore = defineStore('auth', {
             }), HTTP_REQUEST_TIMEOUT);
         },
 
-        async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined, invitationToken: string) {
+        async register(email: string | undefined, password: string | undefined, confirmPassword: string | undefined, invitationToken: string, orderId: number | undefined, orderType: string | undefined) {
             const config = useRuntimeConfig();
 
+            const order_id = orderId ? orderId.toString() : '';
+            const order_type = orderType ? orderType : '';
+            var body = {
+                email: email,
+                password1: password,
+                password2: confirmPassword,
+                invitation_token: invitationToken,
+                order_id: order_id,
+                order_type: order_type,
+            };
+            console.log(body);
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
                 ofetch<IUserLogin>('auth/registration/', {
                     baseURL: config.public.baseURL,
-                    method: 'POST', body: {
-                        email: email,
-                        password1: password,
-                        password2: confirmPassword,
-                        invitation_token: invitationToken,
-                    },
+                    method: 'POST', body: body,
                 }
                 ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
