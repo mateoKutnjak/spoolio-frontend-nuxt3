@@ -331,8 +331,8 @@ function closeAuth(){
 
 function onSignUpPressed() {
   dialogStore.close();
-  // navigateTo(localePath("/"));
-  dialogStore.openEmits("AuthForm", {orderId: rootOrderResult.id, orderType: "modeling"}, undefined, "md", true, closeAuth);
+  modelingOrderStore.clear();
+  dialogStore.open("AuthForm", {orderId: rootOrderResult.id, orderType: "modeling"}, undefined, "md", true);
 }
 </script>
   

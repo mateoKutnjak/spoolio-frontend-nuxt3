@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', {
                     console.log(this.refreshToken)
                     console.log(this.user)
                     resolve(response)
-                }).catch(err => {
+                }).catch(err => {                    
                     reject(err)
                 })
             }), HTTP_REQUEST_TIMEOUT);
@@ -66,7 +66,8 @@ export const useAuthStore = defineStore('auth', {
             return promiseWithTimeout<IUserLogin>(new Promise((resolve, reject) => {
                 ofetch<IUserLogin>('auth/registration/', {
                     baseURL: config.public.baseURL,
-                    method: 'POST', body: body,
+                    method: 'POST',
+                    body: body
                 }
                 ).then((response: IUserLogin) => {
                     this.accessToken = response.access_token
@@ -74,7 +75,7 @@ export const useAuthStore = defineStore('auth', {
                     this.user = response.user;
                     resolve(response)
                 }).catch(err => {
-                    reject(err)
+                    reject(err);
                 })
             }), HTTP_REQUEST_TIMEOUT);
         },
