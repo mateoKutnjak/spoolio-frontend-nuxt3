@@ -44,6 +44,12 @@ export const useModelingOrderStore = defineStore('modeling-order', {
             }
         },
 
+        clearAll() {
+            this.clear();
+            this.attachmentFiles = [];
+            this.attachmentImages = [];
+        },
+
         async postOrder(): Promise<IModelingOrder> {
 
             const config = useRuntimeConfig();

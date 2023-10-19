@@ -317,7 +317,7 @@ onMounted(async () => {
 
 function onOkPressed() {
   dialogStore.close();
-  modelingOrderStore.clear();
+  modelingOrderStore.clearAll();
   navigateTo(localePath("/"));
 }
 
@@ -331,7 +331,8 @@ function closeAuth(){
 
 function onSignUpPressed() {
   dialogStore.close();
-  modelingOrderStore.clear();
+  modelingOrderStore.clearAll();
+  navigateTo(localePath("/"));
   dialogStore.open("AuthForm", {orderId: rootOrderResult.id, orderType: "modeling"}, undefined, "md", true);
 }
 </script>

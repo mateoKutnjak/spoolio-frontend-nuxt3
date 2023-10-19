@@ -163,7 +163,6 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       props.orderType ? props.orderType: null
     )
     .then((loginRequestState) => {
-      navigateTo(localePath("/"));
       dialogStore.close();
     })
     .catch((err) => {
