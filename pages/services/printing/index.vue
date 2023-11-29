@@ -1,12 +1,12 @@
 <template>
   <div class="container mx-auto mb-32 px-0 md:px-12 pt-12">
-    <div v-if="units.length < 1" class="flex mb-28">
+    <div v-if="units.length < 1 || (units.length && fileWaiting)" class="flex mb-28">
       <div class="text-lg text-gray-500">HOME</div>
       <div class="text-lg text-gray-500 mx-3">/</div>
       <div class="text-lg text-gray-500">3D ISPIS</div>
     </div>
     <div class="flex flex-col gap-8 justify-between">
-      <div v-if="printOrderStore.getUnits.length">
+      <div v-if="printOrderStore.getUnits.length && !fileWaiting">
         <ServicesPrintingStepsPreview
           class="px-12 md:px-0 pb-12"
           :current-step-index="0"
@@ -36,7 +36,7 @@
           <div class="md:px-0 px-12 flex lg:flex-row flex-col justify-between">
             <div class="w-full lg:w-[50%] lg:mr-10 relative flex flex-col md:flex-row">
               <div
-                v-if="units.length > 0"
+                v-if="units.length > 0 && !fileWaiting"
                 class="w-full flex flex-col gap-4"
               >
                 <ServicesPrintingUnitCard
@@ -106,7 +106,7 @@
                   @on-drop="drop"
                 />
                 <div
-                  v-if="printOrderStore.getUnits.length"
+                  v-if="printOrderStore.getUnits.length && !fileWaiting"
                   class="card-body p-6 flex flex-col gap-2 shadow-md rounded-md bg-white border border-stone-300"
                 >
                   <div class="overflow-x-auto">
@@ -236,6 +236,9 @@ const { printingMethods } = storeToRefs(printingMethodStore);
 
 const isLoggedIn = computed(() => authStore.loggedIn);
 
+// if file is added while not logged in
+const fileWaiting = ref<string>();
+
 const attachmentFiles = ref<IAttachmentFile[]>([]);
 const attachmentImages = ref<IAttachmentImage[]>([]);
 const units = ref<IPrintOrderUnit[]>([]);
@@ -261,6 +264,8 @@ const eta = computed(() => {
 });
 
 onMounted(async () => {
+  fileWaiting.value = undefined;
+
   await printingMethodStore
     .fetch()
     .then(() => {
@@ -504,12 +509,28 @@ function drop(e: any) {
 
 function onFilesAdded(files: File[]) {
   if (!isLoggedIn.value) {
-    dialogStore.open("AuthForm", {});
+    dialogStore.open("AuthForm", {
+      onConfirm: () => {
+        if (fileWaiting.value){
+          navigateTo(
+            localePath(
+              `/services/printing/units/${urlExtractFilename(fileWaiting.value)}`
+            )
+          );
+          fileWaiting.value = undefined;
+        }
+        console.log("Auth Confirmed!")   
+      },
+      onDismiss: () => {
+        printOrderStore.clear();
+        fileWaiting.value = undefined;
+        console.log("Auth Dismissed!")
+      }
+    });
     notificationStore.show(
       "Please log in to use this feature",
       ToastLevelType.info
     );
-    return;
   }
 
   for (let index = 0; index < files.length; index++) {
@@ -533,11 +554,15 @@ function onFilesAdded(files: File[]) {
         (localUrl: string) => {
           itemInsertedLoading.value = false;
 
-          navigateTo(
-            localePath(
-              `/services/printing/units/${urlExtractFilename(localUrl)}`
-            )
-          );
+          fileWaiting.value = localUrl;
+
+          if (isLoggedIn.value) {
+            navigateTo(
+              localePath(
+                `/services/printing/units/${urlExtractFilename(localUrl)}`
+              )
+            );
+          }
         },
         capitalizeOnlyFirstLetter(t("unsupported_file_type")) +
           ". " +

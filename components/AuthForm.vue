@@ -139,7 +139,14 @@ const invitationToken = ref<string>(""); // FormKit - cannot be wuthout args - u
 
 const loading = ref(false);
 
-const props = defineProps(['orderId', 'orderType']);
+let success = false;
+
+const { orderId, orderType, onConfirm, onDismiss } = defineProps<{
+  orderId: number | null;
+  orderType: string | null;
+  onConfirm: Function | null;
+  onDismiss: Function | null;
+}>();
 
 const tabs = [
   <ITab>{ title: capitalizeOnlyFirstLetter(t("sign_up")) },
@@ -159,11 +166,16 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       password.value,
       confirmPassword.value,
       invitationToken.value,
-      props.orderId ? props.orderId : null,
-      props.orderType ? props.orderType: null
+      orderId ? orderId : undefined,
+      orderType ? orderType : undefined
     )
     .then((loginRequestState) => {
+      success = true;
+      if (onConfirm){
+        onConfirm();
+      }   
       dialogStore.close();
+      
     })
     .catch((err) => {
       notificationStore.showFetchError(err);
@@ -201,7 +213,12 @@ async function submitHandlerLogin(data: any, node: FormKitNode | undefined) {
   await authStore
     .login(emailLogin.value, passwordLogin.value)
     .then((loginRequestState) => {
+      success = true;
+      if (onConfirm){
+        onConfirm();
+      }      
       dialogStore.close();
+      
       notificationStore.show(
         `Welcome ${emailLogin.value}`,
         ToastLevelType.info
@@ -232,6 +249,12 @@ const handleLoginError = () => {
 function onTabClicked(tab: ITab) {
   selectedTab.value = tabs.indexOf(tab);
 }
+
+onBeforeUnmount(async () => {
+  if(onDismiss && !success){
+    onDismiss();
+  }
+});
 </script>
 
 <style>

@@ -20,7 +20,15 @@
         <p class="text-lg text-gray-400 font-bold">{{ subtitle }}</p>
 
         <div class="absolute right-0 bottom-0 pr-8 pb-4">
-          test
+          <Dropdown
+            class="w-[100px] h-full"
+            :items="dimensionUnits"
+            :preselected-item="dimensionUnits[0]"
+            :extract-name="a => a"
+            size="sm"
+            background-color="bg-white"
+            @on-item-clicked="event => emit('onUnitChange', event)"
+          />
         </div>
 
         <input
@@ -53,7 +61,12 @@ const { title, subtitle, hidePrivacyLabel } = defineProps<{
   subtitle: string;
   hidePrivacyLabel?: boolean;
 }>();
-const emit = defineEmits(["onDrop", "onChange"]);
+const emit = defineEmits(["onDrop", "onChange", "onUnitChange"]);
+
+const dimensionUnits: string[] = Object.keys(DimensionUnit).filter((item) => {
+  return isNaN(Number(item));
+});
+
 </script>
 
 <style>
