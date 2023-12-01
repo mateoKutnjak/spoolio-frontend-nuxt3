@@ -104,6 +104,7 @@
                   :hidePrivacyLabel="true"
                   @on-change="change"
                   @on-drop="drop"
+                  @on-unit-change="onUnitChange"
                 />
                 <div
                   v-if="printOrderStore.getUnits.length && !fileWaiting"
@@ -432,21 +433,13 @@ function clearFilesFirefox(input: any) {
   };
 }
 
+function onUnitChange(e: any) {
+  console.log("UNIT CHANGED")
+}
+
 function change(e: any) {
   // * Gets triggered when user selects
   // * files after CLICKING on container
-
-  if (!isLoggedIn.value) {
-    dialogStore.open("AuthForm", {});
-    notificationStore.show(
-      "Please log in to use this feature",
-      ToastLevelType.info
-    );
-
-    clearFilesChrome(e.target);
-    clearFilesFirefox(e.target);
-    return;
-  }
 
   itemInsertedLoading.value = true;
 
