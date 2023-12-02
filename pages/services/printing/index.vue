@@ -383,22 +383,6 @@ watch(formkitFiles, (value, oldValue, onInvalidate) => {
   files.value.push(value);
 });
 
-watch(dimensionUnit, (value) => {
-  printOrderStore.units.forEach((el) => {
-    printOrderStore.updateUnit(el.localUrl, {
-      length_unit: DimensionUnit[value],
-    });
-  });
-});
-
-watch(rotationUnit, (value) => {
-  printOrderStore.units.forEach((el) => {
-    printOrderStore.updateUnit(el.localUrl, {
-      rotation_unit: RotationUnit[value],
-    });
-  });
-});
-
 function clearFilesChrome(input: any) {
   const dt = new DataTransfer();
   dt.items.add(new File([], "a.txt"));
@@ -434,7 +418,7 @@ function clearFilesFirefox(input: any) {
 }
 
 function onUnitChange(e: any) {
-  console.log("UNIT CHANGED")
+  globalsStore.setDimensionUnit(e);
 }
 
 function change(e: any) {
@@ -466,7 +450,7 @@ function change(e: any) {
       return;
     }
   }
-  onFilesAdded(files);
+  onFilesAdded(files, e.target);
 }
 
 function drop(e: any) {
@@ -497,10 +481,10 @@ function drop(e: any) {
       return;
     }
   }
-  onFilesAdded(files);
+  onFilesAdded(files, null);
 }
 
-function onFilesAdded(files: File[]) {
+function onFilesAdded(files: File[], input: any) {
   if (!isLoggedIn.value) {
     dialogStore.open("AuthForm", {
       onConfirm: () => {
@@ -516,6 +500,10 @@ function onFilesAdded(files: File[]) {
       },
       onDismiss: () => {
         printOrderStore.clear();
+        if (input){
+          clearFilesChrome(input);
+          clearFilesFirefox(input);
+        }
         fileWaiting.value = undefined;
         console.log("Auth Dismissed!")
       }

@@ -50,10 +50,10 @@
               </div>
               <div
                 class="btn btn-primary btn-sm gap-1 text-white"
-                @click.prevent="onSaveChangesClicked"
+                @click.prevent="removeUnit"
               >
                 <Icon
-                  name="ph:floppy-disk-fill"
+                  name="ph:trash"
                   size="18"
                 />{{ ($t('delete')).toUpperCase() }}
               </div>
@@ -73,10 +73,10 @@
             </div>
             <div
               class="btn btn-primary btn-sm gap-1 text-white"
-              @click.prevent="onSaveChangesClicked"
+              @click.prevent="removeUnit"
             >
               <Icon
-                name="ph:floppy-disk-fill"
+                name="ph:trash"
                 size="18"
               />{{ ($t('delete')).toUpperCase() }}
             </div>
@@ -141,6 +141,11 @@
 <script lang="ts" setup>
 import { MAX_PRINT_QUANTITY } from "~~/constants/constants";
 import { usePrintOrderStore } from "~~/stores/print_order";
+import { useDialogStore } from "~~/stores/dialog";
+
+const { t } = useI18n();
+
+const router = useRouter();
 
 const { localUrl } = useRoute().params;
 
@@ -150,6 +155,7 @@ if (typeof localUrl !== "string") {
 }
 
 const printOrderStore = usePrintOrderStore();
+const dialogStore = useDialogStore();
 
 const unit = printOrderStore.getUnitByLocalUrl(localUrl);
 
@@ -206,6 +212,24 @@ watch(attachmentFiles, (value, oldValue, onInvalidate) => {
 watch(attachmentImages, (value, oldValue, onInvalidate) => {
   printOrderStore.updateUnit(unit.localUrl, { attachmentImages: value });
 });
+
+async function removeUnit() {
+  dialogStore.open("DialogConfirm", {
+    title: capitalizeOnlyFirstLetter(t("are_you_sure")),
+    subtitle: capitalizeOnlyFirstLetter(
+      t("this_will_remove_print_unit_from_your_order")
+    ),
+    onConfirm: () => {
+      if (!unit){
+        throw createError(`onRemoveUnitClicked: unit = ${unit}`);
+      }else{
+        printOrderStore.removeUnitByFileLocalUrl(unit.localUrl);
+        router.back();
+      }      
+    },
+    onDismiss: () => {},
+  });
+}
 
 async function onSaveChangesClicked() {
   if (!unit) {

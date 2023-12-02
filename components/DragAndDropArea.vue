@@ -32,7 +32,7 @@
         <Dropdown
           class="w-[100px] h-full"
           :items="dimensionUnits"
-          :preselected-item="dimensionUnits[0]"
+          :preselected-item="DimensionUnit[dimensionUnit]"
           :extract-name="a => a"
           size="sm"
           background-color="bg-white"
@@ -56,6 +56,9 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useGlobalsStore } from "~~/stores/globals";
+
 const { title, subtitle, hidePrivacyLabel } = defineProps<{
   title: string;
   subtitle: string;
@@ -63,9 +66,13 @@ const { title, subtitle, hidePrivacyLabel } = defineProps<{
 }>();
 const emit = defineEmits(["onDrop", "onChange", "onUnitChange"]);
 
+const globalsStore = useGlobalsStore();
+
 const dimensionUnits: string[] = Object.keys(DimensionUnit).filter((item) => {
   return isNaN(Number(item));
 });
+
+const { dimensionUnit } = storeToRefs(globalsStore);
 
 </script>
 
