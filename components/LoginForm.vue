@@ -75,7 +75,6 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     .login(email.value, password.value)
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo(localePath("/blogs"));
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

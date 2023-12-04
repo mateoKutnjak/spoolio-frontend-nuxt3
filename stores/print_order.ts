@@ -421,7 +421,7 @@ export const usePrintOrderStore = defineStore('print-order', {
             formData.append("wall", unit.wall.id.toString());
             formData.append('wall_thickness', unit.wall_thickness.id.toString());
             formData.append('printing_method', unit.printing_method.id.toString());
-            formData.append('scale', (unit.scale * (unit.length_unit === DimensionUnit.mms ? 1 : 2.54)).toString())
+            formData.append('scale', (unit.scale * (unit.length_unit === DimensionUnit.mms ? 1 : 25.4)).toString())
             formData.append('local_url', unit.localUrl);
             formData.append("file", simplifiedFile);
             formData.append('quantity', unit.quantity.toString());

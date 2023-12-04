@@ -102,11 +102,12 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
       email.value,
       password.value,
       confirmPassword.value,
-      invitationToken.value
+      invitationToken.value,
+      undefined,
+      undefined
     )
     .then((loginRequestState) => {
       dialogStore.close();
-      navigateTo(localePath("/services/printing"));
     })
     .catch((err) => {
       notificationStore.showFetchError(err);

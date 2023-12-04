@@ -105,7 +105,9 @@ const scale = ref(unit.scale*100);
 const submitted = ref(true);
 
 function onDimensionUnitSelected(e: any) {
-  unit.length_unit_display = e;
+  printOrderStore.updateUnit(unit.localUrl, {
+    length_unit_display: e,
+  });
 }
 
 // async function submitHandler() {
