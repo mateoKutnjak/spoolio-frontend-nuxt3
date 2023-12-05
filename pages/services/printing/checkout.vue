@@ -16,6 +16,7 @@
       <div class="relative flex flex-col lg:flex-row gap-6">
         <div class="md:px-0 px-6 flex-1 flex flex-col gap-4">
           <FormKit
+            :key="contact_email_ref"
             outer-class="!mb-0"
             :type="contactEmailInput"
             name="Contact email"
@@ -23,7 +24,6 @@
             dialogComponent="FormContactEmail"
             validation="required|email"
             validation-visibility="submit"
-            @input="(value) => print_order.contact_email = value"
           />
           <div class="bg-white p-5 flex flex-col gap-2 border border-stone-400/80 rounded-md">
             <div class="mb-2 flex gap-3 items-center text-stone-500">
@@ -35,13 +35,13 @@
             </div>
             <div class="grid gap-6 sm:grid-cols-2 grid-cols-1">
               <FormKit
+                :key="shipping_address_ref"
                 :type="shippingAddressInput"
                 name="Shipping address"
                 v-model="shipping_address_ref"
                 dialogComponent="FormShippingAddress"
                 validation="required"
-                validation-visibility="submit"
-                @input="(value) => print_order.shipping_address = value"
+                validation-visibility="submit"  
               />
               <div @click="() => null">
                 <FormKit
@@ -52,8 +52,7 @@
                   v-model="billing_address_ref"
                   dialogComponent="FormBillingAddress"
                   validation="required"
-                  validation-visibility="submit"
-                  @input="(value) => print_order.billing_address = value"
+                  validation-visibility="submit"    
                 />
               </div>
             </div>
@@ -78,6 +77,7 @@
             </div>
           </div>
           <FormKit
+            :key="shipping_method_ref"
             outer-class="!mb-0"
             :type="shippingMethodInput"
             name="Shipping method"
@@ -85,7 +85,6 @@
             dialogComponent="FormShippingMethod"
             validation="required"
             validation-visibility="submit"
-            @input="(value) => print_order.shipping_method = value"
           />
           <FormPaymentMethod
             :payment_num="payment_num"
@@ -287,6 +286,7 @@ const eta = computed(() => {
   return printOrderStore.getETA;
 });
 
+/*
 const contact_email_ref = computed(() => {
   return (
     print_order.value.contact_email ||
@@ -295,26 +295,80 @@ const contact_email_ref = computed(() => {
     ""
   );
 });
-
-const shipping_address_ref = computed(() => {
-  return Object.keys(print_order.value.shipping_address).length
-    ? print_order.value.shipping_address
-    : Object.keys(user.value?.profile?.shipping_address || {}).length
-    ? user.value?.profile?.shipping_address
-    : <IAddressShipping>{};
+*/
+const contact_email_ref = computed({
+  get(){
+    return (
+      print_order.value.contact_email ||
+      user.value?.profile?.email ||
+      user.value?.email ||
+      ""
+    );
+  },
+  set(newValue){
+    if (newValue){
+      if (JSON.stringify(print_order.value.contact_email) != JSON.stringify(newValue)){
+        print_order.value.contact_email = newValue;        
+      }
+    }    
+  }
 });
 
-const billing_address_ref = computed(() => {
-  return Object.keys(print_order.value.billing_address).length
-    ? print_order.value.billing_address
-    : Object.keys(user.value?.profile?.billing_address || {}).length
-    ? user.value?.profile?.billing_address
-    : <IAddressBilling>{};
+const shipping_method_ref = computed({
+  get(){
+    console.log("Get value")
+    return print_order.value.shipping_method || <IShippingMethod>{};
+  },
+  set(newValue){
+    if (newValue){
+      if (JSON.stringify(print_order.value.shipping_method) != JSON.stringify(newValue)){
+        print_order.value.shipping_method = newValue;        
+      }
+    }    
+  }
 });
 
-const shipping_method_ref = computed(() => {
-  return print_order.value.shipping_method || <IShippingMethod>{};
+const shipping_address_ref = computed({
+  get(){
+    let get_ret = Object.keys(print_order.value.shipping_address).length
+      ? print_order.value.shipping_address
+      : (Object.keys(user.value?.profile?.shipping_address || {}).length
+      ? user.value?.profile?.shipping_address
+      : <IAddressShipping>{});
+
+    console.log("Get: %s", JSON.stringify(get_ret));
+    return get_ret;
+  },
+  set(newValue){
+    if (newValue){
+      let old_val = JSON.stringify(print_order.value.shipping_address)
+      let new_val = JSON.stringify(newValue);
+      console.log("Set value: %s", new_val);
+      if (old_val != new_val){
+        console.log("New value! Old value: %s", old_val);
+        print_order.value.shipping_address = newValue;        
+      }
+    }    
+  }
 });
+
+const billing_address_ref = computed({
+  get(){
+    return Object.keys(print_order.value.billing_address).length
+      ? print_order.value.billing_address
+      : (Object.keys(user.value?.profile?.billing_address || {}).length
+      ? user.value?.profile?.billing_address
+      : <IAddressBilling>{});
+  },
+  set(newValue){
+    if (newValue){
+      if (JSON.stringify(print_order.value.billing_address) != JSON.stringify(newValue)){
+        print_order.value.billing_address = newValue;        
+      }
+    }    
+  }
+});
+
 
 onMounted(async () => {
 

@@ -26,6 +26,7 @@
             name="password"
             :placeholder="capitalizeOnlyFirstLetter($t('password'))"
             v-model="password"
+            help="Password must be between 5 and 15 characters long with at least 1 number"
             validation="required|length:5,15|matches:/[0-9]/"
             validation-visibility="blur"
           />
@@ -109,7 +110,7 @@ async function submitHandler(data: any, node: FormKitNode | undefined) {
     .then((loginRequestState) => {
       dialogStore.close();
     })
-    .catch((err) => {
+    .catch((err: any) => {
       notificationStore.showFetchError(err);
       node?.setErrors(
         err?.data?.non_field_errors || ["Error occurred. Please try again."],

@@ -56,10 +56,6 @@ const { context } = defineProps(["context"]);
 
 let shipping_method = ref(context.node.value);
 
-onMounted(() => {
-  context.node.input(shipping_method.value || <IShippingMethod>{});
-});
-
 function openDialog() {
   dialogStore.open(
     context.node.props.dialogComponent,
@@ -68,7 +64,6 @@ function openDialog() {
       enableUseDefault: true,
       onSaved: (obj: IShippingMethod) => {
         context.node.input(obj);
-        shipping_method.value = obj;
       },
     },
     (t("choose") + " " + t("shipping_method")).toUpperCase()

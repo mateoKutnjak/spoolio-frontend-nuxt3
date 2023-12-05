@@ -9,7 +9,8 @@ export function isValidShippingAddress(address: IAddressShipping | undefined) {
         address.address &&
         address.country &&
         address.locality &&
-        address.postal_code;
+        address.postal_code &&
+        address.phone_number;
 }
 
 export function isValidBillingAddress(address: IAddressBilling | undefined) {

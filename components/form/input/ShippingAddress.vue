@@ -49,14 +49,6 @@ const { context } = defineProps(["context"]);
 
 let shipping_address = ref(context.node.value);
 
-onMounted(() => {
-  if (isValidShippingAddress(shipping_address.value)) {
-    context.node.input(shipping_address.value);
-  } else {
-    context.node.input("");
-  }
-});
-
 function openDialog() {
   dialogStore.open(
     context.node.props.dialogComponent,
@@ -65,7 +57,6 @@ function openDialog() {
       enableUseDefault: true,
       onSaved: (obj: IAddressShipping) => {
         context.node.input(obj);
-        shipping_address.value = obj;
       },
     },
     (t("add") + " " + t("shipping_address__dativ")).toUpperCase()

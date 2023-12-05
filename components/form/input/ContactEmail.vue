@@ -42,10 +42,6 @@ const { context } = defineProps(["context"]);
 
 let contact_email = ref(context.node.value);
 
-onMounted(() => {
-  context.node.input(contact_email.value || "");
-});
-
 function openDialog() {
   dialogStore.open(
     context.node.props.dialogComponent,
@@ -54,7 +50,6 @@ function openDialog() {
       enableUseDefault: true,
       onSaved: (obj: string) => {
         context.node.input(obj);
-        contact_email.value = obj;
       },
     },
     (t("add") + " " + t("contact_email")).toUpperCase()

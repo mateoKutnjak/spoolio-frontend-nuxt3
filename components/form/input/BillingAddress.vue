@@ -55,14 +55,6 @@ const { context } = defineProps(["context"]);
 
 let billing_address = ref(context.node.value);
 
-onMounted(() => {
-  if (isValidBillingAddress(billing_address.value)) {
-    context.node.input(billing_address.value);
-  } else {
-    context.node.input("");
-  }
-});
-
 function openDialog() {
   dialogStore.open(
     context.node.props.dialogComponent,
@@ -71,7 +63,6 @@ function openDialog() {
       enableUseDefault: true,
       onSaved: (obj: IAddressBilling) => {
         context.node.input(obj);
-        billing_address.value = obj;
       },
     },
     (t("add") + " " + t("billing_address__dativ")).toUpperCase()
