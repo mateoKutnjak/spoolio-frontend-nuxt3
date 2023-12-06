@@ -560,6 +560,7 @@ export function refreshObject(
   face_rot: Vector3,
   face_angle: number,
   scale: number,
+  dim_multy: number,
   volume_box: Box3,
   camera: PerspectiveCamera,
   lookZ: number
@@ -590,7 +591,7 @@ export function refreshObject(
     mesh.updateMatrix();
   
     //SCALE OBJECT & PLACE ON SURFACE
-    scaleObject(mesh, scale);
+    scaleObject(mesh, scale*dim_multy);
 
     volume_box.setFromObject(mesh);
 

@@ -97,9 +97,9 @@ let model_dim = unit.model_dimensions;
 const modelDimensions = vector3Parse(unit.model_dimensions);
 
 const lockScale = ref(true);
-const dimensionX = ref((modelDimensions.x * unit.scale).toFixed(2));
-const dimensionY = ref((modelDimensions.y * unit.scale).toFixed(2));
-const dimensionZ = ref((modelDimensions.z * unit.scale).toFixed(2));
+const dimensionX = ref((modelDimensions.x).toFixed(2));
+const dimensionY = ref((modelDimensions.y).toFixed(2));
+const dimensionZ = ref((modelDimensions.z).toFixed(2));
 const scale = ref(unit.scale*100);
 
 const submitted = ref(true);
@@ -115,7 +115,6 @@ function onDimensionUnitSelected(e: any) {
 
 //   submitted.value = true;
 // }
-
 
 watch(scale, (value) => {
   let percent = value/100;
@@ -138,9 +137,7 @@ watch(printOrderStore.getUnits, (value) => {
     if (item.model_dimensions != model_dim){
       model_dim = item.model_dimensions;
       let dim = vector3Parse(model_dim);
-      
-      console.log("Dimensions changed: %s", model_dim);
-  
+        
       dimensionX.value = (dim.x).toFixed(2);
       dimensionY.value = (dim.y).toFixed(2);
       dimensionZ.value = (dim.z).toFixed(2);

@@ -157,19 +157,27 @@ import { radToDeg } from "three/src/math/MathUtils";
     }
   );
 
+  const dimension_multiplier = computed(
+    () => {
+      let print_order = printOrderStore.getUnitByLocalUrl(unit.localUrl);
+      if (print_order){
+        return print_order.length_unit_display === DimensionUnit.inches ? 25.4 : 1;
+      }else{
+        return 1;
+      }
+    }
+  );
+
   const print_volume = computed(
     () => {
       let printer_type = printerTypeStore.getByMethodId(unit.printing_method_display.id);
-      let dimensionUnit = unit.length_unit_display;
 
       let print_area = new Vector3(200,200,200);
 
       if (typeof printer_type !== 'undefined'){
         print_area = vector3Parse(printer_type.max_print_size);
       }
-      if (dimensionUnit === DimensionUnit.inches){
-        print_area.divideScalar(25.4);
-      }
+
       return print_area;
     }
   );
@@ -292,17 +300,19 @@ import { radToDeg } from "three/src/math/MathUtils";
   
   // *** OBJECT ROTATION *** //
 
-  refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+  refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, dimension_multiplier.value, volume_box, camera, 1);
   
   model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
   model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
   model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
 
+  model_dimensions.divideScalar(dimension_multiplier.value);
+
   // *** ADD OBJECT TO SCENE *** //
   scene.add(mesh);
   
   // ********************** //
-  
+
   watch(aspectRatio, () => {
     updateCamera();
     updateRenderer();
@@ -317,11 +327,12 @@ import { radToDeg } from "three/src/math/MathUtils";
     // ROTATION ORDER 
     setRotOrder(rot_order, value, oldValue);
     
-    refreshObject(mesh, value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+    refreshObject(mesh, value, rot_order, face_rot, face_angle, scale_display.value, dimension_multiplier.value, volume_box, camera, 1);
     controls.target.set(0,0,volume_box.max.z/2);
     model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
     model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
     model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
+    model_dimensions.divideScalar(dimension_multiplier.value);
     printOrderStore.updateUnit(unit.localUrl, { 
       model_xyz_rotation: getXYZRot(mesh),
       model_dimensions: vector3ToString(model_dimensions)
@@ -362,11 +373,26 @@ import { radToDeg } from "three/src/math/MathUtils";
   
   watch(scale_display, (value, oldValue) => {
     if (value){
-      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, value, volume_box, camera, 1);
+      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, value, dimension_multiplier.value, volume_box, camera, 1);
       controls.target.set(0,0,volume_box.max.z/2);
       model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
       model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
       model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
+      model_dimensions.divideScalar(dimension_multiplier.value);
+      printOrderStore.updateUnit(unit.localUrl, { 
+        model_dimensions: vector3ToString(model_dimensions)
+      });
+    }    
+  });
+
+  watch(dimension_multiplier, (value, oldValue) => {
+    if (value){
+      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, value, volume_box, camera, 1);
+      controls.target.set(0,0,volume_box.max.z/2);
+      model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
+      model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
+      model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
+      model_dimensions.divideScalar(dimension_multiplier.value);
       printOrderStore.updateUnit(unit.localUrl, { 
         model_dimensions: vector3ToString(model_dimensions)
       });
@@ -381,11 +407,12 @@ import { radToDeg } from "three/src/math/MathUtils";
   const loop = () => {
     
     if (updateObject){
-      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, volume_box, camera, 1);
+      refreshObject(mesh, global_rot.value, rot_order, face_rot, face_angle, scale_display.value, dimension_multiplier.value, volume_box, camera, 1);
       controls.target.set(0,0,volume_box.max.z/2);
       model_dimensions.setComponent(0, volume_box.max.x - volume_box.min.x);
       model_dimensions.setComponent(1, volume_box.max.y - volume_box.min.y);
       model_dimensions.setComponent(2, volume_box.max.z - volume_box.min.z);
+      model_dimensions.divideScalar(dimension_multiplier.value);
       printOrderStore.updateUnit(unit.localUrl, { 
         model_xyz_rotation: getXYZRot(mesh),
         model_dimensions: vector3ToString(model_dimensions)
