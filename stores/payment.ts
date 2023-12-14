@@ -22,6 +22,7 @@ export const usePaymentStore = defineStore('payment', {
                 currency: currency,
             };
 
+            console.log(body);
             return promiseWithTimeout(new Promise<IPaymenIntent>((resolve, reject) => {
                 ofetch<IPaymenIntent>('api/create-payment-intent/', {
                     baseURL: config.public.baseURL,

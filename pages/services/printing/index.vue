@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mb-32 px-0 md:px-12 pt-12">
+  <div class="container mx-auto mb-32 pt-12">
     <div v-if="units.length < 1 || (units.length && fileWaiting)" class="flex mb-28">
       <div class="text-lg text-gray-500">HOME</div>
       <div class="text-lg text-gray-500 mx-3">/</div>

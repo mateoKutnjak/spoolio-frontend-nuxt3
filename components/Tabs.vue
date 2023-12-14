@@ -1,21 +1,5 @@
 <template>
-  <!-- <div class="flex flex-wrap gap-1 justify-center">
-    <div
-      v-for="tab, index in tabs"
-      :key="tab.title"
-      class="w-max py-3 px-4 cursor-pointer border-0 font-medium text-lg hover:border-b-2 flex items-center gap-2"
-      :class="selected === index ? 'border-b-2 border-primary text-primary' : 'border-b-2 border-transparent text-stone-600 hover:border-stone-300 hover:text-stone-600'"
-      @click="onTabClick(tab)"
-    >
-      <Icon
-        v-if="tab.iconName"
-        :name="tab.iconName"
-      />
-      <div class="line-clamp-1">{{ tab.title }}</div>
-    </div>
-  </div> -->
-
-  <div class="flex flex-wrap gap-1 justify-center">
+  <div class="flex flex-wrap gap-1">
     <div
       v-for="tab, index in tabs"
       :key="tab.title"

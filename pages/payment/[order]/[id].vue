@@ -171,6 +171,7 @@ if (order === "printing") {
   }
 
   amountToPay = Number(modelingOrder.estimated_price) * (1 + TAX_FRACTION);
+  console.log("Will attempt to pay %d EUR", amountToPay);
 } else if (order === "store") {
   const storeOrderHistoryStore = useStoreOrderHistoryStore();
   let storeOrder = storeOrderHistoryStore.getOrderById(numericId);

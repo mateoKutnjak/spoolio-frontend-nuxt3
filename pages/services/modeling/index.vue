@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto mb-32 px-0 md:px-12 pt-12">
-    <div class="md:px-0 px-12 flex flex-col gap-9 text-stone-700">
+  <div class="container mx-auto mb-32 pt-12">
+    <div class="md:px-0 px-12 flex flex-col gap-4 text-stone-700">
       <div class="flex mb-10">
         <div class="text-lg text-gray-500">HOME</div>
         <div class="text-lg text-gray-500 mx-3">/</div>

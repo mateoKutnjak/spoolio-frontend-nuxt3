@@ -1,56 +1,52 @@
 <template>
-  <div class="pb-12 font-['Poppins']">
-    <BlogTopCard
-      v-if="featuredBlogsData"
-      :blog="featuredBlogsData?.length ? featuredBlogsData[0] : undefined"
-    />
-    <div class="mx-auto md:px-12 max-w-7xl mt-12 flex flex-col gap-12">
+  <div class="container mx-auto mb-32 pt-12">
+
+    <div class="md:px-0 px-14 flex flex-col gap-4 text-stone-700">
+      <div class="flex mb-10">
+        <div class="text-lg text-gray-500">HOME</div>
+        <div class="text-lg text-gray-500 mx-3">/</div>
+        <div class="text-lg text-gray-500">PROJEKTI</div>
+      </div>
+
+      <div class="mb-6">
+        <div class="text-basis-content font-bold text-5xl pb-4">NAŠI PROJEKTI</div>
+        <div class="text-lg">Pogledaj priče o realizaciji tuđih projekata i dobi inspiraciju za svoj</div>
+      </div>
+
       <div
         v-if="featuredBlogsData"
-        class="flex flex-col gap-4 items-center"
+        class="flex flex-col mb-4"
       >
-        <div class="pb-6 text-stone-700 text-3xl font-bold">{{ capitalizeOnlyFirstLetter($t('featured')) }}</div>
-        <div class="w-full flex md:flex-row flex-col gap-8">
-          <div class="grid grid-cols-1 md:grid-cols-2 md:gap-6 gap-6">
-            <BlogFeaturedCard
-              v-for="featuredBlog in featuredBlogsData.slice(1, 3)"
-              :key="featuredBlog.id"
-              :item="featuredBlog"
-              @on-tag-clicked="(tag: IBlogTag) => onTagClicked(tag)"
-            ></BlogFeaturedCard>
-          </div>
-          <div class="m-0 h-0 divider"></div>
-          <div class="flex flex-col gap-6">
-            <BlogFeaturedCardCompact
-              v-for="featuredBlog in featuredBlogsData.slice(3, 6)"
-              :key="featuredBlog.id"
-              :item="featuredBlog"
-              @on-tag-clicked="(tag: IBlogTag) => onTagClicked(tag)"
-            >
-            </BlogFeaturedCardCompact>
-          </div>
+        <div class="pb-3 text-stone-700 text-2xl font-bold">Istaknuti projekti</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-5">
+            <IndexProjectsProject 
+              v-for="featuredBlog in featuredBlogsData.slice(0, 3)"
+              :blog="featuredBlog"
+            />            
         </div>
       </div>
+
       <div
         v-if="blogTagsData"
-        class="mt-4 flex flex-col items-center gap-8"
+        class="flex flex-col"
       >
-        <div class="px-4 md:px-0 mt-1 text-stone-700 text-3xl font-bold">{{ capitalizeOnlyFirstLetter($t('categories')) }}</div>
+        <div class="pb-3 text-stone-700 text-2xl font-bold">Odaberi kategoriju</div>
         <Tabs
           :tabs="tags"
           :selected-tab-index="Math.max(tags.findIndex(el => el.title === tagSelected?.name), 0)"
           :key="tagSelected?.id"
           @on-tab-clicked="tab => onTabClicked(tab)"
         />
+        <div class="divider my-0"></div>
       </div>
-      <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-4 gap-6">
-        <BlogCard
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 pb-5">
+        <IndexProjectsProject 
           :key="blog.id"
           v-for="blog in getPaginatedBlogs.blogs.slice(0, getPaginatedBlogs.blogs.length)"
           :item="blog"
-          @on-tag-clicked="tag => tagSelected = tag"
-        >
-        </BlogCard>
+          :blog="blog"
+          @on-tag-clicked="tag => tagSelected = tag"        />           
+        
       </div>
       <div
         v-if="getPaginatedBlogs.count && getPaginatedBlogs.count > getPaginatedBlogs.blogs.length"
