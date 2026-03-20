@@ -62,7 +62,7 @@ The application communicates with a Django REST backend that handles business lo
 - **Nuxt3 (Vue 3)**
 - **JavaScript / TypeScript**
 - **Three.js**
-- **Tailwind CSS** (if used, adjust if needed)
+- **Tailwind CSS**
 - **Axios / Fetch API**
 - Stripe frontend SDK
 
@@ -75,6 +75,6 @@ The frontend is structured as a modular SPA/SSR hybrid using Nuxt3:
 - Pages: route-based views
 - Components: reusable UI and 3D elements
 - Services: API communication layer
-- State management: (Pinia / composables if used)
+- State management: pinia
 
 The app communicates with the backend via REST APIs.
