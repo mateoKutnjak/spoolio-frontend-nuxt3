@@ -1,42 +1,80 @@
-# Nuxt 3 Minimal Starter
+# Spoolio Frontend (Nuxt3)
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+> Frontend application for a 3D printing platform, enabling users to upload models, configure print settings, visualize them in 3D, and place orders.
 
-## Setup
+This project is a **Nuxt3-based web application** that connects to the Spoolio Django backend, providing a complete user interface for managing 3D printing workflows.
 
-Make sure to install the dependencies:
+---
 
-```bash
-# yarn
-yarn install
+## Highlights
 
-# npm
-npm install
+- Built with **Nuxt3 (Vue 3)** and modern frontend architecture
+- **Interactive 3D model visualization** using Three.js
+- Full integration with backend APIs (authentication, orders, pricing)
+- **Stripe checkout flow** for payments
+- Responsive UI for managing complex 3D printing configurations
 
-# pnpm
-pnpm install --shamefully-hoist
-```
+---
 
-## Development Server
+## Overview
 
-Start the development server on http://localhost:3000
+Spoolio frontend allows users to:
 
-```bash
-npm run dev
-```
+- upload and preview 3D models
+- configure printing parameters (layer height, color, etc.)
+- view real-time price and duration estimates
+- manage cart and orders
+- complete purchases using Stripe
+- track order history
 
-## Production
+The application communicates with a Django REST backend that handles business logic, slicing, and payments.
 
-Build the application for production:
+---
 
-```bash
-npm run build
-```
+## Core Features
 
-Locally preview production build:
+### Authentication
+- User registration and login
+- Session management with backend API
 
-```bash
-npm run preview
-```
+### 3D Visualization
+- Rendering of uploaded 3D models
+- Interactive scene using **Three.js**
+- Visual feedback for model orientation and scale
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### Print Configuration
+- UI for selecting print parameters
+- Dynamic updates based on backend responses
+
+### Cart & Orders
+- Add configured models to cart
+- Modify and review order items
+- View order history
+
+### Payments
+- Stripe checkout integration
+- Secure payment flow
+
+---
+
+## Tech Stack
+
+- **Nuxt3 (Vue 3)**
+- **JavaScript / TypeScript**
+- **Three.js**
+- **Tailwind CSS** (if used, adjust if needed)
+- **Axios / Fetch API**
+- Stripe frontend SDK
+
+---
+
+## Architecture
+
+The frontend is structured as a modular SPA/SSR hybrid using Nuxt3:
+
+- Pages: route-based views
+- Components: reusable UI and 3D elements
+- Services: API communication layer
+- State management: (Pinia / composables if used)
+
+The app communicates with the backend via REST APIs.
